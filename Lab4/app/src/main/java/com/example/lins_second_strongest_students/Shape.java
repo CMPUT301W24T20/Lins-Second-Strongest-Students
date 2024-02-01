@@ -5,6 +5,4 @@ public abstract class Shape {
     int y;
 }
 
-public class circle implements Shape {
-    
-}
+
