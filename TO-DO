@@ -1,5 +1,13 @@
 Project Check-In 2:
-1. User Interface Mockup
+1. Product Backlog
+
+  - Form the backlog from initial user stories
+  - Estimate user stories' sizes using story points
+  - Denote risk level for each user story
+  - Also number them for easy reference
+  - Note which story will be released for the half-way checkpoint
+
+2. User Interface Mockup
 
   Basic text description of discussed UI:
   Open app: login page. Can be skipped. Potentially uses device ID instead of username/password
@@ -7,7 +15,7 @@ Project Check-In 2:
   Profile: display name, contact info, homepage, profile picture. Can be edited
   My Events: show list of previously scanned codes? allow for event creation?
 
-2. CRC Analysis
+3. CRC Analysis
 
   Classes potentially needed:
   QR Code Creator
