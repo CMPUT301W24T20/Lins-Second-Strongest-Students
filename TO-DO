@@ -1,0 +1,47 @@
+Project Check-In 2:
+1. User Interface Mockup
+
+  Basic text description of discussed UI:
+  Open app: login page. Can be skipped. Potentially uses device ID instead of username/password
+  After login: open camera (like snapchat). Tab in corner for profile edit, another tab for My Events
+  Profile: display name, contact info, homepage, profile picture. Can be edited
+  My Events: show list of previously scanned codes? allow for event creation?
+
+2. CRC Analysis
+
+  Classes potentially needed:
+  QR Code Creator
+  QR Code
+  User
+    Extended by:
+     - Admin
+     - Organizer
+     - Attendee  <-- List to store attendees
+  Profile
+    Contains:
+     - Name
+     - Contact Info
+     - Homepage
+     - Profile Picture
+  Event
+    Contains:
+      - Poster
+      -...
+
+
+Main Project:
+1. Create QR Codes
+2. Scan QR Codes
+ - use camera
+3. Setup Profile
+ - profile optional
+ - store name, homepage, contact info for quick access
+ - profile picture: deterministically generated or custom
+4. Collect and manage user data
+ - store profiles
+ - store QR codes for reuse
+ - track attendance/scans of a code
+ - track location of scanners (can be disabled by scanner)
+5. Distribute data 
+ - allow organizers to see scans, location
+ - allow administrators to edit events/profiles/images
