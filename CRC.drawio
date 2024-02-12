@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-02-12T21:05:55.889Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15" etag="eVybIFu92cGVZaWnAaEc" version="23.1.2" type="github">
+<mxfile host="app.diagrams.net" modified="2024-02-12T21:13:52.425Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15" etag="0iPxI5-oER4k3QxsQkiO" version="23.1.2" type="github">
   <diagram name="Page-1" id="isyf78NvJ2EBEAnTLSQR">
-    <mxGraphModel dx="738" dy="1248" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel dx="951" dy="606" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -58,7 +58,7 @@
         <mxCell id="p0VleNT7jk7Zis_5twDi-18" value="Administrator" style="rounded=0;whiteSpace=wrap;html=1;" parent="p0VleNT7jk7Zis_5twDi-17" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-19" value="&lt;div style=&quot;text-align: left;&quot;&gt;- Browse events&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- Remove events&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-17" vertex="1">
+        <mxCell id="p0VleNT7jk7Zis_5twDi-19" value="&lt;div style=&quot;&quot;&gt;- Browse events&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- Remove events&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="p0VleNT7jk7Zis_5twDi-17" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="p0VleNT7jk7Zis_5twDi-20" value="- Database" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-17" vertex="1">
@@ -77,19 +77,19 @@
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="p0VleNT7jk7Zis_5twDi-25" value="" style="group;align=left;verticalAlign=top;horizontal=0;" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="720" y="120" width="240" height="160" as="geometry" />
+          <mxGeometry x="720" y="120" width="240" height="240" as="geometry" />
         </mxCell>
         <mxCell id="p0VleNT7jk7Zis_5twDi-26" value="Organizer dashboard" style="rounded=0;whiteSpace=wrap;html=1;" parent="p0VleNT7jk7Zis_5twDi-25" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-27" value="&lt;div style=&quot;text-align: left;&quot;&gt;- Keep track of the attendance.&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- Show the information to the organizer&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- Send push notification&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-25" vertex="1">
-          <mxGeometry y="40" width="120" height="120" as="geometry" />
+        <mxCell id="p0VleNT7jk7Zis_5twDi-27" value="&lt;div style=&quot;text-align: left;&quot;&gt;- Keep track of the attendance (Update the attendance to the database in real time)&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- Show the information to the organizer&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- Send push notification&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-25" vertex="1">
+          <mxGeometry y="40" width="120" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-28" value="&lt;div style=&quot;&quot;&gt;- Organizer&lt;/div&gt;- Attendee" style="rounded=0;whiteSpace=wrap;html=1;align=left;horizontal=1;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-25" vertex="1">
-          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
+        <mxCell id="p0VleNT7jk7Zis_5twDi-28" value="&lt;div style=&quot;&quot;&gt;- Organizer&lt;/div&gt;- Attendee&lt;br&gt;- Database&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;horizontal=1;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-25" vertex="1">
+          <mxGeometry x="120" y="40" width="120" height="160" as="geometry" />
         </mxCell>
         <mxCell id="b8OZTbFHbv40sIYhW2uN-1" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="720" y="320" width="240" height="160" as="geometry" />
+          <mxGeometry x="720" y="520" width="240" height="160" as="geometry" />
         </mxCell>
         <mxCell id="b8OZTbFHbv40sIYhW2uN-2" value="Database" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="b8OZTbFHbv40sIYhW2uN-1">
           <mxGeometry width="240" height="40" as="geometry" />
@@ -97,7 +97,7 @@
         <mxCell id="b8OZTbFHbv40sIYhW2uN-3" value="- Store event informations.&lt;br&gt;- Store events attendance&lt;br&gt;- Store user information&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="b8OZTbFHbv40sIYhW2uN-1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="b8OZTbFHbv40sIYhW2uN-4" value="- Organizer&lt;br&gt;- Attendee&lt;br&gt;- Administrator&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="b8OZTbFHbv40sIYhW2uN-1">
+        <mxCell id="b8OZTbFHbv40sIYhW2uN-4" value="- Organizer&lt;br&gt;- Attendee&lt;br&gt;- Administrator&lt;br&gt;- Dashboard &amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="b8OZTbFHbv40sIYhW2uN-1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
       </root>
