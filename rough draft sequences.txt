@@ -1,0 +1,26 @@
+download app
+show device id with created profile
+
+then button to QR scan, log in as event organizer, edit profile button screen
+can edit profile here...leading to new screen/fragment
+- upload photo
+- disable/enable off location
+- update info (name, homepage, contact info)
+- button to save changes or cancel changes
+- check validity of changes (e.g. valid phone number length)
+
+attendee... by QR screen
+leads to event page screen
+- can view event details/announcements
+- can leave event
+
+organizer... by login
+create event and create QR code screen
+then...after verifying validity
+view attendees, create notifs button, refresh button screen
+- can select attendee to see their stats (milestone, location, history) to new screen
+  - has a return button
+- button to create notifs leads to new screen/fragment
+  - create and notification/communicate with attendees 
+  - has cancel notif button
+- refresh button basically,,,, refreshes, updates list,,,yea
