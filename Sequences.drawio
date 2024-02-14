@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-02-14T22:35:55.836Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="pUVY1-BtORXyt5rmHoXV" version="23.1.4" type="github">
+<mxfile host="app.diagrams.net" modified="2024-02-14T23:49:23.402Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="dYU352Rqhnm3jw7CZXEj" version="23.1.4" type="github">
   <diagram name="Page-1" id="KCAGS3cMJD5x5BAvcxFM">
-    <mxGraphModel dx="1974" dy="1551" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1867" dy="1508" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -107,14 +107,17 @@
         <mxCell id="P8wF5kCb8froCcULJGdk-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="P8wF5kCb8froCcULJGdk-2" target="P8wF5kCb8froCcULJGdk-26" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="P8wF5kCb8froCcULJGdk-30" value="Attendee Event Page" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="190" y="540" width="164" height="90" as="geometry" />
+        <mxCell id="P8wF5kCb8froCcULJGdk-30" value="Event Page" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="190" y="540" width="164" height="130" as="geometry" />
         </mxCell>
         <mxCell id="P8wF5kCb8froCcULJGdk-31" value="Event announcements&amp;nbsp;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="P8wF5kCb8froCcULJGdk-30" vertex="1">
           <mxGeometry y="30" width="164" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="P8wF5kCb8froCcULJGdk-32" value="Leave event" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="P8wF5kCb8froCcULJGdk-30" vertex="1">
-          <mxGeometry y="60" width="164" height="30" as="geometry" />
+        <mxCell id="P8wF5kCb8froCcULJGdk-32" value="Leave event&lt;br&gt;&lt;blockquote style=&quot;margin: 0 0 0 40px; border: none; padding: 0px;&quot;&gt;event removed from attendee&#39;s event list&lt;/blockquote&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="P8wF5kCb8froCcULJGdk-30" vertex="1">
+          <mxGeometry y="60" width="164" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="jSb2AHnVbPNflxMFFEoP-4" value="Return button" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="P8wF5kCb8froCcULJGdk-30">
+          <mxGeometry y="110" width="164" height="20" as="geometry" />
         </mxCell>
         <mxCell id="P8wF5kCb8froCcULJGdk-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1.005;entryY=0.162;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="P8wF5kCb8froCcULJGdk-28" target="P8wF5kCb8froCcULJGdk-30" edge="1">
           <mxGeometry relative="1" as="geometry" />
