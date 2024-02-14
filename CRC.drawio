@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-02-13T01:43:20.376Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0" etag="L69PvzvJ7hCY1O-YAy8J" version="23.1.3" type="github">
+<mxfile host="app.diagrams.net" modified="2024-02-14T00:43:24.081Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0" etag="jalt7EqDbs1m3K-5lb3D" version="23.1.3" type="github">
   <diagram name="Page-1" id="isyf78NvJ2EBEAnTLSQR">
     <mxGraphModel dx="960" dy="1489" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
@@ -100,28 +100,88 @@
         <mxCell id="b8OZTbFHbv40sIYhW2uN-4" value="- Organizer&lt;br&gt;- Attendee&lt;br&gt;- Administrator&lt;br&gt;- Dashboard &amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="b8OZTbFHbv40sIYhW2uN-1" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="ndnspTAVWhX3wWvvUTWw-5" value="" style="group;align=left;verticalAlign=top;" vertex="1" connectable="0" parent="1">
+        <mxCell id="ndnspTAVWhX3wWvvUTWw-5" value="" style="group;align=left;verticalAlign=top;" parent="1" vertex="1" connectable="0">
           <mxGeometry x="160" y="-70" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="ndnspTAVWhX3wWvvUTWw-6" value="QR Code" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="ndnspTAVWhX3wWvvUTWw-5">
+        <mxCell id="ndnspTAVWhX3wWvvUTWw-6" value="QR Code" style="rounded=0;whiteSpace=wrap;html=1;" parent="ndnspTAVWhX3wWvvUTWw-5" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="ndnspTAVWhX3wWvvUTWw-7" value="- Represent a QR code&lt;br&gt;- Holds content that is shared on scan" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="ndnspTAVWhX3wWvvUTWw-5">
+        <mxCell id="ndnspTAVWhX3wWvvUTWw-7" value="- Represent a QR code&lt;br&gt;- Holds content that is shared on scan" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="ndnspTAVWhX3wWvvUTWw-5" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="ndnspTAVWhX3wWvvUTWw-8" value="- QR Code Generator&lt;br&gt;- QR Code Scanner&lt;br&gt;- QR Content" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="ndnspTAVWhX3wWvvUTWw-5">
+        <mxCell id="ndnspTAVWhX3wWvvUTWw-8" value="- QR Code Generator&lt;br&gt;- QR Code Scanner&lt;br&gt;- QR Content" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="ndnspTAVWhX3wWvvUTWw-5" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="ndnspTAVWhX3wWvvUTWw-9" value="" style="group;align=left;verticalAlign=top;" vertex="1" connectable="0" parent="1">
+        <mxCell id="ndnspTAVWhX3wWvvUTWw-9" value="" style="group;align=left;verticalAlign=top;" parent="1" vertex="1" connectable="0">
           <mxGeometry x="440" y="-70" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="ndnspTAVWhX3wWvvUTWw-10" value="QR Content" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="ndnspTAVWhX3wWvvUTWw-9">
+        <mxCell id="ndnspTAVWhX3wWvvUTWw-10" value="QR Content" style="rounded=0;whiteSpace=wrap;html=1;" parent="ndnspTAVWhX3wWvvUTWw-9" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="ndnspTAVWhX3wWvvUTWw-11" value="- Represent the data held in a QR code" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="ndnspTAVWhX3wWvvUTWw-9">
+        <mxCell id="ndnspTAVWhX3wWvvUTWw-11" value="- Represent the data held in a QR code" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="ndnspTAVWhX3wWvvUTWw-9" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="ndnspTAVWhX3wWvvUTWw-12" value="- QR code" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="ndnspTAVWhX3wWvvUTWw-9">
+        <mxCell id="ndnspTAVWhX3wWvvUTWw-12" value="- QR code" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="ndnspTAVWhX3wWvvUTWw-9" vertex="1">
+          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-1" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="160" y="710" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-2" value="User" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-1">
+          <mxGeometry width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-3" value="- Represent a User as an object" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-1">
+          <mxGeometry y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-4" value="- Attendee&lt;br&gt;- Administrator&lt;br&gt;- Organizer&lt;br&gt;- Profile" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-1">
+          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-5" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="160" y="910" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-6" value="Profile" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-5">
+          <mxGeometry width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-7" value="- Represent and store data for a user profile&lt;br&gt;- Contains username, contact info, homepage" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-5">
+          <mxGeometry y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-8" value="- Profile picture&lt;br&gt;- Profile picture generator (?)" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-5">
+          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-9" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="440" y="700" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-10" value="Profile picture" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-9">
+          <mxGeometry width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-11" value="- Represent and store data for a picture" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-9">
+          <mxGeometry y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-12" value="- Profile&lt;br&gt;- Profile picture generator" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-9">
+          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-18" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="720" y="910" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-19" value="Attendee List" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-18">
+          <mxGeometry width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-20" value="- Stores data for people who have attended an event&lt;br&gt;- Can be viewed by organizer" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-18">
+          <mxGeometry y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-21" value="-Event&lt;br&gt;- Organizer&lt;br&gt;- Attendee" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-18">
+          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-22" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="440" y="910" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-23" value="Event" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-22">
+          <mxGeometry width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-24" value="- Represent an Event&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-22">
+          <mxGeometry y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-25" value="- Organizer&lt;br&gt;- QR Code&lt;br&gt;- Attendee List" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="yUvjpF-pLKF-yOkhtuPk-22">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
       </root>
