@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-02-15T01:30:38.645Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15" etag="JfUNe7RH_zEQIbRFgQ6_" version="23.1.4" type="github">
+<mxfile host="app.diagrams.net" modified="2024-02-15T01:33:03.069Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15" etag="h6H5KL6-HdBZCN9Vyr30" version="23.1.4" type="github">
   <diagram name="Page-1" id="isyf78NvJ2EBEAnTLSQR">
-    <mxGraphModel dx="1229" dy="1616" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel dx="1782" dy="1961" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -170,6 +170,18 @@
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="yUvjpF-pLKF-yOkhtuPk-25" value="- Organizer&lt;br&gt;- QR Code&lt;br&gt;- Attendee List" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="yUvjpF-pLKF-yOkhtuPk-22" vertex="1">
+          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="F9zYYcnOCjDlbiqOqqYT-1" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="720" y="700" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="F9zYYcnOCjDlbiqOqqYT-2" value="Attendee Homepage" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="F9zYYcnOCjDlbiqOqqYT-1">
+          <mxGeometry width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="F9zYYcnOCjDlbiqOqqYT-3" value="" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="F9zYYcnOCjDlbiqOqqYT-1">
+          <mxGeometry y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="F9zYYcnOCjDlbiqOqqYT-4" value="" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="F9zYYcnOCjDlbiqOqqYT-1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
       </root>
