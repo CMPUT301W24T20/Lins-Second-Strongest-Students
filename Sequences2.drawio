@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-02-16T07:53:22.015Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="_hL2_nrPF-80f5QGHIHT" version="23.1.4" type="github">
+<mxfile host="app.diagrams.net" modified="2024-02-16T07:53:39.789Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="QKGDi3RXeZBU0qD7eav9" version="23.1.4" type="github">
   <diagram name="Page-1" id="xZqrpQoWXWdg2QHDlLa8">
     <mxGraphModel dx="2923" dy="1711" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -112,7 +112,7 @@
         <mxCell id="kmndzjtyYsxwTEhdyWk3-150" value="promotion QR&lt;br&gt;&lt;blockquote style=&quot;margin: 0 0 0 40px; border: none; padding: 0px;&quot;&gt;true/false&lt;/blockquote&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-40">
           <mxGeometry y="120" width="190" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="kmndzjtyYsxwTEhdyWk3-151" value="limit the number of attendees&lt;blockquote style=&quot;margin: 0 0 0 40px; border: none; padding: 0px;&quot;&gt;true - input number&lt;/blockquote&gt;&lt;blockquote style=&quot;margin: 0 0 0 40px; border: none; padding: 0px;&quot;&gt;false&lt;/blockquote&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-40">
+        <mxCell id="kmndzjtyYsxwTEhdyWk3-151" value="limit the number of attendees&lt;blockquote style=&quot;margin: 0 0 0 40px; border: none; padding: 0px;&quot;&gt;true - input number&lt;/blockquote&gt;&lt;blockquote style=&quot;margin: 0 0 0 40px; border: none; padding: 0px;&quot;&gt;false - leave empty&lt;/blockquote&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-40">
           <mxGeometry y="160" width="190" height="50" as="geometry" />
         </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-44" value="Confirm&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;- check validity" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-40">
