@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-02-16T07:57:42.675Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="7KRAxT0dWQe8M61CA2b8" version="23.1.4" type="github">
+<mxfile host="app.diagrams.net" modified="2024-02-16T08:03:45.035Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="riFWXn2MtALyCLBygcBo" version="23.1.4" type="github">
   <diagram name="Page-1" id="xZqrpQoWXWdg2QHDlLa8">
-    <mxGraphModel dx="2556" dy="1528" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2413" dy="1457" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -42,18 +42,6 @@
         </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-19" value="Save Change invalid + Toast" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="-470" y="-60" width="180" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="kmndzjtyYsxwTEhdyWk3-20" value="Upload Photo&amp;nbsp;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-930" y="-180" width="140" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="kmndzjtyYsxwTEhdyWk3-21" value="Select from gallery" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-20">
-          <mxGeometry y="30" width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="kmndzjtyYsxwTEhdyWk3-22" value="Use Camera" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-20">
-          <mxGeometry y="60" width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="kmndzjtyYsxwTEhdyWk3-205" value="Confirm photo" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-20">
-          <mxGeometry y="90" width="140" height="30" as="geometry" />
         </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-25" value="&lt;ul&gt;&lt;li&gt;Upon app download, create unique device ID and profile&lt;/li&gt;&lt;li&gt;new user automatically has attendee role&lt;/li&gt;&lt;li&gt;to gain organizer role, edit profile&lt;/li&gt;&lt;/ul&gt;&lt;span class=&quot;custom-cursor-default-hover&quot; style=&quot;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="shape=note;size=20;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="-1100" y="150" width="210" height="140" as="geometry" />
@@ -101,7 +89,7 @@
           <mxGeometry y="30" width="170" height="30" as="geometry" />
         </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-40" value="Create event" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="740" y="-110" width="190" height="290" as="geometry" />
+          <mxGeometry x="740" y="-110" width="190" height="330" as="geometry" />
         </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-41" value="input event name and details" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-40">
           <mxGeometry y="30" width="190" height="30" as="geometry" />
@@ -112,17 +100,20 @@
         <mxCell id="kmndzjtyYsxwTEhdyWk3-150" value="promotion QR&lt;br&gt;&lt;blockquote style=&quot;margin: 0 0 0 40px; border: none; padding: 0px;&quot;&gt;true/false&lt;/blockquote&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-40">
           <mxGeometry y="120" width="190" height="40" as="geometry" />
         </mxCell>
+        <mxCell id="kmndzjtyYsxwTEhdyWk3-286" value="Upload event poster" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-40">
+          <mxGeometry y="160" width="190" height="40" as="geometry" />
+        </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-151" value="limit the number of attendees&lt;blockquote style=&quot;margin: 0 0 0 40px; border: none; padding: 0px;&quot;&gt;true - input number&lt;/blockquote&gt;&lt;blockquote style=&quot;margin: 0 0 0 40px; border: none; padding: 0px;&quot;&gt;false - leave empty&lt;/blockquote&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-40">
-          <mxGeometry y="160" width="190" height="50" as="geometry" />
+          <mxGeometry y="200" width="190" height="50" as="geometry" />
         </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-44" value="Confirm&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;- check validity" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-40">
-          <mxGeometry y="210" width="190" height="40" as="geometry" />
+          <mxGeometry y="250" width="190" height="40" as="geometry" />
         </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-153" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1.002;entryY=0.065;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="kmndzjtyYsxwTEhdyWk3-40" source="kmndzjtyYsxwTEhdyWk3-44" target="kmndzjtyYsxwTEhdyWk3-40">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-185" value="Cancel" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="kmndzjtyYsxwTEhdyWk3-40">
-          <mxGeometry y="250" width="190" height="40" as="geometry" />
+          <mxGeometry y="290" width="190" height="40" as="geometry" />
         </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-47" value="Confirm invalid + Toast" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="940" width="150" height="30" as="geometry" />
@@ -340,9 +331,6 @@
         <mxCell id="kmndzjtyYsxwTEhdyWk3-180" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.113;entryY=-0.004;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="kmndzjtyYsxwTEhdyWk3-176" target="kmndzjtyYsxwTEhdyWk3-48">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="kmndzjtyYsxwTEhdyWk3-207" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.003;entryY=0.118;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="kmndzjtyYsxwTEhdyWk3-6" target="kmndzjtyYsxwTEhdyWk3-20">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-209" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.004;entryY=0.085;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="kmndzjtyYsxwTEhdyWk3-28" target="kmndzjtyYsxwTEhdyWk3-5">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -375,9 +363,6 @@
               <mxPoint x="-585" y="80" />
             </Array>
           </mxGeometry>
-        </mxCell>
-        <mxCell id="kmndzjtyYsxwTEhdyWk3-232" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.003;entryY=0.03;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="kmndzjtyYsxwTEhdyWk3-205" target="kmndzjtyYsxwTEhdyWk3-5">
-          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="kmndzjtyYsxwTEhdyWk3-243" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.002;entryY=0.044;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="kmndzjtyYsxwTEhdyWk3-193" target="kmndzjtyYsxwTEhdyWk3-119">
           <mxGeometry relative="1" as="geometry" />
@@ -480,8 +465,6 @@
         <mxCell id="kmndzjtyYsxwTEhdyWk3-280" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="kmndzjtyYsxwTEhdyWk3-185" target="kmndzjtyYsxwTEhdyWk3-258">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="670" y="160" />
-              <mxPoint x="670" y="200" />
               <mxPoint x="-39" y="200" />
             </Array>
           </mxGeometry>
