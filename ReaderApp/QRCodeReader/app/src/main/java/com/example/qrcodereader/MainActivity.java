@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.provider.Settings;
 
+import com.example.qrcodereader.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+      
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        User user = new User(deviceID, "Guohui Lin");
+
 
     }
 
