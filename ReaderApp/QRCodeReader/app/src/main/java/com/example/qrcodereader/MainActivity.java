@@ -1,7 +1,9 @@
 package com.example.qrcodereader;
 
 import android.os.Bundle;
+import android.provider.Settings;
 
+import com.example.qrcodereader.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        User user = new User(deviceID, "Guohui Lin");
+
     }
 
 }
