@@ -1,6 +1,10 @@
 package com.example.qrcodereader;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -32,6 +36,24 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+
+        // The following code is for the QR code generation
+        Button btnGenerateQR = findViewById(R.id.generate_QR_button);
+        // Set an OnClickListener
+        btnGenerateQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create a new QRCode object
+                QRCode qrCode = new QRCode();
+
+                // Start DisplayQRCodeActivity and pass the QR code bitmap
+                Intent intent = new Intent(MainActivity.this, DisplayQRCode.class);
+                intent.putExtra("qrCodeBitmap", qrCode.getBitmap());
+                startActivity(intent);
+            }
+        });
+
     }
 
 }
