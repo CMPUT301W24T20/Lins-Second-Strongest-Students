@@ -3,4 +3,10 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="UploadProfilePicText">Upload Profile Picture</string>
+    <string name="RemoveProfilePictureText">Remove Profile Picture</string>
+    <string name="LocationEnableText">Location Access</string>
+    <string name="BecomeOrganizerText">Become Organizer</string>
+    <string name="SaveProfileText">Save Changes</string>
+    <string name="CancelProfileChangeText">Cancel</string>
 </resources>

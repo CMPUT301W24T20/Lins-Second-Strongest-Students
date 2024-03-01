@@ -1,6 +1,10 @@
 package com.example.qrcodereader;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 import android.provider.Settings;
 
 import com.example.qrcodereader.entity.User;
@@ -35,8 +39,26 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+
+        // The following code is for the QR code generation
+        Button btnGenerateQR = findViewById(R.id.generate_QR_button);
+        // Set an OnClickListener
+        btnGenerateQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create a new QRCode object
+                QRCode qrCode = new QRCode();
+
+                // Start DisplayQRCodeActivity and pass the QR code bitmap
+                Intent intent = new Intent(MainActivity.this, DisplayQRCode.class);
+                intent.putExtra("qrCodeBitmap", qrCode.getBitmap());
+                startActivity(intent);
+            }
+        });
+      
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         User user = new User(deviceID, "Guohui Lin");
+
 
     }
 
