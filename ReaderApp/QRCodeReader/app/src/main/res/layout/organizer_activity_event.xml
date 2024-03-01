@@ -16,7 +16,7 @@
         android:textSize="30sp" />
 
     <ListView
-        android:id="@+id/event_list_attendee"
+        android:id="@+id/event_list_organizer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -41,7 +41,7 @@
             android:text="Create Event" />
 
         <Button
-            android:id="@+id/return_button"
+            android:id="@+id/return_button_organizer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

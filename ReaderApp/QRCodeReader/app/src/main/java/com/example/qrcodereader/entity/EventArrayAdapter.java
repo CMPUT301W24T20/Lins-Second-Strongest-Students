@@ -47,6 +47,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
 
         return view;
         }
-        
+
 }
 

@@ -1,5 +1,6 @@
 package com.example.qrcodereader;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,10 +9,12 @@ import android.widget.Toast;
 import android.provider.Settings;
 
 import com.example.qrcodereader.entity.User;
+import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -20,6 +23,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.qrcodereader.databinding.ActivityMainBinding;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
+import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,8 +66,36 @@ public class MainActivity extends AppCompatActivity {
         MyEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
-                startActivity(intent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                builder.setTitle("Choose an action");
+
+                // Button to go to AttendeeEventActivity
+                builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                // Button to go to OrganizerEventActivity
+                builder.setNegativeButton("Go to Your Event Page (Organizer)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                // Cancel button
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 

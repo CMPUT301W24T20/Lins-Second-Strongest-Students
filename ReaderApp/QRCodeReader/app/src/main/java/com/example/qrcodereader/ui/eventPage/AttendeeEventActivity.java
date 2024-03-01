@@ -2,8 +2,9 @@ package com.example.qrcodereader.ui.eventPage;
 import com.example.qrcodereader.R;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,9 +14,6 @@ import com.example.qrcodereader.entity.EventArrayAdapter;
 import java.util.ArrayList;
 
 public class AttendeeEventActivity extends AppCompatActivity {
-    ListView eventList;
-    ArrayList<Event> eventDataList;
-    EventArrayAdapter eventArrayAdapter;
 
 
 //    private FirebaseFirestore db;
@@ -35,12 +33,12 @@ public class AttendeeEventActivity extends AppCompatActivity {
 //        db = FirebaseFirestore.getInstance();
 //        eventsRef = db.collection("events");
 
-        eventList = findViewById(R.id.event_list_attendee);
-        eventDataList = new ArrayList<>();
+        ListView eventList = findViewById(R.id.event_list_attendee);
+        ArrayList<Event> eventDataList = new ArrayList<>();
 
 
 
-        eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
+        EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
 
@@ -67,7 +65,8 @@ public class AttendeeEventActivity extends AppCompatActivity {
 //        });
 //    }
 
-
+        Button returnButton = findViewById(R.id.return_button_attendee);
+        returnButton.setOnClickListener(v -> finish());
     }
 }
 
