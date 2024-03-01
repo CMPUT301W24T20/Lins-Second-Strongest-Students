@@ -1,100 +1,60 @@
 package com.example.qrcodereader;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
+import android.widget.Toast;
 
-import androidx.camera.core.AspectRatio;
-import androidx.camera.core.Camera;
-import androidx.camera.core.CameraProvider;
-import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.Preview;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.view.PreviewView;
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
-import com.example.qrcodereader.databinding.FragmentCameraBinding;
-import com.google.common.util.concurrent.ListenableFuture;
+public class CameraFragment extends Fragment implements View.OnClickListener {
 
-public class CameraFragment extends Fragment {
+    public CameraFragment() {
+        super(R.layout.fragment_camera);
+    }
 
-    //Used this link as a resource:
-    //youtube.com/watch?v=L482ZAno-fY
-    //Under GNU general public license
+    Button scanButton;
+    private View thisView;
 
-    private FragmentCameraBinding binding;
-    private ImageButton capture;
-    private PreviewView previewView;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                              ViewGroup container,
-                              Bundle savedInstanceState) {
-        binding = FragmentCameraBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-
-        previewView = getView().findViewById(R.id.camera_preview);
-        capture = getView().findViewById(R.id.camera_capture_button);
-
-        return view;
+    private void startScan() {
+        IntentIntegrator integrator = IntentIntegrator.forSupportFragment(CameraFragment.this);
+        integrator.setOrientationLocked(true);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setPrompt("Scan Code");
+        integrator.initiateScan();
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        startCamera();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-
-    private void startCamera() {
-        int aspectRatio = findAspectRatio(previewView.getWidth(), previewView.getHeight());
-        ListenableFuture listenableFuture = ProcessCameraProvider.getInstance(this.getContext());
-
-        listenableFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = (ProcessCameraProvider) listenableFuture.get();
-                Preview preview = new Preview.Builder().setTargetAspectRatio(aspectRatio).build();
-                ImageCapture imageCapture = new ImageCapture.Builder()
-                        .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY).build();
-                CameraSelector cameraSelector = new CameraSelector.Builder()
-                        .requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
-                cameraProvider.unbindAll();
-
-                Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
-
-                capture.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        takePhoto(imageCapture);
-                    }
-                });
-
-            } catch (Exception e) {
-                e.printStackTrace();
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(), "Scanned Code: " + result.getContents(), Toast.LENGTH_LONG).show();
             }
-        }, ContextCompat.getMainExecutor(this.getContext()));
-    }
-
-    private int findAspectRatio(int width, int height) {
-        double previewRatio = (double) Math.max(height, width) / Math.min(height,width);
-        if (Math.abs(previewRatio - 4.0 / 3.0) <= Math.abs(previewRatio - 16.0 / 9.0)) {
-            return AspectRatio.RATIO_4_3;
         }
-        return AspectRatio.RATIO_16_9;
     }
 
-    private void takePhoto(ImageCapture imageCapture) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        thisView = inflater.inflate(R.layout.fragment_camera, container, false);
+        scanButton = (Button) thisView.findViewById(R.id.scan_button);
+        scanButton.setOnClickListener(this);
+        return thisView;
+    }
 
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(getContext(), "Scanning...", Toast.LENGTH_LONG).show();
+        startScan();
     }
 
 }

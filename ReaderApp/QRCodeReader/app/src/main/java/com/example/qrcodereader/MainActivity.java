@@ -11,6 +11,7 @@ import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,6 +24,11 @@ import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
