@@ -1,7 +1,9 @@
 package com.example.qrcodereader.ui.eventPage;
 import com.example.qrcodereader.R;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -9,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
+import com.example.qrcodereader.ui.eventPage.CreateEventActivity;
+
 
 import java.util.ArrayList;
 
@@ -64,7 +68,14 @@ public class OrganizerEventActivity extends AppCompatActivity {
 //            }
 //        });
 //    }
+        Button createEventButton = findViewById(R.id.create_event_button);
+        createEventButton.setOnClickListener(v -> {
+            Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
+            startActivity(intent);
+        });
 
+        Button returnButton = findViewById(R.id.return_button);
+        returnButton.setOnClickListener(v -> finish());
 
     }
 }
