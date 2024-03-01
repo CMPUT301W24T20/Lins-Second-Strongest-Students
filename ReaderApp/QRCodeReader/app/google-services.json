@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "453163590125",
+    "project_id": "linssecondstrongeststudents",
+    "storage_bucket": "linssecondstrongeststudents.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453163590125:android:fd801d3da146679a9f07e4",
+        "android_client_info": {
+          "package_name": "com.example.qrcodereader"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG2rCD-GNhwoOYQxMlueKso8kiGCs0EeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
