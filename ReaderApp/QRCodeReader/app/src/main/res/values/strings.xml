@@ -9,4 +9,6 @@
     <string name="BecomeOrganizerText">Become Organizer</string>
     <string name="SaveProfileText">Save Changes</string>
     <string name="CancelProfileChangeText">Cancel</string>
+    <string name="profile">Profile</string>
+    <string name="my_events">My Events</string>
 </resources>

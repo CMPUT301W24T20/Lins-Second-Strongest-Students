@@ -15,6 +15,10 @@
         android:theme="@style/Theme.QRCodeReader"
         tools:targetApi="31">
         <activity
+            android:name=".ui.eventPage.CreateEventActivity"
+            android:exported="false" />
+        <activity android:name=".ui.eventPage.OrganizerEventActivity"></activity>
+        <activity
             android:name=".DisplayQRCode"
             android:exported="false" />
         <activity
