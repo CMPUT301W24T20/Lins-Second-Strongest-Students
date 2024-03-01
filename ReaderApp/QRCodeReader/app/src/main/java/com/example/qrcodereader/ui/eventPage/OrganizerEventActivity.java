@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,7 +36,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
 //        db = FirebaseFirestore.getInstance();
 //        eventsRef = db.collection("events");
 
-        ListView eventList = findViewById(R.id.event_list_attendee);
+        ListView eventList = findViewById(R.id.event_list_organizer);
         ArrayList<Event> eventDataList = new ArrayList<>();
 
 
@@ -74,7 +74,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        Button returnButton = findViewById(R.id.return_button);
+        Button returnButton = findViewById(R.id.return_button_organizer);
         returnButton.setOnClickListener(v -> finish());
 
     }

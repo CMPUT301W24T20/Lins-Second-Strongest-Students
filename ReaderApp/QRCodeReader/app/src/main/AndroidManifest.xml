@@ -19,7 +19,8 @@
         <activity
             android:name=".ui.eventPage.CreateEventActivity"
             android:exported="false" />
-        <activity android:name=".ui.eventPage.OrganizerEventActivity"></activity>
+        <activity android:name=".ui.eventPage.OrganizerEventActivity"/>
+        <activity android:name=".ui.eventPage.AttendeeEventActivity"/>
         <activity
             android:name=".DisplayQRCode"
             android:exported="false" />
