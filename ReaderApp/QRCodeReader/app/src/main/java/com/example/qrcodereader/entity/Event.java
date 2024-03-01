@@ -7,7 +7,7 @@ public class Event {
     private int eventID;
     private String location;
     private String organizer;
-
+    private String name;
     public Event(LocalDateTime eventTime, int id, String eventLocation, String organizer) {
         this.time = eventTime;
         this.eventID = id;
@@ -30,6 +30,10 @@ public class Event {
         return time;
     }
 
+    public String getEventName() {
+        return name;
+    }
+
     public void setEventID(int eventID) {
         this.eventID = eventID;
     }
@@ -44,5 +48,9 @@ public class Event {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
+    }
+
+    public void setEventName(String name) {
+        this.name = name;
     }
 }

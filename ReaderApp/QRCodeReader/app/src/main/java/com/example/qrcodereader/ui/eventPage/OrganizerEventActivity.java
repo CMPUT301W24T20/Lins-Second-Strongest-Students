@@ -12,10 +12,7 @@ import com.example.qrcodereader.entity.EventArrayAdapter;
 
 import java.util.ArrayList;
 
-public class AttendeeEventActivity extends AppCompatActivity {
-    ListView eventList;
-    ArrayList<Event> eventDataList;
-    EventArrayAdapter eventArrayAdapter;
+public class OrganizerEventActivity extends AppCompatActivity {
 
 
 //    private FirebaseFirestore db;
@@ -30,17 +27,18 @@ public class AttendeeEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.attendee_activity_event);
+        setContentView(R.layout.organizer_activity_event);
 
 //        db = FirebaseFirestore.getInstance();
 //        eventsRef = db.collection("events");
 
-        eventList = findViewById(R.id.event_list_attendee);
-        eventDataList = new ArrayList<>();
+        ListView eventList = findViewById(R.id.event_list_attendee);
+        ArrayList<Event> eventDataList = new ArrayList<>();
 
 
 
-        eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
+
+        EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
 
