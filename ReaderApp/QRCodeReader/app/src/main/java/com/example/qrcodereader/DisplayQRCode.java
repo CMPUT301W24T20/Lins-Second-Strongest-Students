@@ -11,6 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+
 public class DisplayQRCode extends AppCompatActivity {
 
     @Override
