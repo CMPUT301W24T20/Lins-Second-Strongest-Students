@@ -1,17 +1,19 @@
 package com.example.qrcodereader.entity;
 
-import java.time.LocalDateTime;
+import com.google.firebase.Timestamp;
 
 public class Event {
-    private LocalDateTime time;
+    private Timestamp time;
     private int eventID;
     private String location;
     private String organizer;
     private String name;
-    public Event(LocalDateTime eventTime, int id, String eventLocation, String organizer) {
+    public Event(int id, String name, String organizer, String eventLocation, Timestamp eventTime) {
         this.time = eventTime;
         this.eventID = id;
         this.location = eventLocation;
+        this.name = name;
+        this.organizer = organizer;
     }
 
     public int getEventID() {
@@ -26,7 +28,7 @@ public class Event {
         return organizer;
     }
 
-    public LocalDateTime getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
@@ -46,7 +48,7 @@ public class Event {
         this.organizer = organizer;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 
