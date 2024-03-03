@@ -37,7 +37,9 @@ android {
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation("com.firebase:firebase-client-android:2.5.2")
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore")
     implementation("androidx.activity:activity:1.8.2")
     implementation("androidx.camera:camera-core:1.3.1")
     implementation("androidx.camera:camera-extensions:1.3.1")

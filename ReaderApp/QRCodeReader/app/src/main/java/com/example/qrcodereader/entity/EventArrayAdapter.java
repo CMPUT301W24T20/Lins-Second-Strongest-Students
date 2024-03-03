@@ -32,7 +32,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         View view = convertView;
 
         if(view == null){
-        view = LayoutInflater.from(context).inflate(R.layout.events_content, parent,false);
+            view = LayoutInflater.from(context).inflate(R.layout.events_content, parent,false);
         }
 
         Event event = events.get(position);
@@ -46,7 +46,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         locationName.setText(event.getLocation());
 
         return view;
-        }
+    }
 
 }
 

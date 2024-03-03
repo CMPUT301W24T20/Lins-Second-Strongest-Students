@@ -2,6 +2,7 @@ package com.example.qrcodereader.entity;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import com.google.firebase.Timestamp;
 
 public class User {
     private String userID;
@@ -20,8 +21,8 @@ public class User {
         this.name = name;
     }
 
-    public void createEvent() {
-        Event event = new Event(LocalDateTime.now(), 5, "Edmonton", userID);
+    public void createEvent(int id, String name, String location, Timestamp time) {
+        Event event = new Event(id, name, userID, location, time);
     }
 
 
