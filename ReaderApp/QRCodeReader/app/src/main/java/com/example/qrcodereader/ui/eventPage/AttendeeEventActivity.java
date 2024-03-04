@@ -72,8 +72,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
                         Timestamp time = doc.getTimestamp("time");
 
                         Log.d("Firestore", "Event fetched");
-                        eventDataList.add(new Event(eventID, name, organizer, location, time));
-                        eventArrayAdapter.notifyDataSetChanged();
+                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
                     }
 
                 }
