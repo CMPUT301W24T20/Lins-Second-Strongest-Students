@@ -104,8 +104,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-      
         //String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         //User user = new User(deviceID, "Guohui Lin");
 

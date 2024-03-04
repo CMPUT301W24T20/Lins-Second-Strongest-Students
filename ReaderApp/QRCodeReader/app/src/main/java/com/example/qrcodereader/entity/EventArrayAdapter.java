@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.example.qrcodereader.R;
+import com.google.firebase.Timestamp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,5 +49,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         return view;
     }
 
+    public void addEvent(int eventID, String name, String organizer, String location, Timestamp time) {
+        events.add(new Event(eventID, name, organizer, location, time));
+        notifyDataSetChanged();
+    }
 }
 

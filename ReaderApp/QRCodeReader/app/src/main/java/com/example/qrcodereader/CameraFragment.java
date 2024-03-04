@@ -15,6 +15,10 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class CameraFragment extends Fragment implements View.OnClickListener {
+    /*
+    CameraFragment
+    Contains code for a fragment implementing a QR code scanner
+     */
 
     public CameraFragment() {
         super(R.layout.fragment_camera);
@@ -23,6 +27,10 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     Button scanButton;
     private View thisView;
 
+    /*
+     * startScan
+     * Opens QR code reader
+     */
     private void startScan() {
         IntentIntegrator integrator = IntentIntegrator.forSupportFragment(CameraFragment.this);
         integrator.setOrientationLocked(true);
@@ -45,6 +53,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //Set up fragment
         thisView = inflater.inflate(R.layout.fragment_camera, container, false);
         scanButton = (Button) thisView.findViewById(R.id.scan_button);
         scanButton.setOnClickListener(this);
