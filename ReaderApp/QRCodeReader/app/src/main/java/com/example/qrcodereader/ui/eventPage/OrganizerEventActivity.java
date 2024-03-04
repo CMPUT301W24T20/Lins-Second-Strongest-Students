@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OrganizerEventActivity extends AppCompatActivity {
 
@@ -121,7 +122,13 @@ public class OrganizerEventActivity extends AppCompatActivity {
                         Log.d("OrganizerEventActivity", "Event Created: " + eventName);
 
                         // Add the new event to the database
-                        Event event = new Event(586865, eventName, "G", eventLocation, Timestamp.now());
+                        HashMap<String, Object> event = new HashMap<>();
+                        event.put("eventID", 586865);
+                        event.put("name", eventName);
+                        event.put("organizer", "G");
+                        event.put("location", eventLocation);
+                        event.put("time", Timestamp.now());
+
                         eventsRef.add(event);
                         Toast.makeText(this, "Event Created: " + eventName, Toast.LENGTH_SHORT).show();
                     }
