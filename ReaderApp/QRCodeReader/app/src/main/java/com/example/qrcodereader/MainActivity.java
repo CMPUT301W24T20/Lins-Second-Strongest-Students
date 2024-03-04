@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        User user = new User(deviceID, "Guohui Lin");
+
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -82,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
                 builder.setNegativeButton("Go to Your Event Page (Organizer)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
+                        intent.putExtra("userID", user.getUserID());
+                        intent.putExtra("userName", user.getName());
                         startActivity(intent);
                     }
                 });
@@ -101,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
 
 
       
-        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        User user = new User(deviceID, "Guohui Lin");
+        //String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        //User user = new User(deviceID, "Guohui Lin");
 
 
     }

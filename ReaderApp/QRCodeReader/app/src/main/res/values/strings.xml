@@ -11,4 +11,5 @@
     <string name="CancelProfileChangeText">Cancel</string>
     <string name="profile">Profile</string>
     <string name="my_events">My Events</string>
+    <string name="enter_the_number_of_attendees">Enter the number of attendees</string>
 </resources>

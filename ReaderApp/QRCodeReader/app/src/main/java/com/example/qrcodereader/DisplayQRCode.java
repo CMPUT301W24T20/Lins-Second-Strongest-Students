@@ -25,7 +25,7 @@ public class DisplayQRCode extends AppCompatActivity {
         Button backButton = findViewById(R.id.backButton);
 
         // Get the QR code bitmap from the intent
-        Bitmap qrCodeBitmap = getIntent().getParcelableExtra("qrCodeBitmap");
+        Bitmap qrCodeBitmap = getIntent().getParcelableExtra("qrCode");
 
         // Set the QR code bitmap to the ImageView
         qrCodeImageView.setImageBitmap(qrCodeBitmap);
