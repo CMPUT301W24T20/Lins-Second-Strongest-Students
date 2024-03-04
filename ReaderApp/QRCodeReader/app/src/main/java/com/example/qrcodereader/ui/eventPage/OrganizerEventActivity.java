@@ -1,13 +1,17 @@
 package com.example.qrcodereader.ui.eventPage;
 import com.example.qrcodereader.R;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,6 +34,12 @@ public class OrganizerEventActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
+    private String userid;
+    private String username;
+    private ListView eventList;
+    private EventArrayAdapter eventArrayAdapter;
+    ArrayList<Event> eventDataList;
+
 
 //    private void addNewEvent(Event event) {
 //        HashMap<String, String> data = new HashMap<>();
@@ -45,13 +55,14 @@ public class OrganizerEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
 
-        ListView eventList = findViewById(R.id.event_list_organizer);
-        ArrayList<Event> eventDataList = new ArrayList<>();
+        eventList = findViewById(R.id.event_list_organizer);
+        eventDataList = new ArrayList<>();
 
 
+        userid = getIntent().getStringExtra("userid");
+        username = getIntent().getStringExtra("username");
 
-
-        EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
+        eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
 
@@ -84,12 +95,37 @@ public class OrganizerEventActivity extends AppCompatActivity {
         Button createEventButton = findViewById(R.id.create_event_button);
         createEventButton.setOnClickListener(v -> {
             Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
-            startActivity(intent);
+            intent.putExtra("userid", userid);
+            intent.putExtra("username", username);
+            createEventLauncher.launch(intent);
         });
 
         Button returnButton = findViewById(R.id.return_button_organizer);
         returnButton.setOnClickListener(v -> finish());
 
+
     }
+
+    ActivityResultLauncher<Intent> createEventLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        // Extract the event details from the Intent
+                        String eventName = data.getStringExtra("eventName");
+                        String eventLocation = data.getStringExtra("eventLocation");
+                        String attendeeLimit = data.getStringExtra("attendeeLimit");
+
+                        // Create a new Event object
+                        Log.d("OrganizerEventActivity", "Event Created: " + eventName);
+
+                        // Add the new event to the database
+                        Event event = new Event(586865, eventName, "G", eventLocation, Timestamp.now());
+                        eventsRef.add(event);
+                        Toast.makeText(this, "Event Created: " + eventName, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 }
 

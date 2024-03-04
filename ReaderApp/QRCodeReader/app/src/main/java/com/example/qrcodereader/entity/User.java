@@ -25,5 +25,7 @@ public class User {
         Event event = new Event(id, name, userID, location, time);
     }
 
+    public String getUserID() {return userID;}
+    public String getName() {return name;}
 
 }
