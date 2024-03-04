@@ -19,6 +19,12 @@ public class CreateEventActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_create_event);
 
+        Button generate_button = findViewById(R.id.generate_event_qr_button);
+
+        generate_button.setOnClickListener(v -> {
+
+        });
+
 
         Button cancel_button = findViewById(R.id.cancel_button);
         cancel_button.setOnClickListener(v -> finish());

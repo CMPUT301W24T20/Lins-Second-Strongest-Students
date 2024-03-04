@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.entity;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

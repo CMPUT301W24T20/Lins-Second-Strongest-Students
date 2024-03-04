@@ -8,6 +8,7 @@ public class Event {
     private String location;
     private String organizer;
     private String name;
+    private String QRCode;
     public Event(int id, String name, String organizer, String eventLocation, Timestamp eventTime) {
         this.time = eventTime;
         this.eventID = id;
