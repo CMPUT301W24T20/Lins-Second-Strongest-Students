@@ -1,16 +1,22 @@
 package com.example.qrcodereader.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Map;
+
 import com.google.firebase.Timestamp;
 
-public class User {
+public class User implements Serializable {
     private String userID;
     private String name;
+    private ArrayList<Map<String, Integer>> events;
 
     public User(String deviceID, String userName) {
         this.userID = deviceID;
         this.name = userName;
+        this.events = new ArrayList<Map<String, Integer>>();
     }
 
     public void setUserID(String userID) {
@@ -21,7 +27,7 @@ public class User {
         this.name = name;
     }
 
-    public void createEvent(int id, String name, String location, Timestamp time) {
+    public void createEvent(String id, String name, String location, Timestamp time) {
         Event event = new Event(id, name, userID, location, time);
     }
 
