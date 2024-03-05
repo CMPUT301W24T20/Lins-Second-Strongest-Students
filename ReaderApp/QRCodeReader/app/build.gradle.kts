@@ -41,6 +41,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
     implementation("androidx.activity:activity:1.8.2")
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
+    val camerax_version = "1.3.1"
     implementation("androidx.camera:camera-core:1.3.1")
     implementation("androidx.camera:camera-extensions:1.3.1")
     implementation("androidx.camera:camera-lifecycle:1.3.1")
