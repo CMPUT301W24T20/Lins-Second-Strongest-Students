@@ -2,33 +2,40 @@ package com.example.qrcodereader.entity;
 
 import com.google.firebase.Timestamp;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Event {
     private Timestamp time;
-    private int eventID;
+    private String eventID;
     private String location;
     private String organizer;
     private String name;
     private QRCode qrCode;
+    private ArrayList<Map<String, Integer>> attendees;
 
-    public Event(int id, String name, String organizer, String eventLocation, Timestamp eventTime) {
+    public Event(String id, String name, String organizer, String eventLocation, Timestamp eventTime) {
         this.time = eventTime;
         this.eventID = id;
         this.location = eventLocation;
         this.name = name;
         this.organizer = organizer;
         this.qrCode = new QRCode();
+        this.attendees =  new ArrayList<Map<String, Integer>>();
     }
 
-    public Event(int id, String name, String organizer, String eventLocation, Timestamp eventTime, QRCode qrCode) {
+    public Event(String id, String name, String organizer, String eventLocation, Timestamp eventTime, QRCode qrCode) {
         this.time = eventTime;
         this.eventID = id;
         this.location = eventLocation;
         this.name = name;
         this.organizer = organizer;
         this.qrCode = qrCode;
+        this.attendees =  new ArrayList<Map<String, Integer>>();
     }
 
-    public int getEventID() {
+    public String getEventID() {
         return eventID;
     }
 
@@ -48,7 +55,7 @@ public class Event {
         return name;
     }
 
-    public void setEventID(int eventID) {
+    public void setEventID(String eventID) {
         this.eventID = eventID;
     }
 
