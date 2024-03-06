@@ -1,6 +1,7 @@
 package com.example.qrcodereader.entity;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,13 +10,13 @@ import java.util.Map;
 public class Event {
     private Timestamp time;
     private String eventID;
-    private String location;
+    private GeoPoint location;
     private String organizer;
     private String name;
     private QRCode qrCode;
     private Map<String, Long> attendees;
 
-    public Event(String id, String name, String organizer, String eventLocation, Timestamp eventTime) {
+    public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime) {
         this.time = eventTime;
         this.eventID = id;
         this.location = eventLocation;
@@ -25,7 +26,7 @@ public class Event {
         this.attendees =  new HashMap<String, Long>();
     }
 
-    public Event(String id, String name, String organizer, String eventLocation, Timestamp eventTime, QRCode qrCode) {
+    public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime, QRCode qrCode) {
         this.time = eventTime;
         this.eventID = id;
         this.location = eventLocation;
@@ -39,7 +40,7 @@ public class Event {
         return eventID;
     }
 
-    public String getLocation() {
+    public GeoPoint getLocation() {
         return location;
     }
 
@@ -59,7 +60,7 @@ public class Event {
         this.eventID = eventID;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(GeoPoint location) {
         this.location = location;
     }
 

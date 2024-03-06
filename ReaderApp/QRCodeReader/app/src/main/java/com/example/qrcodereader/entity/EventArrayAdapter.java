@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.example.qrcodereader.R;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,12 +45,16 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
 
         eventName.setText(event.getEventName());
         organizerName.setText(event.getOrganizer());
-        locationName.setText(event.getLocation());
+
+        GeoPoint geoPoint = event.getLocation();
+        // Handle no location object
+        String locationString = (geoPoint != null) ? geoPoint.toString() : "No location";
+        locationName.setText(locationString);
 
         return view;
     }
 
-    public void addEvent(String eventID, String name, String organizer, String location, Timestamp time) {
+    public void addEvent(String eventID, String name, String organizer, GeoPoint location, Timestamp time) {
         events.add(new Event(eventID, name, organizer, location, time));
         notifyDataSetChanged();
     }

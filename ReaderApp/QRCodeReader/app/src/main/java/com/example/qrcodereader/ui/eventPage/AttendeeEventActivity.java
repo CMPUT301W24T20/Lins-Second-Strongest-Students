@@ -22,6 +22,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -125,10 +126,11 @@ public class AttendeeEventActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot doc: querySnapshots) {
 //                        Event event = doc.toObject(Event.class);
                         String eventID = doc.getId();
+
                         /*if (attendeeEvents.contains(eventID))*/ // Heres the trying to compare
                             String name = doc.getString("name");
                             String organizer = doc.getString("organizer");
-                            String location = doc.getString("location");
+                            GeoPoint location = doc.getGeoPoint("location");
                             Timestamp time = doc.getTimestamp("time");
                             Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 

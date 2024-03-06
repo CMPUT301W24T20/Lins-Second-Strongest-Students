@@ -29,6 +29,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -97,7 +98,7 @@ public class BrowseEventActivity extends AppCompatActivity {
                         String eventID = doc.getId();
                         String name = doc.getString("name");
                         String organizer = doc.getString("organizer");
-                        String location = doc.getString("location");
+                        GeoPoint location = doc.getGeoPoint("location");
                         Timestamp time = doc.getTimestamp("time");
 //                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
