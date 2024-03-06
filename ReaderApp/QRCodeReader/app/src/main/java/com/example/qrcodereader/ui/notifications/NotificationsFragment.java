@@ -20,8 +20,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.qrcodereader.MainActivity;
+import com.example.qrcodereader.MyFirebaseMessagingService;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.databinding.FragmentNotificationsBinding;
 
@@ -50,37 +52,29 @@ public class NotificationsFragment extends Fragment {
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, listItems);
         listView.setAdapter(adapter);
 
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // See MyFirebaseMessagingService for broadcast
+                //TO-DO:
+                Log.d("Attempting to recieve...", "onReceive");
+                if (MyFirebaseMessagingService.ACTION_BROADCAST.equals(intent.getAction())) {
+                    String notificationData = intent.getStringExtra("body"); //key of intent
+                    Log.d("Received", notificationData);
+                    addNotification(notificationData);
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver,
+                new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST));
+
         return root;
     }
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // See MyFirebaseMessagingService for broadcast
-            //TO-DO:
-            String notificationData = intent.getStringExtra("body"); //key of intent
-            Log.d("Received", notificationData);
-            listItems.add((notificationData));
-            adapter.notifyDataSetChanged();
-        }
-    };
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("BROADCAST_NOTIFICATION");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                getActivity().registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED);
-            }
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getActivity().unregisterReceiver(receiver);
+    public void addNotification(String body) {
+        listItems.add(body);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

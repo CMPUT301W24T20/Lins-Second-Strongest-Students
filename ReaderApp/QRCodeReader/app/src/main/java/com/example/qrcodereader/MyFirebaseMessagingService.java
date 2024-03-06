@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -23,6 +24,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     Handles notifications from Firebase
      */
+
+    public static final String ACTION_BROADCAST = MyFirebaseMessagingService.class.getName() + "Broadcast";
+
 
 
     @Override
@@ -76,10 +80,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //TO-DO:
         //Create class to represent notifs
         //Send the class data instead of these placeholders
-        Intent intent = new Intent("BROADCAST_NOTIFICATION");
+        Intent intent = new Intent(ACTION_BROADCAST);
         intent.putExtra("body", messageBody);
         Log.d("Sending...", messageBody);
-        MyFirebaseMessagingService.this.sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+
     }
 
 }
