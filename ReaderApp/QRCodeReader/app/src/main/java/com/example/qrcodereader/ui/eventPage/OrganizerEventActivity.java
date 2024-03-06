@@ -23,6 +23,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -82,7 +83,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
                         String eventID = doc.getId();
                         String name = doc.getString("name");
                         String organizer = doc.getString("organizer");
-                        String location = doc.getString("location");
+                        GeoPoint location = doc.getGeoPoint("location");
                         Timestamp time = doc.getTimestamp("time");
 
                         Log.d("Firestore", "Event fetched");
@@ -97,7 +98,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
             Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
             intent.putExtra("userid", userid);
             intent.putExtra("username", username);
-            createEventLauncher.launch(intent);
+            startActivity(intent);
         });
 
         Button returnButton = findViewById(R.id.return_button_organizer);

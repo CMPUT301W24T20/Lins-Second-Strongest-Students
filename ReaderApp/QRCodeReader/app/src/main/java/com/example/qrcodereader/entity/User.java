@@ -1,5 +1,7 @@
 package com.example.qrcodereader.entity;
 
+import android.location.Location;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -8,16 +10,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
 
 public class User implements Serializable {
     private String userID;
     private String name;
     private Map<String, Integer> events;
 
-    public User(String deviceID, String userName) {
+    private Location location;
+
+    public User(String deviceID, String userName, Location location) {
         this.userID = deviceID;
         this.name = userName;
         this.events = new HashMap<String, Integer>();
+        this.location = location;
     }
 
     public void setUserID(String userID) {
@@ -28,8 +34,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public void createEvent(String id, String name, String location, Timestamp time) {
-        Event event = new Event(id, name, userID, location, time);
+    public void setLocation(Location location) {this.location = location;}
+    public Location getLocation(){
+        return this.location;
+    }
+    public void createEvent(String id, String name, GeoPoint location, Timestamp time) {
     }
 
     public String getUserID() {return userID;}
