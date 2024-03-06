@@ -43,6 +43,7 @@ import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events1");
+        eventsRef = db.collection("events");
 
-        docRefUser = db.collection("users1").document(deviceID);
+        docRefUser = db.collection("users").document(deviceID);
         docRefUser.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().exists()) {
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     Map<String, Object> newUser = new HashMap<>();
                     newUser.put("name", "John Doe");
                     newUser.put("eventsAttended", new HashMap<>());
+                    newUser.put("location", new GeoPoint(0,0));
                     docRefUser.set(newUser);
                     Toast.makeText(this, "Made new account", Toast.LENGTH_LONG).show();
                 }
@@ -99,20 +101,22 @@ public class MainActivity extends AppCompatActivity {
             if (documentSnapshot.exists()) {
                 String userName = documentSnapshot.getString("name");
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
-                user = new User(deviceID, userName, eventsAttended);
+                GeoPoint location = documentSnapshot.getGeoPoint("location");
+                user = new User(deviceID, userName, location, eventsAttended);
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
+                Log.d("Firestore", "Successfully fetch document: ");
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
 
 
-        Location Linlocation = new Location("provider");
-        Linlocation.setLatitude(61.0137);
-        Linlocation.setLongitude(99.1967);
-        User user = new User(deviceID, "Guohui Lin", Linlocation);
-        Intent intent = new Intent(this, BrowseEventActivity.class);
-        intent.putExtra("user", user);
+//        Location Linlocation = new Location("provider");
+//        Linlocation.setLatitude(61.0137);
+//        Linlocation.setLongitude(99.1967);
+//        User user = new User(deviceID, "Guohui Lin", Linlocation);
+//        Intent intent = new Intent(this, BrowseEventActivity.class);
+//        intent.putExtra("user", user);
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -132,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("UserName", user.getName());
-                bundle.putBoolean("LocationAccess", user.getAccess());
                 ProfileFragment listfrag = new ProfileFragment();
                 listfrag.setArguments(bundle);
                 listfrag.show(getSupportFragmentManager(), "Profile Page");
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
-                        intent.putExtra("user", user);
+                        intent.putExtra("userID", user.getUserID());
                         startActivity(intent);
                     }
                 });
@@ -181,18 +184,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-            return;
-        }
-        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    user.setLocation(location);
-                }
-            }
-        });
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+//            return;
+//        }
+//        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
+//            @Override
+//            public void onSuccess(GeoPoint location) {
+//                if (location != null) {
+//                    user.setLocation(location);
+//                }
+//            }
+//        });
     }
 }

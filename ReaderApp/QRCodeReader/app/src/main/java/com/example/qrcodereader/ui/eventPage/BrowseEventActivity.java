@@ -46,7 +46,6 @@ public class BrowseEventActivity extends AppCompatActivity {
     private DocumentReference docRefUser;
     private DocumentReference docRefEvent;
     private Event selectedEvent = null;
-    private User user = null;
 
 //    private void addNewEvent(Event event) {
 //        HashMap<String, String> data = new HashMap<>(); // Add the other attributes in the right order to the HashMap
@@ -61,18 +60,12 @@ public class BrowseEventActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        user = (User) getIntent().getSerializableExtra("user");
+        String userid = getIntent().getStringExtra("userID");
 
-
-        if (user == null) {
-            Toast.makeText(this, "User data is required", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
 
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events1");
-        docRefUser = db.collection("users1").document(user.getUserID());
+        eventsRef = db.collection("events");
+        docRefUser = db.collection("users").document(userid);
 
 
         ListView eventList = findViewById(R.id.event_list_browse);
@@ -126,7 +119,7 @@ public class BrowseEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, Object> newEvent = new HashMap<>();
-                newEvent.put("eventAttended." + selectedEvent.getEventID(), 0);
+                newEvent.put("eventsAttended." + selectedEvent.getEventID(), 0);
                 docRefUser.update(newEvent)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -143,9 +136,9 @@ public class BrowseEventActivity extends AppCompatActivity {
                             }
                         });
 
-                docRefEvent = db.collection("events1").document(selectedEvent.getEventID());
+                docRefEvent = db.collection("events").document(selectedEvent.getEventID());
                 Map<String, Object> newAttendee = new HashMap<>();
-                newAttendee.put("attendees." + user.getUserID(), 0);
+                newAttendee.put("attendees." + userid, 0);
                 docRefEvent.update(newAttendee)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

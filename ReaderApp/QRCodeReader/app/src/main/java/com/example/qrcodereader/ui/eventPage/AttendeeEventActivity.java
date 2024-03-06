@@ -54,8 +54,8 @@ public class AttendeeEventActivity extends AppCompatActivity {
         setContentView(R.layout.attendee_activity_event);
 
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events1");
-        usersRef = db.collection("users1");
+        eventsRef = db.collection("events");
+        usersRef = db.collection("users");
 
 
         ListView eventList = findViewById(R.id.event_list_attendee);
@@ -64,8 +64,8 @@ public class AttendeeEventActivity extends AppCompatActivity {
         eventList.setAdapter(eventArrayAdapter);
 
         // Getting user through MainActivity. This is the user who is using the app
-        User user = (User) getIntent().getSerializableExtra("user");
-        userDocRef = db.collection("users").document(user.getUserID());
+        String userid = getIntent().getStringExtra("userID");
+        userDocRef = db.collection("users").document(userid);
 
         // I was attempting to get the map of eventsAttended in the user document and turn it into a list in the comment below
         // Then compare it with each event in events1 down in the SnapshotListener below
@@ -152,7 +152,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(AttendeeEventActivity.this, BrowseEventActivity.class);
                 // Sending the user object to BrowseEventActivity
-                intent.putExtra("user", user);
+                intent.putExtra("userID", userid);
                 startActivity(intent);
             }
         });
