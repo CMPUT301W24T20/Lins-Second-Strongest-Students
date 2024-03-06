@@ -50,5 +50,6 @@ public class User implements Serializable {
 
     public String getUserID() {return userID;}
     public String getName() {return name;}
+    public Boolean getAccess() {return access;}
 
 }
