@@ -56,11 +56,10 @@ public class OrganizerEventActivity extends AppCompatActivity {
         setContentView(R.layout.organizer_activity_event);
 
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events1");
+        eventsRef = db.collection("events");
 
         eventList = findViewById(R.id.event_list_organizer);
         eventDataList = new ArrayList<>();
-
 
         userid = getIntent().getStringExtra("userid");
         username = getIntent().getStringExtra("username");
@@ -86,15 +85,16 @@ public class OrganizerEventActivity extends AppCompatActivity {
                         String organizer = doc.getString("organizer");
                         GeoPoint location = doc.getGeoPoint("location");
                         Timestamp time = doc.getTimestamp("time");
-                        //Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
+                        /*
                         if (doc.exists() && doc.contains("attendees") && doc.get("attendees") != null) {
                             Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
                         } else {
 
                             Log.d("TAG", "'attendees' field is missing or null.");
-                        }
+                        }*/
 
                         Log.d("Firestore", "Event fetched");
                         eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
