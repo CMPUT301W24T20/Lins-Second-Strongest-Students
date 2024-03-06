@@ -12,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +33,7 @@ import com.example.qrcodereader.R;
 public class ProfileFragment extends DialogFragment {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;
-    private Switch locationSwitch;
+
     private ImageView Picture;
 
     @Override
@@ -44,25 +46,10 @@ public class ProfileFragment extends DialogFragment {
         Button Upload = view.findViewById(R.id.UploadProfileButton);
         Button Remove = view.findViewById(R.id.RemoveProfilePicButton);
         Picture = view.findViewById(R.id.ProfilePic);
-        locationSwitch = view.findViewById(R.id.LocationSwitch);
 
-        // move switch
-        locationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) { // User wants to enable location access
-                    // Request permission if not granted already
-                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
-                    }
-                } else { // User wants to disable location access
-                    PackageManager packageManager = getActivity().getPackageManager();
-                    packageManager.setComponentEnabledSetting(new ComponentName(getActivity(), MainActivity.class),
-                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        Bundle bundle = getArguments();
 
-                }
-            }
-        });
+        ETname.setText(bundle.getString("UserName"));
 
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +85,7 @@ public class ProfileFragment extends DialogFragment {
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 Picture.setImageURI(selectedImageUri); // Set the image directly from URI
+                // maybe also associate it in DB
             }
         }
     }

@@ -23,12 +23,14 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class OrganizerEventActivity extends AppCompatActivity {
 
@@ -59,7 +61,6 @@ public class OrganizerEventActivity extends AppCompatActivity {
         eventList = findViewById(R.id.event_list_organizer);
         eventDataList = new ArrayList<>();
 
-
         userid = getIntent().getStringExtra("userid");
         username = getIntent().getStringExtra("username");
 
@@ -82,8 +83,18 @@ public class OrganizerEventActivity extends AppCompatActivity {
                         String eventID = doc.getId();
                         String name = doc.getString("name");
                         String organizer = doc.getString("organizer");
-                        String location = doc.getString("location");
+                        GeoPoint location = doc.getGeoPoint("location");
                         Timestamp time = doc.getTimestamp("time");
+                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+
+                        /*
+                        if (doc.exists() && doc.contains("attendees") && doc.get("attendees") != null) {
+                            Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+
+                        } else {
+
+                            Log.d("TAG", "'attendees' field is missing or null.");
+                        }*/
 
                         Log.d("Firestore", "Event fetched");
                         eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
@@ -97,7 +108,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
             Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
             intent.putExtra("userid", userid);
             intent.putExtra("username", username);
-            createEventLauncher.launch(intent);
+            startActivity(intent);
         });
 
         Button returnButton = findViewById(R.id.return_button_organizer);
