@@ -38,7 +38,7 @@ public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
     private ArrayAdapter<String> adapter;
-    private ArrayList<String> listItems = new ArrayList<>();
+    ArrayList<String> listItems;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,32 +49,11 @@ public class NotificationsFragment extends Fragment {
         View root = binding.getRoot();
 
         ListView listView = root.findViewById(R.id.notification_list);
+        listItems = MainActivity.notificationList;
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, listItems);
         listView.setAdapter(adapter);
 
-        BroadcastReceiver receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                // See MyFirebaseMessagingService for broadcast
-                //TO-DO:
-                Log.d("Attempting to recieve...", "onReceive");
-                if (MyFirebaseMessagingService.ACTION_BROADCAST.equals(intent.getAction())) {
-                    String notificationData = intent.getStringExtra("body"); //key of intent
-                    Log.d("Received", notificationData);
-                    addNotification(notificationData);
-                }
-            }
-        };
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver,
-                new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST));
-
         return root;
-    }
-
-    public void addNotification(String body) {
-        listItems.add(body);
-        adapter.notifyDataSetChanged();
     }
 
     @Override

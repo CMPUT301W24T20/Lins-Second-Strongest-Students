@@ -2,8 +2,11 @@ package com.example.qrcodereader;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -33,9 +37,12 @@ import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    public static ArrayList<String> notificationList = new ArrayList<>();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -64,56 +71,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-
-        // I'm working on this part - Duy
-        Button profile_button = findViewById(R.id.profile_button);
-        profile_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button MyEventButton = findViewById(R.id.my_event_button);
-        MyEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
-                builder.setTitle("Choose an action");
-
-                // Button to go to AttendeeEventActivity
-                builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                // Button to go to OrganizerEventActivity
-                builder.setNegativeButton("Go to Your Event Page (Organizer)", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
-                        intent.putExtra("userID", user.getUserID());
-                        intent.putExtra("userName", user.getName());
-                        startActivity(intent);
-                    }
-                });
-
-                // Cancel button
-                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-
         //Firebase Cloud Messaging Token
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -141,6 +98,24 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(notificationChannel);
         }
+
+        //Broadcast Receiver to store notifications
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // See MyFirebaseMessagingService for broadcast
+                //TO-DO:
+                Log.d("Attempting to recieve...", "onReceive");
+                if (MyFirebaseMessagingService.ACTION_BROADCAST.equals(intent.getAction())) {
+                    String notificationData = intent.getStringExtra("body"); //key of intent
+                    Log.d("Received", notificationData);
+                    notificationList.add(notificationData);
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver,
+                new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST));
 
     }
 }
