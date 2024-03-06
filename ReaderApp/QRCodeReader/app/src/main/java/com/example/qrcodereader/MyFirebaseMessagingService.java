@@ -24,9 +24,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     Handles notifications from Firebase
      */
 
+
     @Override
     public void onNewToken(@NonNull String token) {
+
         super.onNewToken(token);
+
     }
 
     @Override
@@ -42,7 +45,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody){
-
         Context context = MyFirebaseMessagingService.this;
 
         Intent intent= new Intent(context, MainActivity.class);
@@ -58,11 +60,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(getString(R.string.firebase_message_title))
                 .setContentText(messageBody)
                 .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
+        Log.d("Notify", messageBody);
 
         broadcast(messageBody);
 
@@ -73,9 +77,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //Create class to represent notifs
         //Send the class data instead of these placeholders
         Intent intent = new Intent("BROADCAST_NOTIFICATION");
-        intent.putExtra("title", "PLACEHOLDERTITLE");
         intent.putExtra("body", messageBody);
-        sendBroadcast(intent);
+        Log.d("Sending...", messageBody);
+        MyFirebaseMessagingService.this.sendBroadcast(intent);
     }
 
 }
