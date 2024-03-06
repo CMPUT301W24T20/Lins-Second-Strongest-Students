@@ -17,6 +17,7 @@ import com.example.qrcodereader.DisplayQRCode;
 import com.example.qrcodereader.entity.QRCode;
 
 import com.example.qrcodereader.R;
+//import com.google.android.libraries.places.api.Places;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -61,6 +62,11 @@ public class CreateEventActivity extends AppCompatActivity {
             intent.putExtra("qrCode", qrCode.getBitmap());
             startActivity(intent);
         }); */
+        /*
+        if (!Places.isInitialized()) {
+            String apiKey = getString(R.string.google_maps_api_key);
+            Places.initialize(getApplicationContext(), apiKey);
+        }*/
 
         Button save_button = findViewById(R.id.save_button);
         save_button.setOnClickListener(v -> {
@@ -78,6 +84,7 @@ public class CreateEventActivity extends AppCompatActivity {
             double latitude = 53.5461;
             double longitude = 113.4938;
             GeoPoint locationGeoPoint = new GeoPoint(latitude, longitude);
+
 
             // Add the new event to the database
             HashMap<String, Object> event = new HashMap<>();
