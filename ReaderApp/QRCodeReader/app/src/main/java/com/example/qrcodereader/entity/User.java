@@ -12,12 +12,18 @@ import com.google.firebase.Timestamp;
 public class User implements Serializable {
     private String userID;
     private String name;
-    private Map<String, Integer> events;
+    private Map<String, Long> eventsAttended;
 
     public User(String deviceID, String userName) {
         this.userID = deviceID;
         this.name = userName;
-        this.events = new HashMap<String, Integer>();
+        this.eventsAttended = new HashMap<String, Long>();
+    }
+
+    public User(String deviceID, String userName, Map<String, Long> eventsAttended) {
+        this.userID = deviceID;
+        this.name = userName;
+        this.eventsAttended = eventsAttended;
     }
 
     public void setUserID(String userID) {

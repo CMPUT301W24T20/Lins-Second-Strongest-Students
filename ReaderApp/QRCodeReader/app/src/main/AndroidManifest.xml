@@ -21,6 +21,7 @@
             android:exported="false" />
         <activity android:name=".ui.eventPage.OrganizerEventActivity"/>
         <activity android:name=".ui.eventPage.AttendeeEventActivity"/>
+        <activity android:name=".ui.eventPage.BrowseEventActivity"/>
         <activity
             android:name=".DisplayQRCode"
             android:exported="false" />

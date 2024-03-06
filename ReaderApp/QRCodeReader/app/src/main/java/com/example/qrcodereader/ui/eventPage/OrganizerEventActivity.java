@@ -29,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class OrganizerEventActivity extends AppCompatActivity {
 
@@ -54,7 +55,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
         setContentView(R.layout.organizer_activity_event);
 
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
+        eventsRef = db.collection("events1");
 
         eventList = findViewById(R.id.event_list_organizer);
         eventDataList = new ArrayList<>();
@@ -84,6 +85,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
                         String organizer = doc.getString("organizer");
                         String location = doc.getString("location");
                         Timestamp time = doc.getTimestamp("time");
+                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
                         Log.d("Firestore", "Event fetched");
                         eventArrayAdapter.addEvent(eventID, name, organizer, location, time);

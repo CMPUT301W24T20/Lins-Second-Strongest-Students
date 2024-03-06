@@ -1,8 +1,10 @@
 package com.example.qrcodereader.ui.eventPage;
 import com.example.qrcodereader.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -13,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 
+import com.example.qrcodereader.entity.User;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -24,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class AttendeeEventActivity extends AppCompatActivity {
 
@@ -42,12 +46,12 @@ public class AttendeeEventActivity extends AppCompatActivity {
         setContentView(R.layout.attendee_activity_event);
 
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
+        eventsRef = db.collection("events1");
 
         ListView eventList = findViewById(R.id.event_list_attendee);
         ArrayList<Event> eventDataList = new ArrayList<>();
 
-
+        User user = (User) getIntent().getSerializableExtra("user");
 
         EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
@@ -70,17 +74,27 @@ public class AttendeeEventActivity extends AppCompatActivity {
                         String organizer = doc.getString("organizer");
                         String location = doc.getString("location");
                         Timestamp time = doc.getTimestamp("time");
+                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
                         Log.d("Firestore", "Event fetched");
                         eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
                     }
-
                 }
             }
         });
 
         Button returnButton = findViewById(R.id.return_button_attendee);
         returnButton.setOnClickListener(v -> finish());
+
+        Button browseButton = findViewById(R.id.browse_button);
+        browseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AttendeeEventActivity.this, BrowseEventActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
     }
 }
 
