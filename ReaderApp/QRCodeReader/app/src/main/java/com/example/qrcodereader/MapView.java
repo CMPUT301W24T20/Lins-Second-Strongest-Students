@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.qrcodereader.entity.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
@@ -21,11 +22,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 public class MapView extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;
+    //private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_view);
+        //user = (User) getIntent().getSerializableExtra("user");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.gmaps);
         mapFragment.getMapAsync(this);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -48,6 +51,7 @@ public class MapView extends AppCompatActivity implements OnMapReadyCallback {
                 } else {
                     position = new LatLng(location.getLatitude(), location.getLongitude());
                 }
+                //user.setLocation(location);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 10));
             }
         });
