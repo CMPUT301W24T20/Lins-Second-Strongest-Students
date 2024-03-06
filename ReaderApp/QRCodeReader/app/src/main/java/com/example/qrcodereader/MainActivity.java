@@ -10,6 +10,7 @@ import android.provider.Settings;
 
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
+import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -36,13 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        User user = new User(deviceID, "Guohui Lin");
-
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        User user = new User(deviceID, "Guohui Lin");
+        Intent intent = new Intent(this, BrowseEventActivity.class);
+        intent.putExtra("user", user);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -104,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        //User user = new User(deviceID, "Guohui Lin");
+
 
 
     }

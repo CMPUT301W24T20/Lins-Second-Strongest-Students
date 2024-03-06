@@ -79,7 +79,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
                     eventDataList.clear();
                     for (QueryDocumentSnapshot doc: querySnapshots) {
 //                        Event event = doc.toObject(Event.class);
-                        int eventID = doc.getLong("eventID").intValue();
+                        String eventID = doc.getId();
                         String name = doc.getString("name");
                         String organizer = doc.getString("organizer");
                         String location = doc.getString("location");
@@ -88,7 +88,6 @@ public class OrganizerEventActivity extends AppCompatActivity {
                         Log.d("Firestore", "Event fetched");
                         eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
                     }
-
                 }
             }
         });
