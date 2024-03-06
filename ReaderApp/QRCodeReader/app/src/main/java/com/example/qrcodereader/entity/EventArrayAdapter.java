@@ -49,7 +49,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         return view;
     }
 
-    public void addEvent(int eventID, String name, String organizer, String location, Timestamp time) {
+    public void addEvent(String eventID, String name, String organizer, String location, Timestamp time) {
         events.add(new Event(eventID, name, organizer, location, time));
         notifyDataSetChanged();
     }
