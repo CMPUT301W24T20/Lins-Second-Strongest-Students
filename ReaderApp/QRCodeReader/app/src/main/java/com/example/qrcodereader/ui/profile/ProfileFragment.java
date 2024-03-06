@@ -98,6 +98,7 @@ public class ProfileFragment extends DialogFragment {
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 Picture.setImageURI(selectedImageUri); // Set the image directly from URI
+                // maybe also associate it in DB
             }
         }
     }
