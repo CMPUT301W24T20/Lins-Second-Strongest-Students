@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
 
 public class User implements Serializable {
     private String userID;
@@ -28,7 +29,7 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public void createEvent(String id, String name, String location, Timestamp time) {
+    public void createEvent(String id, String name, GeoPoint location, Timestamp time) {
         Event event = new Event(id, name, userID, location, time);
     }
 
