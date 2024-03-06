@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +17,8 @@ import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 
 import com.example.qrcodereader.entity.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -72,46 +75,33 @@ public class AttendeeEventActivity extends AppCompatActivity {
         // But it couldn't work not sure why
         // You can delete this code if you don't need it
 
-//        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
-//            if (documentSnapshot.exists()) {
-//                Log.d("Firestore", "Successfully fetch user document");
-//                Map<String, Object> eventsAttended = (Map<String, Object>) documentSnapshot.get("eventsAttended");
-//                if (eventsAttended != null) {
-//                    attendeeEvents = new ArrayList<String>(eventsAttended.keySet());
-//                    Log.d("AttendeeEvents", "Attendee Events List: " + attendeeEvents);
-//
-//                    eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onEvent(@Nullable QuerySnapshot querySnapshots,
-//                                            @Nullable FirebaseFirestoreException error) {
-//                            if (error != null) {
-//                                Log.e("Firestore", error.toString());
-//                                return;
-//                            }
-//                            if (querySnapshots != null) {
-//                                eventDataList.clear();
-//                                for (QueryDocumentSnapshot doc: querySnapshots) {
-////                        Event event = doc.toObject(Event.class);
-//                                    String eventID = doc.getId();
-//                                    if (attendeeEvents.contains(eventID)) {
-//                                        String name = doc.getString("name");
-//                                        String organizer = doc.getString("organizer");
-//                                        String location = doc.getString("location");
-//                                        Timestamp time = doc.getTimestamp("time");
-//                                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-//
-//                                        Log.d("Firestore", "Event fetched");
-//                                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    });
-//                }
-//            } else {
-//                Log.d("Firestore", "No such user document");
-//            }
-//        }).addOnFailureListener(e -> Log.e("Firestore", "Error getting user document", e));
+        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                Log.d("Firestore", "Successfully obtained user document");
+                Map<String, Object> eventsAttended = (Map<String, Object>) documentSnapshot.get("eventsAttended");
+                if (eventsAttended != null) {
+                    attendeeEvents = new ArrayList<>(eventsAttended.keySet());
+                    Log.d("AttendeeEvents", "Attendee Events List: " + attendeeEvents);
+
+                    eventsRef.whereIn("eventID", attendeeEvents).get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        eventDataList.clear();
+                                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                                            Event event = doc.toObject(Event.class);
+                                            eventDataList.add(event);
+                                        }
+                                        eventArrayAdapter.notifyDataSetChanged();
+                                    } else {
+                                        Log.d("Firestore", "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+                }
+            }
+        }).addOnFailureListener(e -> Log.e("Firestore", "Error getting user document", e));
 
         eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
