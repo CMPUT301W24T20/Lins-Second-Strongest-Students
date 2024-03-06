@@ -4,8 +4,10 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -85,16 +87,31 @@ public class CreateEventActivity extends AppCompatActivity {
             double longitude = 113.4938;
             GeoPoint locationGeoPoint = new GeoPoint(latitude, longitude);
 
-
             // Add the new event to the database
             HashMap<String, Object> event = new HashMap<>();
             event.put("attendees", attendees);
             event.put("location", locationGeoPoint);
-            event.put("name", eventName);
+            event.put("name", eventName.getText().toString());
             event.put("organizer", "EricTheGoat");
             event.put("qrCode", qrCode.getString());
             event.put("time", timeOfEvent);
-            eventsRef.add(event);
+            //eventsRef.add(event);
+
+            eventsRef.add(event)
+                    .addOnSuccessListener(documentReference -> {
+                        // This block will be executed if the document is successfully written to Firestore
+                        Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
+                        // Optionally, inform the user of success via UI, such as a Toast
+                        Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
+                        // You can finish the activity or clear the form here if desired
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        // This block will be executed if there's an error during the write operation
+                        Log.e("CreateEventActivity", "Error adding event", e);
+                        // Optionally, inform the user of the failure via UI, such as a Toast
+                        Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
+                    });
 
             finish();
 
