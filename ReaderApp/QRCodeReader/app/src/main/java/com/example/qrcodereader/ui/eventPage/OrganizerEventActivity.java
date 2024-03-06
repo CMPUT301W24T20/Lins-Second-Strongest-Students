@@ -23,12 +23,14 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class OrganizerEventActivity extends AppCompatActivity {
 
@@ -54,7 +56,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
         setContentView(R.layout.organizer_activity_event);
 
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
+        eventsRef = db.collection("events1");
 
         eventList = findViewById(R.id.event_list_organizer);
         eventDataList = new ArrayList<>();
@@ -79,16 +81,16 @@ public class OrganizerEventActivity extends AppCompatActivity {
                     eventDataList.clear();
                     for (QueryDocumentSnapshot doc: querySnapshots) {
 //                        Event event = doc.toObject(Event.class);
-                        int eventID = doc.getLong("eventID").intValue();
+                        String eventID = doc.getId();
                         String name = doc.getString("name");
                         String organizer = doc.getString("organizer");
-                        String location = doc.getString("location");
+                        GeoPoint location = doc.getGeoPoint("location");
                         Timestamp time = doc.getTimestamp("time");
+                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
                         Log.d("Firestore", "Event fetched");
                         eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
                     }
-
                 }
             }
         });
@@ -98,7 +100,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
             Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
             intent.putExtra("userid", userid);
             intent.putExtra("username", username);
-            createEventLauncher.launch(intent);
+            startActivity(intent);
         });
 
         Button returnButton = findViewById(R.id.return_button_organizer);

@@ -1,19 +1,36 @@
 package com.example.qrcodereader.entity;
 
+import android.location.Location;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import com.google.firebase.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class User {
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
+
+public class User implements Serializable {
     private String userID;
     private String name;
+    private Map<String, Long> eventsAttended;
 
-    private Boolean access;
+    private Location location;
 
-    public User(String deviceID, String userName, Boolean LocationAcess) {
+    public User(String deviceID, String userName, Location location) {
         this.userID = deviceID;
         this.name = userName;
-        this.access = LocationAcess;
+        this.events = new HashMap<String, Long>();
+        this.location = location;
+    }
+
+    public User(String deviceID, String userName, Location location Map<String, Long> eventsAttended) {
+        this.userID = deviceID;
+        this.name = userName;
+        this.events = eventsAttended;
+        this.location = location;
     }
 
     public void setUserID(String userID) {
@@ -24,12 +41,11 @@ public class User {
         this.name = name;
     }
 
-    public void setAccess(Boolean access) {
-        this.access = access;
+    public void setLocation(Location location) {this.location = location;}
+    public Location getLocation(){
+        return this.location;
     }
-
-    public void createEvent(int id, String name, String location, Timestamp time) {
-        Event event = new Event(id, name, userID, location, time);
+    public void createEvent(String id, String name, GeoPoint location, Timestamp time) {
     }
 
     public String getUserID() {return userID;}

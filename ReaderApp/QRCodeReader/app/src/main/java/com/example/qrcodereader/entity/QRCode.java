@@ -17,6 +17,7 @@ import java.util.Random;
  */
 public class QRCode {
     Bitmap bitmap;
+    String qrCodeString;
 
     /**
      * Constructor for the QRCode class
@@ -24,8 +25,8 @@ public class QRCode {
      * and then uses the string to generate bitmap of the QR code
      */
     public QRCode() {
-        String randomString = generateRandomString(30);
-        bitmap = generateQRCodeImage(randomString);
+        qrCodeString = generateRandomString(30);
+        bitmap = generateQRCodeImage(qrCodeString);
     }
 
     /**
@@ -82,5 +83,9 @@ public class QRCode {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String getString() {
+        return qrCodeString;
     }
 }
