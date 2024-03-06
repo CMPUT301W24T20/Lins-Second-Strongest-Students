@@ -146,19 +146,21 @@ public class MainActivity extends AppCompatActivity {
         //Firebase Cloud Messaging Token
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("FCM_Fail", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
+                   @Override
+                   public void onComplete(@NonNull Task<String> task) {
+                       if (!task.isSuccessful()) {
+                           Log.w("FCM_Fail", "Fetching FCM registration token failed", task.getException());
+                           return;
+                       }
 
-                        // Get new FCM registration token
-                        String token = task.getResult();
+                       // Get new FCM registration token
+                       String token = task.getResult();
 
-                        // Log and toast
-                        String msg = getString(R.string.msg_token_fmt, token);
-                        Log.d("FCM_Success", msg);
+                       // Log and toast
+                       String msg = getString(R.string.msg_token_fmt, token);
+                       Log.d("FCM_Success", msg);
+                   }
+               });
 
         // I'm working on this part - Duy
         Button profile_button = findViewById(R.id.profile_button);
@@ -176,21 +178,23 @@ public class MainActivity extends AppCompatActivity {
 
         Button MyEventButton = findViewById(R.id.my_event_button);
         MyEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                             @Override
+             public void onClick(View v) {
+                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-                builder.setTitle("Choose an action");
+                 builder.setTitle("Choose an action");
 
-                // Button to go to AttendeeEventActivity
-                builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
-                        intent.putExtra("user", user);
-                        startActivity(intent);
+                 // Button to go to AttendeeEventActivity
+                 builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
+                     public void onClick(DialogInterface dialog, int id) {
+                         Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
+                         intent.putExtra("user", user);
+                         startActivity(intent);
 
-                    }
-                });
+                     }
+                 });
+             }
+         });
 
         //Notification Channel
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
