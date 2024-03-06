@@ -1,5 +1,7 @@
 package com.example.qrcodereader;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -107,8 +109,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
+        //Notification Channel
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel("default_channel",
+                    "Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription("Default Channel");
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
 
     }
 }
