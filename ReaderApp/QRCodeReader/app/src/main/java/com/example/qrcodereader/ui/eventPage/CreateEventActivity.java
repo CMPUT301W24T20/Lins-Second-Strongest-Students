@@ -80,7 +80,7 @@ public class CreateEventActivity extends AppCompatActivity {
             QRCode qrCode = new QRCode();
 
             // Create a new list of attendees for the event
-            Map<String, Integer> attendees = new HashMap<>();
+            ArrayList<Map<String, Integer>> attendees = new ArrayList<Map<String, Integer>>();
 
             // Place holder for the location of the event
             double latitude = 53.5461;
