@@ -15,6 +15,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.view.View;
@@ -42,6 +43,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -52,6 +55,8 @@ public class EventArrayAdapterTest {
     private EventArrayAdapter adapter;
     private ArrayList<Event> events;
     private Context context;
+
+
 
     @Before
     public void setUp() {
@@ -66,17 +71,28 @@ public class EventArrayAdapterTest {
         String eventID = "1";
         String name = "Test Event";
         String organizer = "Test Organizer";
-        String location = "Test Location";
+        GeoPoint location = new GeoPoint(12.1,12.1);
         Timestamp timeStamp = Timestamp.now();
         adapter.addEvent(eventID, name, organizer, location, timeStamp);
 
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        String latitudeString = "latitude=" + latitude;
+        String longitudeString = "longitude=" + longitude;
+
         // Check that the event was added to the adapter
         assertEquals(1, adapter.getCount());
+
 
         // Check that the event details are displayed correctly
         View view = adapter.getView(0, null, new ListView(context));
         assertEquals(name, ((TextView) view.findViewById(R.id.event_text)).getText().toString());
         assertEquals(organizer, ((TextView) view.findViewById(R.id.organizer_text)).getText().toString());
-        assertEquals(location, ((TextView) view.findViewById(R.id.event_location_text)).getText().toString());
+        assertTrue(((TextView) view.findViewById(R.id.event_location_text)).getText().toString().contains(latitudeString));
+        assertTrue(((TextView) view.findViewById(R.id.event_location_text)).getText().toString().contains(longitudeString));
+
     }
+
+
+
 }
