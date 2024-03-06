@@ -18,19 +18,26 @@ public class User implements Serializable {
     private Map<String, Long> eventsAttended;
 
     private Location location;
+    private Boolean access;
 
     public User(String deviceID, String userName, Location location) {
         this.userID = deviceID;
         this.name = userName;
-        this.events = new HashMap<String, Long>();
+        this.eventsAttended = new HashMap<String, Long>();
         this.location = location;
     }
 
-    public User(String deviceID, String userName, Location location Map<String, Long> eventsAttended) {
+    public User(String deviceID, String userName, Location location, Map<String, Long> eventsAttended) {
         this.userID = deviceID;
         this.name = userName;
-        this.events = eventsAttended;
+        this.eventsAttended = eventsAttended;
         this.location = location;
+    }
+
+    public User(String deviceID, String userName, Map<String, Long> eventsAttended) {
+        this.userID = deviceID;
+        this.name = userName;
+        this.eventsAttended = eventsAttended;
     }
 
     public void setUserID(String userID) {
