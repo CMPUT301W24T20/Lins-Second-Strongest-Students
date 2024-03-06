@@ -46,24 +46,10 @@ public class ProfileFragment extends DialogFragment {
         Button Upload = view.findViewById(R.id.UploadProfileButton);
         Button Remove = view.findViewById(R.id.RemoveProfilePicButton);
         Picture = view.findViewById(R.id.ProfilePic);
-        Button locationSwitch = view.findViewById(R.id.LocationSwitch);
 
         Bundle bundle = getArguments();
 
         ETname.setText(bundle.getString("UserName"));
-
-        // move switch
-
-//        locationSwitch.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//                Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-//                intent.setData(uri);
-//                intent.putExtra("android.provider.extra.APP_PACKAGE", getActivity().getPackageName());
-//                startActivity(intent);
-//            }
-//        });
 
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
