@@ -16,22 +16,23 @@ public class User implements Serializable {
     private String userID;
     private String name;
     private Map<String, Long> eventsAttended;
+    private GeoPoint location;
 
-    private Location location;
-    private Boolean access;
 
-    public User(String deviceID, String userName, Location location) {
+    public User(String deviceID, String userName, GeoPoint location) {
         this.userID = deviceID;
         this.name = userName;
         this.eventsAttended = new HashMap<String, Long>();
         this.location = location;
+
     }
 
-    public User(String deviceID, String userName, Location location, Map<String, Long> eventsAttended) {
+    public User(String deviceID, String userName, GeoPoint location, Map<String, Long> eventsAttended) {
         this.userID = deviceID;
         this.name = userName;
         this.eventsAttended = eventsAttended;
         this.location = location;
+
     }
 
     public User(String deviceID, String userName, Map<String, Long> eventsAttended) {
@@ -48,8 +49,8 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public void setLocation(Location location) {this.location = location;}
-    public Location getLocation(){
+    public void setLocation(GeoPoint location) {this.location = location;}
+    public GeoPoint getLocation(){
         return this.location;
     }
     public void createEvent(String id, String name, GeoPoint location, Timestamp time) {
@@ -57,6 +58,6 @@ public class User implements Serializable {
 
     public String getUserID() {return userID;}
     public String getName() {return name;}
-    public Boolean getAccess() {return access;}
+
 
 }

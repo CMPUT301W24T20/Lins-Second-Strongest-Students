@@ -61,8 +61,8 @@ public class OrganizerEventActivity extends AppCompatActivity {
         eventList = findViewById(R.id.event_list_organizer);
         eventDataList = new ArrayList<>();
 
-        userid = getIntent().getStringExtra("userid");
-        username = getIntent().getStringExtra("username");
+        userid = getIntent().getStringExtra("userID");
+        username = getIntent().getStringExtra("userName");
 
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
