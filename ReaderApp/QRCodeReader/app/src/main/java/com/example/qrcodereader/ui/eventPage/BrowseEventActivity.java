@@ -46,24 +46,33 @@ public class BrowseEventActivity extends AppCompatActivity {
     private DocumentReference docRefUser;
     private DocumentReference docRefEvent;
     private Event selectedEvent = null;
+    private User user = null;
 
-    private void addNewEvent(Event event) {
-        HashMap<String, String> data = new HashMap<>(); // Add the other attributes in the right order to the HashMap
-        data.put("Organizer", event.getOrganizer()); // Add the other attributes in the right order to the HashMap
-        eventsRef.add(data);
-    }
+//    private void addNewEvent(Event event) {
+//        HashMap<String, String> data = new HashMap<>(); // Add the other attributes in the right order to the HashMap
+//        data.put("Organizer", event.getOrganizer()); // Add the other attributes in the right order to the HashMap
+//        eventsRef.add(data);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_event);
 
+
         Intent intent = getIntent();
-        User user = (User) intent.getSerializableExtra("user");
+        user = (User) getIntent().getSerializableExtra("user");
+
+
+        if (user == null) {
+            Toast.makeText(this, "User data is required", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
-        docRefUser = db.collection("users").document(user.getUserID());
+        eventsRef = db.collection("events1");
+        docRefUser = db.collection("users1").document(user.getUserID());
 
 
         ListView eventList = findViewById(R.id.event_list_browse);
@@ -91,6 +100,7 @@ public class BrowseEventActivity extends AppCompatActivity {
                         String organizer = doc.getString("organizer");
                         GeoPoint location = doc.getGeoPoint("location");
                         Timestamp time = doc.getTimestamp("time");
+//                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
                         Log.d("Firestore", "Event fetched");
                         eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
@@ -104,10 +114,10 @@ public class BrowseEventActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
                 // Get the item that was clicked
-                selectedEvent = (Event) parent.getItemAtPosition(position);
+                selectedEvent = eventDataList.get(position);
 
                 // Display a toast with the selected item
-                Toast.makeText(BrowseEventActivity.this, "You clicked: " + selectedEvent, Toast.LENGTH_SHORT).show();
+                Toast.makeText(BrowseEventActivity.this, "You clicked: " + selectedEvent.getEventName(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -133,10 +143,10 @@ public class BrowseEventActivity extends AppCompatActivity {
                             }
                         });
 
-                docRefUser = db.collection("events").document(selectedEvent.getEventID());
+                docRefEvent = db.collection("events1").document(selectedEvent.getEventID());
                 Map<String, Object> newAttendee = new HashMap<>();
                 newAttendee.put("attendees." + user.getUserID(), 0);
-                docRefUser.update(newAttendee)
+                docRefEvent.update(newAttendee)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -151,6 +161,7 @@ public class BrowseEventActivity extends AppCompatActivity {
                                 Log.w("Firestore", "Error updating document", e);
                             }
                         });
+                Toast.makeText(BrowseEventActivity.this, "Signed up to event " + selectedEvent.getEventName(), Toast.LENGTH_LONG).show();
             }
         });
 

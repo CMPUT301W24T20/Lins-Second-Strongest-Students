@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import android.provider.Settings;
+
+import java.util.concurrent.ExecutionException;
 import android.Manifest;
+
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
@@ -32,11 +36,22 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.qrcodereader.databinding.ActivityMainBinding;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private FirebaseFirestore db;
+    private CollectionReference eventsRef;
+    private DocumentReference docRefUser;
+    private User user;
     private FusedLocationProviderClient fusedLocationClient;
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -51,12 +66,50 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        db = FirebaseFirestore.getInstance();
+        eventsRef = db.collection("events1");
+
+        docRefUser = db.collection("users1").document(deviceID);
+        docRefUser.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().exists()) {
+                    // Document exists, user is in the collection
+                    Log.d("Firestore", "User exists in the collection.");
+                    Toast.makeText(this, "Signed in", Toast.LENGTH_LONG).show();
+                } else {
+                    // Document does not exist, user is not in the collection
+                    Log.d("Firestore", "User does not exist in the collection.");
+                    Map<String, Object> newUser = new HashMap<>();
+                    newUser.put("name", "John Doe");
+                    newUser.put("eventsAttended", new HashMap<>());
+                    docRefUser.set(newUser);
+                    Toast.makeText(this, "Made new account", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Log.d("Firestore", "Failed to fetch document: ", task.getException());
+                Toast.makeText(this, "Failed to fetch account", Toast.LENGTH_LONG).show();
+            }
+        });
+        docRefUser.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String userName = documentSnapshot.getString("name");
+                Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
+                user = new User(deviceID, userName, eventsAttended);
+                Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
+        });
+
+
         Location Linlocation = new Location("provider");
         Linlocation.setLatitude(61.0137);
         Linlocation.setLongitude(99.1967);
         User user = new User(deviceID, "Guohui Lin", Linlocation);
         Intent intent = new Intent(this, BrowseEventActivity.class);
         intent.putExtra("user", user);
+
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -91,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
+                        intent.putExtra("user", user);
                         startActivity(intent);
                     }
                 });

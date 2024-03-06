@@ -15,14 +15,21 @@ import com.google.firebase.firestore.GeoPoint;
 public class User implements Serializable {
     private String userID;
     private String name;
-    private Map<String, Integer> events;
+    private Map<String, Long> eventsAttended;
 
     private Location location;
 
     public User(String deviceID, String userName, Location location) {
         this.userID = deviceID;
         this.name = userName;
-        this.events = new HashMap<String, Integer>();
+        this.events = new HashMap<String, Long>();
+        this.location = location;
+    }
+
+    public User(String deviceID, String userName, Location location Map<String, Long> eventsAttended) {
+        this.userID = deviceID;
+        this.name = userName;
+        this.events = eventsAttended;
         this.location = location;
     }
 
