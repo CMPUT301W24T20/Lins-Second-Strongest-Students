@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
                 bundle.putString("UserName", user.getName());
                 bundle.putBoolean("LocationAccess", user.getAccess());
                 ProfileFragment listfrag = new ProfileFragment();
