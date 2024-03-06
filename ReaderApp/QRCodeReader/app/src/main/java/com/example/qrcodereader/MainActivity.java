@@ -11,11 +11,13 @@ import android.provider.Settings;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
+import com.example.qrcodereader.ui.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -28,6 +30,7 @@ import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -37,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        User user = new User(deviceID, "Guohui Lin");
+        User user = new User(deviceID, "Guohui Lin", Boolean.FALSE);
+        Bundle bundle = new Bundle();
 
         super.onCreate(savedInstanceState);
 
@@ -54,14 +58,16 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-
         // I'm working on this part - Duy
         Button profile_button = findViewById(R.id.profile_button);
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
-                startActivity(intent);
+                bundle.putString("UserName", user.getName());
+                bundle.putBoolean("LocationAccess", user.getAccess());
+                ProfileFragment listfrag = new ProfileFragment();
+                listfrag.setArguments(bundle);
+                listfrag.show(getSupportFragmentManager(), "Profile Page");
             }
         });
 

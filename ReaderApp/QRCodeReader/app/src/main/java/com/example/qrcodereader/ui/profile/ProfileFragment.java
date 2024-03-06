@@ -12,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +33,7 @@ import com.example.qrcodereader.R;
 public class ProfileFragment extends DialogFragment {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;
-    private Switch locationSwitch;
+
     private ImageView Picture;
 
     @Override
@@ -44,25 +46,24 @@ public class ProfileFragment extends DialogFragment {
         Button Upload = view.findViewById(R.id.UploadProfileButton);
         Button Remove = view.findViewById(R.id.RemoveProfilePicButton);
         Picture = view.findViewById(R.id.ProfilePic);
-        locationSwitch = view.findViewById(R.id.LocationSwitch);
+        Button locationSwitch = view.findViewById(R.id.LocationSwitch);
+
+        Bundle bundle = getArguments();
+
+        ETname.setText(bundle.getString("UserName"));
 
         // move switch
-        locationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) { // User wants to enable location access
-                    // Request permission if not granted already
-                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
-                    }
-                } else { // User wants to disable location access
-                    PackageManager packageManager = getActivity().getPackageManager();
-                    packageManager.setComponentEnabledSetting(new ComponentName(getActivity(), MainActivity.class),
-                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
-                }
-            }
-        });
+//        locationSwitch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+//                intent.setData(uri);
+//                intent.putExtra("android.provider.extra.APP_PACKAGE", getActivity().getPackageName());
+//                startActivity(intent);
+//            }
+//        });
 
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
