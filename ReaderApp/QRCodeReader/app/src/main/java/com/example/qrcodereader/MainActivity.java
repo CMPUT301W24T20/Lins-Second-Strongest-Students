@@ -116,18 +116,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Failed to fetch account", Toast.LENGTH_LONG).show();
             }
         });
-//        docRefUser.get().addOnSuccessListener(documentSnapshot -> {
-//            if (documentSnapshot.exists()) {
-//                String userName = documentSnapshot.getString("name");
-//                Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
-//                GeoPoint location = documentSnapshot.getGeoPoint("location");
-//                user = new User(deviceID, userName, location, eventsAttended);
-//                Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
-//                Log.d("Firestore", "Successfully fetch document: ");
-//            }
-//        }).addOnFailureListener(e -> {
-//            Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
-//        });
+        docRefUser.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String userName = documentSnapshot.getString("name");
+                Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
+                GeoPoint location = documentSnapshot.getGeoPoint("location");
+                user = new User(deviceID, userName, location, eventsAttended);
+                Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
+                Log.d("Firestore", "Successfully fetch document: ");
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
+        });
 
 
 //        Location Linlocation = new Location("provider");

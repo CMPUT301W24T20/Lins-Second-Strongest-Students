@@ -5,23 +5,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 import com.google.firebase.Timestamp;
@@ -36,7 +31,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class OrganizerEventActivity extends AppCompatActivity {
@@ -50,12 +44,6 @@ public class OrganizerEventActivity extends AppCompatActivity {
     private EventArrayAdapter eventArrayAdapter;
     ArrayList<Event> eventDataList;
 
-
-//    private void addNewEvent(Event event) {
-//        HashMap<String, String> data = new HashMap<>();
-//        data.put("Name", event.getEventName());
-//        eventsRef.document(event.getEventName()).set(data);
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,13 +114,16 @@ public class OrganizerEventActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the selected event
                 Event selectedEvent = eventDataList.get(position);
-                // Show event details in a dialog
-                showEventDetailsDialog(selectedEvent);
+
+                Intent detailIntent = new Intent(OrganizerEventActivity.this, EventDetailsOrganizerActivity.class);
+                detailIntent.putExtra("eventID", selectedEvent.getEventID());
+                startActivity(detailIntent);
             }
         });
-
-
     }
+
+
+
 
     ActivityResultLauncher<Intent> createEventLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -162,47 +153,47 @@ public class OrganizerEventActivity extends AppCompatActivity {
                 }
             });
 
-    private void showEventDetailsDialog(Event event) {
-
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.event_detail_dialog_organizer, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(view);
-
-        // Set the event details to the TextViews
-        TextView eventNameTextView = view.findViewById(R.id.event_name);
-        String nameText = "Event Name: " + event.getEventName();
-        eventNameTextView.setText(nameText);
-
-        TextView eventOrganizerTextView = view.findViewById(R.id.event_organizer);
-        String organizerText = "Organizer: " + event.getOrganizer();
-        eventOrganizerTextView.setText(organizerText);
-
-        TextView eventLocationTextView = view.findViewById(R.id.event_location);
-        String locationText = "Location: " + event.getLocation().getLatitude() + ", " + event.getLocation().getLongitude();
-        eventLocationTextView.setText(locationText);
-
-        TextView eventTimeTextView = view.findViewById(R.id.event_time);
-        eventTimeTextView.setText(event.getTime().toDate().toString());
-
-        ListView attendeesListView = view.findViewById(R.id.event_attendees);
-        Map<String, Long> attendees = event.getAttendees();
-        if (attendees != null && !attendees.isEmpty()) {
-            // Convert the map entries to a list
-            ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(attendees.entrySet());
-            // Create the custom adapter
-            AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesList);
-            // Set the custom adapter to the ListView
-            attendeesListView.setAdapter(attendeesAdapter);
-        }
-
-
-        // Create and show the dialog
-
-        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
+//    private void showEventDetailsDialog(Event event) {
+//
+//        LayoutInflater inflater = LayoutInflater.from(this);
+//        View view = inflater.inflate(R.layout.event_detail_dialog_organizer, null);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setView(view);
+//
+//        // Set the event details to the TextViews
+//        TextView eventNameTextView = view.findViewById(R.id.event_name);
+//        String nameText = "Event Name: " + event.getEventName();
+//        eventNameTextView.setText(nameText);
+//
+//        TextView eventOrganizerTextView = view.findViewById(R.id.event_organizer);
+//        String organizerText = "Organizer: " + event.getOrganizer();
+//        eventOrganizerTextView.setText(organizerText);
+//
+//        TextView eventLocationTextView = view.findViewById(R.id.event_location);
+//        String locationText = "Location: " + event.getLocation().getLatitude() + ", " + event.getLocation().getLongitude();
+//        eventLocationTextView.setText(locationText);
+//
+//        TextView eventTimeTextView = view.findViewById(R.id.event_time);
+//        eventTimeTextView.setText(event.getTime().toDate().toString());
+//
+//        ListView attendeesListView = view.findViewById(R.id.event_attendees);
+//        Map<String, Long> attendees = event.getAttendees();
+//        if (attendees != null && !attendees.isEmpty()) {
+//            // Convert the map entries to a list
+//            ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(attendees.entrySet());
+//            // Create the custom adapter
+//            AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesList);
+//            // Set the custom adapter to the ListView
+//            attendeesListView.setAdapter(attendeesAdapter);
+//        }
+//
+//
+//        // Create and show the dialog
+//
+//        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+//
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
 }
 
