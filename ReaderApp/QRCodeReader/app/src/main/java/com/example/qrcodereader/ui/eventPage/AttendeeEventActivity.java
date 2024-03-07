@@ -3,6 +3,7 @@ import com.example.qrcodereader.R;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -65,6 +66,9 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
         // Getting user through MainActivity. This is the user who is using the app
         String userid = getIntent().getStringExtra("userID");
+        if (userid == null) {
+            userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        }
         userDocRef = db.collection("users").document(userid);
 
         // I was attempting to get the map of eventsAttended in the user document and turn it into a list in the comment below
@@ -147,12 +151,13 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
         // Go to BrowseEventActivity
         Button browseButton = findViewById(R.id.browse_button);
+        String finalUserid = userid;
         browseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AttendeeEventActivity.this, BrowseEventActivity.class);
                 // Sending the user object to BrowseEventActivity
-                intent.putExtra("userID", userid);
+                intent.putExtra("userID", finalUserid);
                 startActivity(intent);
             }
         });

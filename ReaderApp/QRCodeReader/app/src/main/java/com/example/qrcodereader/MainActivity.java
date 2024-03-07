@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private CollectionReference eventsRef;
     private DocumentReference docRefUser;
     private User user;
+    public static String userId;
     private FusedLocationProviderClient fusedLocationClient;
 
     @Override
