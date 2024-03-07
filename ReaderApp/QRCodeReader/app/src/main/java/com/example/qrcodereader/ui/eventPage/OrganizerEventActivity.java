@@ -114,7 +114,6 @@ public class OrganizerEventActivity extends AppCompatActivity {
         Button returnButton = findViewById(R.id.return_button_organizer);
         returnButton.setOnClickListener(v -> finish());
 
-
     }
 
     ActivityResultLauncher<Intent> createEventLauncher = registerForActivityResult(
