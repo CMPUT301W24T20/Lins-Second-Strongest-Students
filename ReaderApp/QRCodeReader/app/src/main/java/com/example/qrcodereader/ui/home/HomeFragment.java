@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.databinding.FragmentHomeBinding;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;

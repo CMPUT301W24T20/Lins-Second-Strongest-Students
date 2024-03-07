@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Notification Channel
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel("default_channel",
+            NotificationChannel notificationChannel = new NotificationChannel(getString(R.string.default_notification_channel_id),
                     "Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setDescription("Default Channel");
             NotificationManager notificationManager = getSystemService(NotificationManager.class);

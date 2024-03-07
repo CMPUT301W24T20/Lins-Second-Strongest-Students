@@ -15,6 +15,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+/**
+ * Provides framework to allow for notifications to be recieved from FCM
+ *
+ */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /*
     MyFirebaseMessagingService
@@ -31,13 +35,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String token) {
-
         super.onNewToken(token);
-
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        /*
+        On receiving a message from FCM, log and send to sendNotification
+         */
         if (remoteMessage.getData().size() > 0) {
             sendNotification(remoteMessage.getData().get("message"));
         }
@@ -49,6 +54,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody){
+        /*
+        Create and display notification from FCM
+         */
         Context context = MyFirebaseMessagingService.this;
 
         Intent intent= new Intent(context, MainActivity.class);
@@ -77,14 +85,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void broadcast(String messageBody) {
+        /*
+        Send broadcast to update notification list
+         */
         //TO-DO:
-        //Create class to represent notifs
-        //Send the class data instead of these placeholders
+        //Figure out message details
         Intent intent = new Intent(ACTION_BROADCAST);
         intent.putExtra("body", messageBody);
         Log.d("Sending...", messageBody);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-
 
     }
 

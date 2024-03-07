@@ -14,6 +14,9 @@ import androidx.fragment.app.Fragment;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+/**
+ * Contains framework to allow a fragment to access a QR code scanner
+ */
 public class CameraFragment extends Fragment implements View.OnClickListener {
     /*
     CameraFragment
