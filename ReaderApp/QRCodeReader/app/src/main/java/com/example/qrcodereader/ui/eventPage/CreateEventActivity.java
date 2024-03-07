@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,8 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
@@ -50,6 +53,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private GeoPoint eventLocation;
     private String eventLocationName;
     private EditText getLocation;
+    private String userName;
 
 
     @Override
@@ -99,6 +103,34 @@ public class CreateEventActivity extends AppCompatActivity {
 
         Button save_button = findViewById(R.id.save_button);
         save_button.setOnClickListener(v -> {
+            String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+            CollectionReference usersRef = db.collection("users");
+            DocumentReference userDocRef = usersRef.document(deviceID);
+
+            userDocRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Document was found in the collection
+                        Log.d("CreateEventActivity", "DocumentSnapshot data: " + document.getData());
+
+                        // Example of retrieving data from the document
+                        userName = document.getString("name");
+                        // Now you can use userName or other user information as needed
+
+                    } else {
+                        // Document does not exist
+                        Log.d("CreateEventActivity", "No such document");
+                        Toast.makeText(CreateEventActivity.this, "User not found", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Task failed with an exception
+                    Log.d("CreateEventActivity", "get failed with ", task.getException());
+                }
+            });
+
+
             Timestamp timeOfEvent = new Timestamp(eventDateTime.getTime());
             EditText eventName = findViewById(R.id.event_name);
             //EditText eventLocation = findViewById(R.id.event_location);
@@ -120,7 +152,8 @@ public class CreateEventActivity extends AppCompatActivity {
             event.put("location", eventLocation);
             event.put("locationName", eventLocationName);
             event.put("name", eventName.getText().toString());
-            event.put("organizer", "EricTheGoat");
+            event.put("organizer", userName);
+            event.put("organizerID", deviceID);
             event.put("qrCode", qrCode.getString());
             event.put("time", timeOfEvent);
             //eventsRef.add(event);
