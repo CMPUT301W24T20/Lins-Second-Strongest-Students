@@ -72,7 +72,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
         //String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
 
-        eventsRef.whereEqualTo("organizer", username)
+        eventsRef.whereEqualTo("organizer", "EricTheGoat")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot querySnapshots,
