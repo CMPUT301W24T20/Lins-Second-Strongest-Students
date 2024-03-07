@@ -211,13 +211,11 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
         // Go to BrowseEventActivity
         Button browseButton = findViewById(R.id.browse_button);
-        String finalUserid = userid;
         browseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AttendeeEventActivity.this, BrowseEventActivity.class);
                 // Sending the user object to BrowseEventActivity
-                intent.putExtra("userID", finalUserid);
                 startActivity(intent);
             }
         });
@@ -246,15 +244,9 @@ public class AttendeeEventActivity extends AppCompatActivity {
         TextView eventTimeTextView = view.findViewById(R.id.event_time);
         eventTimeTextView.setText(event.getTime().toDate().toString());
 
-        TextView attendeesTextView = view.findViewById(R.id.event_attendees);
-        Map<String, Long> attendees = event.getAttendees();
-        StringBuilder attendeesBuilder = new StringBuilder("Attendees:\n");
-        for (Map.Entry<String, Long> attendeeEntry : attendees.entrySet()) {
-            String attendeeInfo = "ID: " + attendeeEntry.getKey() + ", Value: " + attendeeEntry.getValue() + "\n";
-            attendeesBuilder.append(attendeeInfo);
-        }
 
-        attendeesTextView.setText(attendeesBuilder.toString());
+
+
 
         // Create and show the dialog
 

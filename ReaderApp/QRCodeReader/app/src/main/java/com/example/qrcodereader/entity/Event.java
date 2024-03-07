@@ -5,6 +5,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Event {
@@ -95,7 +96,9 @@ public class Event {
 
     public String getLocationName() {
         if (locationName == null) {
-            return location.toString();
+            return String.format(Locale.getDefault(), "%f, %f",
+                    location.getLatitude(),
+                    location.getLongitude());
         }
         return locationName;
     }

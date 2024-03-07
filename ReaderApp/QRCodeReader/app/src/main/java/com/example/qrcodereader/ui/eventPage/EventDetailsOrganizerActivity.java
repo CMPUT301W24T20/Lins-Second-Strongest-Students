@@ -32,7 +32,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_details);
+        setContentView(R.layout.activity_event_details_organizer);
 
 
         TextView eventNameTextView = findViewById(R.id.event_name);
@@ -55,15 +55,14 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
 
-                String nameText = "Event Name " + eventID;
-                eventNameTextView.setText(nameText);
-                String organizerText = "Organizer " + organizer;
-                eventOrganizerTextView.setText("Organizer " + organizer);
-                String locationText = "Location " + String.format(Locale.getDefault(), "%f, %f",
+                eventNameTextView.setText(eventName);
+                String organizerText = "Organizer: " + organizer;
+                eventOrganizerTextView.setText("Organizer: " + organizer);
+                String locationText = "Location: " + String.format(Locale.getDefault(), "%f, %f",
                         location.getLatitude(),
                         location.getLongitude());
                 eventLocationTextView.setText(locationText);
-                String timeText = "Time " + time.toDate().toString();
+                String timeText = "Time: " + time.toDate().toString();
                 eventTimeTextView.setText(timeText);
 
 //                List<String> attendeesList = new ArrayList<>(eventsAttended.keySet());
