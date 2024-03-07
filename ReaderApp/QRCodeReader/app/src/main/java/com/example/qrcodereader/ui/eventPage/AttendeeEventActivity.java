@@ -5,13 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.Event;
@@ -31,11 +35,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -194,6 +194,16 @@ public class AttendeeEventActivity extends AppCompatActivity {
             }
         });
 
+        eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the selected event
+                Event selectedEvent = eventDataList.get(position);
+                // Show event details in a dialog
+                showEventDetailsDialog(selectedEvent);
+            }
+        });
+
         Button returnButton = findViewById(R.id.return_button_attendee);
         returnButton.setOnClickListener(v -> finish());
 
@@ -210,7 +220,50 @@ public class AttendeeEventActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void showEventDetailsDialog(Event event) {
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.event_detail_dialog_attendee, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+
+        // Set the event details to the TextViews
+        TextView eventNameTextView = view.findViewById(R.id.event_name);
+        String nameText = "Event Name: " + event.getEventName();
+        eventNameTextView.setText(nameText);
+
+        TextView eventOrganizerTextView = view.findViewById(R.id.event_organizer);
+        String organizerText = "Organizer: " + event.getOrganizer();
+        eventOrganizerTextView.setText(organizerText);
+
+        TextView eventLocationTextView = view.findViewById(R.id.event_location);
+        String locationText = "Location: " + event.getLocation().getLatitude() + ", " + event.getLocation().getLongitude();
+        eventLocationTextView.setText(locationText);
+
+        TextView eventTimeTextView = view.findViewById(R.id.event_time);
+        eventTimeTextView.setText(event.getTime().toDate().toString());
+
+        TextView attendeesTextView = view.findViewById(R.id.event_attendees);
+        Map<String, Long> attendees = event.getAttendees();
+        StringBuilder attendeesBuilder = new StringBuilder("Attendees:\n");
+        for (Map.Entry<String, Long> attendeeEntry : attendees.entrySet()) {
+            String attendeeInfo = "ID: " + attendeeEntry.getKey() + ", Value: " + attendeeEntry.getValue() + "\n";
+            attendeesBuilder.append(attendeeInfo);
+        }
+
+        attendeesTextView.setText(attendeesBuilder.toString());
+
+        // Create and show the dialog
+
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }
+
+
 
 
 
