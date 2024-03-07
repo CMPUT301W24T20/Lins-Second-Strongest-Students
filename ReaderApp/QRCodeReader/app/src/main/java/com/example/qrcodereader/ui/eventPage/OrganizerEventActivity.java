@@ -91,11 +91,8 @@ public class OrganizerEventActivity extends AppCompatActivity {
 
                                 Timestamp time = doc.getTimestamp("time");
                                 String organizer = doc.getString("organizer");
-
                                 String organizerID = doc.getString("organizerID");
-                                if (organizerID == null) {
-                                    organizerID = "No organizer ID";
-                                }
+
                                 String qrCodeString = doc.getString("qrCode");
                                 QRCode qrCode = new QRCode(qrCodeString);
 
