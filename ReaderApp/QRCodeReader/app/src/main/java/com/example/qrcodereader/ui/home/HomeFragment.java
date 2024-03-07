@@ -85,8 +85,46 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        Button mapButton = root.findViewById(R.id.map_button);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setTitle("Choose Map You Want to See");
+
+                // Button to go to AttendeeEventActivity
+                builder.setPositiveButton("Go to Map (Attendee)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(getContext(), AttendeeEventActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                // Button to go to OrganizerEventActivity
+                builder.setNegativeButton("Go to Map(Organizer)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(getContext(), OrganizerEventActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                // Cancel button
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
         return root;
     }
+
+
 
     @Override
     public void onDestroyView() {

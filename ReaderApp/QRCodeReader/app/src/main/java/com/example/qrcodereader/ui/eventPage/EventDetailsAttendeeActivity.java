@@ -119,6 +119,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                             }
                         });
                 Toast.makeText(EventDetailsAttendeeActivity.this, "Signed up to event " + eventID, Toast.LENGTH_LONG).show();
+                finish();
             }
         });
 
