@@ -112,12 +112,44 @@ public class CreateEventActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        // Document was found in the collection
-                        Log.d("CreateEventActivity", "DocumentSnapshot data: " + document.getData());
-
-                        // Example of retrieving data from the document
                         userName = document.getString("name");
-                        // Now you can use userName or other user information as needed
+                        Timestamp timeOfEvent = new Timestamp(eventDateTime.getTime());
+                        EditText eventName = findViewById(R.id.event_name);
+
+                        // Create a new QR code for the event
+                        QRCode qrCode = new QRCode();
+
+                        // Create a new list of attendees for the event
+                        Map<String, Integer> attendees = new HashMap<>();
+
+
+                        // Add the new event to the database
+                        HashMap<String, Object> event = new HashMap<>();
+                        event.put("attendees", attendees);
+                        event.put("location", eventLocation);
+                        event.put("locationName", eventLocationName);
+                        event.put("name", eventName.getText().toString());
+                        event.put("organizer", userName);
+                        event.put("organizerID", deviceID);
+                        event.put("qrCode", qrCode.getString());
+                        event.put("time", timeOfEvent);
+
+                        eventsRef.add(event)
+                                .addOnSuccessListener(documentReference -> {
+                                    // This block will be executed if the document is successfully written to Firestore
+                                    Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
+                                    // Optionally, inform the user of success via UI, such as a Toast
+                                    Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
+                                    // You can finish the activity or clear the form here if desired
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // This block will be executed if there's an error during the write operation
+                                    Log.e("CreateEventActivity", "Error adding event", e);
+                                    // Optionally, inform the user of the failure via UI, such as a Toast
+                                    Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
+                                });
+                        finish();
 
                     } else {
                         // Document does not exist
@@ -129,50 +161,6 @@ public class CreateEventActivity extends AppCompatActivity {
                     Log.d("CreateEventActivity", "get failed with ", task.getException());
                 }
             });
-
-
-            Timestamp timeOfEvent = new Timestamp(eventDateTime.getTime());
-            EditText eventName = findViewById(R.id.event_name);
-            //EditText eventLocation = findViewById(R.id.event_location);
-
-            // Create a new QR code for the event
-            QRCode qrCode = new QRCode();
-
-            // Create a new list of attendees for the event
-            Map<String, Integer> attendees = new HashMap<>();
-
-            // Place holder for the location of the event
-            double latitude = 53.5461;
-            double longitude = 113.4938;
-            GeoPoint locationGeoPoint = new GeoPoint(latitude, longitude);
-
-            // Add the new event to the database
-            HashMap<String, Object> event = new HashMap<>();
-            event.put("attendees", attendees);
-            event.put("location", eventLocation);
-            event.put("locationName", eventLocationName);
-            event.put("name", eventName.getText().toString());
-            event.put("organizer", userName);
-            event.put("organizerID", deviceID);
-            event.put("qrCode", qrCode.getString());
-            event.put("time", timeOfEvent);
-            //eventsRef.add(event);
-
-            eventsRef.add(event)
-                    .addOnSuccessListener(documentReference -> {
-                        // This block will be executed if the document is successfully written to Firestore
-                        Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
-                        // Optionally, inform the user of success via UI, such as a Toast
-                        Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
-                        // You can finish the activity or clear the form here if desired
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        // This block will be executed if there's an error during the write operation
-                        Log.e("CreateEventActivity", "Error adding event", e);
-                        // Optionally, inform the user of the failure via UI, such as a Toast
-                        Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
-                    });
 
             finish();
 
