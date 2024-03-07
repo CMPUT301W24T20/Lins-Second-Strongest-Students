@@ -28,6 +28,8 @@
         </meta-data>
         <activity android:name=".MapView"
             android:exported="true" /><!-- change to false once path added -->
+        <activity android:name=".MapViewOrganizer"
+            android:exported="true" /><!-- change to false once path added -->
         <activity
             android:name=".ui.eventPage.CreateEventActivity"
             android:exported="false" />
