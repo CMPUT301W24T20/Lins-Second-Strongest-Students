@@ -1,4 +1,5 @@
-package com.example.qrcodereader.ui.eventPage;
+package com.example.qrcodereader.ui.admin;
+
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 
@@ -21,6 +22,7 @@ import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.CreateEventActivity;
+import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -41,7 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BrowseEventActivity extends AppCompatActivity {
+public class AdminEventActivity extends AppCompatActivity {
 
 
     private FirebaseFirestore db;
@@ -57,47 +59,20 @@ public class BrowseEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_browse_event);
+        setContentView(R.layout.activity_admin_event);
 
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
 
 
-        ListView eventList = findViewById(R.id.event_list_browse);
+        ListView eventList = findViewById(R.id.event_list);
         eventDataList = new ArrayList<>();
 
 
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
-
-//        eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot querySnapshots,
-//                                @Nullable FirebaseFirestoreException error) {
-//                if (error != null) {
-//                    Log.e("Firestore", error.toString());
-//                    return;
-//                }
-//                if (querySnapshots != null) {
-//                    eventDataList.clear();
-//                    for (QueryDocumentSnapshot doc: querySnapshots) {
-////                        Event event = doc.toObject(Event.class);
-//                        String eventID = doc.getId();
-//                        String name = doc.getString("name");
-//                        String organizer = doc.getString("organizer");
-//                        GeoPoint location = doc.getGeoPoint("location");
-//                        Timestamp time = doc.getTimestamp("time");
-//                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-//
-//                        Log.d("Firestore", "Event fetched");
-//                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
-//                    }
-//
-//                }
-//            }
-//        });
 
         fetchEvents();
 
@@ -127,7 +102,7 @@ public class BrowseEventActivity extends AppCompatActivity {
                 selectedEvent = eventDataList.get(position);
 
                 // Display a toast with the selected item
-                Intent detailIntent = new Intent(BrowseEventActivity.this, EventDetailsAttendeeActivity.class);
+                Intent detailIntent = new Intent(AdminEventActivity.this, EventDetailsAttendeeActivity.class);
                 detailIntent.putExtra("eventID", selectedEvent.getEventID());
                 startActivity(detailIntent);
             }
@@ -136,7 +111,7 @@ public class BrowseEventActivity extends AppCompatActivity {
 
 
 
-        Button returnButton = findViewById(R.id.return_button_browse);
+        Button returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
 
     }
