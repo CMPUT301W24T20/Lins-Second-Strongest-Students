@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,6 +21,13 @@ import com.example.qrcodereader.entity.QRCode;
 
 import com.example.qrcodereader.R;
 //import com.google.android.libraries.places.api.Places;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,8 +35,10 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -37,6 +47,8 @@ public class CreateEventActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private Calendar eventDateTime;
+    private GeoPoint eventLocation;
+    private EditText getLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +67,8 @@ public class CreateEventActivity extends AppCompatActivity {
         EditText eventTime = findViewById(R.id.event_time);
         eventTime.setOnClickListener(v -> showTimePickerDialog(eventTime));
 
+
+        eventLocation = new GeoPoint(1.0, 1.0);
         //Button generate_button = findViewById(R.id.generate_event_qr_button);
 
         /*
@@ -64,17 +78,28 @@ public class CreateEventActivity extends AppCompatActivity {
             intent.putExtra("qrCode", qrCode.getBitmap());
             startActivity(intent);
         }); */
-        /*
+
         if (!Places.isInitialized()) {
             String apiKey = getString(R.string.google_maps_api_key);
             Places.initialize(getApplicationContext(), apiKey);
-        }*/
+        }
+        PlacesClient placesClient = Places.createClient(this);
+
+        getLocation = findViewById(R.id.event_location);
+        getLocation.setOnClickListener(v -> {
+            List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).build(this);
+            // Start the activity for result
+            startActivityForResult(intent, 123);
+        });
+
+
 
         Button save_button = findViewById(R.id.save_button);
         save_button.setOnClickListener(v -> {
             Timestamp timeOfEvent = new Timestamp(eventDateTime.getTime());
             EditText eventName = findViewById(R.id.event_name);
-            EditText eventLocation = findViewById(R.id.event_location);
+            //EditText eventLocation = findViewById(R.id.event_location);
 
             // Create a new QR code for the event
             QRCode qrCode = new QRCode();
@@ -90,7 +115,7 @@ public class CreateEventActivity extends AppCompatActivity {
             // Add the new event to the database
             HashMap<String, Object> event = new HashMap<>();
             event.put("attendees", attendees);
-            event.put("location", locationGeoPoint);
+            event.put("location", eventLocation);
             event.put("name", eventName.getText().toString());
             event.put("organizer", "EricTheGoat");
             event.put("qrCode", qrCode.getString());
@@ -162,5 +187,18 @@ public class CreateEventActivity extends AppCompatActivity {
                     eventTime.setText(timeFormat.format(eventDateTime.getTime()));
                 }, hour, minute, true);
         timePickerDialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 123) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                eventLocation = new GeoPoint(place.getLatLng().latitude, place.getLatLng().longitude);
+                getLocation.setText(place.getName());
+            }
+        }
     }
 }
