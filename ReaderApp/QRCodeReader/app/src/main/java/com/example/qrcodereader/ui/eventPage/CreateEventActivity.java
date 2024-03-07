@@ -112,7 +112,6 @@ public class CreateEventActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        // Example of retrieving data from the document
                         userName = document.getString("name");
                         Timestamp timeOfEvent = new Timestamp(eventDateTime.getTime());
                         EditText eventName = findViewById(R.id.event_name);
@@ -150,7 +149,6 @@ public class CreateEventActivity extends AppCompatActivity {
                                     // Optionally, inform the user of the failure via UI, such as a Toast
                                     Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
                                 });
-
                         finish();
 
                     } else {
