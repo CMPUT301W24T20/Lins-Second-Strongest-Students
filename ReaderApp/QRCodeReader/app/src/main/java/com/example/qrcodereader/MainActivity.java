@@ -6,9 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +13,9 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.provider.Settings;
 
-import java.util.concurrent.ExecutionException;
-import android.Manifest;
-
 import com.example.qrcodereader.entity.User;
+import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
-import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,9 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.example.qrcodereader.ui.profile.ProfileFragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.Priority;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -41,17 +32,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.qrcodereader.databinding.ActivityMainBinding;
-import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
-import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -64,6 +50,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -270,6 +257,58 @@ public class MainActivity extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+
+        final boolean[] isAdmin = {false};
+        db.collection("administrator")
+                .document(deviceID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+                        // The user ID exists in the "administrator" collection
+                        isAdmin[0] = true;
+                    }
+                })
+                .addOnFailureListener(e -> {
+
+                });
+
+        Button adminButton = findViewById(R.id.admin_button);
+        adminButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                if (isAdmin[0]) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                    builder.setTitle("Choose Action (Click Outside to Cancel)");
+
+                    // Button to go to AttendeeEventActivity
+                    builder.setPositiveButton("View Events", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(MainActivity.this, AdminEventActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    // Button to go to OrganizerEventActivity
+                    builder.setNegativeButton("View Profiles", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    // Cancel button
+                    builder.setNeutralButton("View Pictures", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Not An Admin. No Access.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
