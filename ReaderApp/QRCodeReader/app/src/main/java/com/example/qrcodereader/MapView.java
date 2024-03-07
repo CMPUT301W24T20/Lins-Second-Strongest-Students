@@ -2,10 +2,13 @@ package com.example.qrcodereader;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,6 +55,14 @@ public class MapView extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.gmaps);
         mapFragment.getMapAsync(this);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        Button buttonBackToMain = findViewById(R.id.buttonBackToMain);
+        buttonBackToMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapView.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
