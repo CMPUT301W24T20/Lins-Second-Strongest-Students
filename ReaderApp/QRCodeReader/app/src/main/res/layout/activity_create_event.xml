@@ -6,93 +6,97 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.eventPage.CreateEventActivity">
-
-    <EditText
-        android:id="@+id/event_date"
-        android:layout_width="314dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="12dp"
-        android:focusable="false"
-        android:hint="Select Date"
-        app:layout_constraintBottom_toTopOf="@+id/event_time"
-        tools:layout_editor_absoluteX="16dp" />
-
-    <EditText
-        android:id="@+id/event_time"
-        android:layout_width="316dp"
-        android:layout_height="44dp"
-        android:layout_marginBottom="170dp"
-        android:focusable="false"
-        android:hint="Select Time"
-        app:layout_constraintBottom_toTopOf="@+id/save_button"
-        tools:layout_editor_absoluteX="16dp" />
-
-    <Button
-        android:id="@+id/cancel_button"
-        android:layout_width="373dp"
-        android:layout_height="42dp"
-        android:layout_marginBottom="15dp"
-        android:text="Cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.421"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/save_button"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/save_button"
-        android:layout_width="372dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="64dp"
-        android:text="Create Event"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.41"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/attendee_limit"
-        android:layout_width="314dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="7dp"
-        android:ems="10"
-        android:hint="@string/enter_the_number_of_attendees"
-        android:inputType="number"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/event_name"
-        tools:layout_editor_absoluteX="16dp" />
-
+    <LinearLayout
+        android:paddingTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
     <TextView
         android:id="@+id/textView"
-        android:layout_width="329dp"
-        android:layout_height="83dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Create Event"
-        android:textAlignment="center"
+        android:gravity="center"
+        android:padding="20dp"
         android:textSize="48sp"
-        tools:layout_editor_absoluteX="41dp"
-        tools:layout_editor_absoluteY="46dp" />
+        />
 
     <EditText
         android:id="@+id/event_name"
-        android:layout_width="316dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="49dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="25sp"
         android:ems="10"
         android:hint="Event name"
         android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:layout_editor_absoluteX="16dp" />
 
     <EditText
         android:id="@+id/event_location"
-        android:layout_width="316dp"
-        android:layout_height="42dp"
-        android:layout_marginBottom="282dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
         android:ems="10"
         android:hint="Location"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/save_button"
         tools:layout_editor_absoluteX="16dp" />
+
+
+    <EditText
+        android:id="@+id/attendee_limit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:ems="10"
+        android:hint="@string/enter_the_number_of_attendees"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <EditText
+        android:id="@+id/event_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:focusable="false"
+        android:hint="Select Date"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <EditText
+        android:id="@+id/event_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:focusable="false"
+        android:hint="Select Time"
+        tools:layout_editor_absoluteX="16dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Create Event"
+            android:layout_gravity="bottom"
+            />
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Cancel"
+            android:layout_gravity="bottom"/>
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
