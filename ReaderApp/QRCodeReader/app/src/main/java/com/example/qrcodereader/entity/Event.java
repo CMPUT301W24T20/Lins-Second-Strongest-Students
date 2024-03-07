@@ -15,6 +15,7 @@ public class Event {
     private String name;
     private QRCode qrCode;
     private Map<String, Long> attendees;
+    private String locationName;
 
     public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime) {
         this.time = eventTime;
@@ -34,6 +35,15 @@ public class Event {
         this.organizer = organizer;
         this.qrCode = qrCode;
         this.attendees =  new HashMap<String, Long>();
+    }
+
+    public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime, String locationName) {
+        this.time = eventTime;
+        this.eventID = id;
+        this.location = eventLocation;
+        this.name = name;
+        this.organizer = organizer;
+        this.locationName = locationName;
     }
 
     public String getEventID() {
@@ -77,4 +87,11 @@ public class Event {
     }
 
     public void addAttendee() {}
+
+    public String getLocationName() {
+        if (locationName == null) {
+            return location.toString();
+        }
+        return locationName;
+    }
 }

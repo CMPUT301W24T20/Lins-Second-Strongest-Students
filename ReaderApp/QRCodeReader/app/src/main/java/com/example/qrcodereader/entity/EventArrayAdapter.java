@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.example.qrcodereader.R;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 
@@ -47,8 +49,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         organizerName.setText(event.getOrganizer());
 
         GeoPoint geoPoint = event.getLocation();
+
         // Handle no location object
-        String locationString = (geoPoint != null) ? geoPoint.toString() : "No location";
+        //String locationString = (geoPoint != null) ? geoPoint.toString() : "No location";
+        String locationString = (event.getLocationName() != null) ? event.getLocationName() : "No location";
         locationName.setText(locationString);
 
         return view;
@@ -56,6 +60,11 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
 
     public void addEvent(String eventID, String name, String organizer, GeoPoint location, Timestamp time) {
         events.add(new Event(eventID, name, organizer, location, time));
+        notifyDataSetChanged();
+    }
+
+    public void addEvent(String eventID, String name, String organizer, GeoPoint location, Timestamp time, String locationName) {
+        events.add(new Event(eventID, name, organizer, location, time, locationName));
         notifyDataSetChanged();
     }
 }
