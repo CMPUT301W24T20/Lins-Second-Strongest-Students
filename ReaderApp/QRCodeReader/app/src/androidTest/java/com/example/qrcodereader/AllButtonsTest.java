@@ -10,7 +10,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 
-import static org.hamcrest.CoreMatchers.is;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.intent.Intents;
@@ -19,7 +18,6 @@ import androidx.test.rule.GrantPermissionRule;
 
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
-import com.example.qrcodereader.ui.profile.ProfileFragment;
 
 import org.junit.After;
 import org.junit.Before;
