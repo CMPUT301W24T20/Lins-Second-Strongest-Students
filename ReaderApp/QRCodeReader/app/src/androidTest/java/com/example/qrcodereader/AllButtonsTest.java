@@ -1,9 +1,7 @@
 package com.example.qrcodereader;
 
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -12,20 +10,16 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
+import com.example.qrcodereader.ui.profile.ProfileFragment;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,7 +30,7 @@ import org.junit.runner.RunWith;
 
 
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest {
+public class AllButtonsTest {
 
     @Rule
     public GrantPermissionRule grantLocationPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
@@ -56,12 +50,16 @@ public class MainActivityTest {
 
     @Test
     public void testProfileButtonOnClick() {
-        // Perform a click on the profile button
+        // Launch your Activity under test
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+
+        // Use Espresso to perform a click on the profile button
         onView(withId(R.id.profile_button)).perform(click());
 
-        // Verify that OrganizerEventActivity is started
-        intended(hasComponent(OrganizerEventActivity.class.getName()));
+        // Now use Espresso to check if the DialogFragment is displayed
+        onView(withText("Location Access")).check(matches(isDisplayed()));
     }
+
 
     @Test
     public void testEventsButtonOnClick() {
