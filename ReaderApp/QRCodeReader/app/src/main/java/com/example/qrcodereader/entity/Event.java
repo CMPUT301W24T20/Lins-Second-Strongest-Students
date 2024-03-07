@@ -17,7 +17,9 @@ public class Event {
     private String organizer;
     private String organizerID;
     private QRCode qrCode;
+    private int attendeeLimit; // -1: no limit, else limit is the number that the organizer entered
     private Map<String, Long> attendees;
+
 
     public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime) {
         this.time = eventTime;
@@ -39,15 +41,6 @@ public class Event {
         this.attendees =  new HashMap<String, Long>();
     }
 
-    public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime, String locationName) {
-        this.time = eventTime;
-        this.eventID = id;
-        this.location = eventLocation;
-        this.name = name;
-        this.organizer = organizer;
-        this.locationName = locationName;
-    }
-
     public Event(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode,Map<String, Long> attendees) {
         this.eventID = id;
         this.name = name;
@@ -57,6 +50,20 @@ public class Event {
         this.organizer = organizer;
         this.organizerID = organizerID;
         this.qrCode = qrCode;
+        this.attendeeLimit = -1;
+        this.attendees = attendees;
+    }
+
+    public Event(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, int attendeeLimit, Map<String, Long> attendees) {
+        this.eventID = id;
+        this.name = name;
+        this.location = location;
+        this.locationName = locationName;
+        this.time = time;
+        this.organizer = organizer;
+        this.organizerID = organizerID;
+        this.qrCode = qrCode;
+        this.attendeeLimit = attendeeLimit;
         this.attendees = attendees;
     }
 
@@ -109,6 +116,18 @@ public class Event {
 
 
     public void addAttendee() {}
+    public int getAttendeeLimit() {
+        return attendeeLimit;
+    }
+
+    public boolean isFull() {
+        // -1 means no limit, so the event is never full
+        // else, the number of attendees is compared to the limit
+        if (attendeeLimit == -1) {
+            return false;
+        }
+        else return attendees.size() >= attendeeLimit;
+    }
 
     public String getLocationName() {
         if (locationName == null) {
