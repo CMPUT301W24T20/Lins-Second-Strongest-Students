@@ -22,6 +22,7 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
@@ -37,6 +38,9 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
 
+    @Rule
+    public GrantPermissionRule grantLocationPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
+
     @Before
     public void setUp() {
         ActivityScenario.launch(MainActivity.class);
@@ -47,6 +51,8 @@ public class MainActivityTest {
     public void tearDown() {
         Intents.release(); // Release Espresso-Intents
     }
+
+
 
     @Test
     public void testProfileButtonOnClick() {
@@ -71,6 +77,9 @@ public class MainActivityTest {
         // Verify that AttendeeEventActivity is started
         intended(hasComponent(AttendeeEventActivity.class.getName()));
 
+        //Click the return button
+        onView(withId(R.id.return_button_attendee)).perform(click());
+
         // Perform a click on the events button again
         onView(withId(R.id.my_event_button)).perform(click());
 
@@ -80,5 +89,7 @@ public class MainActivityTest {
         // Verify that OrganizerEventActivity is started
         intended(hasComponent(OrganizerEventActivity.class.getName()));
     }
+
+
 
 }

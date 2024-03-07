@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -33,6 +34,7 @@
         <activity android:name=".ui.eventPage.OrganizerEventActivity"/>
         <activity android:name=".ui.eventPage.AttendeeEventActivity"/>
         <activity android:name=".ui.eventPage.BrowseEventActivity"/>
+        <activity android:name=".ui.eventPage.EventDetailsOrganizerActivity"/>
         <activity
             android:name=".DisplayQRCode"
             android:exported="false" />
@@ -56,12 +58,16 @@
 <!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>-->
 <!--            </intent-filter>-->
 <!--        </service>-->
-<!--        <service-->
-<!--            android:name=".MyFirebaseMessagingService">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.MESSAGING_EVENT"/>-->
-<!--            </intent-filter>-->
-<!--        </service>-->
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id"/>
     </application>
 
 </manifest>
