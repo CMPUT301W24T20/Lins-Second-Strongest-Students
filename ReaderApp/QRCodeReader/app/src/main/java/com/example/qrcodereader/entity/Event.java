@@ -56,6 +56,10 @@ public class Event {
         return name;
     }
 
+    public Map<String, Long> getAttendees() {
+        return attendees;
+    }
+
     public void setEventID(String eventID) {
         this.eventID = eventID;
     }
@@ -75,6 +79,7 @@ public class Event {
     public void setEventName(String name) {
         this.name = name;
     }
+
 
     public void addAttendee() {}
 }
