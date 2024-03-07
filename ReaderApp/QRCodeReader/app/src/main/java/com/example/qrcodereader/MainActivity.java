@@ -226,8 +226,6 @@ public class MainActivity extends AppCompatActivity {
             builder.setNegativeButton("Go to Your Event Page (Organizer)", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
-                    intent.putExtra("userID", user.getUserID());
-                    intent.putExtra("userName", user.getName());
                     startActivity(intent);
                 }
             });
