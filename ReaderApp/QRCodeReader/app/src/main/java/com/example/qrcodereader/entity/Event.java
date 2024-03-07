@@ -17,7 +17,9 @@ public class Event {
     private String organizer;
     private String organizerID;
     private QRCode qrCode;
+    private int attendeeLimit;
     private Map<String, Long> attendees;
+
 
     public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime) {
         this.time = eventTime;
@@ -57,6 +59,20 @@ public class Event {
         this.organizer = organizer;
         this.organizerID = organizerID;
         this.qrCode = qrCode;
+        this.attendeeLimit = -1;
+        this.attendees = attendees;
+    }
+
+    public Event(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, int attendeeLimit, Map<String, Long> attendees) {
+        this.eventID = id;
+        this.name = name;
+        this.location = location;
+        this.locationName = locationName;
+        this.time = time;
+        this.organizer = organizer;
+        this.organizerID = organizerID;
+        this.qrCode = qrCode;
+        this.attendeeLimit = attendeeLimit;
         this.attendees = attendees;
     }
 
@@ -109,6 +125,18 @@ public class Event {
 
 
     public void addAttendee() {}
+    public int getAttendeeLimit() {
+        return attendeeLimit;
+    }
+
+    public boolean isFull() {
+        if (attendees.size() >= attendeeLimit) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     public String getLocationName() {
         if (locationName == null) {
