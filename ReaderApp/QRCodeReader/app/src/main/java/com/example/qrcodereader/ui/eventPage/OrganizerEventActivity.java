@@ -66,58 +66,48 @@ public class OrganizerEventActivity extends AppCompatActivity {
 
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        CollectionReference usersRef = db.collection("users");
-        DocumentReference userDocRef = usersRef.document(deviceID);
+        eventsRef.whereEqualTo("organizerID", deviceID)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot querySnapshots,
+                                        @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.e("Firestore", error.toString());
+                            return;
+                        }
+                        if (querySnapshots != null) {
+                            eventDataList.clear();
+                            for (QueryDocumentSnapshot doc: querySnapshots) {
+                                String eventID = doc.getId();
+                                String name = doc.getString("name");
+                                GeoPoint location = doc.getGeoPoint("location");
 
-        userDocRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    eventsRef.whereEqualTo("organizer", username)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot querySnapshots,
-                                                    @Nullable FirebaseFirestoreException error) {
-                                    if (error != null) {
-                                        Log.e("Firestore", error.toString());
-                                        return;
-                                    }
-                                    if (querySnapshots != null) {
-                                        eventDataList.clear();
-                                        for (QueryDocumentSnapshot doc: querySnapshots) {
-                                            String eventID = doc.getId();
-                                            String name = doc.getString("name");
-                                            GeoPoint location = doc.getGeoPoint("location");
-
-                                            String locationName;
-                                            if (doc.getString("locationName") != null) {
-                                                locationName = doc.getString("locationName");
-                                            } else {
-                                                locationName  = "No location";
-                                            }
-
-                                            Timestamp time = doc.getTimestamp("time");
-                                            String organizer = doc.getString("organizer");
-
-                                            String organizerID = doc.getString("organizerID");
-                                            if (organizerID == null) {
-                                                organizerID = "No organizer ID";
-                                            }
-                                            String qrCodeString = doc.getString("qrCode");
-                                            QRCode qrCode = new QRCode(qrCodeString);
-
-                                            Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-
-                                            Log.d("Firestore", "Event fetched");
-                                            Toast.makeText(OrganizerEventActivity.this, "Event fetched", Toast.LENGTH_SHORT).show();
-                                            eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendees);
-                                        }
-                                    }
+                                String locationName;
+                                if (doc.getString("locationName") != null) {
+                                    locationName = doc.getString("locationName");
+                                } else {
+                                    locationName  = "No location";
                                 }
-                            });
-                }
-            }
-        });
+
+                                Timestamp time = doc.getTimestamp("time");
+                                String organizer = doc.getString("organizer");
+
+                                String organizerID = doc.getString("organizerID");
+                                if (organizerID == null) {
+                                    organizerID = "No organizer ID";
+                                }
+                                String qrCodeString = doc.getString("qrCode");
+                                QRCode qrCode = new QRCode(qrCodeString);
+
+                                Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+
+                                Log.d("Firestore", "Event fetched");
+                                Toast.makeText(OrganizerEventActivity.this, "Event fetched", Toast.LENGTH_SHORT).show();
+                                eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendees);
+                            }
+                        }
+                    }
+                });
 
         Button createEventButton = findViewById(R.id.create_event_button);
         createEventButton.setOnClickListener(v -> {
