@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -25,11 +26,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -43,15 +46,13 @@ public class BrowseEventActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
-    private DocumentReference docRefUser;
-    private DocumentReference docRefEvent;
     private Event selectedEvent = null;
+    private boolean isFetching = false;
+    private static final int PAGE_SIZE = 10;
+    private DocumentSnapshot lastVisible;
+    private ArrayList<Event> eventDataList;
+    private EventArrayAdapter eventArrayAdapter;
 
-//    private void addNewEvent(Event event) {
-//        HashMap<String, String> data = new HashMap<>(); // Add the other attributes in the right order to the HashMap
-//        data.put("Organizer", event.getOrganizer()); // Add the other attributes in the right order to the HashMap
-//        eventsRef.add(data);
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,49 +60,65 @@ public class BrowseEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browse_event);
 
 
-        Intent intent = getIntent();
-        String userid = getIntent().getStringExtra("userID");
-
-
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
-        docRefUser = db.collection("users").document(userid);
 
 
         ListView eventList = findViewById(R.id.event_list_browse);
-        ArrayList<Event> eventDataList = new ArrayList<>();
+        eventDataList = new ArrayList<>();
 
 
-        EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
+        eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
 
-        eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot querySnapshots,
-                                @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    Log.e("Firestore", error.toString());
-                    return;
-                }
-                if (querySnapshots != null) {
-                    eventDataList.clear();
-                    for (QueryDocumentSnapshot doc: querySnapshots) {
-//                        Event event = doc.toObject(Event.class);
-                        String eventID = doc.getId();
-                        String name = doc.getString("name");
-                        String organizer = doc.getString("organizer");
-                        GeoPoint location = doc.getGeoPoint("location");
-                        Timestamp time = doc.getTimestamp("time");
+//        eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot querySnapshots,
+//                                @Nullable FirebaseFirestoreException error) {
+//                if (error != null) {
+//                    Log.e("Firestore", error.toString());
+//                    return;
+//                }
+//                if (querySnapshots != null) {
+//                    eventDataList.clear();
+//                    for (QueryDocumentSnapshot doc: querySnapshots) {
+////                        Event event = doc.toObject(Event.class);
+//                        String eventID = doc.getId();
+//                        String name = doc.getString("name");
+//                        String organizer = doc.getString("organizer");
+//                        GeoPoint location = doc.getGeoPoint("location");
+//                        Timestamp time = doc.getTimestamp("time");
 //                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+//
+//                        Log.d("Firestore", "Event fetched");
+//                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
+//                    }
+//
+//                }
+//            }
+//        });
 
-                        Log.d("Firestore", "Event fetched");
-                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
-                    }
+        fetchEvents();
 
+        eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                // You can implement custom behavior on scroll state change if necessary
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                // Load more items if we've reached the bottom
+                if (!isFetching && (firstVisibleItem + visibleItemCount >= totalItemCount)) {
+                    fetchEvents();
                 }
             }
         });
+
+        // ... (the rest of your existing code for setting onClickListeners)
+
+
 
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -110,58 +127,56 @@ public class BrowseEventActivity extends AppCompatActivity {
                 selectedEvent = eventDataList.get(position);
 
                 // Display a toast with the selected item
-                Toast.makeText(BrowseEventActivity.this, "You clicked: " + selectedEvent.getEventName(), Toast.LENGTH_SHORT).show();
+                Intent detailIntent = new Intent(BrowseEventActivity.this, EventDetailsAttendeeActivity.class);
+                detailIntent.putExtra("eventID", selectedEvent.getEventID());
+                startActivity(detailIntent);
             }
         });
 
-        Button SignUpButton = findViewById(R.id.sign_up_button);
-        SignUpButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Object> newEvent = new HashMap<>();
-                newEvent.put("eventsAttended." + selectedEvent.getEventID(), 0);
-                docRefUser.update(newEvent)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // Document updated successfully
-                                Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Update failed
-                                Log.w("Firestore", "Error updating document", e);
-                            }
-                        });
-
-                docRefEvent = db.collection("events").document(selectedEvent.getEventID());
-                Map<String, Object> newAttendee = new HashMap<>();
-                newAttendee.put("attendees." + userid, 0);
-                docRefEvent.update(newAttendee)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // Document updated successfully
-                                Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Update failed
-                                Log.w("Firestore", "Error updating document", e);
-                            }
-                        });
-                Toast.makeText(BrowseEventActivity.this, "Signed up to event " + selectedEvent.getEventName(), Toast.LENGTH_LONG).show();
-            }
-        });
 
 
 
         Button returnButton = findViewById(R.id.return_button_browse);
         returnButton.setOnClickListener(v -> finish());
 
+    }
+
+    private void fetchEvents() {
+        // Prevents fetching new data if previous request is still in progress
+        if (isFetching) {
+            return;
+        }
+
+        isFetching = true;
+
+        Query query = eventsRef.orderBy("time", Query.Direction.DESCENDING).limit(PAGE_SIZE);
+        if (lastVisible != null) {
+            query = query.startAfter(lastVisible);
+        }
+
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if (!queryDocumentSnapshots.isEmpty()) {
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        // Assuming Event class has a constructor matching this data
+                        Event event = new Event(doc.getId(), doc.getString("name"),
+                                doc.getString("organizer"), doc.getGeoPoint("location"),
+                                doc.getTimestamp("time"));
+                        eventDataList.add(event);
+                    }
+                    eventArrayAdapter.notifyDataSetChanged();
+                    int lastIndexOfQuery = queryDocumentSnapshots.size() - 1;
+                    lastVisible = queryDocumentSnapshots.getDocuments().get(lastIndexOfQuery);
+                }
+                isFetching = false;
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                isFetching = false;
+                Log.e("Firestore", "Error fetching events", e);
+            }
+        });
     }
 }

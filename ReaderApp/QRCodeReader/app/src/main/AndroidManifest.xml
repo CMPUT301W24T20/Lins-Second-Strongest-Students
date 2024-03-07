@@ -34,6 +34,8 @@
         <activity android:name=".ui.eventPage.OrganizerEventActivity"/>
         <activity android:name=".ui.eventPage.AttendeeEventActivity"/>
         <activity android:name=".ui.eventPage.BrowseEventActivity"/>
+        <activity android:name=".ui.eventPage.EventDetailsOrganizerActivity"/>
+        <activity android:name=".ui.eventPage.EventDetailsAttendeeActivity"/>
         <activity
             android:name=".DisplayQRCode"
             android:exported="false" />
