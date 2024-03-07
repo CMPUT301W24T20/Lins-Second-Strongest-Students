@@ -75,23 +75,21 @@ public class EventArrayAdapterTest {
         Timestamp timeStamp = Timestamp.now();
         adapter.addEvent(eventID, name, organizer, location, timeStamp);
 
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        String latitudeString = "latitude=" + latitude;
-        String longitudeString = "longitude=" + longitude;
+        // Create an Event object with the same details
+        Event event = new Event(eventID, name, organizer, location, timeStamp);
+
+        String locationNameExpected = (event.getLocationName() != null) ? event.getLocationName() : "No location";
 
         // Check that the event was added to the adapter
         assertEquals(1, adapter.getCount());
-
 
         // Check that the event details are displayed correctly
         View view = adapter.getView(0, null, new ListView(context));
         assertEquals(name, ((TextView) view.findViewById(R.id.event_text)).getText().toString());
         assertEquals(organizer, ((TextView) view.findViewById(R.id.organizer_text)).getText().toString());
-        assertTrue(((TextView) view.findViewById(R.id.event_location_text)).getText().toString().contains(latitudeString));
-        assertTrue(((TextView) view.findViewById(R.id.event_location_text)).getText().toString().contains(longitudeString));
-
+        assertEquals(locationNameExpected, ((TextView) view.findViewById(R.id.event_location_text)).getText().toString());
     }
+
 
 
 
