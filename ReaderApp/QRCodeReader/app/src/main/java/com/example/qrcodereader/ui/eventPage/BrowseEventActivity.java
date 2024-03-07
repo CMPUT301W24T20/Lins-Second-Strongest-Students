@@ -43,15 +43,8 @@ public class BrowseEventActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
-    private DocumentReference docRefUser;
-    private DocumentReference docRefEvent;
     private Event selectedEvent = null;
 
-//    private void addNewEvent(Event event) {
-//        HashMap<String, String> data = new HashMap<>(); // Add the other attributes in the right order to the HashMap
-//        data.put("Organizer", event.getOrganizer()); // Add the other attributes in the right order to the HashMap
-//        eventsRef.add(data);
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +52,8 @@ public class BrowseEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browse_event);
 
 
-        Intent intent = getIntent();
-        String userid = getIntent().getStringExtra("userID");
-
-
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
-        docRefUser = db.collection("users").document(userid);
 
 
         ListView eventList = findViewById(R.id.event_list_browse);
@@ -110,53 +98,12 @@ public class BrowseEventActivity extends AppCompatActivity {
                 selectedEvent = eventDataList.get(position);
 
                 // Display a toast with the selected item
-                Toast.makeText(BrowseEventActivity.this, "You clicked: " + selectedEvent.getEventName(), Toast.LENGTH_SHORT).show();
+                Intent detailIntent = new Intent(BrowseEventActivity.this, EventDetailsAttendeeActivity.class);
+                detailIntent.putExtra("eventID", selectedEvent.getEventID());
+                startActivity(detailIntent);
             }
         });
 
-        Button SignUpButton = findViewById(R.id.sign_up_button);
-        SignUpButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Object> newEvent = new HashMap<>();
-                newEvent.put("eventsAttended." + selectedEvent.getEventID(), 0);
-                docRefUser.update(newEvent)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // Document updated successfully
-                                Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Update failed
-                                Log.w("Firestore", "Error updating document", e);
-                            }
-                        });
-
-                docRefEvent = db.collection("events").document(selectedEvent.getEventID());
-                Map<String, Object> newAttendee = new HashMap<>();
-                newAttendee.put("attendees." + userid, 0);
-                docRefEvent.update(newAttendee)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // Document updated successfully
-                                Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Update failed
-                                Log.w("Firestore", "Error updating document", e);
-                            }
-                        });
-                Toast.makeText(BrowseEventActivity.this, "Signed up to event " + selectedEvent.getEventName(), Toast.LENGTH_LONG).show();
-            }
-        });
 
 
 
