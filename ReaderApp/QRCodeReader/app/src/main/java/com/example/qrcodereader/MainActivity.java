@@ -3,15 +3,18 @@ package com.example.qrcodereader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import android.provider.Settings;
 
-import java.util.concurrent.ExecutionException;
+import java.io.ByteArrayOutputStream;
+
 import android.Manifest;
 
 import com.example.qrcodereader.entity.User;
@@ -23,11 +26,14 @@ import com.example.qrcodereader.ui.profile.ProfileFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,11 +44,13 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.qrcodereader.databinding.ActivityMainBinding;
-import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
-import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.StorageReference;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,12 +58,13 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefUser;
     private User user;
     private FusedLocationProviderClient fusedLocationClient;
+
+    private StorageReference storageReference;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -71,16 +80,19 @@ public class MainActivity extends AppCompatActivity {
 
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        Bundle bundle = new Bundle();
+
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events1");
 
         docRefUser = db.collection("users1").document(deviceID);
         docRefUser.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                DocumentSnapshot UserField = task.getResult();
                 if (task.getResult().exists()) {
                     // Document exists, user is in the collection
                     Log.d("Firestore", "User exists in the collection.");
-                    Toast.makeText(this, "Signed in", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(this, "Signed in", Toast.LENGTH_LONG).show();
                 } else {
                     // Document does not exist, user is not in the collection
                     Log.d("Firestore", "User does not exist in the collection.");
@@ -99,20 +111,44 @@ public class MainActivity extends AppCompatActivity {
             if (documentSnapshot.exists()) {
                 String userName = documentSnapshot.getString("name");
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
-                user = new User(deviceID, userName, eventsAttended);
+//                GeoPoint location = documentSnapshot.getGeoPoint("location");
+                user = new User(deviceID, userName, null);
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
+                Log.d("Firestore", "Successfully fetch document: ");
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
 
 
-        Location Linlocation = new Location("provider");
-        Linlocation.setLatitude(61.0137);
-        Linlocation.setLongitude(99.1967);
-        User user = new User(deviceID, "Guohui Lin", Linlocation);
-        Intent intent = new Intent(this, BrowseEventActivity.class);
-        intent.putExtra("user", user);
+        CollectionReference ColRefPic = db.collection("DefaultProfilePics");
+        int index = (user.getName().length() % 4)+1;
+        String P = "P"+index;
+
+        ColRefPic.document("P4").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+                        // Get the value of the string field
+                        String imageURL = document.getString("URL");
+                        Map<String, Object> DefaultProfile = new HashMap<>();
+                        DefaultProfile.put("URL", imageURL);
+                        docRefUser.set(DefaultProfile);
+
+                        user.setProfilePicture(imageURL);
+                        Toast.makeText(MainActivity.this, "Image URL: " + imageURL, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.d("Firestore", "No such document");
+                        Toast.makeText(MainActivity.this, "No such document", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.e("Firestore", "Error getting document", task.getException());
+                    Toast.makeText(MainActivity.this, "Error getting document: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -125,13 +161,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        // I'm working on this part - Duy
+        // retrieve user's name from DB
+        // String userName = task.getResult().getString("name");
+
         Button profile_button = findViewById(R.id.profile_button);
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bundle.putString("UserName", user.getName());
-                bundle.putBoolean("LocationAccess", user.getAccess());
+                bundle.putString("profile_picture", user.getProfilePicture());
                 ProfileFragment listfrag = new ProfileFragment();
                 listfrag.setArguments(bundle);
                 listfrag.show(getSupportFragmentManager(), "Profile Page");
@@ -193,5 +231,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 }

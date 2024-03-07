@@ -37,9 +37,12 @@ android {
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation ("com.google.firebase:firebase-firestore-ktx:24.10.3")
     implementation("com.firebase:firebase-client-android:2.5.2")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
+    implementation ("com.google.firebase:firebase-storage:20.3.0")
+
     implementation("androidx.activity:activity:1.8.2")
     implementation("com.google.firebase:firebase-messaging:23.4.1")
     debugImplementation("androidx.fragment:fragment-testing:1.6.2")
@@ -71,4 +74,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
     //implementation("com.google.android.libraries.places:places:2.4.0")
+
+    implementation ("com.squareup.picasso:picasso:2.8")
 }

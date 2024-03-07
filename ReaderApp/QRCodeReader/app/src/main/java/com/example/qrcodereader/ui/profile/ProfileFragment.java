@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,12 +30,15 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
+import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends DialogFragment {
-    private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;
-
     private ImageView Picture;
+
+    public interface ProfileFragmentListener {
+        void setChanges(String name, String contact, String Upload);
+    }
 
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -50,7 +54,8 @@ public class ProfileFragment extends DialogFragment {
         Bundle bundle = getArguments();
 
         ETname.setText(bundle.getString("UserName"));
-
+        String URL = bundle.getString("profile_picture");
+        Picasso.get().load(URL).resize(100, 100).centerInside().into(Picture);
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,13 +65,12 @@ public class ProfileFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view)
-                .setTitle("Location Access")
+                .setTitle("Profile")
                 .setNegativeButton("Cancel", null) // do nothing and close
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // manipulate locationAccess field in DB
-//                        updatelocationAccess(locationSwitch.isChecked());
                     }
                 });
 
@@ -85,7 +89,7 @@ public class ProfileFragment extends DialogFragment {
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 Picture.setImageURI(selectedImageUri); // Set the image directly from URI
-                // maybe also associate it in DB
+
             }
         }
     }
