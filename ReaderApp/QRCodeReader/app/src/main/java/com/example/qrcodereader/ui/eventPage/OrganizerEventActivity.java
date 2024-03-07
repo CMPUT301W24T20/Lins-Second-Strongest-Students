@@ -84,20 +84,19 @@ public class OrganizerEventActivity extends AppCompatActivity {
                         String name = doc.getString("name");
                         String organizer = doc.getString("organizer");
                         GeoPoint location = doc.getGeoPoint("location");
+
                         Timestamp time = doc.getTimestamp("time");
                         Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
-                        /*
-                        if (doc.exists() && doc.contains("attendees") && doc.get("attendees") != null) {
-                            Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-
+                        String locationName;
+                        if (doc.exists() && doc.contains("locationName") && doc.getString("locationName") != null) {
+                            locationName = doc.getString("locationName");
                         } else {
-
-                            Log.d("TAG", "'attendees' field is missing or null.");
-                        }*/
+                            locationName  = "No location";
+                        }
 
                         Log.d("Firestore", "Event fetched");
-                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
+                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time, locationName);
                     }
                 }
             }
