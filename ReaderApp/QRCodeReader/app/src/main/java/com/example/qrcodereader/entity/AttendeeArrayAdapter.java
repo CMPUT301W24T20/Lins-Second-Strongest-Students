@@ -35,10 +35,16 @@ public class AttendeeArrayAdapter extends ArrayAdapter<Map.Entry<String, Long>> 
 
         TextView attendeeIdTextView = convertView.findViewById(R.id.attendee_id);
         TextView attendeeNumberTextView = convertView.findViewById(R.id.attendee_number);
+        TextView attendeeCheckTextView = convertView.findViewById(R.id.attendee_check);
 
         if (attendee != null) {
             attendeeIdTextView.setText(attendee.getKey());
             attendeeNumberTextView.setText(String.valueOf(attendee.getValue()));
+            if (attendee.getValue() > 0) {
+                attendeeCheckTextView.setText("Yes");
+            } else {
+                attendeeCheckTextView.setText("No");
+            }
         }
 
         return convertView;
