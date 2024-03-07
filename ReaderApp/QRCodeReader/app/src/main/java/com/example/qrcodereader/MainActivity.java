@@ -179,25 +179,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button MyEventButton = findViewById(R.id.my_event_button);
-        MyEventButton.setOnClickListener(new View.OnClickListener() {
-                                             @Override
-             public void onClick(View v) {
-                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-                 builder.setTitle("Choose an action");
-
-                 // Button to go to AttendeeEventActivity
-                 builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
-                     public void onClick(DialogInterface dialog, int id) {
-                         Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
-                         intent.putExtra("user", user);
-                         startActivity(intent);
-
-                     }
-                 });
-             }
-         });
 
         //Notification Channel
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -224,60 +206,62 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        Button MyEventButton = findViewById(R.id.my_event_button);
+        MyEventButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-                builder.setTitle("Choose an action");
+            builder.setTitle("Choose an action");
 
-                // Button to go to AttendeeEventActivity
-                builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
-                        intent.putExtra("userID", user.getUserID());
-                        startActivity(intent);
-                    }
-                });
-
-                // Button to go to OrganizerEventActivity
-                builder.setNegativeButton("Go to Your Event Page (Organizer)", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
-                        intent.putExtra("userID", user.getUserID());
-                        intent.putExtra("userName", user.getName());
-                        startActivity(intent);
-                    }
-                });
-
-                // Cancel button
-                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-            
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver,
-                new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST));
-
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-            return;
-        }
-        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    user.setLocation(location);
+            // Button to go to AttendeeEventActivity
+            builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
+                    intent.putExtra("userID", user.getUserID());
+                    startActivity(intent);
                 }
+            });
+
+            // Button to go to OrganizerEventActivity
+            builder.setNegativeButton("Go to Your Event Page (Organizer)", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
+                    intent.putExtra("userID", user.getUserID());
+                    intent.putExtra("userName", user.getName());
+                    startActivity(intent);
+                }
+            });
+
+            // Cancel button
+            builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
             }
         });
+
+//        LocalBroadcastManager.getInstance(this).registerReceiver(receiver,
+//                new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST));
+//
+//
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+//            return;
+//        }
+//        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
+//            @Override
+//            public void onSuccess(Location location) {
+//                if (location != null) {
+//                    user.setLocation(location);
+//                }
+//            }
+//        });
 
 
     }
