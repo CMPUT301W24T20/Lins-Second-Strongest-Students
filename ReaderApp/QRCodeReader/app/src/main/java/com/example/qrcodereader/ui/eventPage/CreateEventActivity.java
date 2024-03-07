@@ -73,8 +73,6 @@ public class CreateEventActivity extends AppCompatActivity {
         EditText eventTime = findViewById(R.id.event_time);
         eventTime.setOnClickListener(v -> showTimePickerDialog(eventTime));
 
-
-        eventLocation = new GeoPoint(1.0, 1.0);
         //Button generate_button = findViewById(R.id.generate_event_qr_button);
 
         /*
