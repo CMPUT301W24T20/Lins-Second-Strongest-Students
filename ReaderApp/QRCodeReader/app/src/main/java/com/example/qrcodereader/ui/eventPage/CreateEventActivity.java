@@ -48,7 +48,9 @@ public class CreateEventActivity extends AppCompatActivity {
     private CollectionReference eventsRef;
     private Calendar eventDateTime;
     private GeoPoint eventLocation;
+    private String eventLocationName;
     private EditText getLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +118,7 @@ public class CreateEventActivity extends AppCompatActivity {
             HashMap<String, Object> event = new HashMap<>();
             event.put("attendees", attendees);
             event.put("location", eventLocation);
+            event.put("locationName", eventLocationName);
             event.put("name", eventName.getText().toString());
             event.put("organizer", "EricTheGoat");
             event.put("qrCode", qrCode.getString());
@@ -197,7 +200,8 @@ public class CreateEventActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 eventLocation = new GeoPoint(place.getLatLng().latitude, place.getLatLng().longitude);
-                getLocation.setText(place.getName());
+                eventLocationName = place.getName();
+                getLocation.setText(eventLocationName);
             }
         }
     }

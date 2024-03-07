@@ -130,12 +130,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        Location Linlocation = new Location("provider");
-//        Linlocation.setLatitude(61.0137);
-//        Linlocation.setLongitude(99.1967);
-//        User user = new User(deviceID, "Guohui Lin", Linlocation);
-//        Intent intent = new Intent(this, BrowseEventActivity.class);
-//        intent.putExtra("user", user);
+        // Location Linlocation = new Location("provider");
+        // Linlocation.setLatitude(61.0137);
+        // Linlocation.setLongitude(99.1967);
+        // User user = new User(deviceID, "Guohui Lin", Linlocation);
+        // Intent intent = new Intent(this, BrowseEventActivity.class);
+        // intent.putExtra("user", user);
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);

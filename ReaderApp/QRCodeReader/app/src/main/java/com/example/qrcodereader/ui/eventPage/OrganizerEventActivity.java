@@ -4,6 +4,7 @@ import com.example.qrcodereader.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -63,40 +64,42 @@ public class OrganizerEventActivity extends AppCompatActivity {
         eventList.setAdapter(eventArrayAdapter);
 
 
-        eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot querySnapshots,
-                                @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    Log.e("Firestore", error.toString());
-                    return;
-                }
-                if (querySnapshots != null) {
-                    eventDataList.clear();
-                    for (QueryDocumentSnapshot doc: querySnapshots) {
-//                        Event event = doc.toObject(Event.class);
-                        String eventID = doc.getId();
-                        String name = doc.getString("name");
-                        String organizer = doc.getString("organizer");
-                        GeoPoint location = doc.getGeoPoint("location");
-                        Timestamp time = doc.getTimestamp("time");
-                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+        //String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-                        /*
-                        if (doc.exists() && doc.contains("attendees") && doc.get("attendees") != null) {
-                            Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
-                        } else {
+        eventsRef.whereEqualTo("organizer", username)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot querySnapshots,
+                                        @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.e("Firestore", error.toString());
+                            return;
+                        }
+                        if (querySnapshots != null) {
+                            eventDataList.clear();
+                            for (QueryDocumentSnapshot doc: querySnapshots) {
+                                String eventID = doc.getId();
+                                String name = doc.getString("name");
+                                String organizer = doc.getString("organizer");
+                                GeoPoint location = doc.getGeoPoint("location");
 
-                            Log.d("TAG", "'attendees' field is missing or null.");
-                        }*/
+                                Timestamp time = doc.getTimestamp("time");
+                                Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
-                        Log.d("Firestore", "Event fetched");
-                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
+                                String locationName;
+                                if (doc.exists() && doc.contains("locationName") && doc.getString("locationName") != null) {
+                                    locationName = doc.getString("locationName");
+                                } else {
+                                    locationName  = "No location";
+                                }
+
+                                Log.d("Firestore", "Event fetched");
+                                eventArrayAdapter.addEvent(eventID, name, organizer, location, time, locationName);
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
 
         Button createEventButton = findViewById(R.id.create_event_button);
         createEventButton.setOnClickListener(v -> {
