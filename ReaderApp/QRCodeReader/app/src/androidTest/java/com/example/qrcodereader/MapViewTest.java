@@ -1,7 +1,7 @@
 package com.example.qrcodereader;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
+
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
