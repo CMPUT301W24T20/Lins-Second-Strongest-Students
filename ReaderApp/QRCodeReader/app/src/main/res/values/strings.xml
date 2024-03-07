@@ -19,4 +19,5 @@
     <string name="remove">Remove</string>
     <string name="return_string">Return</string>
     <string name="events">Events</string>
+    <string name="return_text">Back to main</string>
 </resources>

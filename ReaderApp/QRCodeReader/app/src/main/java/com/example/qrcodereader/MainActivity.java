@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                 // Button to go to AttendeeEventActivity
                 builder.setPositiveButton("Go to Map (Attendee)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
+                        Intent intent = new Intent(MainActivity.this, MapView.class);
                         startActivity(intent);
                     }
                 });
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 // Button to go to OrganizerEventActivity
                 builder.setNegativeButton("Go to Map(Organizer)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
+                        Intent intent = new Intent(MainActivity.this, MapViewOrganizer.class);
                         startActivity(intent);
                     }
                 });
