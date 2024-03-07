@@ -65,11 +65,8 @@ public class AttendeeEventActivity extends AppCompatActivity {
         eventList.setAdapter(eventArrayAdapter);
 
         // Getting user through MainActivity. This is the user who is using the app
-        String userid = getIntent().getStringExtra("userID");
-        if (userid == null) {
-            userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        }
-        userDocRef = db.collection("users").document(userid);
+        String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
 
         // I was attempting to get the map of eventsAttended in the user document and turn it into a list in the comment below
         // Then compare it with each event in events1 down in the SnapshotListener below
