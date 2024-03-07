@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 if (task.getResult().exists()) {
                     // Document exists, user is in the collection
                     Log.d("Firestore", "User exists in the collection.");
-                    Toast.makeText(this, "Signed in", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Welcome Back", Toast.LENGTH_LONG).show();
                 } else {
                     // Document does not exist, user is not in the collection
                     Log.d("Firestore", "User does not exist in the collection.");
@@ -129,13 +129,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
 
-
-        // Location Linlocation = new Location("provider");
-        // Linlocation.setLatitude(61.0137);
-        // Linlocation.setLongitude(99.1967);
-        // User user = new User(deviceID, "Guohui Lin", Linlocation);
-        // Intent intent = new Intent(this, BrowseEventActivity.class);
-        // intent.putExtra("user", user);
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -168,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
                });
 
         // I'm working on this part - Duy
-        Button profile_button = findViewById(R.id.profile_button);
-        profile_button.setOnClickListener(new View.OnClickListener() {
+        Button profileButton = findViewById(R.id.profile_button);
+        profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
@@ -207,12 +200,12 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        Button MyEventButton = findViewById(R.id.my_event_button);
-        MyEventButton.setOnClickListener(new View.OnClickListener() {
+        Button myEventButton = findViewById(R.id.my_event_button);
+        myEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-            builder.setTitle("Choose an action");
+            builder.setTitle("Choose Event Page");
 
             // Button to go to AttendeeEventActivity
             builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
@@ -240,6 +233,43 @@ public class MainActivity extends AppCompatActivity {
 
             AlertDialog dialog = builder.create();
             dialog.show();
+            }
+        });
+
+
+        Button mapButton = findViewById(R.id.map_button);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                builder.setTitle("Choose Map You Want to See");
+
+                // Button to go to AttendeeEventActivity
+                builder.setPositiveButton("Go to Map (Attendee)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                // Button to go to OrganizerEventActivity
+                builder.setNegativeButton("Go to Map(Organizer)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                // Cancel button
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
