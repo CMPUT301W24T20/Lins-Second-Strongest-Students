@@ -20,8 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
+import com.example.qrcodereader.entity.QRCode;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -57,17 +60,13 @@ public class OrganizerEventActivity extends AppCompatActivity {
         eventList = findViewById(R.id.event_list_organizer);
         eventDataList = new ArrayList<>();
 
-        userid = getIntent().getStringExtra("userID");
-        username = getIntent().getStringExtra("userName");
-
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
 
-        //String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-
-        eventsRef.whereEqualTo("organizer", username)
+        eventsRef.whereEqualTo("organizerID", deviceID)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot querySnapshots,
@@ -81,21 +80,27 @@ public class OrganizerEventActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot doc: querySnapshots) {
                                 String eventID = doc.getId();
                                 String name = doc.getString("name");
-                                String organizer = doc.getString("organizer");
                                 GeoPoint location = doc.getGeoPoint("location");
 
-                                Timestamp time = doc.getTimestamp("time");
-                                Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-
                                 String locationName;
-                                if (doc.exists() && doc.contains("locationName") && doc.getString("locationName") != null) {
+                                if (doc.getString("locationName") != null) {
                                     locationName = doc.getString("locationName");
                                 } else {
                                     locationName  = "No location";
                                 }
 
+                                Timestamp time = doc.getTimestamp("time");
+                                String organizer = doc.getString("organizer");
+                                String organizerID = doc.getString("organizerID");
+
+                                String qrCodeString = doc.getString("qrCode");
+                                QRCode qrCode = new QRCode(qrCodeString);
+
+                                Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+
                                 Log.d("Firestore", "Event fetched");
-                                eventArrayAdapter.addEvent(eventID, name, organizer, location, time, locationName);
+                                Toast.makeText(OrganizerEventActivity.this, "Event fetched", Toast.LENGTH_SHORT).show();
+                                eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendees);
                             }
                         }
                     }
@@ -126,35 +131,6 @@ public class OrganizerEventActivity extends AppCompatActivity {
     }
 
 
-
-
-    ActivityResultLauncher<Intent> createEventLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    if (data != null) {
-                        // Extract the event details from the Intent
-                        String eventName = data.getStringExtra("eventName");
-                        String eventLocation = data.getStringExtra("eventLocation");
-                        String attendeeLimit = data.getStringExtra("attendeeLimit");
-
-                        // Create a new Event object
-                        Log.d("OrganizerEventActivity", "Event Created: " + eventName);
-
-                        // Add the new event to the database
-                        HashMap<String, Object> event = new HashMap<>();
-                        event.put("eventID", 586865);
-                        event.put("name", eventName);
-                        event.put("organizer", "G");
-                        event.put("location", eventLocation);
-                        event.put("time", Timestamp.now());
-
-                        eventsRef.add(event);
-                        Toast.makeText(this, "Event Created: " + eventName, Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
 
 //    private void showEventDetailsDialog(Event event) {
 //

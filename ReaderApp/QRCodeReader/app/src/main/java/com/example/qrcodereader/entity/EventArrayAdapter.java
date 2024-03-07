@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class EventArrayAdapter extends ArrayAdapter<Event> {
@@ -48,8 +49,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         eventName.setText(event.getEventName());
         organizerName.setText(event.getOrganizer());
 
-        GeoPoint geoPoint = event.getLocation();
-
+        //GeoPoint geoPoint = event.getLocation();
         // Handle no location object
         //String locationString = (geoPoint != null) ? geoPoint.toString() : "No location";
         String locationString = (event.getLocationName() != null) ? event.getLocationName() : "No location";
@@ -65,6 +65,11 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
 
     public void addEvent(String eventID, String name, String organizer, GeoPoint location, Timestamp time, String locationName) {
         events.add(new Event(eventID, name, organizer, location, time, locationName));
+        notifyDataSetChanged();
+    }
+
+    public void addEvent(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, Map<String, Long> attendees) {
+        events.add(new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendees));
         notifyDataSetChanged();
     }
 }
