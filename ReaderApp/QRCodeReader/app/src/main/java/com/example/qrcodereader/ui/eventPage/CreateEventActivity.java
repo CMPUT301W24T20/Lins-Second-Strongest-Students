@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,8 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
@@ -50,6 +53,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private GeoPoint eventLocation;
     private String eventLocationName;
     private EditText getLocation;
+    private String userName;
 
 
     @Override
@@ -69,8 +73,6 @@ public class CreateEventActivity extends AppCompatActivity {
         EditText eventTime = findViewById(R.id.event_time);
         eventTime.setOnClickListener(v -> showTimePickerDialog(eventTime));
 
-
-        eventLocation = new GeoPoint(1.0, 1.0);
         //Button generate_button = findViewById(R.id.generate_event_qr_button);
 
         /*
@@ -99,47 +101,64 @@ public class CreateEventActivity extends AppCompatActivity {
 
         Button save_button = findViewById(R.id.save_button);
         save_button.setOnClickListener(v -> {
-            Timestamp timeOfEvent = new Timestamp(eventDateTime.getTime());
-            EditText eventName = findViewById(R.id.event_name);
-            //EditText eventLocation = findViewById(R.id.event_location);
+            String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-            // Create a new QR code for the event
-            QRCode qrCode = new QRCode();
+            CollectionReference usersRef = db.collection("users");
+            DocumentReference userDocRef = usersRef.document(deviceID);
 
-            // Create a new list of attendees for the event
-            Map<String, Integer> attendees = new HashMap<>();
+            userDocRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        userName = document.getString("name");
+                        Timestamp timeOfEvent = new Timestamp(eventDateTime.getTime());
+                        EditText eventName = findViewById(R.id.event_name);
 
-            // Place holder for the location of the event
-            double latitude = 53.5461;
-            double longitude = 113.4938;
-            GeoPoint locationGeoPoint = new GeoPoint(latitude, longitude);
+                        // Create a new QR code for the event
+                        QRCode qrCode = new QRCode();
 
-            // Add the new event to the database
-            HashMap<String, Object> event = new HashMap<>();
-            event.put("attendees", attendees);
-            event.put("location", eventLocation);
-            event.put("locationName", eventLocationName);
-            event.put("name", eventName.getText().toString());
-            event.put("organizer", "EricTheGoat");
-            event.put("qrCode", qrCode.getString());
-            event.put("time", timeOfEvent);
-            //eventsRef.add(event);
+                        // Create a new list of attendees for the event
+                        Map<String, Integer> attendees = new HashMap<>();
 
-            eventsRef.add(event)
-                    .addOnSuccessListener(documentReference -> {
-                        // This block will be executed if the document is successfully written to Firestore
-                        Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
-                        // Optionally, inform the user of success via UI, such as a Toast
-                        Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
-                        // You can finish the activity or clear the form here if desired
+
+                        // Add the new event to the database
+                        HashMap<String, Object> event = new HashMap<>();
+                        event.put("attendees", attendees);
+                        event.put("location", eventLocation);
+                        event.put("locationName", eventLocationName);
+                        event.put("name", eventName.getText().toString());
+                        event.put("organizer", userName);
+                        event.put("organizerID", deviceID);
+                        event.put("qrCode", qrCode.getString());
+                        event.put("time", timeOfEvent);
+
+                        eventsRef.add(event)
+                                .addOnSuccessListener(documentReference -> {
+                                    // This block will be executed if the document is successfully written to Firestore
+                                    Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
+                                    // Optionally, inform the user of success via UI, such as a Toast
+                                    Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
+                                    // You can finish the activity or clear the form here if desired
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // This block will be executed if there's an error during the write operation
+                                    Log.e("CreateEventActivity", "Error adding event", e);
+                                    // Optionally, inform the user of the failure via UI, such as a Toast
+                                    Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
+                                });
                         finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        // This block will be executed if there's an error during the write operation
-                        Log.e("CreateEventActivity", "Error adding event", e);
-                        // Optionally, inform the user of the failure via UI, such as a Toast
-                        Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
-                    });
+
+                    } else {
+                        // Document does not exist
+                        Log.d("CreateEventActivity", "No such document");
+                        Toast.makeText(CreateEventActivity.this, "User not found", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Task failed with an exception
+                    Log.d("CreateEventActivity", "get failed with ", task.getException());
+                }
+            });
 
             finish();
 

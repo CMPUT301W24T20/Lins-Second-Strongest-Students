@@ -9,14 +9,15 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Event {
-    private Timestamp time;
     private String eventID;
-    private GeoPoint location;
-    private String organizer;
     private String name;
+    private GeoPoint location;
+    private String locationName;
+    private Timestamp time;
+    private String organizer;
+    private String organizerID;
     private QRCode qrCode;
     private Map<String, Long> attendees;
-    private String locationName;
 
     public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime) {
         this.time = eventTime;
@@ -47,6 +48,18 @@ public class Event {
         this.locationName = locationName;
     }
 
+    public Event(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode,Map<String, Long> attendees) {
+        this.eventID = id;
+        this.name = name;
+        this.location = location;
+        this.locationName = locationName;
+        this.time = time;
+        this.organizer = organizer;
+        this.organizerID = organizerID;
+        this.qrCode = qrCode;
+        this.attendees = attendees;
+    }
+
     public String getEventID() {
         return eventID;
     }
@@ -57,6 +70,9 @@ public class Event {
 
     public String getOrganizer() {
         return organizer;
+    }
+    public String getOrganizerID() {
+        return organizerID;
     }
 
     public Timestamp getTime() {
