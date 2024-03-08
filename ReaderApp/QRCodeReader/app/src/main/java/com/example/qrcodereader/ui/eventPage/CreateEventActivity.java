@@ -66,6 +66,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private String selectedPastEvent;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
