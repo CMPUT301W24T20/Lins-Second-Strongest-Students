@@ -1,6 +1,8 @@
 package com.example.qrcodereader.entity;
 
+import android.graphics.Bitmap;
 import android.location.Location;
+import android.widget.ImageView;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,6 +19,9 @@ public class User implements Serializable {
     private String name;
     private Map<String, Long> eventsAttended;
     private GeoPoint location;
+    private String defaultPicture;
+    private Bitmap personalizedPicture;
+
 
 
     public User(String deviceID, String userName, GeoPoint location) {
@@ -53,11 +58,16 @@ public class User implements Serializable {
     public GeoPoint getLocation(){
         return this.location;
     }
+    public void setProfilePicture(String profilePictureURL) {
+        this.defaultPicture = profilePictureURL;
+    }
+
     public void createEvent(String id, String name, GeoPoint location, Timestamp time) {
     }
 
     public String getUserID() {return userID;}
     public String getName() {return name;}
+    public String getProfilePicture() {return defaultPicture;}
 
 
 }
