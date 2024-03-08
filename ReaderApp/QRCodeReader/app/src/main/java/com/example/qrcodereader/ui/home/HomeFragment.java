@@ -65,18 +65,21 @@ public class HomeFragment extends Fragment {
         // Define a method to set the user data
 
 
-//        Button profile_button = root.findViewById(R.id.profile_button);
-//        profile_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+        Button profile_button = root.findViewById(R.id.profile_button);
+        profile_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getContext(), OrganizerEventActivity.class);
+                startActivity(intent);
 //                Bundle bundle = new Bundle();
 //                bundle.putString("UserName", user.getName());
 //                bundle.putString("profile_picture", user.getProfilePicture());
 //                ProfileFragment listfrag = new ProfileFragment();
 //                listfrag.setArguments(bundle);
 //                listfrag.show(getChildFragmentManager(), "Profile Page");
-//            }
-//        });
+            }
+        });
 
         Button MyEventButton = root.findViewById(R.id.my_event_button);
         MyEventButton.setOnClickListener(new View.OnClickListener() {
