@@ -16,6 +16,11 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 
+/**
+ * MyFirebaseMessagingService
+ * Allows for reception, display and handling of
+ * FCM messages as notifications
+ */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /*
     MyFirebaseMessagingService
@@ -37,6 +42,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
+    /**
+     * onMessageReceived(RemoteMessage)
+     * Logs message and calls sendNotification with
+     * message contents
+     * @param remoteMessage Remote message that has been received.
+     */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
@@ -83,9 +94,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void broadcast(String messageBody) {
-        //TO-DO:
-        //Create class to represent notifs
-        //Send the class data instead of these placeholders
+        /*
+        Send broadcast containing message details
+         */
         Intent intent = new Intent(ACTION_BROADCAST);
         intent.putExtra("body", messageBody);
         Log.d("Sending...", messageBody);
