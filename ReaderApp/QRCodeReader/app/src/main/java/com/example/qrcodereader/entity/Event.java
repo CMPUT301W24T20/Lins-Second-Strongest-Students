@@ -137,4 +137,8 @@ public class Event {
         }
         return locationName;
     }
+
+    public QRCode getQrCode() {
+        return qrCode;
+    }
 }

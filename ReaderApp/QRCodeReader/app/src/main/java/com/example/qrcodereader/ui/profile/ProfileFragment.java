@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,14 +31,21 @@ import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 import com.squareup.picasso.Picasso;
 
+/**
+ * Represents a dialog fragment for managing user profile information.
+ */
 public class ProfileFragment extends DialogFragment {
+    private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;
+
     private ImageView Picture;
 
-    public interface ProfileFragmentListener {
-        void setChanges(String name, String contact, String Upload);
-    }
-
+    /**
+     * Creates the dialog and initializes its content.
+     *
+     * @param savedInstanceState The saved instance state.
+     * @return The created dialog.
+     */
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.profile_frag, null);
@@ -56,6 +62,7 @@ public class ProfileFragment extends DialogFragment {
         ETname.setText(bundle.getString("UserName"));
         String URL = bundle.getString("profile_picture");
         Picasso.get().load(URL).resize(100, 100).centerInside().into(Picture);
+
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,17 +78,28 @@ public class ProfileFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // manipulate locationAccess field in DB
+//                        updatelocationAccess(locationSwitch.isChecked());
                     }
                 });
 
         return builder.create();
     }
 
+    /**
+     * Opens the device gallery for image selection.
+     */
     private void openGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, REQUEST_CODE_PICK_IMAGE);
     }
 
+    /**
+     * Handles the result of activity launched for image selection.
+     *
+     * @param requestCode The request code.
+     * @param resultCode  The result code.
+     * @param data        The intent data.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -89,9 +107,8 @@ public class ProfileFragment extends DialogFragment {
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 Picture.setImageURI(selectedImageUri); // Set the image directly from URI
-
+                // maybe also associate it in DB
             }
         }
     }
-
 }
