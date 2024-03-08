@@ -18,7 +18,6 @@ import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 
-import com.example.qrcodereader.ui.home.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -26,7 +25,6 @@ import com.example.qrcodereader.ui.profile.ProfileFragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -41,7 +39,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.qrcodereader.databinding.ActivityMainBinding;
 
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -125,36 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 user = new User(deviceID, userName, location, eventsAttended);
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
-
-
-                CollectionReference ColRefPic = db.collection("DefaultProfilePics");
-                int index = (user.getName().length() % 4)+1;
-                String P = "P"+index;
-
-                ColRefPic.document("P4").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                // Get the value of the string field
-                                String imageURL = document.getString("URL");
-                                Map<String, Object> DefaultProfile = new HashMap<>();
-                                DefaultProfile.put("URL", imageURL);
-                                docRefUser.set(DefaultProfile);
-
-                                user.setProfilePicture(imageURL);
-                                Toast.makeText(MainActivity.this, "Image URL: " + imageURL, Toast.LENGTH_SHORT).show();
-                            } else {
-                                Log.d("Firestore", "No such document");
-                                Toast.makeText(MainActivity.this, "No such document", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Log.e("Firestore", "Error getting document", task.getException());
-                            Toast.makeText(MainActivity.this, "Error getting document: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
@@ -188,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("UserName", user.getName());
-                bundle.putString("profile_picture", user.getProfilePicture());
                 ProfileFragment listfrag = new ProfileFragment();
                 listfrag.setArguments(bundle);
                 listfrag.show(getSupportFragmentManager(), "Profile Page");

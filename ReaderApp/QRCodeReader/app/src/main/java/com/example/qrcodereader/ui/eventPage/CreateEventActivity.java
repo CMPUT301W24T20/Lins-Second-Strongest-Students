@@ -65,7 +65,6 @@ public class CreateEventActivity extends AppCompatActivity {
     private QRCode qrCode;
     private String selectedPastEvent;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,7 +127,6 @@ public class CreateEventActivity extends AppCompatActivity {
 
         TextView qrReuseWarning = findViewById(R.id.QR_reuse_warning);
 
-
         // Set checkbox change listener
         qrReuseCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -143,7 +141,6 @@ public class CreateEventActivity extends AppCompatActivity {
                 qrReuseWarning.setAlpha(0.0f);
             }
         });
-
 
         Button save_button = findViewById(R.id.save_button);
         save_button.setOnClickListener(v -> {
@@ -195,7 +192,6 @@ public class CreateEventActivity extends AppCompatActivity {
                             event.put("organizer", userName);
                             event.put("organizerID", deviceID);
                             event.put("qrCode", selectedQRCode);
-
                             event.put("time", timeOfEvent);
 
                             eventsRef.add(event)
@@ -206,7 +202,6 @@ public class CreateEventActivity extends AppCompatActivity {
                                     })
                                     .addOnFailureListener(e -> {
                                         Log.e("CreateEventActivity", "Error adding event", e);
-
                                         Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
                                     });
                             finish();
@@ -299,7 +294,6 @@ public class CreateEventActivity extends AppCompatActivity {
         else if (requestCode == 234) {
             selectedQRCode = data.getStringExtra("selectedQRCode");
             selectedPastEvent = data.getStringExtra("selectedEventID");
-
             qrReuseText.setText(selectedQRCode);
         }
     }
@@ -308,7 +302,6 @@ public class CreateEventActivity extends AppCompatActivity {
      * This method validates the user input for the event
      * @return true if the user input is valid, false otherwise
      */
-
     public boolean validateUserInput() {
         eventName = findViewById(R.id.event_name);
         if (eventName.getText().toString().isEmpty()) {
