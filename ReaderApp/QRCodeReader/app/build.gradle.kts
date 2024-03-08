@@ -42,6 +42,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation ("com.google.firebase:firebase-firestore-ktx:24.10.3")
     implementation ("com.google.firebase:firebase-storage:20.3.0")
+    implementation ("com.google.firebase:firebase-messaging-ktx")
     implementation("androidx.activity:activity:1.8.2")
     implementation("com.google.firebase:firebase-messaging:23.4.1")
     debugImplementation("androidx.fragment:fragment-testing:1.6.2")
