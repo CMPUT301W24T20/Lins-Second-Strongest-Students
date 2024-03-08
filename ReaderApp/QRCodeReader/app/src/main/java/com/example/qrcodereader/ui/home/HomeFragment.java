@@ -27,7 +27,6 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
@@ -39,9 +38,6 @@ public class HomeFragment extends Fragment {
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        //Moved + adapted from MainActivity
-
-        // I'm working on this part - Duy
         Button profile_button = root.findViewById(R.id.profile_button);
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,12 +154,12 @@ public class HomeFragment extends Fragment {
                 dialog.show();
             }
         });
-
         return root;
     }
 
-
-
+    /**
+     * This method is called when the Fragment is destroyed
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

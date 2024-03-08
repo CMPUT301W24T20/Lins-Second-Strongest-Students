@@ -65,8 +65,6 @@ public class CreateEventActivity extends AppCompatActivity {
     private QRCode qrCode;
     private String selectedPastEvent;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,14 +134,13 @@ public class CreateEventActivity extends AppCompatActivity {
                 qrReuseText.setAlpha(1.0f);
                 qrReuseWarning.setAlpha(1.0f);
                 Intent intent = new Intent(CreateEventActivity.this, CreateEventActivityBrowsePastEvent.class);
-                startActivityForResult(intent, 234); // Use a unique request code for this activity
+                startActivityForResult(intent, 234);
             } else {
                 // If checkbox is unchecked, make qrReuseText faded
                 qrReuseText.setAlpha(0.5f);
                 qrReuseWarning.setAlpha(0.0f);
             }
         });
-
 
         Button save_button = findViewById(R.id.save_button);
         save_button.setOnClickListener(v -> {
@@ -199,17 +196,12 @@ public class CreateEventActivity extends AppCompatActivity {
 
                             eventsRef.add(event)
                                     .addOnSuccessListener(documentReference -> {
-                                        // This block will be executed if the document is successfully written to Firestore
                                         Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
-                                        // Optionally, inform the user of success via UI, such as a Toast
                                         Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
-                                        // You can finish the activity or clear the form here if desired
                                         finish();
                                     })
                                     .addOnFailureListener(e -> {
-                                        // This block will be executed if there's an error during the write operation
                                         Log.e("CreateEventActivity", "Error adding event", e);
-                                        // Optionally, inform the user of the failure via UI, such as a Toast
                                         Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
                                     });
                             finish();
@@ -233,6 +225,10 @@ public class CreateEventActivity extends AppCompatActivity {
         cancel_button.setOnClickListener(v -> finish());
     }
 
+    /**
+     * This method shows a DatePickerDialog to get the date from the user
+     * @param eventDate the EditText where the date will be displayed
+     */
     private void showDatePickerDialog(EditText eventDate) {
         // Get current date
         int year = eventDateTime.get(Calendar.YEAR);
@@ -276,6 +272,13 @@ public class CreateEventActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    /**
+     * This method handles the result from the Places API and updates the event location
+     * It also handle the get QR code from the past event
+     * @param requestCode the request code (123 - Places API, 234 - get QR code from past event)
+     * @param resultCode the result code (RESULT_OK if the operation is successful)
+     * @param data the intent data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -295,6 +298,10 @@ public class CreateEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method validates the user input for the event
+     * @return true if the user input is valid, false otherwise
+     */
     public boolean validateUserInput() {
         eventName = findViewById(R.id.event_name);
         if (eventName.getText().toString().isEmpty()) {
@@ -308,6 +315,10 @@ public class CreateEventActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * This method generate a new QR code for the selected past event
+     * to avoid 2 events have the same QR code
+     */
     private void updatePastEvent() {
         DocumentReference eventDocRef = db.collection("events").document(selectedPastEvent);
 

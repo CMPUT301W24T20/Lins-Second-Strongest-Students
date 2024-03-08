@@ -22,6 +22,7 @@ import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 
 
+import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -48,11 +49,6 @@ public class AttendeeEventActivity extends AppCompatActivity {
     private CollectionReference usersRef;
     private DocumentReference userDocRef;
     private List<String> attendeeEvents;
-//    private void addNewEvent(Event event) {
-//        HashMap<String, String> data = new HashMap<>();
-//        data.put("Name", event.getEventName());
-//        eventsRef.document(event.getEventName()).set(data);
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +100,15 @@ public class AttendeeEventActivity extends AppCompatActivity {
                                             String organizer = doc.getString("organizer");
                                             GeoPoint location = doc.getGeoPoint("location");
                                             Timestamp time = doc.getTimestamp("time");
+                                            String locationName = doc.getString("locationName");
+                                            String organizerID = doc.getString("organizerID");
+                                            String qrCodeString = doc.getString("qrCode");
+                                            QRCode qrCode = new QRCode(qrCodeString);
+                                            int attendeeLimit = doc.contains("attendeeLimit") ? (int)(long)doc.getLong("attendeeLimit") : -1;
                                             Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
                                             Log.d("Firestore", "Event fetched");
-                                            eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
+                                            eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees);
                                         }
                                     }
                                 }
@@ -147,6 +148,10 @@ public class AttendeeEventActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Show the event details in a dialog
+     * @param event The event to show the details of
+     */
     private void showEventDetailsDialog(Event event) {
 
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -164,17 +169,11 @@ public class AttendeeEventActivity extends AppCompatActivity {
         eventOrganizerTextView.setText(organizerText);
 
         TextView eventLocationTextView = view.findViewById(R.id.event_location);
-        String locationText = "Location: " + event.getLocation().getLatitude() + ", " + event.getLocation().getLongitude();
+        String locationText = "Location: " + event.getLocationName();
         eventLocationTextView.setText(locationText);
 
         TextView eventTimeTextView = view.findViewById(R.id.event_time);
         eventTimeTextView.setText(event.getTime().toDate().toString());
-
-
-
-
-
-        // Create and show the dialog
 
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
 
