@@ -73,6 +73,14 @@
         android:layout_weight="1"
         android:layout_marginTop="5dp"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/see_qr_button"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:text="@string/see_qr_code" />
 
     <Button
         android:layout_width="match_parent"
