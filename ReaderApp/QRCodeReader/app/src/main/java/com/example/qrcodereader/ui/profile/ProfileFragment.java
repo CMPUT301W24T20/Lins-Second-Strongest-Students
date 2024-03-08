@@ -40,6 +40,8 @@ public class ProfileFragment extends DialogFragment {
 
     private ImageView Picture;
 
+
+
     /**
      * Creates the dialog and initializes its content.
      *

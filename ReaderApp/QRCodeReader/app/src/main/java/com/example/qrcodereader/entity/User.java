@@ -21,7 +21,6 @@ public class User implements Serializable {
     private Map<String, Long> eventsAttended;
     private GeoPoint location;
 
-
     private String DefaultProfile;
 
     /**
