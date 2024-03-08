@@ -31,17 +31,6 @@ public class Event {
         this.attendees =  new HashMap<String, Long>();
     }
 
-    public Event(String id, String name, String organizer, GeoPoint eventLocation, String locationName, Timestamp eventTime) {
-        this.time = eventTime;
-        this.eventID = id;
-        this.location = eventLocation;
-        this.locationName = locationName;
-        this.name = name;
-        this.organizer = organizer;
-        this.qrCode = new QRCode();
-        this.attendees =  new HashMap<String, Long>();
-    }
-
     public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime, QRCode qrCode) {
         this.time = eventTime;
         this.eventID = id;

@@ -63,11 +63,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         notifyDataSetChanged();
     }
 
-    public void addEvent(String eventID, String name, String organizer, GeoPoint location, String locationName, Timestamp time) {
-        events.add(new Event(eventID, name, organizer, location, locationName, time));
-        notifyDataSetChanged();
-    }
-
     public void addEvent(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, Map<String, Long> attendees) {
         events.add(new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendees));
         notifyDataSetChanged();
