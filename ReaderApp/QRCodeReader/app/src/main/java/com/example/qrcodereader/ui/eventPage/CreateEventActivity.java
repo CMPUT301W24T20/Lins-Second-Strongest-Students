@@ -60,6 +60,8 @@ public class CreateEventActivity extends AppCompatActivity {
     private String userName;
     private String selectedQRCode;
     private TextView qrReuseText;
+    private EditText eventName;
+
 
 
     @Override
@@ -72,6 +74,8 @@ public class CreateEventActivity extends AppCompatActivity {
         eventsRef = db.collection("events");
 
         eventDateTime = Calendar.getInstance();
+
+        eventName = findViewById(R.id.event_name);
 
         EditText eventDate = findViewById(R.id.event_date);
         eventDate.setOnClickListener(v -> showDatePickerDialog(eventDate));
@@ -146,80 +150,80 @@ public class CreateEventActivity extends AppCompatActivity {
 
         Button save_button = findViewById(R.id.save_button);
         save_button.setOnClickListener(v -> {
-            String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            if (validateUserInput()){
+                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-            CollectionReference usersRef = db.collection("users");
-            DocumentReference userDocRef = usersRef.document(deviceID);
+                CollectionReference usersRef = db.collection("users");
+                DocumentReference userDocRef = usersRef.document(deviceID);
 
-            userDocRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        userName = document.getString("name");
-                        Timestamp timeOfEvent = new Timestamp(eventDateTime.getTime());
-                        EditText eventName = findViewById(R.id.event_name);
+                userDocRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            userName = document.getString("name");
+                            Timestamp timeOfEvent = new Timestamp(eventDateTime.getTime());
 
-                        // Create a new QR code for the event
-                        QRCode qrCode = new QRCode();
+                            // Create a new QR code for the event
+                            QRCode qrCode = new QRCode();
 
-                        // Create a new list of attendees for the event
-                        Map<String, Integer> attendees = new HashMap<>();
+                            // Create a new list of attendees for the event
+                            Map<String, Integer> attendees = new HashMap<>();
 
-                        // Add the new event to the database
-                        HashMap<String, Object> event = new HashMap<>();
-                        event.put("attendees", attendees);
+                            // Add the new event to the database
+                            HashMap<String, Object> event = new HashMap<>();
+                            event.put("attendees", attendees);
 
-                        // If the checkbox is checked, add the attendee limit to the event
-                        if (checkBox.isChecked()) {
-                            // If the organizer didn't specify an attendee limit, set it to -1
-                            if (attendeeLimit.getText().toString().isEmpty()) {
+                            // If the checkbox is checked, add the attendee limit to the event
+                            if (checkBox.isChecked()) {
+                                // If the organizer didn't specify an attendee limit, set it to -1
+                                if (attendeeLimit.getText().toString().isEmpty()) {
+                                    event.put("attendeeLimit", -1);
+                                }
+                                else {
+                                    event.put("attendeeLimit", Integer.parseInt(attendeeLimit.getText().toString()));
+                                }
+                            } else {
                                 event.put("attendeeLimit", -1);
                             }
-                            else {
-                                event.put("attendeeLimit", Integer.parseInt(attendeeLimit.getText().toString()));
-                            }
+
+                            event.put("location", eventLocation);
+                            event.put("locationName", eventLocationName);
+                            event.put("name", eventName.getText().toString());
+                            event.put("organizer", userName);
+                            event.put("organizerID", deviceID);
+                            event.put("qrCode", qrCode.getString());
+                            event.put("time", timeOfEvent);
+
+                            eventsRef.add(event)
+                                    .addOnSuccessListener(documentReference -> {
+                                        // This block will be executed if the document is successfully written to Firestore
+                                        Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
+                                        // Optionally, inform the user of success via UI, such as a Toast
+                                        Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
+                                        // You can finish the activity or clear the form here if desired
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // This block will be executed if there's an error during the write operation
+                                        Log.e("CreateEventActivity", "Error adding event", e);
+                                        // Optionally, inform the user of the failure via UI, such as a Toast
+                                        Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
+                                    });
+                            finish();
+
                         } else {
-                            event.put("attendeeLimit", -1);
+                            // Document does not exist
+                            Log.d("CreateEventActivity", "No such document");
+                            Toast.makeText(CreateEventActivity.this, "User not found", Toast.LENGTH_SHORT).show();
                         }
-
-                        event.put("location", eventLocation);
-                        event.put("locationName", eventLocationName);
-                        event.put("name", eventName.getText().toString());
-                        event.put("organizer", userName);
-                        event.put("organizerID", deviceID);
-                        event.put("qrCode", qrCode.getString());
-                        event.put("time", timeOfEvent);
-
-                        eventsRef.add(event)
-                                .addOnSuccessListener(documentReference -> {
-                                    // This block will be executed if the document is successfully written to Firestore
-                                    Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
-                                    // Optionally, inform the user of success via UI, such as a Toast
-                                    Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
-                                    // You can finish the activity or clear the form here if desired
-                                    finish();
-                                })
-                                .addOnFailureListener(e -> {
-                                    // This block will be executed if there's an error during the write operation
-                                    Log.e("CreateEventActivity", "Error adding event", e);
-                                    // Optionally, inform the user of the failure via UI, such as a Toast
-                                    Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
-                                });
-                        finish();
-
                     } else {
-                        // Document does not exist
-                        Log.d("CreateEventActivity", "No such document");
-                        Toast.makeText(CreateEventActivity.this, "User not found", Toast.LENGTH_SHORT).show();
+                        // Task failed with an exception
+                        Log.d("CreateEventActivity", "get failed with ", task.getException());
                     }
-                } else {
-                    // Task failed with an exception
-                    Log.d("CreateEventActivity", "get failed with ", task.getException());
-                }
-            });
+                });
 
-            finish();
-
+                finish();
+            }
         });
 
         Button cancel_button = findViewById(R.id.cancel_button);
@@ -285,5 +289,22 @@ public class CreateEventActivity extends AppCompatActivity {
             selectedQRCode = data.getStringExtra("selectedQRCode");
             qrReuseText.setText(selectedQRCode);
         }
+    }
+
+    public boolean validateUserInput() {
+        eventName = findViewById(R.id.event_name);
+        if (eventName.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Please enter an event name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (eventLocation == null) {
+            Toast.makeText(this, "Please enter an event location", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (eventDateTime.before(Calendar.getInstance())) {
+            Toast.makeText(this, "Please enter an event date and time", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 }
