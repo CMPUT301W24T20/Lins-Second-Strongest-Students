@@ -20,7 +20,14 @@ public class Event {
     private int attendeeLimit; // -1: no limit, else limit is the number that the organizer entered
     private Map<String, Long> attendees;
 
-
+    /**
+     * Constructor for the Event class
+     * @param id The event's unique identifier
+     * @param name The name of the event
+     * @param organizer The name of the organizer
+     * @param eventLocation The location of the event
+     * @param eventTime The time of the event
+     */
     public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime) {
         this.time = eventTime;
         this.eventID = id;
@@ -31,29 +38,19 @@ public class Event {
         this.attendees =  new HashMap<String, Long>();
     }
 
-    public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime, QRCode qrCode) {
-        this.time = eventTime;
-        this.eventID = id;
-        this.location = eventLocation;
-        this.name = name;
-        this.organizer = organizer;
-        this.qrCode = qrCode;
-        this.attendees =  new HashMap<String, Long>();
-    }
-
-    public Event(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode,Map<String, Long> attendees) {
-        this.eventID = id;
-        this.name = name;
-        this.location = location;
-        this.locationName = locationName;
-        this.time = time;
-        this.organizer = organizer;
-        this.organizerID = organizerID;
-        this.qrCode = qrCode;
-        this.attendeeLimit = -1;
-        this.attendees = attendees;
-    }
-
+    /**
+     * Constructor for the Event class
+     * @param id The event's unique identifier
+     * @param name The name of the event
+     * @param location The location of the event
+     * @param locationName The time of the event
+     * @param time The time of the event
+     * @param organizer The name of the organizer
+     * @param organizerID The unique identifier of the organizer
+     * @param qrCode The QR code for the event
+     * @param attendeeLimit The maximum number of attendees
+     * @param attendees The map of attendees
+     */
     public Event(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, int attendeeLimit, Map<String, Long> attendees) {
         this.eventID = id;
         this.name = name;
@@ -67,68 +64,34 @@ public class Event {
         this.attendees = attendees;
     }
 
+    /**
+     * Get the unique identifier of the event
+     * @return The unique identifier of the event
+     */
     public String getEventID() {
         return eventID;
     }
 
-    public GeoPoint getLocation() {
-        return location;
-    }
-
-    public String getOrganizer() {
-        return organizer;
-    }
-    public String getOrganizerID() {
-        return organizerID;
-    }
-
-    public Timestamp getTime() {
-        return time;
-    }
-
+    /**
+     * Get the name of the event
+     * @return The name of the event
+     */
     public String getEventName() {
         return name;
     }
 
-    public Map<String, Long> getAttendees() {
-        return attendees;
+    /**
+     * Get the location of the event
+     * @return The location of the event
+     */
+    public GeoPoint getLocation() {
+        return location;
     }
 
-    public void setEventID(String eventID) {
-        this.eventID = eventID;
-    }
-
-    public void setLocation(GeoPoint location) {
-        this.location = location;
-    }
-
-    public void setOrganizer(String organizer) {
-        this.organizer = organizer;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
-
-    public void setEventName(String name) {
-        this.name = name;
-    }
-
-
-    public void addAttendee() {}
-    public int getAttendeeLimit() {
-        return attendeeLimit;
-    }
-
-    public boolean isFull() {
-        // -1 means no limit, so the event is never full
-        // else, the number of attendees is compared to the limit
-        if (attendeeLimit == -1) {
-            return false;
-        }
-        else return attendees.size() >= attendeeLimit;
-    }
-
+    /**
+     * Get the name of the location of the event
+     * @return The name of the location of the event
+     */
     public String getLocationName() {
         if (locationName == null) {
             return String.format(Locale.getDefault(), "%f, %f",
@@ -138,7 +101,105 @@ public class Event {
         return locationName;
     }
 
+    /**
+     * Get the time of the event
+     * @return The time of the event
+     */
+    public Timestamp getTime() {
+        return time;
+    }
+
+    /**
+     * Get the name of the organizer
+     * @return The name of the organizer
+     */
+    public String getOrganizer() {
+        return organizer;
+    }
+
+    /**
+     * Get the unique identifier of the organizer
+     * @return The unique identifier of the organizer
+     */
+    public String getOrganizerID() {
+        return organizerID;
+    }
+
+    /**
+     * Get the QR code for the event
+     * @return The QR code for the event
+     */
     public QRCode getQrCode() {
         return qrCode;
+    }
+
+    /**
+     * Get the maximum number of attendees
+     * @return The maximum number of attendees
+     */
+    public int getAttendeeLimit() {
+        return attendeeLimit;
+    }
+
+    /**
+     * Get the map of attendees
+     * @return The map of attendees
+     */
+    public Map<String, Long> getAttendees() {
+        return attendees;
+    }
+
+    /**
+     * Set the unique identifier of the event
+     * @param eventID The unique identifier of the event
+     */
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
+    }
+
+    /**
+     * Set the location of the event
+     * @param location The location of the event
+     */
+    public void setLocation(GeoPoint location) {
+        this.location = location;
+    }
+
+
+    /**
+     * Set the name of the organizer of the event
+     * @param organizer The name of the organizer of the event
+     */
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
+    }
+
+    /**
+     * Set the time of the event
+     * @param time The time of the event
+     */
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+
+    /**
+     * Set the name for the event
+     * @param name The name of the event
+     */
+    public void setEventName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Check if the event is full
+     * @return True if the event is full, false otherwise
+     */
+    public boolean isFull() {
+        // -1 means no limit, so the event is never full
+        // else, the number of attendees is compared to the limit
+        if (attendeeLimit == -1) {
+            return false;
+        }
+        else return attendees.size() >= attendeeLimit;
     }
 }
