@@ -103,11 +103,12 @@ public class AttendeeEventActivity extends AppCompatActivity {
                                         String name = doc.getString("name");
                                         String organizer = doc.getString("organizer");
                                         GeoPoint location = doc.getGeoPoint("location");
+                                        String locationName = doc.getString("locationName");
                                         Timestamp time = doc.getTimestamp("time");
                                         Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
                                         Log.d("Firestore", "Event fetched");
-                                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
+                                        eventArrayAdapter.addEvent(eventID, name, organizer, location, locationName, time);
                                     }
                                 }
                             }
@@ -163,6 +164,10 @@ public class AttendeeEventActivity extends AppCompatActivity {
         TextView eventLocationTextView = view.findViewById(R.id.event_location);
         String locationText = "Location: " + event.getLocation().getLatitude() + ", " + event.getLocation().getLongitude();
         eventLocationTextView.setText(locationText);
+
+        TextView eventLocationNameTextView = view.findViewById(R.id.event_location_name);
+        String locationNameText = "Location Name: " + event.getLocationName();
+        eventLocationNameTextView.setText(locationNameText);
 
         TextView eventTimeTextView = view.findViewById(R.id.event_time);
         eventTimeTextView.setText(event.getTime().toDate().toString());

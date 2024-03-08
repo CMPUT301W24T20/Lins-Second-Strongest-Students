@@ -50,6 +50,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         TextView eventLocationTextView = findViewById(R.id.event_location);
         TextView eventTimeTextView = findViewById(R.id.event_time);
         ListView attendeesListView = findViewById(R.id.event_attendees);
+        TextView eventLocationNameTextView = findViewById(R.id.event_location_name);
 
         db = FirebaseFirestore.getInstance();
         String eventID = getIntent().getStringExtra("eventID");
@@ -81,6 +82,8 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                         location.getLatitude(),
                         location.getLongitude());
                 eventLocationTextView.setText(locationText);
+                String locationNameText = "Location Name: " + locationName;
+                eventLocationNameTextView.setText(locationNameText);
                 String timeText = "Time: " + time.toDate().toString();
                 eventTimeTextView.setText(timeText);
             }

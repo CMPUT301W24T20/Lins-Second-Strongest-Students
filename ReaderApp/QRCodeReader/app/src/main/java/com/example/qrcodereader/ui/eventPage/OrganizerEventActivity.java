@@ -129,50 +129,5 @@ public class OrganizerEventActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-//    private void showEventDetailsDialog(Event event) {
-//
-//        LayoutInflater inflater = LayoutInflater.from(this);
-//        View view = inflater.inflate(R.layout.event_detail_dialog_organizer, null);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setView(view);
-//
-//        // Set the event details to the TextViews
-//        TextView eventNameTextView = view.findViewById(R.id.event_name);
-//        String nameText = "Event Name: " + event.getEventName();
-//        eventNameTextView.setText(nameText);
-//
-//        TextView eventOrganizerTextView = view.findViewById(R.id.event_organizer);
-//        String organizerText = "Organizer: " + event.getOrganizer();
-//        eventOrganizerTextView.setText(organizerText);
-//
-//        TextView eventLocationTextView = view.findViewById(R.id.event_location);
-//        String locationText = "Location: " + event.getLocation().getLatitude() + ", " + event.getLocation().getLongitude();
-//        eventLocationTextView.setText(locationText);
-//
-//        TextView eventTimeTextView = view.findViewById(R.id.event_time);
-//        eventTimeTextView.setText(event.getTime().toDate().toString());
-//
-//        ListView attendeesListView = view.findViewById(R.id.event_attendees);
-//        Map<String, Long> attendees = event.getAttendees();
-//        if (attendees != null && !attendees.isEmpty()) {
-//            // Convert the map entries to a list
-//            ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(attendees.entrySet());
-//            // Create the custom adapter
-//            AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesList);
-//            // Set the custom adapter to the ListView
-//            attendeesListView.setAdapter(attendeesAdapter);
-//        }
-//
-//
-//        // Create and show the dialog
-//
-//        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-//
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//    }
 }
 
