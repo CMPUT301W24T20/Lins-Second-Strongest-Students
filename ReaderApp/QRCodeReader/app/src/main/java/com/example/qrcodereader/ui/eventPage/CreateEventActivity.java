@@ -63,6 +63,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private EditText eventName;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
