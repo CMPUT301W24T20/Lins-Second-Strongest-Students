@@ -44,7 +44,7 @@ import java.util.Map;
 
 /**
  * Map Activity
- * @ Khushdeep
+ * @author Khushdeep
  */
 // Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
 public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCallback{
