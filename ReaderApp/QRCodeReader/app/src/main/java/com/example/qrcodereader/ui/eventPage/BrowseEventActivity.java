@@ -42,6 +42,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  Activity for users to browse all events, with the option to sign up.
+ *  <p>
+ *      Pressing on an event will move them to EventDetailsAttendeeActivity
+ *  </p>
+ *  @author Son and Duy
+ */
 public class BrowseEventActivity extends AppCompatActivity {
 
 
@@ -105,6 +112,11 @@ public class BrowseEventActivity extends AppCompatActivity {
     /**
      * Fetches events from Firestore and adds them to the eventDataList
      */
+
+    /*
+            OpenAI, ChatGpt, 06/03/24
+            "The normal query is crashing due to high load, how can I fix it?"
+        */
     private void fetchEvents() {
         // Prevents fetching new data if previous request is still in progress
         if (isFetching) {

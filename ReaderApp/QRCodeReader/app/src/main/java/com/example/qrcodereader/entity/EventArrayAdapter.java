@@ -18,7 +18,16 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Map;
 
-
+/**
+ *  The Array Adapter for displaying events in ListViews
+ *  <p>
+ *      Events are taking from database
+ *  </p>
+ *  <p>
+ *      Used in AttendeeEventActivity.java, OrganizerEventActivity.java, BrowseEventActivity.java
+ *  </p>
+ *  @author Son and Duy
+ */
 public class EventArrayAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> events;
     private Context context;

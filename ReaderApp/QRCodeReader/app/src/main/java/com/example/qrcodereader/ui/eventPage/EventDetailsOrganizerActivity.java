@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ *  Activity for users to view details of event they have created, including its QR code.
+ *  @author Son and Duy
+ */
 public class EventDetailsOrganizerActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;

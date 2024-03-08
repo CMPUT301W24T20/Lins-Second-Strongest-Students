@@ -30,6 +30,10 @@ import androidx.fragment.app.DialogFragment;
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 
+/**
+ * Fragment for displaying the profile of user
+ * @author Tiana
+ */
 public class ProfileFragment extends DialogFragment {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;

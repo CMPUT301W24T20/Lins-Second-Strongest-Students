@@ -15,6 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * ArrayAdapter for attendees of events
+ * <p>
+ *     This class is mainly used in EventDetailsOrganizerActivity.java
+ * </p>
+ * <p>
+ *     This class displays the Attendees map field of Events in a ListView as well as who have checked in and the number of time they checked in
+ * </p>
+ * @author Son
+ */
+
+/*
+            OpenAI, ChatGpt, 06/03/24
+            "I need an array adapter that displays a map field of String and Long in a ListView"
+        */
 public class AttendeeArrayAdapter extends ArrayAdapter<Map.Entry<String, Long>> {
     private ArrayList<Map.Entry<String, Long>> attendees;
     private Context context;
@@ -23,6 +39,7 @@ public class AttendeeArrayAdapter extends ArrayAdapter<Map.Entry<String, Long>> 
         this.attendees = attendees;
         this.context = context;
     }
+
 
     @NonNull
     @Override

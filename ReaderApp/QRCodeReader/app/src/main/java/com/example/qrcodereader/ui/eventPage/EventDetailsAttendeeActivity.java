@@ -31,6 +31,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ *  Activity for users to view details of event they want to sign up to.
+ *  <p>
+ *      This is where the sign up operation happen
+ *  </p>
+ *  @author Son and Duy
+ */
 public class EventDetailsAttendeeActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;

@@ -52,6 +52,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * MainActivity, the start point of the program
+ * <p>
+ *     Houses the Profile, Events, Map, Admin access button at the beginning of the app
+ * </p>
+ * @author all
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -93,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
         eventsRef = db.collection("events");
         docRefUser = db.collection("users").document(deviceID);
 
+        /*
+            OpenAI, ChatGpt, 06/03/24
+            "I need a way to check if the user is in the firebase with ID deviceID and retrieve it,
+             or add a new document with ID as deviceID if it is not present"
+        */
         docRefUser.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().exists()) {
@@ -212,6 +224,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setupMyEventButton() {
+        /*
+            OpenAI, ChatGpt, 01/03/24
+            "I want to create a dialog box with three option, two of the options go to two different Activity,
+            and the final option is to cancel"
+        */
         Button myEventButton = findViewById(R.id.my_event_button);
         myEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -303,6 +320,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void checkAdminStatus() {
+        /*
+            OpenAI, ChatGPT, 07/03/24
+            "I want the program to check if the deviceID is in the administrator collection as ID.
+            If it is then the button will display the dialog box. Otherwise it will not.
+         */
         final boolean[] isAdmin = {false};
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         db.collection("administrator")
@@ -357,26 +379,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-
-
-
-//        LocalBroadcastManager.getInstance(this).registerReceiver(receiver,
-//                new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST));
-//
-//
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-//            return;
-//        }
-//        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
-//            @Override
-//            public void onSuccess(Location location) {
-//                if (location != null) {
-//                    user.setLocation(location);
-//                }
-//            }
-//        });
 
 
 
