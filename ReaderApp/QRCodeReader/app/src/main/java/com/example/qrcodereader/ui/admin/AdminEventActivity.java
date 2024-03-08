@@ -61,26 +61,20 @@ public class AdminEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_event);
 
-
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
-
 
         ListView eventList = findViewById(R.id.event_list);
         eventDataList = new ArrayList<>();
 
-
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
-
 
         fetchEvents();
 
         eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
+            public void onScrollStateChanged(AbsListView view, int scrollState) {}
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -90,10 +84,6 @@ public class AdminEventActivity extends AppCompatActivity {
                 }
             }
         });
-
-        // ... (the rest of your existing code for setting onClickListeners)
-
-
 
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -108,14 +98,13 @@ public class AdminEventActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         Button returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
-
     }
 
+    /**
+     * Fetches events from Firestore and adds them to the eventDataList
+     */
     private void fetchEvents() {
         // Prevents fetching new data if previous request is still in progress
         if (isFetching) {

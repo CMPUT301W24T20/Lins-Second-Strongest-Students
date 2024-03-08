@@ -56,6 +56,10 @@ public class NotificationsFragment extends Fragment {
         return root;
     }
 
+    /**
+     * onDestroyView
+     * Handles view destruction
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -62,6 +62,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 String eventName = documentSnapshot.getString("name");
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
                 GeoPoint location = documentSnapshot.getGeoPoint("location");
+                String locationName = documentSnapshot.getString("locationName");
                 String organizer = documentSnapshot.getString("organizer");
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String qrCodeString = documentSnapshot.getString("qrCode");
@@ -72,10 +73,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 eventNameTextView.setText(eventName);
                 String organizerText = "Organizer: " + organizer;
                 eventOrganizerTextView.setText("Organizer: " + organizer);
-                String locationText = "Location: " + String.format(Locale.getDefault(), "%f, %f",
-                        location.getLatitude(),
-                        location.getLongitude());
-                eventLocationTextView.setText(locationText);
+                eventLocationTextView.setText(locationName);
                 String timeText = "Time: " + time.toDate().toString();
                 eventTimeTextView.setText(timeText);
 

@@ -22,10 +22,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.example.qrcodereader.entity.QRCode;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -50,12 +53,18 @@ public class EventArrayAdapterTest {
         String eventID = "1";
         String name = "Test Event";
         String organizer = "Test Organizer";
+        String organizerID = "1";
         GeoPoint location = new GeoPoint(12.1,12.1);
-        Timestamp timeStamp = Timestamp.now();
-        adapter.addEvent(eventID, name, organizer, location, timeStamp);
+        String locationName = "Test Location";
+        Timestamp time = Timestamp.now();
+        int attendeeLimit = 10;
+        Map<String, Long> attendees = new HashMap<String, Long>();
+        QRCode qrCode = new QRCode();
+
+        adapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees);
 
         // Create an Event object with the same details
-        Event event = new Event(eventID, name, organizer, location, timeStamp);
+        Event event = new Event(eventID, name, organizer, location, time);
 
         String locationNameExpected = (event.getLocationName() != null) ? event.getLocationName() : "No location";
 

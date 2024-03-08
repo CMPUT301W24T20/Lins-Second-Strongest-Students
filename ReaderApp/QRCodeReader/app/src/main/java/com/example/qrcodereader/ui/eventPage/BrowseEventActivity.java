@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
+import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.CreateEventActivity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -59,52 +60,20 @@ public class BrowseEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_event);
 
-
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
-
 
         ListView eventList = findViewById(R.id.event_list_browse);
         eventDataList = new ArrayList<>();
 
-
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
-
-
-//        eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot querySnapshots,
-//                                @Nullable FirebaseFirestoreException error) {
-//                if (error != null) {
-//                    Log.e("Firestore", error.toString());
-//                    return;
-//                }
-//                if (querySnapshots != null) {
-//                    eventDataList.clear();
-//                    for (QueryDocumentSnapshot doc: querySnapshots) {
-////                        Event event = doc.toObject(Event.class);
-//                        String eventID = doc.getId();
-//                        String name = doc.getString("name");
-//                        String organizer = doc.getString("organizer");
-//                        GeoPoint location = doc.getGeoPoint("location");
-//                        Timestamp time = doc.getTimestamp("time");
-//                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-//
-//                        Log.d("Firestore", "Event fetched");
-//                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
-//                    }
-//
-//                }
-//            }
-//        });
 
         fetchEvents();
 
         eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-
             }
 
             @Override
@@ -115,10 +84,6 @@ public class BrowseEventActivity extends AppCompatActivity {
                 }
             }
         });
-
-        // ... (the rest of your existing code for setting onClickListeners)
-
-
 
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -133,14 +98,13 @@ public class BrowseEventActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         Button returnButton = findViewById(R.id.return_button_browse);
         returnButton.setOnClickListener(v -> finish());
-
     }
 
+    /**
+     * Fetches events from Firestore and adds them to the eventDataList
+     */
     private void fetchEvents() {
         // Prevents fetching new data if previous request is still in progress
         if (isFetching) {
@@ -160,9 +124,18 @@ public class BrowseEventActivity extends AppCompatActivity {
                 if (!queryDocumentSnapshots.isEmpty()) {
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         // Assuming Event class has a constructor matching this data
-                        Event event = new Event(doc.getId(), doc.getString("name"),
-                                doc.getString("organizer"), doc.getGeoPoint("location"),
-                                doc.getTimestamp("time"));
+                        String eventID = doc.getId();
+                        String name = doc.getString("name");
+                        GeoPoint location = doc.getGeoPoint("location");
+                        String locationName = doc.getString("locationName");
+                        Timestamp time = doc.getTimestamp("time");
+                        String organizer = doc.getString("organizer");
+                        String organizerID = doc.getString("organizerID");
+                        String qrCodeString = doc.getString("qrCode");
+                        QRCode qrCode = new QRCode(qrCodeString);
+                        int attendeeLimit = doc.contains("attendeeLimit") ? (int)(long)doc.getLong("attendeeLimit") : -1;
+                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+                        Event event = new Event(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees);
                         eventDataList.add(event);
                     }
                     eventArrayAdapter.notifyDataSetChanged();
