@@ -128,13 +128,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
-
     private void setupNavigation() {
+        /*
+        Configure navigation bar
+         */
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_camera, R.id.navigation_notifications)
@@ -172,6 +169,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setupNotificationChannel() {
+        /*
+        Create notification channel to allow for push notifications
+         */
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("default_channel",
                     "Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
@@ -181,12 +181,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
-
+    /**
+     * setupBroadcastReceiver
+     * Adds incoming notifications from FirebaseMessagingService
+     * to an arraylist
+     */
     private void setupBroadcastReceiver() {
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
@@ -202,14 +201,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
-
-
-
-
-
-
-
-
 
     private void setupMyEventButton() {
         Button myEventButton = findViewById(R.id.my_event_button);
@@ -248,13 +239,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
-
 
     private void setupMapButton() {
         Button mapButton = findViewById(R.id.map_button);

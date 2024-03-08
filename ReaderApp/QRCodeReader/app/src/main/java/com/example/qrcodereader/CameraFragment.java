@@ -52,7 +52,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
      * startScan
      * Opens QR code reader
      */
-    void startScan() {
+    private void startScan() {
         IntentIntegrator integrator = IntentIntegrator.forSupportFragment(CameraFragment.this);
         integrator.setOrientationLocked(true);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
