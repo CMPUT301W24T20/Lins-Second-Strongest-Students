@@ -93,13 +93,11 @@ public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
                                 String qrCodeString = doc.getString("qrCode");
                                 QRCode qrCode = new QRCode(qrCodeString);
                                 int attendeeLimit = doc.contains("attendeeLimit") ? (int)(long)doc.getLong("attendeeLimit") : -1;
-
                                 Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
                                 Log.d("Firestore", "Event fetched");
                                 Toast.makeText(CreateEventActivityBrowsePastEvent.this, "Event fetched", Toast.LENGTH_SHORT).show();
                                 eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees);
-
                             }
                         }
                     }
@@ -119,7 +117,6 @@ public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
 
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
-
             }
         });
     }

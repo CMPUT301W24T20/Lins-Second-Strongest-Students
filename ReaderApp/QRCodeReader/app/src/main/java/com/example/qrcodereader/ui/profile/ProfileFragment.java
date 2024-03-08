@@ -29,25 +29,13 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
-import com.squareup.picasso.Picasso;
 
-/**
- * Represents a dialog fragment for managing user profile information.
- */
 public class ProfileFragment extends DialogFragment {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;
 
     private ImageView Picture;
 
-
-
-    /**
-     * Creates the dialog and initializes its content.
-     *
-     * @param savedInstanceState The saved instance state.
-     * @return The created dialog.
-     */
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.profile_frag, null);
@@ -62,8 +50,6 @@ public class ProfileFragment extends DialogFragment {
         Bundle bundle = getArguments();
 
         ETname.setText(bundle.getString("UserName"));
-        String URL = bundle.getString("profile_picture");
-        Picasso.get().load(URL).resize(100, 100).centerInside().into(Picture);
 
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +60,7 @@ public class ProfileFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view)
-                .setTitle("Profile")
+                .setTitle("Location Access")
                 .setNegativeButton("Cancel", null) // do nothing and close
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
@@ -88,7 +74,7 @@ public class ProfileFragment extends DialogFragment {
     }
 
     /**
-     * Opens the device gallery for image selection.
+     * Open the gallery to select an image
      */
     private void openGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -96,11 +82,7 @@ public class ProfileFragment extends DialogFragment {
     }
 
     /**
-     * Handles the result of activity launched for image selection.
-     *
-     * @param requestCode The request code.
-     * @param resultCode  The result code.
-     * @param data        The intent data.
+     * Handle the result of the gallery intent
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -113,4 +95,5 @@ public class ProfileFragment extends DialogFragment {
             }
         }
     }
+
 }
