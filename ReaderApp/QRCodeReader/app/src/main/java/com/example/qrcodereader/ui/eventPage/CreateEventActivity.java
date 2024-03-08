@@ -93,8 +93,9 @@ public class CreateEventActivity extends AppCompatActivity {
         }
         PlacesClient placesClient = Places.createClient(this);
 
+        // OpenAI, 2024, ChatGPT, Prompt to set the edit text of the location so that when the user clicks on it, it will open the Places API
+        // ChatGPT code start here
         getLocation = findViewById(R.id.event_location);
-
         getLocation.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 // Perform any action that should happen with the click
@@ -108,6 +109,7 @@ public class CreateEventActivity extends AppCompatActivity {
             }
             return false;
         });
+        // ChatGPT code end here
 
         CheckBox checkBox = findViewById(R.id.attendee_limit_checkbox);
         EditText attendeeLimit = findViewById(R.id.attendee_limit);
@@ -233,6 +235,7 @@ public class CreateEventActivity extends AppCompatActivity {
      * @param eventDate the EditText where the date will be displayed
      */
     private void showDatePickerDialog(EditText eventDate) {
+        // OpenAI, 2024, ChatGPT, Prompt to set the edit text of the date so that when the user clicks on it, it will open the DatePickerDialog
         // Get current date
         int year = eventDateTime.get(Calendar.YEAR);
         int month = eventDateTime.get(Calendar.MONTH);
@@ -251,6 +254,7 @@ public class CreateEventActivity extends AppCompatActivity {
                     eventDate.setText(dateFormat.format(eventDateTime.getTime()));
                 }, year, month, day);
         datePickerDialog.show();
+        // ChatGPT code end here
     }
 
     /**
@@ -258,6 +262,7 @@ public class CreateEventActivity extends AppCompatActivity {
      * @param eventTime the EditText where the time will be displayed
      */
     private void showTimePickerDialog(EditText eventTime) {
+        // OpenAI, 2024, ChatGPT, Prompt to set the edit text of the time so that when the user clicks on it, it will open the TimePickerDialog
         // Get current time
         int hour = eventDateTime.get(Calendar.HOUR_OF_DAY);
         int minute = eventDateTime.get(Calendar.MINUTE);
@@ -273,6 +278,7 @@ public class CreateEventActivity extends AppCompatActivity {
                     eventTime.setText(timeFormat.format(eventDateTime.getTime()));
                 }, hour, minute, true);
         timePickerDialog.show();
+        // ChatGPT code end here
     }
 
     /**
@@ -323,6 +329,8 @@ public class CreateEventActivity extends AppCompatActivity {
      * to avoid 2 events have the same QR code
      */
     private void updatePastEvent() {
+        // OpenAI, 2024, ChatGPT, Prompt to update the QR code of the selected past event
+        // ChatGPT code start here
         DocumentReference eventDocRef = db.collection("events").document(selectedPastEvent);
 
         eventDocRef.get().addOnCompleteListener(task -> {
@@ -336,7 +344,6 @@ public class CreateEventActivity extends AppCompatActivity {
                     QRCode newqrCode = new QRCode();
                     updateData.put("qrCode", newqrCode.getString());
 
-
                     eventDocRef.update(updateData)
                             .addOnSuccessListener(aVoid -> Log.d("Firestore", "Past event successfully updated"))
                             .addOnFailureListener(e -> Log.w("Firestore", "Error updating past event", e));
@@ -347,5 +354,6 @@ public class CreateEventActivity extends AppCompatActivity {
                 Log.d("Firestore", "Error getting documents: ", task.getException());
             }
         });
+        // ChatGPT code end here
     }
 }
