@@ -1,8 +1,10 @@
 package com.example.qrcodereader.ui.eventPage;
 
+import com.example.qrcodereader.DisplayQRCode;
 import com.example.qrcodereader.R;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
+import com.example.qrcodereader.entity.QRCode;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,11 +26,16 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ *  Activity for users to view details of event they have created, including its QR code.
+ *  @author Son and Duy
+ */
 public class EventDetailsOrganizerActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefEvent;
+    private QRCode qrCode;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +53,31 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         String eventID = getIntent().getStringExtra("eventID");
         docRefEvent = db.collection("events").document(eventID);
 
+        Button seeQRCodeButton = findViewById(R.id.see_qr_button);
+        seeQRCodeButton.setOnClickListener(v -> {
+
+            Intent intent = new Intent(this, DisplayQRCode.class);
+            intent.putExtra("qrCode", qrCode.getBitmap());
+            startActivity(intent);
+                });
+
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 String eventName = documentSnapshot.getString("name");
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
                 GeoPoint location = documentSnapshot.getGeoPoint("location");
+                String locationName = documentSnapshot.getString("locationName");
                 String organizer = documentSnapshot.getString("organizer");
                 Timestamp time = documentSnapshot.getTimestamp("time");
+                String qrCodeString = documentSnapshot.getString("qrCode");
+                qrCode = new QRCode(qrCodeString);
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
 
                 eventNameTextView.setText(eventName);
                 String organizerText = "Organizer: " + organizer;
                 eventOrganizerTextView.setText("Organizer: " + organizer);
-                String locationText = "Location: " + String.format(Locale.getDefault(), "%f, %f",
-                        location.getLatitude(),
-                        location.getLongitude());
-                eventLocationTextView.setText(locationText);
+                eventLocationTextView.setText(locationName);
                 String timeText = "Time: " + time.toDate().toString();
                 eventTimeTextView.setText(timeText);
 

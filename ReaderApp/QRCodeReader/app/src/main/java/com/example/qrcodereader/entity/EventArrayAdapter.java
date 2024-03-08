@@ -18,17 +18,30 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Map;
 
-
+/**
+ *  The Array Adapter for displaying events in ListViews
+ *  <p>
+ *      Events are taking from database
+ *  </p>
+ *  <p>
+ *      Used in AttendeeEventActivity.java, OrganizerEventActivity.java, BrowseEventActivity.java
+ *  </p>
+ *  @author Son and Duy
+ */
 public class EventArrayAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> events;
     private Context context;
 
+    /**
+     * Constructor for the EventArrayAdapter
+     * @param context
+     * @param events
+     */
     public EventArrayAdapter(Context context, ArrayList<Event> events){
         super(context,0, events);
         this.events = events;
         this.context = context;
     }
-
 
     @NonNull
     @Override
@@ -49,27 +62,27 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         eventName.setText(event.getEventName());
         organizerName.setText(event.getOrganizer());
 
-        //GeoPoint geoPoint = event.getLocation();
-        // Handle no location object
-        //String locationString = (geoPoint != null) ? geoPoint.toString() : "No location";
         String locationString = (event.getLocationName() != null) ? event.getLocationName() : "No location";
         locationName.setText(locationString);
 
         return view;
     }
 
-    public void addEvent(String eventID, String name, String organizer, GeoPoint location, Timestamp time) {
-        events.add(new Event(eventID, name, organizer, location, time));
-        notifyDataSetChanged();
-    }
-
-    public void addEvent(String eventID, String name, String organizer, GeoPoint location, Timestamp time, String locationName) {
-        events.add(new Event(eventID, name, organizer, location, time, locationName));
-        notifyDataSetChanged();
-    }
-
-    public void addEvent(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, Map<String, Long> attendees) {
-        events.add(new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendees));
+    /**
+     * Add event to the list of events
+     * @param id the event id
+     * @param name the event name
+     * @param location the event location
+     * @param locationName the event location name
+     * @param time the event time
+     * @param organizer the event organizer
+     * @param organizerID the event organizer id
+     * @param qrCode the event qr code
+     * @param attendeeLimit the event attendee limit
+     * @param attendees the event attendees
+     */
+    public void addEvent(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, int attendeeLimit, Map<String, Long> attendees) {
+        events.add(new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees));
         notifyDataSetChanged();
     }
 }

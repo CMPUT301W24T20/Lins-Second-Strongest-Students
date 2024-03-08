@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
+import com.example.qrcodereader.entity.Event;
+import com.example.qrcodereader.entity.QRCode;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -29,12 +31,20 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ *  Activity for users to view details of event they want to sign up to.
+ *  <p>
+ *      This is where the sign up operation happen
+ *  </p>
+ *  @author Son and Duy
+ */
 public class EventDetailsAttendeeActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefUser;
     private DocumentReference docRefEvent;
+    private Event selectedEvent;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,24 +65,28 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
+                // Fetch the event details
                 String eventName = documentSnapshot.getString("name");
-                Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
                 GeoPoint location = documentSnapshot.getGeoPoint("location");
-                String organizer = documentSnapshot.getString("organizer");
+                String locationName = documentSnapshot.getString("locationName");
                 Timestamp time = documentSnapshot.getTimestamp("time");
+                String organizer = documentSnapshot.getString("organizer");
+                String organizerID = documentSnapshot.getString("organizerID");
+                String qrCodeString = documentSnapshot.getString("qrCode");
+                QRCode qrCode = new QRCode(qrCodeString);
+                int attendeeLimit = documentSnapshot.contains("attendeeLimit") ? (int)(long)documentSnapshot.getLong("attendeeLimit") : -1;
+                Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
+                selectedEvent = new Event(eventID, eventName, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, eventsAttended);
+
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
 
                 eventNameTextView.setText(eventName);
                 String organizerText = "Organizer: " + organizer;
                 eventOrganizerTextView.setText(organizerText);
-                String locationText = "Location: " + String.format(Locale.getDefault(), "%f, %f",
-                        location.getLatitude(),
-                        location.getLongitude());
-                eventLocationTextView.setText(locationText);
+                eventLocationTextView.setText(locationName);
                 String timeText = "Time: " + time.toDate().toString();
                 eventTimeTextView.setText(timeText);
-
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
@@ -83,48 +97,52 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, Object> newEvent = new HashMap<>();
-                newEvent.put("eventsAttended." + eventID, 0);
-                docRefUser.update(newEvent)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // Document updated successfully
-                                Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Update failed
-                                Log.w("Firestore", "Error updating document", e);
-                            }
-                        });
 
-                docRefEvent = db.collection("events").document(eventID);
-                Map<String, Object> newAttendee = new HashMap<>();
-                newAttendee.put("attendees." + userid, 0);
-                docRefEvent.update(newAttendee)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // Document updated successfully
-                                Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Update failed
-                                Log.w("Firestore", "Error updating document", e);
-                            }
-                        });
-                Toast.makeText(EventDetailsAttendeeActivity.this, "Signed up to event " + eventID, Toast.LENGTH_LONG).show();
+                // Check if the event is full before allow user to sign up
+                if (!selectedEvent.isFull()) {
+                    newEvent.put("eventsAttended." + eventID, 0);
+                    docRefUser.update(newEvent)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Document updated successfully
+                                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Update failed
+                                    Log.w("Firestore", "Error updating document", e);
+                                }
+                            });
+
+                    docRefEvent = db.collection("events").document(eventID);
+                    Map<String, Object> newAttendee = new HashMap<>();
+                    newAttendee.put("attendees." + userid, 0);
+                    docRefEvent.update(newAttendee)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Document updated successfully
+                                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Update failed
+                                    Log.w("Firestore", "Error updating document", e);
+                                }
+                            });
+                    Toast.makeText(EventDetailsAttendeeActivity.this, "Signed up to event " + eventID, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(EventDetailsAttendeeActivity.this, "Event is full", Toast.LENGTH_LONG).show();
+                }
                 finish();
             }
         });
-
         Button returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
-
     }
 }

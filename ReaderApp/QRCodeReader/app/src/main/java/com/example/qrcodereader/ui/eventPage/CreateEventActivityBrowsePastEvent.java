@@ -1,5 +1,4 @@
 package com.example.qrcodereader.ui.eventPage;
-import com.example.qrcodereader.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,60 +11,51 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 import com.example.qrcodereader.entity.QRCode;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  Activity for users to view all events they have created.
+ *  Activity for users to browse events they have created that have passed.
  *  <p>
- *      User can press on an event to bring them to EventDetailsOrganizerActivity
+ *      Main purpose is for user to choose a QR code to reuse
  *  </p>
- *  @author Son and Duy and Khushdeep
+ *  @author Duy
  */
-public class OrganizerEventActivity extends AppCompatActivity {
+public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
 
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
-    private CollectionReference pastEventsRef;
     private String userid;
     private String username;
     private ListView eventList;
     private EventArrayAdapter eventArrayAdapter;
     ArrayList<Event> eventDataList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.organizer_activity_event);
+        setContentView(R.layout.organizer_browse_past_event);
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
-        pastEventsRef = db.collection("pastEvents");
 
         eventList = findViewById(R.id.event_list_organizer);
         eventDataList = new ArrayList<>();
@@ -73,10 +63,14 @@ public class OrganizerEventActivity extends AppCompatActivity {
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
+        // Get the current time as a Timestamp
+        Timestamp currentTime = Timestamp.now();
+
 
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        eventsRef.whereEqualTo("organizerID", deviceID)
+        eventsRef.whereLessThan("time", currentTime)
+                .whereEqualTo("organizerID", deviceID)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot querySnapshots,
@@ -87,7 +81,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
                         }
                         if (querySnapshots != null) {
                             eventDataList.clear();
-                            for (QueryDocumentSnapshot doc : querySnapshots) {
+                            for (QueryDocumentSnapshot doc: querySnapshots) {
                                 String eventID = doc.getId();
                                 String name = doc.getString("name");
                                 GeoPoint location = doc.getGeoPoint("location");
@@ -96,7 +90,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
                                 if (doc.getString("locationName") != null) {
                                     locationName = doc.getString("locationName");
                                 } else {
-                                    locationName = "No location";
+                                    locationName  = "No location";
                                 }
 
                                 Timestamp time = doc.getTimestamp("time");
@@ -105,38 +99,33 @@ public class OrganizerEventActivity extends AppCompatActivity {
 
                                 String qrCodeString = doc.getString("qrCode");
                                 QRCode qrCode = new QRCode(qrCodeString);
-                                int attendeeLimit = doc.contains("attendeeLimit") ? (int) (long) doc.getLong("attendeeLimit") : -1;
+                                int attendeeLimit = doc.contains("attendeeLimit") ? (int)(long)doc.getLong("attendeeLimit") : -1;
                                 Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
                                 Log.d("Firestore", "Event fetched");
-                                //Toast.makeText(OrganizerEventActivity.this, "Event fetched", Toast.LENGTH_SHORT).show();
-                                eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees);
+                                Toast.makeText(CreateEventActivityBrowsePastEvent.this, "Event fetched", Toast.LENGTH_SHORT).show();
+                                eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees);
                             }
                         }
                     }
                 });
-
-        Button createEventButton = findViewById(R.id.create_event_button);
-        createEventButton.setOnClickListener(v -> {
-            Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
-            intent.putExtra("userid", userid);
-            intent.putExtra("username", username);
-            startActivity(intent);
-        });
-
-        Button returnButton = findViewById(R.id.return_button_organizer);
-        returnButton.setOnClickListener(v -> finish());
 
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the selected event
                 Event selectedEvent = eventDataList.get(position);
+                QRCode qrCode = selectedEvent.getQrCode();
+                String qrCodeString = qrCode.getString();
 
-                Intent detailIntent = new Intent(OrganizerEventActivity.this, EventDetailsOrganizerActivity.class);
-                detailIntent.putExtra("eventID", selectedEvent.getEventID());
-                startActivity(detailIntent);
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("selectedQRCode", qrCodeString);
+                resultIntent.putExtra("selectedEventID", selectedEvent.getEventID());
+
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
             }
         });
     }
 }
+

@@ -15,9 +15,15 @@
     <string name="default_notification_channel_id">default_channel</string>
     <string name="firebase_message_title">Message From An Event Organizer!</string>
     <string name="msg_token_fmt">FCM Token: %1$s</string>
+    <string name="limit_the_number_of_attendee">Limit the number of attendee</string>
+    <string name="qr_code_reuse">QR code reuse</string>
+    <string name="reuse_past_event_qr_code">Reuse past event QR code</string>
+    <string name="past_events">Past Events</string>
+    <string name="see_qr_code">See QR Code</string>
     <string name="browse">Browse</string>
     <string name="remove">Remove</string>
     <string name="return_string">Return</string>
     <string name="events">Events</string>
     <string name="return_text">Back to main</string>
+    <string name="warning_by_reusing_a_qr_code_a_new_qr_code_will_be_generated_to_replace_the_past_event_that_the_qr_is_chosen_from">Warning: By reusing a QR code, a new QR code will be generated to replace the past event that the QR is chosen from.</string>
 </resources>

@@ -14,6 +14,7 @@ import java.util.Random;
  * This class is used to generate a QR code
  * It generates a random string of letters and numbers
  * and then uses the string to generate bitmap of the QR code
+ * @author Duy
  */
 public class QRCode {
     Bitmap bitmap;
@@ -29,9 +30,14 @@ public class QRCode {
         bitmap = generateQRCodeImage(qrCodeString);
     }
 
+    /**
+     * Constructor for the QRCode class
+     * It generates a bitmap of the QR code using the given string
+     * @param qrCodeString the string to be encoded in the QR code
+     */
     public QRCode(String qrCodeString) {
         this.qrCodeString = qrCodeString;
-        bitmap = generateQRCodeImage(qrCodeString);
+        bitmap = generateQRCodeImage(this.qrCodeString);
     }
 
     /**
@@ -90,6 +96,10 @@ public class QRCode {
         }
     }
 
+    /**
+     * Getter method for the string of the QR code
+     * @return the string represent the QR code
+     */
     public String getString() {
         return qrCodeString;
     }

@@ -22,6 +22,7 @@ import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 
 
+import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +41,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  Activity for users to browse events they have signed up to.
+ *  <p>
+ *      Display only events user have signed up in.
+ *  </p>
+ *  <p>
+ *      Can move to BrowseEventActivity with browseButton
+ *  </p>
+ *  @author Son and Khushdeep and Duy
+ */
 public class AttendeeEventActivity extends AppCompatActivity {
 
 
@@ -48,11 +59,6 @@ public class AttendeeEventActivity extends AppCompatActivity {
     private CollectionReference usersRef;
     private DocumentReference userDocRef;
     private List<String> attendeeEvents;
-//    private void addNewEvent(Event event) {
-//        HashMap<String, String> data = new HashMap<>();
-//        data.put("Name", event.getEventName());
-//        eventsRef.document(event.getEventName()).set(data);
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,81 +78,6 @@ public class AttendeeEventActivity extends AppCompatActivity {
         // Getting user through MainActivity. This is the user who is using the app
         String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-
-        // I was attempting to get the map of eventsAttended in the user document and turn it into a list in the comment below
-        // Then compare it with each event in events1 down in the SnapshotListener below
-        // But it couldn't work not sure why
-        // You can delete this code if you don't need it
-
-//        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
-//            if (documentSnapshot.exists()) {
-//                Log.d("Firestore", "Successfully fetch user document");
-//                Map<String, Object> eventsAttended = (Map<String, Object>) documentSnapshot.get("eventsAttended");
-//                if (eventsAttended != null) {
-//                    attendeeEvents = new ArrayList<String>(eventsAttended.keySet());
-//                    Log.d("AttendeeEvents", "Attendee Events List: " + attendeeEvents);
-//
-//                    eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onEvent(@Nullable QuerySnapshot querySnapshots,
-//                                            @Nullable FirebaseFirestoreException error) {
-//                            if (error != null) {
-//                                Log.e("Firestore", error.toString());
-//                                return;
-//                            }
-//                            if (querySnapshots != null) {
-//                                eventDataList.clear();
-//                                for (QueryDocumentSnapshot doc: querySnapshots) {
-////                        Event event = doc.toObject(Event.class);
-//                                    String eventID = doc.getId();
-//                                    if (attendeeEvents.contains(eventID)) {
-//                                        String name = doc.getString("name");
-//                                        String organizer = doc.getString("organizer");
-//                                        String location = doc.getString("location");
-//                                        Timestamp time = doc.getTimestamp("time");
-//                                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-//
-//                                        Log.d("Firestore", "Event fetched");
-//                                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    });
-//                }
-//            } else {
-//                Log.d("Firestore", "No such user document");
-//            }
-//        }).addOnFailureListener(e -> Log.e("Firestore", "Error getting user document", e));
-
-//        eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot querySnapshots,
-//                                @Nullable FirebaseFirestoreException error) {
-//                if (error != null) {
-//                    Log.e("Firestore", error.toString());
-//                    return;
-//                }
-//                if (querySnapshots != null) {
-//                    eventDataList.clear();
-//                    for (QueryDocumentSnapshot doc: querySnapshots) {
-////                        Event event = doc.toObject(Event.class);
-//                        String eventID = doc.getId();
-//
-//                        /*if (attendeeEvents.contains(eventID))*/ // Heres the trying to compare
-//                            String name = doc.getString("name");
-//                            String organizer = doc.getString("organizer");
-//                            GeoPoint location = doc.getGeoPoint("location");
-//                            Timestamp time = doc.getTimestamp("time");
-//                            Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-//
-//                            Log.d("Firestore", "Event fetched");
-//                            eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
-//
-//                    }
-//                }
-//            }
-//        });
         userDocRef = usersRef.document(userid);
         userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -159,35 +90,43 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
                     Map<String, Long> attendeeEvents = (Map<String, Long>) snapshot.get("eventsAttended");
+                    if(attendeeEvents != null && !attendeeEvents.isEmpty()) {
+                        eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot querySnapshots,
+                                                @Nullable FirebaseFirestoreException error) {
+                                if (error != null) {
+                                    Log.e("Firestore", error.toString());
+                                    return;
+                                }
+                                if (querySnapshots != null) {
+                                    eventDataList.clear();
+                                    for (QueryDocumentSnapshot doc : querySnapshots) {
+                                        String eventID = doc.getId();
 
-                    eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot querySnapshots,
-                                            @Nullable FirebaseFirestoreException error) {
-                            if (error != null) {
-                                Log.e("Firestore", error.toString());
-                                return;
-                            }
-                            if (querySnapshots != null) {
-                                eventDataList.clear();
-                                for (QueryDocumentSnapshot doc: querySnapshots) {
-                                    String eventID = doc.getId();
+                                        // Check if the user has attended the event
+                                        if (attendeeEvents.containsKey(eventID)) {
+                                            String name = doc.getString("name");
+                                            String organizer = doc.getString("organizer");
+                                            GeoPoint location = doc.getGeoPoint("location");
+                                            Timestamp time = doc.getTimestamp("time");
+                                            String locationName = doc.getString("locationName");
+                                            String organizerID = doc.getString("organizerID");
+                                            String qrCodeString = doc.getString("qrCode");
+                                            QRCode qrCode = new QRCode(qrCodeString);
+                                            int attendeeLimit = doc.contains("attendeeLimit") ? (int)(long)doc.getLong("attendeeLimit") : -1;
+                                            Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
-                                    // Check if the user has attended the event
-                                    if (attendeeEvents.containsKey(eventID)) {
-                                        String name = doc.getString("name");
-                                        String organizer = doc.getString("organizer");
-                                        GeoPoint location = doc.getGeoPoint("location");
-                                        Timestamp time = doc.getTimestamp("time");
-                                        Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-
-                                        Log.d("Firestore", "Event fetched");
-                                        eventArrayAdapter.addEvent(eventID, name, organizer, location, time);
+                                            Log.d("Firestore", "Event fetched");
+                                            eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees);
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else{
+                        Log.d("Firestore", "No events attended by the user");
+                    }
                 } else {
                     Log.d("Firestore", "Current data: null");
                 }
@@ -219,14 +158,20 @@ public class AttendeeEventActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Show the event details in a dialog
+     * @param event The event to show the details of
+     */
     private void showEventDetailsDialog(Event event) {
-
+        /*
+            OpenAI, ChatGpt, 06/03/24
+            "I want to create a dialog box that displays details of an event with customizable design"
+        */
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.event_detail_dialog_attendee, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view);
 
-        // Set the event details to the TextViews
         TextView eventNameTextView = view.findViewById(R.id.event_name);
         String nameText = "Event Name: " + event.getEventName();
         eventNameTextView.setText(nameText);
@@ -236,17 +181,11 @@ public class AttendeeEventActivity extends AppCompatActivity {
         eventOrganizerTextView.setText(organizerText);
 
         TextView eventLocationTextView = view.findViewById(R.id.event_location);
-        String locationText = "Location: " + event.getLocation().getLatitude() + ", " + event.getLocation().getLongitude();
+        String locationText = "Location: " + event.getLocationName();
         eventLocationTextView.setText(locationText);
 
         TextView eventTimeTextView = view.findViewById(R.id.event_time);
         eventTimeTextView.setText(event.getTime().toDate().toString());
-
-
-
-
-
-        // Create and show the dialog
 
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
 

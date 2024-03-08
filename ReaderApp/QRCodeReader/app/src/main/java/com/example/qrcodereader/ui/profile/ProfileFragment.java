@@ -30,6 +30,10 @@ import androidx.fragment.app.DialogFragment;
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 
+/**
+ * Fragment for displaying the profile of user
+ * @author Tiana
+ */
 public class ProfileFragment extends DialogFragment {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;
@@ -73,11 +77,17 @@ public class ProfileFragment extends DialogFragment {
         return builder.create();
     }
 
+    /**
+     * Open the gallery to select an image
+     */
     private void openGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, REQUEST_CODE_PICK_IMAGE);
     }
 
+    /**
+     * Handle the result of the gallery intent
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
