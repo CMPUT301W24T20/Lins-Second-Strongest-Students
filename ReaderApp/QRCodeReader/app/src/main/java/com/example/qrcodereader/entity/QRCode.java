@@ -31,7 +31,7 @@ public class QRCode {
 
     public QRCode(String qrCodeString) {
         this.qrCodeString = qrCodeString;
-        bitmap = generateQRCodeImage(qrCodeString);
+        bitmap = generateQRCodeImage(this.qrCodeString);
     }
 
     /**
