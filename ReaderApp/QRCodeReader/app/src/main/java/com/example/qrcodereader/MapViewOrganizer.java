@@ -41,13 +41,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Map;
-
+// Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
 /**
  * Map Activity
  * @author Khushdeep
- */
-// Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
-/**
  * Represents a MapView for organizing and displaying a Google Map.
  * Implements the OnMapReadyCallback interface.
  */
@@ -148,17 +145,21 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
                         for (QueryDocumentSnapshot document : snapshots) {
                             Map<String, Long> attendeesMap = (Map<String, Long>) document.get("attendees");
                             if (attendeesMap != null) {
-                                for (String userId : attendeesMap.keySet()) {
-                                    db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            GeoPoint geoPoint = documentSnapshot.getGeoPoint("location");
-                                            if (geoPoint != null) {
-                                                LatLng checkInLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
-                                                map.addMarker(new MarkerOptions().position(checkInLocation).title(document.getString("name")));
+                                for (Map.Entry<String, Long> entry: attendeesMap.entrySet()) {
+                                    String userId = entry.getKey();
+                                    Long checkInCount = entry.getValue();
+                                    if(checkInCount > 0) {
+                                        db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                GeoPoint geoPoint = documentSnapshot.getGeoPoint("location");
+                                                if (geoPoint != null) {
+                                                    LatLng checkInLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+                                                    map.addMarker(new MarkerOptions().position(checkInLocation).title(document.getString("name")));
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
                         }
