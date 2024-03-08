@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -82,39 +83,29 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         /*
         Microsoft Copilot, 07/03/24
         "I need a way to find a document in firebase based off of the of one
-        of the fields
+        of the fields"
          */
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Get a reference to the 'events' collection
         CollectionReference eventsRef = db.collection("events");
 
-        eventsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        // Query the collection for documents where the 'qrCode' field equals 'pointCode'
+        eventsRef.whereEqualTo("qrCode", code).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        // Assuming 'qrCodes' is your subcollection
-                        CollectionReference qrCodesRef = eventsRef.document(document.getId()).collection("qrCodes");
-
-                        // Query the subcollection based on the 'qrCode' field
-                        qrCodesRef.whereEqualTo("qrCode", "yourQrCodeValue").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot qrCodeDocument : task.getResult()) {
-                                         String eventID = qrCodeDocument.getId();
-                                         updateAttendance(eventID);
-                                    }
-                                } else {
-                                    Log.d("Query Error", "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
+                        String documentName = document.getId();
+                        updateAttendance(documentName);
                     }
                 } else {
-                    Log.d("Query Error", "Error getting documents: ", task.getException());
+                    Log.d("EventFindError", "Error getting documents: ", task.getException());
                 }
             }
         });
+
     }
 
     /**
@@ -130,26 +121,86 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         "I need to increment a value in a firestore db"
          */
         String userID = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.d("UserID", userID);
+        addAttendee(event, userID);
 
         DocumentReference userRef = db.collection("users").document(userID);
 
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("eventsAttended." + event, FieldValue.increment(1));
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> eventsAttended = (Map<String, Object>) document.get("eventsattended");
+                        if (eventsAttended == null || !eventsAttended.containsKey(event)) {
+                            // The event does not exist in the 'eventsattended' map, add it
+                            userRef.update("eventsAttended." + event, 1)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("AddedEvent", "DocumentSnapshot successfully updated!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("CouldntAddEvent", "Error updating document", e);
+                                        }
+                                    });
+                        }
+                        else {
+                            Map<String, Object> updates = new HashMap<>();
+                            updates.put("eventsAttended." + event, FieldValue.increment(1));
 
-        userRef.set(updates, SetOptions.merge())
+                            userRef.update(updates)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("Incremented", "DocumentSnapshot successfully updated!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("IncrementFail", "Error updating document", e);
+                                        }
+                                    });
+                        }
+                    } else {
+                        Log.d("NoDoc", "No such document");
+                    }
+                } else {
+                    Log.d("Update Failed", "get failed with ", task.getException());
+                }
+            }
+
+        });
+    }
+
+    /**
+     * addAttendee(String, String)
+     * Adds the given userID to the attendees field of the given event
+     * @param event eventID of event to access
+     * @param userID userID to add
+     */
+    public void addAttendee(String event, String userID) {
+        DocumentReference eventRef = db.collection("events").document(event);
+
+// Use the update method to add a string to the 'attendees' map
+        eventRef.update("attendees." + userID, userID)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("UpdatedAttendance", "DocumentSnapshot successfully updated!");
+                        Log.d("AttendeeAdded", "DocumentSnapshot successfully updated!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("Update Failed", "Error updating document", e);
+                        Log.w("AttendeeAddFailure", "Error updating document", e);
                     }
                 });
-
     }
 
     @Override
