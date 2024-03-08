@@ -1,5 +1,6 @@
 package com.example.qrcodereader.ui.eventPage;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -56,6 +58,8 @@ public class CreateEventActivity extends AppCompatActivity {
     private String eventLocationName;
     private EditText getLocation;
     private String userName;
+    private String selectedQRCode;
+    private TextView qrReuseText;
 
 
     @Override
@@ -120,6 +124,22 @@ public class CreateEventActivity extends AppCompatActivity {
                 // If checkbox is unchecked, make attendeeLimit faded
                 attendeeLimit.setAlpha(0.5f);
                 attendeeLimit.setText(""); // Clear the text
+            }
+        });
+
+        CheckBox qrReuseCheckBox = findViewById(R.id.QR_reuse_checkbox);
+        qrReuseText = findViewById(R.id.QR_reuse);
+
+        // Set checkbox change listener
+        qrReuseCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // If checkbox is checked, make qrReuseText fully opaque
+                qrReuseText.setAlpha(1.0f);
+                Intent intent = new Intent(CreateEventActivity.this, CreateEventActivityBrowsePastEvent.class);
+                startActivityForResult(intent, 234); // Use a unique request code for this activity
+            } else {
+                // If checkbox is unchecked, make qrReuseText faded
+                qrReuseText.setAlpha(0.5f);
             }
         });
 
@@ -260,6 +280,10 @@ public class CreateEventActivity extends AppCompatActivity {
                 eventLocationName = place.getName();
                 getLocation.setText(eventLocationName);
             }
+        }
+        else if (requestCode == 234) {
+            selectedQRCode = data.getStringExtra("selectedQRCode");
+            qrReuseText.setText(selectedQRCode);
         }
     }
 }
