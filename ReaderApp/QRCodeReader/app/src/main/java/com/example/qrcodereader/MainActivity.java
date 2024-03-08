@@ -141,13 +141,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
-
-
-
-
-
-
-
     private void setupProfileButton() {
         Button profileButton = findViewById(R.id.profile_button);
         profileButton.setOnClickListener(new View.OnClickListener() {
@@ -162,12 +155,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
-
+    /**
+     * setupNotificationChannel
+     * Creates notification channel for app
+     */
     private void setupNotificationChannel() {
         /*
         Create notification channel to allow for push notifications
