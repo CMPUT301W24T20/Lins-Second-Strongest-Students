@@ -50,7 +50,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-
+/**
+ *  Activity for users to create events by entering the details and press create.
+ *  @author Duy
+ */
 public class CreateEventActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;

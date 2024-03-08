@@ -13,6 +13,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 
+/**
+ * Activity for displaying QR code
+ * @author Duy
+ */
 public class DisplayQRCode extends AppCompatActivity {
 
     @Override

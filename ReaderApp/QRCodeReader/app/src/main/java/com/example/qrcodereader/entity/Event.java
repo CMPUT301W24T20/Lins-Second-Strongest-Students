@@ -8,6 +8,16 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ *  Represent the event
+ *  <p>
+ *      Store all relevant event details
+ *  </p>
+ *  <p>
+ *      Matches the event documents in events collection
+ *  </p>
+ *  @author Son and Duy
+ */
 public class Event {
     private String eventID;
     private String name;

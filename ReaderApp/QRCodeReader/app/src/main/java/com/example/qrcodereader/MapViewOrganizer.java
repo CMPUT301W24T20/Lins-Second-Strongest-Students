@@ -42,6 +42,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Map Activity
+ * @author Khushdeep
+ */
 // Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
 public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCallback{
     private FusedLocationProviderClient fusedLocationClient;

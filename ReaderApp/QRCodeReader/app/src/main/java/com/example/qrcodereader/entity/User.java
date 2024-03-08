@@ -12,6 +12,16 @@ import java.util.Map;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 
+/**
+ *  Represent the user of the app
+ *  <p>
+ *      Store details of the user
+ *  </p>
+ *  <p>
+ *      Matches the user documents in users collection
+ *  </p>
+ *  @author Son and Duy
+ */
 public class User implements Serializable {
     private String userID;
     private String name;
