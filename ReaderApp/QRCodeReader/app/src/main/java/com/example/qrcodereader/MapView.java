@@ -45,6 +45,10 @@ import java.util.ArrayList;
  * @author Khushdeep
  */
 // Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
+/**
+ * Represents a MapView that displays a Google Map.
+ * Implements the OnMapReadyCallback interface.
+ */
 public class MapView extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;
@@ -68,7 +72,11 @@ public class MapView extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
     }
-
+    /**
+     * Called when the map is ready to be used.
+     *
+     * @param googleMap The GoogleMap instance.
+     */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
@@ -93,6 +101,13 @@ public class MapView extends AppCompatActivity implements OnMapReadyCallback {
         });
         placePins(map);
     }
+    /**
+     * Called when the user responds to a permission request.
+     *
+     * @param requestCode The request code passed when requesting permissions.
+     * @param permissions The requested permissions.
+     * @param grantResults The results of the permission request (either PERMISSION_GRANTED or PERMISSION_DENIED).
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -106,6 +121,11 @@ public class MapView extends AppCompatActivity implements OnMapReadyCallback {
             }
         }
     }
+    /**
+     * Retrieves event locations from Firestore and places pins (markers) on the map.
+     *
+     * @param map The GoogleMap instance where markers will be added.
+     */
     private void placePins(GoogleMap map){
         db.collection("events")
                 .get()

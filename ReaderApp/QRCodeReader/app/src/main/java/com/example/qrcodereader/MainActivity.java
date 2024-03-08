@@ -75,7 +75,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
-
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity, sets up the Firestore references, and sets up the views for the main activity.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
         checkAdminStatus();
     }
 
-
+    /**
+     * Initializes Firestore and sets up the user document reference.
+     */
     private void initializeFirestore() {
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         db = FirebaseFirestore.getInstance();
@@ -140,6 +146,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
+    /**
+     * Sets up the navigation for the main activity.
+     */
     private void setupNavigation() {
         /*
         Configure navigation bar
@@ -153,6 +164,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    /**
+     * Sets up the profile button for the main activity.
+     */
     private void setupProfileButton() {
         Button profileButton = findViewById(R.id.profile_button);
         profileButton.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     /**
      * setupNotificationChannel
@@ -205,6 +221,10 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Sets up the 'My Event' button for the main activity.
+     * This button opens a dialog that allows the user to navigate to their event page as an attendee or organizer.
+     */
     private void setupMyEventButton() {
         /*
             OpenAI, ChatGpt, 01/03/24
@@ -248,6 +268,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets up the 'Map' button for the main activity.
+     * This button opens a dialog that allows the user to navigate to the map as an attendee or organizer.
+     */
     private void setupMapButton() {
         Button mapButton = findViewById(R.id.map_button);
         mapButton.setOnClickListener(new View.OnClickListener() {
@@ -293,7 +317,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    /**
+     * Checks the admin status of the user.
+     * If the user is an admin, it sets up the 'Admin' button to open a dialog that allows the user to navigate to different admin pages.
+     * If the user is not an admin, it sets up the 'Admin' button to display a toast message saying "Not An Admin. No Access."
+     */
     private void checkAdminStatus() {
         /*
             OpenAI, ChatGPT, 07/03/24
