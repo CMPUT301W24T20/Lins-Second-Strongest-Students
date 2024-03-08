@@ -36,16 +36,36 @@
         android:textStyle="bold"
         android:textSize="22sp"
         android:layout_marginTop="15dp"/>
-
-    <TextView
-        android:id="@+id/event_attendees_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="22sp"
-        android:text="Attendees:"
-        android:layout_marginTop="15dp"/>
-
+        android:orientation="horizontal"
+        android:weightSum="9">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:text="Attendees:"
+            android:layout_marginTop="15dp"
+            android:layout_weight="4"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:text="Checked in"
+            android:layout_marginTop="15dp"
+            android:layout_weight="3"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:text="Times"
+            android:layout_marginTop="15dp"
+            android:layout_weight="2"/>
+    </LinearLayout>
     <ListView
         android:id="@+id/event_attendees"
         android:layout_width="match_parent"
