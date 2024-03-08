@@ -29,9 +29,14 @@ public class QRCode {
         bitmap = generateQRCodeImage(qrCodeString);
     }
 
+    /**
+     * Constructor for the QRCode class
+     * It generates a bitmap of the QR code using the given string
+     * @param qrCodeString the string to be encoded in the QR code
+     */
     public QRCode(String qrCodeString) {
         this.qrCodeString = qrCodeString;
-        bitmap = generateQRCodeImage(qrCodeString);
+        bitmap = generateQRCodeImage(this.qrCodeString);
     }
 
     /**
@@ -90,6 +95,10 @@ public class QRCode {
         }
     }
 
+    /**
+     * Getter method for the string of the QR code
+     * @return the string represent the QR code
+     */
     public String getString() {
         return qrCodeString;
     }

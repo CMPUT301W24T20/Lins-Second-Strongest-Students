@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.qrcodereader.MainActivity;
+import com.example.qrcodereader.MapView;
+import com.example.qrcodereader.MapViewOrganizer;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.databinding.FragmentHomeBinding;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
@@ -24,7 +26,6 @@ import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,9 +38,6 @@ public class HomeFragment extends Fragment {
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        //Moved + adapted from MainActivity
-
-        // I'm working on this part - Duy
         Button profile_button = root.findViewById(R.id.profile_button);
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +94,7 @@ public class HomeFragment extends Fragment {
                 // Button to go to AttendeeEventActivity
                 builder.setPositiveButton("Go to Map (Attendee)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(getContext(), AttendeeEventActivity.class);
+                        Intent intent = new Intent(getContext(), MapView.class);
                         startActivity(intent);
                     }
                 });
@@ -104,7 +102,7 @@ public class HomeFragment extends Fragment {
                 // Button to go to OrganizerEventActivity
                 builder.setNegativeButton("Go to Map(Organizer)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(getContext(), OrganizerEventActivity.class);
+                        Intent intent = new Intent(getContext(), MapViewOrganizer.class);
                         startActivity(intent);
                     }
                 });
@@ -156,12 +154,12 @@ public class HomeFragment extends Fragment {
                 dialog.show();
             }
         });
-
         return root;
     }
 
-
-
+    /**
+     * This method is called when the Fragment is destroyed
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -29,6 +29,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -42,6 +43,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
+    private CollectionReference pastEventsRef;
     private String userid;
     private String username;
     private ListView eventList;
@@ -56,6 +58,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
+        pastEventsRef = db.collection("pastEvents");
 
         eventList = findViewById(R.id.event_list_organizer);
         eventDataList = new ArrayList<>();
@@ -77,7 +80,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
                         }
                         if (querySnapshots != null) {
                             eventDataList.clear();
-                            for (QueryDocumentSnapshot doc: querySnapshots) {
+                            for (QueryDocumentSnapshot doc : querySnapshots) {
                                 String eventID = doc.getId();
                                 String name = doc.getString("name");
                                 GeoPoint location = doc.getGeoPoint("location");
@@ -86,7 +89,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
                                 if (doc.getString("locationName") != null) {
                                     locationName = doc.getString("locationName");
                                 } else {
-                                    locationName  = "No location";
+                                    locationName = "No location";
                                 }
 
                                 Timestamp time = doc.getTimestamp("time");
@@ -95,12 +98,12 @@ public class OrganizerEventActivity extends AppCompatActivity {
 
                                 String qrCodeString = doc.getString("qrCode");
                                 QRCode qrCode = new QRCode(qrCodeString);
-
+                                int attendeeLimit = doc.contains("attendeeLimit") ? (int) (long) doc.getLong("attendeeLimit") : -1;
                                 Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
 
                                 Log.d("Firestore", "Event fetched");
-                                Toast.makeText(OrganizerEventActivity.this, "Event fetched", Toast.LENGTH_SHORT).show();
-                                eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendees);
+                                //Toast.makeText(OrganizerEventActivity.this, "Event fetched", Toast.LENGTH_SHORT).show();
+                                eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees);
                             }
                         }
                     }
@@ -129,50 +132,4 @@ public class OrganizerEventActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-//    private void showEventDetailsDialog(Event event) {
-//
-//        LayoutInflater inflater = LayoutInflater.from(this);
-//        View view = inflater.inflate(R.layout.event_detail_dialog_organizer, null);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setView(view);
-//
-//        // Set the event details to the TextViews
-//        TextView eventNameTextView = view.findViewById(R.id.event_name);
-//        String nameText = "Event Name: " + event.getEventName();
-//        eventNameTextView.setText(nameText);
-//
-//        TextView eventOrganizerTextView = view.findViewById(R.id.event_organizer);
-//        String organizerText = "Organizer: " + event.getOrganizer();
-//        eventOrganizerTextView.setText(organizerText);
-//
-//        TextView eventLocationTextView = view.findViewById(R.id.event_location);
-//        String locationText = "Location: " + event.getLocation().getLatitude() + ", " + event.getLocation().getLongitude();
-//        eventLocationTextView.setText(locationText);
-//
-//        TextView eventTimeTextView = view.findViewById(R.id.event_time);
-//        eventTimeTextView.setText(event.getTime().toDate().toString());
-//
-//        ListView attendeesListView = view.findViewById(R.id.event_attendees);
-//        Map<String, Long> attendees = event.getAttendees();
-//        if (attendees != null && !attendees.isEmpty()) {
-//            // Convert the map entries to a list
-//            ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(attendees.entrySet());
-//            // Create the custom adapter
-//            AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesList);
-//            // Set the custom adapter to the ListView
-//            attendeesListView.setAdapter(attendeesAdapter);
-//        }
-//
-//
-//        // Create and show the dialog
-//
-//        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-//
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//    }
 }
-
