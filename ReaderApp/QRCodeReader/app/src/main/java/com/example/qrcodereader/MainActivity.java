@@ -52,6 +52,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * This is the main activity class for the application.
+ * It extends AppCompatActivity and handles the functionality related to the main activity.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -68,7 +72,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
-
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity, sets up the Firestore references, and sets up the views for the main activity.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +94,9 @@ public class MainActivity extends AppCompatActivity {
         checkAdminStatus();
     }
 
-
+    /**
+     * Initializes Firestore and sets up the user document reference.
+     */
     private void initializeFirestore() {
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         db = FirebaseFirestore.getInstance();
@@ -129,11 +139,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
+    /**
+     * Sets up the navigation for the main activity.
+     */
     private void setupNavigation() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -144,13 +152,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
-
-
-
-
-
-
-
+    /**
+     * Sets up the profile button for the main activity.
+     */
     private void setupProfileButton() {
         Button profileButton = findViewById(R.id.profile_button);
         profileButton.setOnClickListener(new View.OnClickListener() {
@@ -169,8 +173,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
+    /**
+     * Sets up the notification channel for the application.
+     */
     private void setupNotificationChannel() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("default_channel",
@@ -180,13 +185,10 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(notificationChannel);
         }
     }
-
-
-
-
-
-
-
+    /**
+     * Sets up the broadcast receiver for the application.
+     * This receiver listens for broadcasts from MyFirebaseMessagingService.
+     */
     private void setupBroadcastReceiver() {
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
@@ -202,15 +204,10 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
-
-
-
-
-
-
-
-
-
+    /**
+     * Sets up the 'My Event' button for the main activity.
+     * This button opens a dialog that allows the user to navigate to their event page as an attendee or organizer.
+     */
     private void setupMyEventButton() {
         Button myEventButton = findViewById(R.id.my_event_button);
         myEventButton.setOnClickListener(new View.OnClickListener() {
@@ -248,14 +245,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
-
-
+    /**
+     * Sets up the 'Map' button for the main activity.
+     * This button opens a dialog that allows the user to navigate to the map as an attendee or organizer.
+     */
     private void setupMapButton() {
         Button mapButton = findViewById(R.id.map_button);
         mapButton.setOnClickListener(new View.OnClickListener() {
@@ -301,7 +294,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    /**
+     * Checks the admin status of the user.
+     * If the user is an admin, it sets up the 'Admin' button to open a dialog that allows the user to navigate to different admin pages.
+     * If the user is not an admin, it sets up the 'Admin' button to display a toast message saying "Not An Admin. No Access."
+     */
     private void checkAdminStatus() {
         final boolean[] isAdmin = {false};
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
