@@ -48,6 +48,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
+    /**
+     * sendNotification(String)
+     * Sends a push notification upon receiving an FCM message
+     * @param messageBody Contents of the FCM message
+     */
     private void sendNotification(String messageBody){
         Context context = MyFirebaseMessagingService.this;
 
