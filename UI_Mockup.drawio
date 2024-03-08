@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-03-08T02:21:02.337Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="pZNWHwukIXh0A13XrrtZ" version="24.0.2" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-08T02:32:20.633Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="16QrtM1BXPSyA4csJtq4" version="24.0.2" type="github">
   <diagram name="Page-1" id="Q0FHnNPMTVpMaA3_9me0">
     <mxGraphModel dx="1793" dy="2080" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -175,7 +175,7 @@
         <mxCell id="9nBCSFtzRnYlW7CJUfYu-29" value="Create Event" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="819.99" y="250" width="90" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="9nBCSFtzRnYlW7CJUfYu-30" value="List of events user has created. Listed events are selectable to expand into page 8.&lt;br&gt;Plus button in top right corner takes user to page 3.&lt;br&gt;&quot;Create Event&quot; button take user to page 7&lt;br&gt;&quot;Return&quot; button returns to page 1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="9nBCSFtzRnYlW7CJUfYu-30" value="List of events user has created. Listed events are selectable to expand into page 14.&lt;br&gt;&quot;Create Event&quot; button take user to page 13&lt;br&gt;&quot;Return&quot; button returns to page 1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="819.99" y="290" width="190" height="140" as="geometry" />
         </mxCell>
         <mxCell id="9nBCSFtzRnYlW7CJUfYu-33" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
@@ -271,8 +271,8 @@
         <mxCell id="9nBCSFtzRnYlW7CJUfYu-79" value="Cancel" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="150" y="820" width="90" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="9nBCSFtzRnYlW7CJUfYu-80" value="&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;Event Name&quot; and &quot;Contact Details&quot; are EditText field&lt;br&gt;&lt;/span&gt;&quot;Reuse QR&quot; button if selected allows re-usage of a QR image, else new QR generated when &quot;Confirm&quot; pressed&lt;br&gt;&quot;Promotion QR&quot; button selected to allow generation of separate unique QR for event poster/event details.&lt;br&gt;&quot;Max Sign Up&quot; EditTextfield, if number inputted it will restrict amount of signups, else no max sign ups.&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;Upload Event Poster&quot; button allows upload of photo&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;Confirm&quot; button, if valid, creates event and takes user to page 8, else Toast and no event created and remains on page 7&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;Cancel&quot; button does not create event and returns to page 4&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="40" y="860" width="210" height="290" as="geometry" />
+        <mxCell id="9nBCSFtzRnYlW7CJUfYu-80" value="&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;Event Name&quot; and &quot;Contact Details&quot; are EditText field&lt;br&gt;&lt;/span&gt;&quot;Reuse QR&quot; button if selected allows re-usage of a QR image, else new QR generated when &quot;Confirm&quot; pressed&lt;br&gt;&quot;Promotion QR&quot; button selected to allow generation of separate unique QR for event poster/event details.&lt;div&gt;Can opt not to create Promotional QR&lt;br&gt;&quot;Max Sign Up&quot; EditTextfield, if number inputted it will restrict amount of signups, else no max sign ups.&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;Upload Event Poster&quot; button allows upload of photo&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;Confirm&quot; button, if valid, creates event and takes user to page 8, else Toast and no event created and remains on page 7&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;Cancel&quot; button does not create event and returns to page 4&lt;br&gt;&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="40" y="890" width="210" height="290" as="geometry" />
         </mxCell>
         <mxCell id="9nBCSFtzRnYlW7CJUfYu-81" value="Upload Event Poster" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="86.24" y="740" width="117.5" height="30" as="geometry" />
@@ -424,7 +424,7 @@
         <mxCell id="9nBCSFtzRnYlW7CJUfYu-153" value="Send" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="1085.02" y="820" width="90" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="9nBCSFtzRnYlW7CJUfYu-157" value="&quot;Announcement Title&quot; and &quot;Announcement&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;Details&quot; are EditText field&lt;br&gt;&lt;/span&gt;&quot;Send&quot; button if valid, creates announcement, sending Toast to attendees and message in their Notification Center and returns to page 8, else shows Toast and no announcement made and remains on page 11.&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;Cancel&quot; button does not create announcement and returns to page 8&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="9nBCSFtzRnYlW7CJUfYu-157" value="&quot;Announcement Title&quot; and &quot;Announcement&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;Details&quot; are EditText field&lt;br&gt;&lt;/span&gt;&quot;Send&quot; button if valid, creates announcement, sending Toast to attendees and message in their Notification Center and returns to page 14, else shows Toast and no announcement made and remains on page 17.&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;Cancel&quot; button does not create announcement and returns to page 14&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="1075.02" y="865" width="210" height="180" as="geometry" />
         </mxCell>
         <mxCell id="j7Yk2NrUk1wuD01t7luQ-18" value="" style="rounded=0;whiteSpace=wrap;html=1;rotation=90;shadow=1;" parent="1" vertex="1">
@@ -442,7 +442,7 @@
         <mxCell id="j7Yk2NrUk1wuD01t7luQ-22" value="Name" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="887.51" y="530" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="j7Yk2NrUk1wuD01t7luQ-24" value="Current location" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="j7Yk2NrUk1wuD01t7luQ-24" value="Contact Information" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="890" y="660" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="j7Yk2NrUk1wuD01t7luQ-25" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
@@ -697,10 +697,10 @@
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-78" value="Choose An Ac&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; text-wrap: nowrap;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22%22%20style%3D%22endArrow%3Dnone%3Bhtml%3D1%3Brounded%3D0%3B%22%20edge%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20width%3D%2250%22%20height%3D%2250%22%20relative%3D%221%22%20as%3D%22geometry%22%3E%3CmxPoint%20x%3D%22555.01%22%20y%3D%22-530%22%20as%3D%22sourcePoint%22%2F%3E%3CmxPoint%20x%3D%22755.01%22%20y%3D%22-530%22%20as%3D%22targetPoint%22%2F%3E%3CArray%20as%3D%22points%22%3E%3CmxPoint%20x%3D%22655.01%22%20y%3D%22-530%22%2F%3E%3C%2FArray%3E%3C%2FmxGeometry%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;tion" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1339.99" y="-532.5" width="115.01" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-79" value="Go to Profile Page" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-79" value="Go to Profiles Page" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1420" y="-482.5" width="112.48" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-80" value="Go to Event Page" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-80" value="Go to Events Page" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1420" y="-507.5" width="117.49" height="30" as="geometry" />
         </mxCell>
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-81" value="Go to Pictures Page" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
@@ -709,7 +709,7 @@
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-82" value="(6) Admin dialog box" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="1365" y="-650" width="130" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-84" value="Press &quot;Go to Map (Attendee)&quot; or &quot;Go to Map (Organizer)&quot; to go to page (7)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-84" value="Press &quot;Go to Map (Attendee)&quot; or &quot;Go to Map (Organizer)&quot; to go to page (7)&lt;div&gt;Press &quot;Cancel&quot; to cancel the dialog box&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1075.02" y="-270" width="190" height="60" as="geometry" />
         </mxCell>
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-86" value="" style="rounded=0;whiteSpace=wrap;html=1;rotation=90;" vertex="1" parent="1">
@@ -745,7 +745,7 @@
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-97" value="Return" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1455.01" y="250" width="90" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-98" value="Displays event details.&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Displayed poster is selectable to highlight.&lt;/span&gt;&lt;div&gt;&quot;Sign Up&quot; button returns user to page 11 if sign up successful, else shows Toast and user remains on page 5.&lt;br&gt;&quot;Return&quot; button returns to page 11&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-98" value="Displays event details.&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Displayed poster is selectable to highlight.&lt;/span&gt;&lt;div&gt;&quot;Sign Up&quot; button returns user to page 11 if sign up successful, else shows Toast and user remains on page 12.&lt;br&gt;&quot;Return&quot; button returns to page 11&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1355.01" y="290" width="190" height="140" as="geometry" />
         </mxCell>
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-99" value="Event Name" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
@@ -904,7 +904,7 @@
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-154" value="Return" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="401.9000000000001" y="1540" width="90" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-155" value="Displays posters of event. Displayed posters are selectable to highlight.&lt;br&gt;&quot;Remove&quot; button removes event and return to page 19&lt;br&gt;&quot;Return&quot; button returns to page 19" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-155" value="Displays posters of event. Displayed posters are selectable to highlight into dialog box 26&lt;br&gt;&quot;Remove&quot; button removes event and return to page 19&lt;br&gt;&quot;Return&quot; button returns to page 19" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="301.9000000000001" y="1580" width="190" height="140" as="geometry" />
         </mxCell>
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-156" value="Event Name" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
@@ -1120,7 +1120,7 @@
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-209" value="Return" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1187.49" y="1430" width="90.03" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-210" value="&lt;div&gt;Press &quot;Remove&quot; to remove profile picture&lt;/div&gt;&lt;div&gt;Press &quot;Return&quot; button to go to page 22&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-210" value="&lt;div&gt;Press &quot;Remove&quot; to remove profile picture&lt;/div&gt;&lt;div&gt;Press &quot;Return&quot; button to go to dismiss dialog box&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1080.02" y="1625" width="210" height="50" as="geometry" />
         </mxCell>
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-212" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
@@ -1135,7 +1135,7 @@
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-215" value="Return" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="139.97000000000003" y="1980" width="90.03" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-216" value="&lt;div&gt;Press &quot;Remove&quot; to remove picture&lt;/div&gt;&lt;div&gt;Press &quot;Return&quot; button to go to page 24&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-216" value="&lt;div&gt;Press &quot;Remove&quot; to remove picture&lt;/div&gt;&lt;div&gt;Press &quot;Return&quot; button to go to dismiss dialog box&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="37.49" y="2080" width="210" height="50" as="geometry" />
         </mxCell>
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-217" value="(25) Picture Dialog Box" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
@@ -1143,6 +1143,27 @@
         </mxCell>
         <mxCell id="dPNvZ3x-S5Jdp_QILpkD-218" value="(23) Profile Dialog Box" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1115.64" y="1205" width="128.77" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-219" value="Press &quot;Go to Event Page&quot; to go to page 19&lt;div&gt;Press &quot; Go to Profile Page&quot; to go to page 21&lt;/div&gt;&lt;div&gt;Press &quot; Go to Pictures page&quot; to&amp;nbsp; go to page 24&lt;/div&gt;&lt;div&gt;Click Outside to dismiss dialog box&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1352.5" y="-270" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-227" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="294.99" y="1815" width="195.02" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-228" value="(Poster)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="309.97" y="1830" width="165.02" height="135" as="geometry" />
+        </mxCell>
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-229" value="Remove" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300.01" y="1985" width="89.98" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-230" value="Return" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="392.48" y="1985" width="90.03" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-231" value="&lt;div&gt;Press &quot;Remove&quot; to remove poster&lt;/div&gt;&lt;div&gt;Press &quot;Return&quot; button to go to dismiss dialog box&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="285.01" y="2090" width="210" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dPNvZ3x-S5Jdp_QILpkD-232" value="(26) Poster Dialog Box" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="320.6300000000001" y="1760" width="128.77" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
