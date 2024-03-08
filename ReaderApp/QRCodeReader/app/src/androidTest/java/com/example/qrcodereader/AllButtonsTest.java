@@ -10,6 +10,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 
+import android.os.SystemClock;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.intent.Intents;
@@ -65,7 +66,7 @@ public class AllButtonsTest {
         onView(withId(R.id.my_event_button)).perform(click());
 
         // Check if a dialog is displayed
-        onView(withText("Choose an action")).check(matches(isDisplayed()));
+        onView(withText("Choose Event Page")).check(matches(isDisplayed()));
 
         // Perform a click on the "Go to Your Event Page (Attendee)" button
         onView(withText("Go to Your Event Page (Attendee)")).perform(click());
