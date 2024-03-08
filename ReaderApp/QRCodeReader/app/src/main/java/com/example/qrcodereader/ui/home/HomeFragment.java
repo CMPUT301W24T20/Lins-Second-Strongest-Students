@@ -3,29 +3,47 @@ package com.example.qrcodereader.ui.home;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.fragment.app.FragmentTransaction;
+
 
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.MapView;
 import com.example.qrcodereader.MapViewOrganizer;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.databinding.FragmentHomeBinding;
+import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
+import com.example.qrcodereader.ui.profile.ProfileFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -42,8 +60,15 @@ public class HomeFragment extends Fragment {
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getContext(), OrganizerEventActivity.class);
                 startActivity(intent);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("UserName", user.getName());
+//                bundle.putString("profile_picture", user.getProfilePicture());
+//                ProfileFragment listfrag = new ProfileFragment();
+//                listfrag.setArguments(bundle);
+//                listfrag.show(getChildFragmentManager(), "Profile Page");
             }
         });
 
@@ -165,4 +190,5 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }
