@@ -28,6 +28,8 @@
         </meta-data>
         <activity android:name=".MapView"
             android:exported="true" /><!-- change to false once path added -->
+        <activity android:name=".MapViewOrganizer"
+            android:exported="true" /><!-- change to false once path added -->
         <activity
             android:name=".ui.eventPage.CreateEventActivity"
             android:exported="false" />
@@ -36,6 +38,10 @@
         <activity android:name=".ui.eventPage.BrowseEventActivity"/>
         <activity android:name=".ui.eventPage.EventDetailsOrganizerActivity"/>
         <activity android:name=".ui.eventPage.EventDetailsAttendeeActivity"/>
+        <activity android:name=".ui.eventPage.CreateEventActivityBrowsePastEvent"/>
+
+        <activity android:name=".ui.admin.AdminEventActivity"/>
+
         <activity
             android:name=".DisplayQRCode"
             android:exported="false" />

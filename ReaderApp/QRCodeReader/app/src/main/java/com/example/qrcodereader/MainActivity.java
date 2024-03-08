@@ -6,9 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +13,9 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.provider.Settings;
 
-import java.util.concurrent.ExecutionException;
-import android.Manifest;
-
 import com.example.qrcodereader.entity.User;
+import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
-import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,9 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.example.qrcodereader.ui.profile.ProfileFragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.Priority;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -41,17 +32,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.qrcodereader.databinding.ActivityMainBinding;
-import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
-import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -64,6 +50,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,18 +76,29 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        initializeFirestore();
+        setupNavigation();
+        setupProfileButton();
+        setupNotificationChannel();
+        setupBroadcastReceiver();
+        setupMyEventButton();
+        setupMapButton();
+        checkAdminStatus();
+    }
 
+
+    private void initializeFirestore() {
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
-
         docRefUser = db.collection("users").document(deviceID);
+
         docRefUser.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().exists()) {
                     // Document exists, user is in the collection
                     Log.d("Firestore", "User exists in the collection.");
-                    Toast.makeText(this, "Signed in", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Welcome Back", Toast.LENGTH_LONG).show();
                 } else {
                     // Document does not exist, user is not in the collection
                     Log.d("Firestore", "User does not exist in the collection.");
@@ -128,48 +126,34 @@ public class MainActivity extends AppCompatActivity {
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
+    }
 
 
-        // Location Linlocation = new Location("provider");
-        // Linlocation.setLatitude(61.0137);
-        // Linlocation.setLongitude(99.1967);
-        // User user = new User(deviceID, "Guohui Lin", Linlocation);
-        // Intent intent = new Intent(this, BrowseEventActivity.class);
-        // intent.putExtra("user", user);
 
 
+
+
+
+    private void setupNavigation() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_camera, R.id.navigation_notifications)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+    }
 
-        //Firebase Cloud Messaging Token
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                   @Override
-                   public void onComplete(@NonNull Task<String> task) {
-                       if (!task.isSuccessful()) {
-                           Log.w("FCM_Fail", "Fetching FCM registration token failed", task.getException());
-                           return;
-                       }
 
-                       // Get new FCM registration token
-                       String token = task.getResult();
 
-                       // Log and toast
-                       String msg = getString(R.string.msg_token_fmt, token);
-                       Log.d("FCM_Success", msg);
-                   }
-               });
 
-        // I'm working on this part - Duy
-        Button profile_button = findViewById(R.id.profile_button);
-        profile_button.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+    private void setupProfileButton() {
+        Button profileButton = findViewById(R.id.profile_button);
+        profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
@@ -179,10 +163,15 @@ public class MainActivity extends AppCompatActivity {
                 listfrag.show(getSupportFragmentManager(), "Profile Page");
             }
         });
+    }
 
 
 
-        //Notification Channel
+
+
+
+
+    private void setupNotificationChannel() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("default_channel",
                     "Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
@@ -190,8 +179,15 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(notificationChannel);
         }
+    }
 
-        //Broadcast Receiver to store notifications
+
+
+
+
+
+
+    private void setupBroadcastReceiver() {
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -203,45 +199,166 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Received", notificationData);
                     notificationList.add(notificationData);
                 }
-
             }
         };
+    }
 
-        Button MyEventButton = findViewById(R.id.my_event_button);
-        MyEventButton.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+
+
+
+
+    private void setupMyEventButton() {
+        Button myEventButton = findViewById(R.id.my_event_button);
+        myEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-            builder.setTitle("Choose an action");
+                builder.setTitle("Choose Event Page");
 
-            // Button to go to AttendeeEventActivity
-            builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
-                    startActivity(intent);
-                }
-            });
+                // Button to go to AttendeeEventActivity
+                builder.setPositiveButton("Go to Your Event Page (Attendee)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(MainActivity.this, AttendeeEventActivity.class);
+                        startActivity(intent);
+                    }
+                });
 
-            // Button to go to OrganizerEventActivity
-            builder.setNegativeButton("Go to Your Event Page (Organizer)", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
-                    startActivity(intent);
-                }
-            });
+                // Button to go to OrganizerEventActivity
+                builder.setNegativeButton("Go to Your Event Page (Organizer)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(MainActivity.this, OrganizerEventActivity.class);
+                        startActivity(intent);
+                    }
+                });
 
-            // Cancel button
-            builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User cancelled the dialog
-                    dialog.dismiss();
-                }
-            });
+                // Cancel button
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.dismiss();
+                    }
+                });
 
-            AlertDialog dialog = builder.create();
-            dialog.show();
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
+    }
+
+
+
+
+
+
+
+
+    private void setupMapButton() {
+        Button mapButton = findViewById(R.id.map_button);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                builder.setTitle("Choose Map You Want to See");
+
+                // Button to go to AttendeeEventActivity
+                builder.setPositiveButton("Go to Map (Attendee)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(MainActivity.this, MapView.class);
+                        startActivity(intent);
+                    }
+                });
+
+                // Button to go to OrganizerEventActivity
+                builder.setNegativeButton("Go to Map(Organizer)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(MainActivity.this, MapViewOrganizer.class);
+                        startActivity(intent);
+                    }
+                });
+
+                // Cancel button
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+    private void checkAdminStatus() {
+        final boolean[] isAdmin = {false};
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        db.collection("administrator")
+                .document(deviceID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+                        isAdmin[0] = true;
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure
+                });
+
+        Button adminButton = findViewById(R.id.admin_button);
+        adminButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                if (isAdmin[0]) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                    builder.setTitle("Choose Action (Click Outside to Cancel)");
+
+                    // Button to go to AttendeeEventActivity
+                    builder.setPositiveButton("View Events", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(MainActivity.this, AdminEventActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    // Button to go to OrganizerEventActivity
+                    builder.setNegativeButton("View Profiles", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    // Cancel button
+                    builder.setNeutralButton("View Pictures", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Not An Admin. No Access.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+}
+
+
 
 //        LocalBroadcastManager.getInstance(this).registerReceiver(receiver,
 //                new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST));
@@ -262,5 +379,18 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

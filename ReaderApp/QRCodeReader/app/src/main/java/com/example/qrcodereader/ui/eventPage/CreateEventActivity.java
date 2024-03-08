@@ -1,13 +1,17 @@
 package com.example.qrcodereader.ui.eventPage;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -54,6 +58,8 @@ public class CreateEventActivity extends AppCompatActivity {
     private String eventLocationName;
     private EditText getLocation;
     private String userName;
+    private String selectedQRCode;
+    private TextView qrReuseText;
 
 
     @Override
@@ -90,13 +96,52 @@ public class CreateEventActivity extends AppCompatActivity {
         PlacesClient placesClient = Places.createClient(this);
 
         getLocation = findViewById(R.id.event_location);
-        getLocation.setOnClickListener(v -> {
-            List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
-            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).build(this);
-            // Start the activity for result
-            startActivityForResult(intent, 123);
+
+        getLocation.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                // Perform any action that should happen with the click
+                v.performClick(); // Call this to ensure clicks are handled properly
+
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                        .build(CreateEventActivity.this);
+                startActivityForResult(intent, 123); // Start the activity for result
+                return true;
+            }
+            return false;
         });
 
+        CheckBox checkBox = findViewById(R.id.attendee_limit_checkbox);
+        EditText attendeeLimit = findViewById(R.id.attendee_limit);
+
+        // Set checkbox change listener
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            attendeeLimit.setEnabled(isChecked);
+            if (isChecked) {
+                // If checkbox is checked, make attendeeLimit fully opaque
+                attendeeLimit.setAlpha(1.0f);
+            } else {
+                // If checkbox is unchecked, make attendeeLimit faded
+                attendeeLimit.setAlpha(0.5f);
+                attendeeLimit.setText(""); // Clear the text
+            }
+        });
+
+        CheckBox qrReuseCheckBox = findViewById(R.id.QR_reuse_checkbox);
+        qrReuseText = findViewById(R.id.QR_reuse);
+
+        // Set checkbox change listener
+        qrReuseCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // If checkbox is checked, make qrReuseText fully opaque
+                qrReuseText.setAlpha(1.0f);
+                Intent intent = new Intent(CreateEventActivity.this, CreateEventActivityBrowsePastEvent.class);
+                startActivityForResult(intent, 234); // Use a unique request code for this activity
+            } else {
+                // If checkbox is unchecked, make qrReuseText faded
+                qrReuseText.setAlpha(0.5f);
+            }
+        });
 
 
         Button save_button = findViewById(R.id.save_button);
@@ -120,10 +165,23 @@ public class CreateEventActivity extends AppCompatActivity {
                         // Create a new list of attendees for the event
                         Map<String, Integer> attendees = new HashMap<>();
 
-
                         // Add the new event to the database
                         HashMap<String, Object> event = new HashMap<>();
                         event.put("attendees", attendees);
+
+                        // If the checkbox is checked, add the attendee limit to the event
+                        if (checkBox.isChecked()) {
+                            // If the organizer didn't specify an attendee limit, set it to -1
+                            if (attendeeLimit.getText().toString().isEmpty()) {
+                                event.put("attendeeLimit", -1);
+                            }
+                            else {
+                                event.put("attendeeLimit", Integer.parseInt(attendeeLimit.getText().toString()));
+                            }
+                        } else {
+                            event.put("attendeeLimit", -1);
+                        }
+
                         event.put("location", eventLocation);
                         event.put("locationName", eventLocationName);
                         event.put("name", eventName.getText().toString());
@@ -222,6 +280,10 @@ public class CreateEventActivity extends AppCompatActivity {
                 eventLocationName = place.getName();
                 getLocation.setText(eventLocationName);
             }
+        }
+        else if (requestCode == 234) {
+            selectedQRCode = data.getStringExtra("selectedQRCode");
+            qrReuseText.setText(selectedQRCode);
         }
     }
 }

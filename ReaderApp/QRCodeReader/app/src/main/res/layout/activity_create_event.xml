@@ -44,17 +44,7 @@
         tools:layout_editor_absoluteX="16dp" />
 
 
-    <EditText
-        android:id="@+id/attendee_limit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:ems="10"
-        android:hint="@string/enter_the_number_of_attendees"
-        android:inputType="number"
-        tools:layout_editor_absoluteX="16dp" />
-
-    <EditText
+        <EditText
         android:id="@+id/event_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,6 +61,39 @@
         android:focusable="false"
         android:hint="Select Time"
         tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/attendee_limit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/enter_the_number_of_attendees"
+            android:inputType="number"
+            android:textSize="25sp"
+            tools:layout_editor_absoluteX="16dp"
+            android:enabled="false"
+            android:alpha="0.5"/>
+
+        <CheckBox
+            android:id="@+id/attendee_limit_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/limit_the_number_of_attendee" />
+
+        <TextView
+            android:id="@+id/QR_reuse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/qr_code_reuse"
+            android:textSize="25sp"
+            android:layout_marginLeft="10dp"
+            android:alpha="0.5"/>
+
+        <CheckBox
+            android:id="@+id/QR_reuse_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reuse_past_event_qr_code" />
 
     </LinearLayout>
 

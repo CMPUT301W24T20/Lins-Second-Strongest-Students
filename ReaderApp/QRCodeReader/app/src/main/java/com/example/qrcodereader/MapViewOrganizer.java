@@ -1,16 +1,17 @@
 package com.example.qrcodereader;
-
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -39,9 +40,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 // Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
-public class MapView extends AppCompatActivity implements OnMapReadyCallback {
+public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCallback{
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;
     //private User user;
@@ -59,7 +61,7 @@ public class MapView extends AppCompatActivity implements OnMapReadyCallback {
         buttonBackToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapView.this, MainActivity.class);
+                Intent intent = new Intent(MapViewOrganizer.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -102,22 +104,39 @@ public class MapView extends AppCompatActivity implements OnMapReadyCallback {
             }
         }
     }
+    // Currently places pins on user location and not checkinLocation ideally make in the scanner a call to grab location and upload to event DB
     private void placePins(GoogleMap map){
+        String organizerName = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
         db.collection("events")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("organizer", organizerName)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                GeoPoint geoPoint = document.getGeoPoint("location");
-                                if (geoPoint != null) {
-                                    LatLng eventLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
-                                    map.addMarker(new MarkerOptions().position(eventLocation).title(document.getString("name")));
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "listen:error", e);
+                            return;
+                        }
+
+                        map.clear(); // clear old markers
+
+                        for (QueryDocumentSnapshot document : snapshots) {
+                            Map<String, Long> attendeesMap = (Map<String, Long>) document.get("attendees");
+                            if (attendeesMap != null) {
+                                for (String userId : attendeesMap.keySet()) {
+                                    db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            GeoPoint geoPoint = documentSnapshot.getGeoPoint("location");
+                                            if (geoPoint != null) {
+                                                LatLng checkInLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+                                                map.addMarker(new MarkerOptions().position(checkInLocation).title(document.getString("name")));
+                                            }
+                                        }
+                                    });
                                 }
                             }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
                 });
