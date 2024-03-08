@@ -39,8 +39,6 @@ import java.util.Map;
  *  @author Duy
  */
 public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
-
-
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private String userid;

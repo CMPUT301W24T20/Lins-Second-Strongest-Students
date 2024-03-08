@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// OpenAI, 2024, ChatGPT, Prompt the error message from logcat and the code snippet that caused the error
 /**
  *  Activity for users to browse events they have signed up to.
  *  <p>
@@ -52,8 +53,6 @@ import java.util.Map;
  *  @author Son and Khushdeep and Duy
  */
 public class AttendeeEventActivity extends AppCompatActivity {
-
-
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private CollectionReference usersRef;
