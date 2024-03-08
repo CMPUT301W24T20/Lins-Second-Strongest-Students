@@ -43,6 +43,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  Activity for admin to browse event, only admins have access. Allow admin to remove events
+ * @author Son
+ */
 public class AdminEventActivity extends AppCompatActivity {
 
 

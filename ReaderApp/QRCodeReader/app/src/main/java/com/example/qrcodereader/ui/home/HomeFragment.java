@@ -23,6 +23,13 @@ import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 
+/**
+ * This is the Fragment where all the buttons to go to Events, Map, Profile, and Admin access lies
+ * <p>
+ *     When moving to another Fragment and moving back to opening screen, this is where the user is taken
+ * </p>
+ * @author Vinay and Son and Khushdeep
+ */
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;

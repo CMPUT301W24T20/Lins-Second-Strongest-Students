@@ -30,13 +30,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
- * This is an activity class for browsing past events during event creation.
- * It extends AppCompatActivity and handles the functionality related to browsing past events.
+ *  Activity for users to browse events they have created that have passed.
+ *  <p>
+ *      Main purpose is for user to choose a QR code to reuse
+ *  </p>
+ *  @author Duy
  */
 public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
-
-
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private String userid;

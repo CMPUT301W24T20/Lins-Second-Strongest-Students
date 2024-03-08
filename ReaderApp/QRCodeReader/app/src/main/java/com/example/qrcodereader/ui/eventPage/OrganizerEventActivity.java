@@ -39,8 +39,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This is an activity class for an event organizer.
- * It extends AppCompatActivity and handles the functionality related to events.
+ *  Activity for users to view all events they have created.
+ *  <p>
+ *      User can press on an event to bring them to EventDetailsOrganizerActivity
+ *  </p>
+ *  @author Son and Duy and Khushdeep
  */
 public class OrganizerEventActivity extends AppCompatActivity {
 

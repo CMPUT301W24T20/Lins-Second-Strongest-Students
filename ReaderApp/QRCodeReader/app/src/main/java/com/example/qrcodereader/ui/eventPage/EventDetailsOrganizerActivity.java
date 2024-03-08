@@ -25,9 +25,10 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
+
 /**
- * This is an activity class for displaying event details to an organizer.
- * It extends AppCompatActivity and handles the functionality related to event details.
+ *  Activity for users to view details of event they have created, including its QR code.
+ *  @author Son and Duy
  */
 public class EventDetailsOrganizerActivity extends AppCompatActivity {
 

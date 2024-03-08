@@ -41,13 +41,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+
+// OpenAI, 2024, ChatGPT, Prompt the error message from logcat and the code snippet that caused the error
 /**
- * This is an activity class for browsing events.
- * It extends AppCompatActivity and handles the functionality related to browsing events.
+ *  Activity for users to browse all events, with the option to sign up.
+ *  <p>
+ *      Pressing on an event will move them to EventDetailsAttendeeActivity
+ *  </p>
+ *  @author Son and Duy
  */
 public class BrowseEventActivity extends AppCompatActivity {
-
-
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private Event selectedEvent = null;
@@ -112,6 +116,11 @@ public class BrowseEventActivity extends AppCompatActivity {
     /**
      * Fetches events from Firestore and adds them to the eventDataList
      */
+
+    /*
+            OpenAI, ChatGpt, 06/03/24
+            "The normal query is crashing due to high load, how can I fix it?"
+        */
     private void fetchEvents() {
         // Prevents fetching new data if previous request is still in progress
         if (isFetching) {

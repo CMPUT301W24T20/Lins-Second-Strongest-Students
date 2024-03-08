@@ -30,6 +30,10 @@ import androidx.fragment.app.DialogFragment;
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 
+/**
+ * Fragment for displaying the profile of user
+ * @author Tiana
+ */
 public class ProfileFragment extends DialogFragment {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;
@@ -76,6 +80,7 @@ public class ProfileFragment extends DialogFragment {
     /**
      * Open the gallery to select an image
      */
+    // Google, March 4 2024, Youtube, https://www.youtube.com/watch?v=H1ja8gvTtBE
     private void openGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, REQUEST_CODE_PICK_IMAGE);

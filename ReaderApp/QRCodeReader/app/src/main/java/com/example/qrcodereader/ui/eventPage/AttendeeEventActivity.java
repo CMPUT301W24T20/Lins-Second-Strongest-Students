@@ -40,13 +40,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+
+// OpenAI, 2024, ChatGPT, Prompt the error message from logcat and the code snippet that caused the error
 /**
- * This is an activity class for an event attendee.
- * It extends AppCompatActivity and handles the functionality related to events.
+ *  Activity for users to browse events they have signed up to.
+ *  <p>
+ *      Display only events user have signed up in.
+ *  </p>
+ *  <p>
+ *      Can move to BrowseEventActivity with browseButton
+ *  </p>
+ *  @author Son and Khushdeep and Duy
  */
 public class AttendeeEventActivity extends AppCompatActivity {
-
-
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private CollectionReference usersRef;
@@ -160,13 +167,15 @@ public class AttendeeEventActivity extends AppCompatActivity {
      * @param event The event to show the details of
      */
     private void showEventDetailsDialog(Event event) {
-
+        /*
+            OpenAI, ChatGpt, 06/03/24
+            "I want to create a dialog box that displays details of an event with customizable design"
+        */
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.event_detail_dialog_attendee, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view);
 
-        // Set the event details to the TextViews
         TextView eventNameTextView = view.findViewById(R.id.event_name);
         String nameText = "Event Name: " + event.getEventName();
         eventNameTextView.setText(nameText);
