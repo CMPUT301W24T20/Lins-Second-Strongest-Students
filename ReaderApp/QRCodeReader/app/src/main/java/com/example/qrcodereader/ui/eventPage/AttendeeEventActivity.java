@@ -40,7 +40,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * This is an activity class for an event attendee.
+ * It extends AppCompatActivity and handles the functionality related to events.
+ */
 public class AttendeeEventActivity extends AppCompatActivity {
 
 
@@ -49,7 +52,11 @@ public class AttendeeEventActivity extends AppCompatActivity {
     private CollectionReference usersRef;
     private DocumentReference userDocRef;
     private List<String> attendeeEvents;
-
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity, sets up the Firestore references, and populates the ListView with the events attended by the user.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -30,7 +30,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
+/**
+ * This is an activity class for displaying event details to an attendee.
+ * It extends AppCompatActivity and handles the functionality related to event details.
+ */
 public class EventDetailsAttendeeActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
@@ -38,6 +41,11 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     private DocumentReference docRefUser;
     private DocumentReference docRefEvent;
     private Event selectedEvent;
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity, sets up the Firestore references, and populates the views with event data.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +57,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         TextView eventOrganizerTextView = findViewById(R.id.event_organizer);
         TextView eventLocationTextView = findViewById(R.id.event_location);
         TextView eventTimeTextView = findViewById(R.id.event_time);
-        ListView attendeesListView = findViewById(R.id.event_attendees);
+        //ListView attendeesListView = findViewById(R.id.event_attendees);
 
         db = FirebaseFirestore.getInstance();
         String eventID = getIntent().getStringExtra("eventID");

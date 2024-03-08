@@ -25,13 +25,21 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
-
+/**
+ * This is an activity class for displaying event details to an organizer.
+ * It extends AppCompatActivity and handles the functionality related to event details.
+ */
 public class EventDetailsOrganizerActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefEvent;
     private QRCode qrCode;
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity, sets up the Firestore references, and populates the views with event data.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

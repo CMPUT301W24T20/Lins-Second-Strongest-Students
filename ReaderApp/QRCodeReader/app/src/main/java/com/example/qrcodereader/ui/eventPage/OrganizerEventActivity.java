@@ -38,6 +38,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This is an activity class for an event organizer.
+ * It extends AppCompatActivity and handles the functionality related to events.
+ */
 public class OrganizerEventActivity extends AppCompatActivity {
 
 
@@ -50,7 +54,11 @@ public class OrganizerEventActivity extends AppCompatActivity {
     private EventArrayAdapter eventArrayAdapter;
     ArrayList<Event> eventDataList;
 
-
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity and sets up the Firestore references and ListView.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +127,6 @@ public class OrganizerEventActivity extends AppCompatActivity {
 
         Button returnButton = findViewById(R.id.return_button_organizer);
         returnButton.setOnClickListener(v -> finish());
-
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
