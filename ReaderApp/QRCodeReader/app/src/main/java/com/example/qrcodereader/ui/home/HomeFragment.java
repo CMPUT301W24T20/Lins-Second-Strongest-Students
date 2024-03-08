@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.qrcodereader.MainActivity;
+import com.example.qrcodereader.MapView;
+import com.example.qrcodereader.MapViewOrganizer;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.databinding.FragmentHomeBinding;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
@@ -96,7 +98,7 @@ public class HomeFragment extends Fragment {
                 // Button to go to AttendeeEventActivity
                 builder.setPositiveButton("Go to Map (Attendee)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(getContext(), AttendeeEventActivity.class);
+                        Intent intent = new Intent(getContext(), MapView.class);
                         startActivity(intent);
                     }
                 });
@@ -104,7 +106,7 @@ public class HomeFragment extends Fragment {
                 // Button to go to OrganizerEventActivity
                 builder.setNegativeButton("Go to Map(Organizer)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(getContext(), OrganizerEventActivity.class);
+                        Intent intent = new Intent(getContext(), MapViewOrganizer.class);
                         startActivity(intent);
                     }
                 });
