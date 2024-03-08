@@ -113,33 +113,10 @@ public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
 
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("selectedQRCode", qrCodeString);
+                resultIntent.putExtra("selectedEventID", selectedEvent.getEventID());
 
-                // Update the selected event document in Firestore with the new QR code
-                QRCode newQRCode = new QRCode();
-                String newQRCodeString = newQRCode.getString();
-                Map<String, Object> updateData = new HashMap<>();
-                updateData.put("qrCode", newQRCodeString); // Update qrCode field with new QR code string
-
-                eventsRef.document(selectedEvent.getEventID()).update(updateData)
-                        .addOnSuccessListener(aVoid -> {
-                            // QR code updated successfully in Firestore
-                            Log.d("Firestore", "DocumentSnapshot successfully updated with new QR code");
-                            Toast.makeText(CreateEventActivityBrowsePastEvent.this, "Event updated with new QR code", Toast.LENGTH_SHORT).show();
-
-                            // Return the new QR code string to the previous activity
-                            setResult(Activity.RESULT_OK, resultIntent);
-                            finish();
-                        })
-                        .addOnFailureListener(e -> {
-                            // Handle failure
-                            Log.e("Firestore", "Error updating document", e);
-                            Toast.makeText(CreateEventActivityBrowsePastEvent.this, "Failed to update event with new QR code.", Toast.LENGTH_SHORT).show();
-                            setResult(Activity.RESULT_OK, resultIntent);
-                            finish();
-                        });
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
-
             }
         });
     }
