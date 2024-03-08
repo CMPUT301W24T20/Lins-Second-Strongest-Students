@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.databinding.FragmentHomeBinding;
+import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 
@@ -110,6 +111,41 @@ public class HomeFragment extends Fragment {
 
                 // Cancel button
                 builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+        Button adminButton = root.findViewById(R.id.admin_button);
+        adminButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setTitle("Choose Action (Click Outside to Cancel)");
+
+                // Button to go to AttendeeEventActivity
+                builder.setPositiveButton("View Events", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(getContext(), AdminEventActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                // Button to go to OrganizerEventActivity
+                builder.setNegativeButton("View Profiles", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+                // Cancel button
+                builder.setNeutralButton("View Pictures", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
                         dialog.dismiss();

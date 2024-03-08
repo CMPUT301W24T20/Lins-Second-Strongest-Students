@@ -20,4 +20,9 @@
     <string name="reuse_past_event_qr_code">Reuse past event QR code</string>
     <string name="past_events">Past Events</string>
     <string name="see_qr_code">See QR Code</string>
+    <string name="browse">Browse</string>
+    <string name="remove">Remove</string>
+    <string name="return_string">Return</string>
+    <string name="events">Events</string>
+    <string name="return_text">Back to main</string>
 </resources>
