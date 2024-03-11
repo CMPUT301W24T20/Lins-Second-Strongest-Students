@@ -52,8 +52,8 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
 
     Button scanButton;
     private View thisView;
-    private final String userID = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-    private final ScanHandler scanHandler = new ScanHandler(db, userID);
+    private String userID;
+    private ScanHandler scanHandler;
 
     /*
      * startScan
@@ -65,6 +65,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setPrompt("Scan Code");
         integrator.initiateScan();
+        scanHandler.scannedCode("yN2=y8+D5VIR2VQH(mes@DI3Up%hES");
     }
 
     @Override
@@ -87,6 +88,9 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         thisView = inflater.inflate(R.layout.fragment_camera, container, false);
         scanButton = (Button) thisView.findViewById(R.id.scan_button);
         scanButton.setOnClickListener(this);
+
+        userID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
+        scanHandler = new ScanHandler(db, userID);
         return thisView;
     }
 
