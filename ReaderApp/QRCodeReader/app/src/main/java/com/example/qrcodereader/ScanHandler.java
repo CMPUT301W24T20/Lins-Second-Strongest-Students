@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * ScanHandler
- * Contains methods to update necessary firebase details upon scannning code
+ * Contains methods to update necessary firebase details upon scanning code
  */
 public class ScanHandler {
 
