@@ -65,7 +65,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setPrompt("Scan Code");
         integrator.initiateScan();
-        scanHandler.scannedCode("yN2=y8+D5VIR2VQH(mes@DI3Up%hES");
     }
 
     @Override
@@ -77,7 +76,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
             } else {
                 Toast.makeText(getContext(), "Scanned Code: " + result.getContents(), Toast.LENGTH_LONG).show();
                 scanHandler.scannedCode(result.getContents());
-//                findEvent(result.getContents());
             }
         }
     }
