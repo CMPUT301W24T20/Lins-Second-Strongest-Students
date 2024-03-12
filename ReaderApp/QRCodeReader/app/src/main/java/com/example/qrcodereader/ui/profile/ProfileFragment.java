@@ -8,37 +8,43 @@ import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+
 import android.provider.Settings;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
+import android.widget.Toast;
+
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.entity.User;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.squareup.picasso.Picasso;
+
+import java.util.Map;
+
 
 /**
  * Fragment for displaying the profile of user
  * @author Tiana
  */
 public class ProfileFragment extends DialogFragment {
-    private static final int PERMISSION_REQUEST_CODE = 1;
+    User userinfo;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;
-
     private ImageView Picture;
+    private String image;
 
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -51,9 +57,22 @@ public class ProfileFragment extends DialogFragment {
         Button Remove = view.findViewById(R.id.RemoveProfilePicButton);
         Picture = view.findViewById(R.id.ProfilePic);
 
-        Bundle bundle = getArguments();
+        String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRefUser = db.collection("users").document(deviceID);
 
-        ETname.setText(bundle.getString("UserName"));
+        docRefUser.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                ETname.setText(CheckEmpty(documentSnapshot.getString("name")));
+                ETcontact.setText(CheckEmpty(documentSnapshot.getString("contact")));
+                image = documentSnapshot.getString("ProfilePic");
+
+                String imageURL = documentSnapshot.getString("ProfilePic");
+                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
+            }
+        }).addOnFailureListener(e -> {
+//                    Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
+        });
 
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,13 +83,14 @@ public class ProfileFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view)
-                .setTitle("Location Access")
+                .setTitle("Profile")
                 .setNegativeButton("Cancel", null) // do nothing and close
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // manipulate locationAccess field in DB
-//                        updatelocationAccess(locationSwitch.isChecked());
+                        docRefUser.update("name",  ETname.getText().toString());
+                        docRefUser.update("contact",  ETcontact.getText().toString());
+                        docRefUser.update("ProfilePic",  image);
                     }
                 });
 
@@ -98,6 +118,13 @@ public class ProfileFragment extends DialogFragment {
                 Picture.setImageURI(selectedImageUri); // Set the image directly from URI
                 // maybe also associate it in DB
             }
+        }
+    }
+    private String CheckEmpty(String text){
+        if (text.length() == 0) {
+            return "";
+        } else{
+            return text;
         }
     }
 

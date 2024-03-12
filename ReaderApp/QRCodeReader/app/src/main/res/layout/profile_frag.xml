@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:maxLength="50"
+        android:hint = "@string/ProfileEditNameText"
         app:layout_constraintBottom_toTopOf="@+id/contact"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ProfilePic"
@@ -22,6 +23,7 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:maxLength="50"
+        android:hint = "@string/ProfileEditContactText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ProfilePic" />
@@ -44,17 +46,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UploadProfileButton" />
 
-
-
-
-
-
-
-
     <ImageView
         android:id="@+id/ProfilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/contact"
