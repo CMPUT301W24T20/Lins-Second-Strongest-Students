@@ -22,6 +22,7 @@ import com.example.qrcodereader.databinding.FragmentHomeBinding;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
+import com.example.qrcodereader.ui.profile.ProfileFragment;
 
 /**
  * This is the Fragment where all the buttons to go to Events, Map, Profile, and Admin access lies
@@ -49,8 +50,8 @@ public class HomeFragment extends Fragment {
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), OrganizerEventActivity.class);
-                startActivity(intent);
+                ProfileFragment listfrag = new ProfileFragment();
+                listfrag.show(getChildFragmentManager(), "Profile Page");
             }
         });
 
