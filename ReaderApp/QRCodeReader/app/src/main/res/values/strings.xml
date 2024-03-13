@@ -26,6 +26,8 @@
     <string name="events">Events</string>
     <string name="return_text">Back to main</string>
     <string name="warning_by_reusing_a_qr_code_a_new_qr_code_will_be_generated_to_replace_the_past_event_that_the_qr_is_chosen_from">Warning: By reusing a QR code, a new QR code will be generated to replace the past event that the QR is chosen from.</string>
+
     <string name="ProfileEditNameText">Name</string>
-    <string name="ProfileEditContactText">Contact Information</string>
+    <string name="ProfileEditEmailText">Email</string>
+    <string name="ProfileEditPhoneText">Phone Number</string>
 </resources>
