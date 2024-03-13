@@ -71,4 +71,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
     implementation("com.google.android.libraries.places:places:3.3.0")
+    androidTestImplementation("org.slf4j:slf4j-api:1.7.30")
+    androidTestImplementation("ch.qos.logback:logback-classic:1.2.3")
+    androidTestImplementation("ch.qos.logback:logback-core:1.2.3")
+
 }
