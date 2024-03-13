@@ -126,10 +126,11 @@ public class MainActivity extends AppCompatActivity {
                     // Document does not exist, user is not in the collection
                     Log.d("Firestore", "User does not exist in the collection.");
                     Map<String, Object> newUser = new HashMap<>();
-                    newUser.put("name", "meow");
+                    newUser.put("name", "");
+                    newUser.put("email", "");
+                    newUser.put("phone", "");
                     newUser.put("eventsAttended", new HashMap<>());
                     newUser.put("location", new GeoPoint(0,0));
-                    newUser.put("contact", "");
 
                     // set default profile
                     CollectionReference ColRefPic = db.collection("DefaultProfilePics");
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                                     newUser.put("ProfilePic", imageURL);
                                     docRefUser.set(newUser);
 
-                                    Toast.makeText(MainActivity.this, "Image URL: " + imageURL, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(MainActivity.this, "Image URL: " + imageURL, Toast.LENGTH_SHORT).show();
                                 } else {
                                     Log.d("Firestore", "No such document");
                                     Toast.makeText(MainActivity.this, "No such document", Toast.LENGTH_SHORT).show();
