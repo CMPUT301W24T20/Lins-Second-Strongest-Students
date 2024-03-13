@@ -70,6 +70,7 @@ public class QRCode {
         return sb.toString();
     }
 
+    // OpenAI, 2024, ChatGPT, prompt to generate a bitmap from the string that represent a QR code
     /**
      * This method generates a bitmap of the QR code
      * @param text the string to be encoded in the QR code

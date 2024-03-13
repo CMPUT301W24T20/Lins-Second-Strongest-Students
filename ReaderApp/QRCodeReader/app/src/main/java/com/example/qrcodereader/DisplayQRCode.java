@@ -18,7 +18,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
  * @author Duy
  */
 public class DisplayQRCode extends AppCompatActivity {
-
+    // OpenAI, 2024, ChatGPT, given the code snippet, prompt to display the generated QR code from the bitmap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
