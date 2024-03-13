@@ -150,7 +150,7 @@ public class ScanHandler {
         DocumentReference eventRef = db.collection("events").document(event);
 
         // Use the update method to add a string to the 'attendees' map
-        eventRef.update("attendees." + userID, userID)
+        eventRef.update("attendees." + userID, FieldValue.increment(1))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
