@@ -131,6 +131,13 @@ public class MainActivity extends AppCompatActivity {
                     newUser.put("phone", "");
                     newUser.put("eventsAttended", new HashMap<>());
                     newUser.put("location", new GeoPoint(0,0));
+                    FirebaseMessaging.getInstance().getToken() //Microsoft Copilot 2024, "get FCM token android"
+                            .addOnSuccessListener(new OnSuccessListener<String>() {
+                                @Override
+                                public void onSuccess(String token) {
+                                    newUser.put("token", token);
+                                }
+                            });
 
                     // set default profile
                     CollectionReference ColRefPic = db.collection("DefaultProfilePics");
