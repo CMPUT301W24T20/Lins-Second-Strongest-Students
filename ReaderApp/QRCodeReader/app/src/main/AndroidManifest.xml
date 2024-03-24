@@ -43,6 +43,7 @@
         <activity android:name=".ui.eventPage.CreateEventActivityBrowsePastEvent"/>
 
         <activity android:name=".ui.admin.AdminEventActivity"/>
+        <activity android:name=".ui.admin.EventDetailsAdminActivity"/>
 
         <activity
             android:name=".DisplayQRCode"

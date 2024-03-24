@@ -52,12 +52,15 @@ public class AdminEventActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
+    private DocumentReference userDocRef;
+    private DocumentReference eventDocRef;
     private Event selectedEvent = null;
     private boolean isFetching = false;
     private static final int PAGE_SIZE = 10;
     private DocumentSnapshot lastVisible;
     private ArrayList<Event> eventDataList;
     private EventArrayAdapter eventArrayAdapter;
+    private final String TAG = "AdminEventActivity";
 
 
     @Override
@@ -96,15 +99,25 @@ public class AdminEventActivity extends AppCompatActivity {
                 selectedEvent = eventDataList.get(position);
 
                 // Display a toast with the selected item
-                Intent detailIntent = new Intent(AdminEventActivity.this, EventDetailsAttendeeActivity.class);
+                Intent detailIntent = new Intent(AdminEventActivity.this, EventDetailsAdminActivity.class);
                 detailIntent.putExtra("eventID", selectedEvent.getEventID());
                 startActivity(detailIntent);
+                selectedEvent = null;
             }
         });
+
+        /*
+            OpenAI, ChatGpt, 23/03/24
+            "I want to remove an item in the map field eventsAttended in every user document in users collection that has the same key as the event id and delete the event document in events collection with the event id as id"
+        */
+
+
 
         Button returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
     }
+
+
 
     /**
      * Fetches events from Firestore and adds them to the eventDataList
