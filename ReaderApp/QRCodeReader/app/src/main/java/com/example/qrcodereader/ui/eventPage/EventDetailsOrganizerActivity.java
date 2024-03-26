@@ -1,6 +1,7 @@
 package com.example.qrcodereader.ui.eventPage;
 
 import com.example.qrcodereader.DisplayQRCode;
+import com.example.qrcodereader.Notifier;
 import com.example.qrcodereader.R;
 
 import android.annotation.SuppressLint;
@@ -32,6 +33,7 @@ import java.util.Map;
  */
 public class EventDetailsOrganizerActivity extends AppCompatActivity {
 
+    private Notifier notifier;
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefEvent;
@@ -92,6 +94,10 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
 //                attendeesListView.setAdapter(adapter);
 
                 ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(eventsAttended.entrySet());
+                //Set-up button to notify attendees
+                Button notifyButton = findViewById(R.id.notify_button);
+                notifyButton.setOnClickListener(v -> notifier.notifyUsers(attendeesList));
+
                 // Create the custom adapter
                 AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesList);
                 // Set the custom adapter to the ListView
