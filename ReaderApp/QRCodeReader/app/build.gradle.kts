@@ -75,4 +75,7 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.3.0")
 
     implementation ("com.squareup.picasso:picasso:2.8")
+
+    implementation ("com.googlecode.libphonenumber:libphonenumber:8.12.33")
+
 }

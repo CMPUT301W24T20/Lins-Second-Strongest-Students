@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                     newUser.put("name", "");
                     newUser.put("email", "");
                     newUser.put("phone", "");
+                    newUser.put("phoneRegion", "");
                     newUser.put("eventsAttended", new HashMap<>());
                     newUser.put("location", new GeoPoint(0,0));
 
