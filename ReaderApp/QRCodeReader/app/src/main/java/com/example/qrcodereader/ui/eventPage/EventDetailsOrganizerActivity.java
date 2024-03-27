@@ -96,7 +96,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(eventsAttended.entrySet());
                 //Set-up button to notify attendees
                 Button notifyButton = findViewById(R.id.notify_button);
-                notifyButton.setOnClickListener(v -> notifier.notifyUsers(attendeesList));
+                notifyButton.setOnClickListener(v -> notifier.notifyUsers(attendeesList, this));
 
                 // Create the custom adapter
                 AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesList);

@@ -165,6 +165,7 @@ public class ScanHandler {
                     }
                 });
 
+        // Subscribe to notification channel for event
         FirebaseMessaging.getInstance().subscribeToTopic(event)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
