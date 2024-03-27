@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -163,6 +164,19 @@ public class ScanHandler {
                         Log.w("AttendeeAddFailure", "Error updating document", e);
                     }
                 });
+
+        FirebaseMessaging.getInstance().subscribeToTopic(event)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed";
+                        if (!task.isSuccessful()) {
+                            msg = "Subscribe failed";
+                        }
+                        Log.d("Subscribed", msg);
+                    }
+                });
+
     }
 
 }
