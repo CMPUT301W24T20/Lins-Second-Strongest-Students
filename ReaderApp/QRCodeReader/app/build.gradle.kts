@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.material:material:<1.12.0-beta01>")
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.firebase:firebase-client-android:2.5.2")
     implementation("com.google.firebase:firebase-analytics")
@@ -74,8 +75,15 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
     implementation("com.google.android.libraries.places:places:3.3.0")
 
+    androidTestImplementation("org.slf4j:slf4j-api:1.7.30")
+    androidTestImplementation("ch.qos.logback:logback-classic:1.2.3")
+    androidTestImplementation("ch.qos.logback:logback-core:1.2.3")
+
+
+
     implementation ("com.squareup.picasso:picasso:2.8")
 
     implementation ("com.googlecode.libphonenumber:libphonenumber:8.12.33")
+
 
 }
