@@ -24,29 +24,13 @@
 
     </ListView>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/return_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        android:layout_gravity="bottom">
-        <Button
-            android:id="@+id/remove_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="10dp"
-            android:layout_weight="1"
-            android:text="@string/remove" />
-        <Button
-            android:id="@+id/return_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="10dp"
-            android:layout_weight="1"
-            android:text="@string/return_string" />
-    </LinearLayout>
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:text="@string/return_string" />
+
 </LinearLayout>
