@@ -1,37 +1,47 @@
 package com.example.qrcodereader.ui.eventPage;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.qrcodereader.DisplayQRCode;
+import com.example.qrcodereader.ImageUpload;
+import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.entity.QRCode;
 
 import com.example.qrcodereader.R;
 //import com.google.android.libraries.places.api.Places;
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
@@ -39,22 +49,30 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *  Activity for users to create events by entering the details and press create.
  *  @author Duy
  */
-public class CreateEventActivity extends AppCompatActivity {
+public class CreateEventActivity extends AppCompatActivity implements ImageUpload {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private Calendar eventDateTime;
@@ -67,6 +85,12 @@ public class CreateEventActivity extends AppCompatActivity {
     private EditText eventName;
     private QRCode qrCode;
     private String selectedPastEvent;
+    private ImageView Poster;
+    private Uri uploaded;
+    private HashMap<String, Object> event;
+    private StorageReference storage;
+
+
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and sets up the views for event creation.
@@ -150,6 +174,36 @@ public class CreateEventActivity extends AppCompatActivity {
                 qrReuseWarning.setAlpha(0.0f);
             }
         });
+        storage = FirebaseStorage.getInstance().getReference();
+        StorageReference storageRef = storage.child("EventPoster/noEventPoster.png");
+        Poster = findViewById(R.id.PosterUpload);
+        // Download the image into a local file
+        try {
+            File localFile = File.createTempFile("default", ".png"); // Create a temporary file to store the downloaded image
+            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    Poster.setImageBitmap(bitmap);
+                    Poster.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Handle any errors
+                    Log.e(TAG, "Failed to download image", e);
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Poster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, 1);
+            }
+        });
 
         Button save_button = findViewById(R.id.save_button);
         save_button.setOnClickListener(v -> {
@@ -169,17 +223,17 @@ public class CreateEventActivity extends AppCompatActivity {
                             if (!qrReuseCheckBox.isChecked()) {
                                 qrCode = new QRCode();
                                 selectedQRCode = qrCode.getString();
-                                Toast.makeText(CreateEventActivity.this, "New QR code generated", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(CreateEventActivity.this, "New QR code generated", Toast.LENGTH_SHORT).show();
                             }
                             else {
                                 updatePastEvent();
                             }
 
                             // Create a new list of attendees for the event
-                            Map<String, Integer> attendees = new HashMap<>();
+                           Map<String, Integer> attendees = new HashMap<>();
 
                             // Add the new event to the database
-                            HashMap<String, Object> event = new HashMap<>();
+                            event = new HashMap<>();
                             event.put("attendees", attendees);
 
                             // If the checkbox is checked, add the attendee limit to the event
@@ -202,17 +256,12 @@ public class CreateEventActivity extends AppCompatActivity {
                             event.put("organizerID", deviceID);
                             event.put("qrCode", selectedQRCode);
                             event.put("time", timeOfEvent);
-
-                            eventsRef.add(event)
-                                    .addOnSuccessListener(documentReference -> {
-                                        Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
-                                        Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Log.e("CreateEventActivity", "Error adding event", e);
-                                        Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
-                                    });
+                            if (uploaded != null) {
+                                isUploaded();
+                            } else{
+                                // event.put ( the default poster)
+                                AddEvent();
+                            }
                             finish();
 
                         } else {
@@ -232,6 +281,52 @@ public class CreateEventActivity extends AppCompatActivity {
 
         Button cancel_button = findViewById(R.id.cancel_button);
         cancel_button.setOnClickListener(v -> finish());
+    }
+    @Override
+    public void isUploaded() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ContentResolver contentResolver = getContentResolver();
+        try {
+            InputStream is = contentResolver.openInputStream(uploaded);
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, len);
+            }
+            byte[] imageData = baos.toByteArray();
+            String imageName = eventName.getText().toString() + "PICTURE" + ".png";
+            StorageReference imageRef = storage.child("EventPoster" + imageName);
+            UploadTask uploadTask = imageRef.putBytes(imageData);
+
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                // Get the download URL directly from the task snapshot
+                Task<Uri> downloadUrlTask = taskSnapshot.getStorage().getDownloadUrl();
+                downloadUrlTask.addOnSuccessListener(uri -> {
+                    event.put("poster", uri.toString());
+                    AddEvent();
+
+                }).addOnFailureListener(e -> {
+                });
+            }).addOnFailureListener(e -> {
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void AddEvent(){
+        eventsRef.add(event)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
+                                        Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("CreateEventActivity", "Error adding event", e);
+                    Toast.makeText(CreateEventActivity.this, "Failed to add event.", Toast.LENGTH_SHORT).show();
+                });
     }
 
     /**
@@ -308,6 +403,11 @@ public class CreateEventActivity extends AppCompatActivity {
             selectedQRCode = data.getStringExtra("selectedQRCode");
             selectedPastEvent = data.getStringExtra("selectedEventID");
             qrReuseText.setText(selectedQRCode);
+        } else if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            uploaded = data.getData();
+            if (uploaded != null) {
+                Poster.setImageURI(uploaded); // Set the image directly from URI
+            }
         }
     }
 

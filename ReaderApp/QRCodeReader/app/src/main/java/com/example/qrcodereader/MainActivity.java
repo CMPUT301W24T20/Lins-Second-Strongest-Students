@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     public static ArrayList<String> notificationList = new ArrayList<>();
-
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefUser;

@@ -32,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.qrcodereader.ImageUpload;
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -67,8 +68,7 @@ import android.widget.Toast;
  * Fragment for displaying the profile of user
  * @author Tiana
  */
-public class ProfileFragment extends DialogFragment {
-    private static final int REQUEST_CODE_PICK_IMAGE = 1;
+public class ProfileFragment extends DialogFragment implements ImageUpload {
     private ImageView Picture;
     private String image;
     private DocumentReference docRefUser;
@@ -100,7 +100,6 @@ public class ProfileFragment extends DialogFragment {
         SpinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Sregion.setAdapter(SpinAdapter);
 
-
         String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         docRefUser = db.collection("users").document(deviceID);
@@ -129,7 +128,7 @@ public class ProfileFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent, REQUEST_CODE_PICK_IMAGE);
+                startActivityForResult(galleryIntent, 1);
             }
         });
 
@@ -187,31 +186,7 @@ public class ProfileFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (uploaded != null) {
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            Context context = getContext();
-                            ContentResolver contentResolver = context.getContentResolver();
-                            try {
-                                InputStream is = contentResolver.openInputStream(uploaded);
-                                byte[] buffer = new byte[1024];
-                                int len;
-                                while ((len = is.read(buffer)) != -1) {
-                                    baos.write(buffer, 0, len);
-                                }
-                                byte[] imageData = baos.toByteArray();
-                                String imageName = deviceID + "PICTURE" + ".png";
-
-                                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                                StorageReference imageRef = storageRef.child("UploadedProfilePics/" + imageName);
-                                UploadTask uploadTask = imageRef.putBytes(imageData);
-
-                                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                                    image = uri.toString();
-                                    docRefUser.update("ProfilePic",  image);
-                                }).addOnFailureListener(e -> {
-                                    // Handle getting download URL failure
-                                });
-                            } catch (FileNotFoundException e) {e.printStackTrace();
-                            } catch (IOException e) {throw new RuntimeException(e);}
+                            isUploaded();
                         }
                         docRefUser.update("name",  ETname.getText().toString());
                         docRefUser.update("email",  ETemail.getText().toString());
@@ -263,6 +238,37 @@ public class ProfileFragment extends DialogFragment {
 
         return alertDialog;
     }
+    @Override
+    public void isUploaded(){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Context context = getContext();
+        ContentResolver contentResolver = context.getContentResolver();
+        try {
+            InputStream is = contentResolver.openInputStream(uploaded);
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, len);
+            }
+            byte[] imageData = baos.toByteArray();
+            MainActivity activity = (MainActivity) getActivity();
+            String deviceID = activity.getDeviceID();
+            String imageName = deviceID + "PICTURE" + ".png";
+
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference imageRef = storageRef.child("UploadedProfilePics/" + imageName);
+            UploadTask uploadTask = imageRef.putBytes(imageData);
+
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                image = uri.toString();
+                docRefUser.update("ProfilePic",  image);
+            }).addOnFailureListener(e -> {
+                // Handle getting download URL failure
+            });
+        } catch (FileNotFoundException e) {e.printStackTrace();
+        } catch (IOException e) {throw new RuntimeException(e);}
+    }
+
 
     // Google, March 4 2024, Youtube, https://www.youtube.com/watch?v=H1ja8gvTtBE
     /**
@@ -271,7 +277,7 @@ public class ProfileFragment extends DialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
             uploaded = data.getData();
             if (uploaded != null) {
                 Picture.setImageURI(uploaded); // Set the image directly from URI
