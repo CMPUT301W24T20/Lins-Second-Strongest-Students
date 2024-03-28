@@ -251,9 +251,8 @@ public class ProfileFragment extends DialogFragment implements ImageUpload {
                 baos.write(buffer, 0, len);
             }
             byte[] imageData = baos.toByteArray();
-            MainActivity activity = (MainActivity) getActivity();
-            String deviceID = activity.getDeviceID();
-            String imageName = deviceID + "PICTURE" + ".png";
+            String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
+            String imageName = deviceID + "PROFILE" + ".png";
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
             StorageReference imageRef = storageRef.child("UploadedProfilePics/" + imageName);
