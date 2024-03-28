@@ -9,22 +9,40 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:hint="@string/ProfileEditNameText"
         android:inputType="text"
         android:maxLength="50"
-        app:layout_constraintBottom_toTopOf="@+id/contact"
+        app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ProfilePic"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/contact"
+        android:id="@+id/email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:hint="@string/ProfileEditEmailText"
         android:inputType="text"
         android:maxLength="50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ProfilePic" />
+
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:digits="1234567890"
+        android:hint="@string/ProfileEditPhoneText"
+        android:inputType="phone|number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/SpinnerRegions"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <Button
         android:id="@+id/UploadProfileButton"
@@ -33,32 +51,36 @@
         android:text="@string/UploadProfilePicText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contact" />
+        app:layout_constraintTop_toBottomOf="@+id/phone" />
 
     <Button
         android:id="@+id/RemoveProfilePicButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableTint="#FF6161"
         android:text="@string/RemoveProfilePictureText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UploadProfileButton" />
 
-
-
-
-
-
-
-
     <ImageView
         android:id="@+id/ProfilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/contact"
+        app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toStartOf="@+id/name"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <Spinner
+        android:id="@+id/SpinnerRegions"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/UploadProfileButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

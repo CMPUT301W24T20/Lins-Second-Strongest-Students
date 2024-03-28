@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -41,6 +43,7 @@
         <activity android:name=".ui.eventPage.CreateEventActivityBrowsePastEvent"/>
 
         <activity android:name=".ui.admin.AdminEventActivity"/>
+        <activity android:name=".ui.admin.EventDetailsAdminActivity"/>
 
         <activity
             android:name=".DisplayQRCode"

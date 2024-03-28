@@ -26,4 +26,14 @@
     <string name="events">Events</string>
     <string name="return_text">Back to main</string>
     <string name="warning_by_reusing_a_qr_code_a_new_qr_code_will_be_generated_to_replace_the_past_event_that_the_qr_is_chosen_from">Warning: By reusing a QR code, a new QR code will be generated to replace the past event that the QR is chosen from.</string>
+
+    <string name="ProfileEditNameText">Name</string>
+    <string name="ProfileEditEmailText">Email</string>
+    <string name="ProfileEditPhoneText">Phone Number</string>
+
+    <string name="ek_img_content">ExportKit Image</string>
+    <string name="event_name_string">Event Name</string>
+    <string name="organizer_string">Organizer</string>
+    <string name="location_string">Location</string>
+    <string name="time_string">Time</string>
 </resources>

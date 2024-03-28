@@ -19,6 +19,8 @@ import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import com.example.qrcodereader.ui.profile.ProfileFragment;
@@ -39,6 +41,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.qrcodereader.databinding.ActivityMainBinding;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -63,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     public static ArrayList<String> notificationList = new ArrayList<>();
-
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefUser;
-    private User user;
+
+    public User user;
     public static String userId;
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -75,10 +79,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
-
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity, sets up the Firestore references, and sets up the views for the main activity.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -93,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
         checkAdminStatus();
     }
 
-
+    /**
+     * Initializes Firestore and sets up the user document reference.
+     */
     private void initializeFirestore() {
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         db = FirebaseFirestore.getInstance();
@@ -115,10 +126,38 @@ public class MainActivity extends AppCompatActivity {
                     // Document does not exist, user is not in the collection
                     Log.d("Firestore", "User does not exist in the collection.");
                     Map<String, Object> newUser = new HashMap<>();
-                    newUser.put("name", "John Doe");
+                    newUser.put("name", "");
+                    newUser.put("email", "");
+                    newUser.put("phone", "");
+                    newUser.put("phoneRegion", "");
                     newUser.put("eventsAttended", new HashMap<>());
                     newUser.put("location", new GeoPoint(0,0));
-                    docRefUser.set(newUser);
+
+                    // set default profile
+                    CollectionReference ColRefPic = db.collection("DefaultProfilePics");
+                    ColRefPic.document("P4").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document != null && document.exists()) {
+                                    // Get the value of the string field
+                                    String imageURL = document.getString("URL");
+                                    newUser.put("ProfilePic", imageURL);
+                                    docRefUser.set(newUser);
+
+//                                    Toast.makeText(MainActivity.this, "Image URL: " + imageURL, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Log.d("Firestore", "No such document");
+                                    Toast.makeText(MainActivity.this, "No such document", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Log.e("Firestore", "Error getting document", task.getException());
+                                Toast.makeText(MainActivity.this, "Error getting document: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
                     Toast.makeText(this, "Made new account", Toast.LENGTH_LONG).show();
                 }
             } else {
@@ -131,15 +170,26 @@ public class MainActivity extends AppCompatActivity {
                 String userName = documentSnapshot.getString("name");
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
                 GeoPoint location = documentSnapshot.getGeoPoint("location");
-                user = new User(deviceID, userName, location, eventsAttended);
+                String image = documentSnapshot.getString("ProfilePic");
+                user = new User(deviceID, userName, location, eventsAttended, image);
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
+
+        //        int index = (user.getName().length() % 4)+1;
+//        String P = "P"+index;
+//
+
     }
 
+
+
+    /**
+     * Sets up the navigation for the main activity.
+     */
     private void setupNavigation() {
         /*
         Configure navigation bar
@@ -153,19 +203,21 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    /**
+     * Sets up the profile button for the main activity.
+     */
     private void setupProfileButton() {
         Button profileButton = findViewById(R.id.profile_button);
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("UserName", user.getName());
                 ProfileFragment listfrag = new ProfileFragment();
-                listfrag.setArguments(bundle);
                 listfrag.show(getSupportFragmentManager(), "Profile Page");
             }
         });
     }
+
+
 
     /**
      * setupNotificationChannel
@@ -205,6 +257,10 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Sets up the 'My Event' button for the main activity.
+     * This button opens a dialog that allows the user to navigate to their event page as an attendee or organizer.
+     */
     private void setupMyEventButton() {
         /*
             OpenAI, ChatGpt, 01/03/24
@@ -248,6 +304,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets up the 'Map' button for the main activity.
+     * This button opens a dialog that allows the user to navigate to the map as an attendee or organizer.
+     */
     private void setupMapButton() {
         Button mapButton = findViewById(R.id.map_button);
         mapButton.setOnClickListener(new View.OnClickListener() {
@@ -286,14 +346,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
-
-
-
+    /**
+     * Checks the admin status of the user.
+     * If the user is an admin, it sets up the 'Admin' button to open a dialog that allows the user to navigate to different admin pages.
+     * If the user is not an admin, it sets up the 'Admin' button to display a toast message saying "Not An Admin. No Access."
+     */
     private void checkAdminStatus() {
         /*
             OpenAI, ChatGPT, 07/03/24
@@ -352,7 +409,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }
 
 

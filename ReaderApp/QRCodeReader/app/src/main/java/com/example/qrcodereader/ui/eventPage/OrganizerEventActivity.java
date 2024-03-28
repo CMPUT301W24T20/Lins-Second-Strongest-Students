@@ -57,10 +57,15 @@ public class OrganizerEventActivity extends AppCompatActivity {
     private EventArrayAdapter eventArrayAdapter;
     ArrayList<Event> eventDataList;
 
-
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity and sets up the Firestore references and ListView.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.organizer_activity_event);
 
         db = FirebaseFirestore.getInstance();
@@ -126,7 +131,6 @@ public class OrganizerEventActivity extends AppCompatActivity {
 
         Button returnButton = findViewById(R.id.return_button_organizer);
         returnButton.setOnClickListener(v -> finish());
-
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

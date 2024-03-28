@@ -25,8 +25,11 @@ import com.google.firebase.firestore.GeoPoint;
 public class User implements Serializable {
     private String userID;
     private String name;
+
+    private String contact;
     private Map<String, Long> eventsAttended;
     private GeoPoint location;
+    private String ProfilePic;
 
 
     public User(String deviceID, String userName, GeoPoint location) {
@@ -37,12 +40,12 @@ public class User implements Serializable {
 
     }
 
-    public User(String deviceID, String userName, GeoPoint location, Map<String, Long> eventsAttended) {
+    public User(String deviceID, String userName, GeoPoint location, Map<String, Long> eventsAttended, String image) {
         this.userID = deviceID;
         this.name = userName;
         this.eventsAttended = eventsAttended;
         this.location = location;
-
+        this.ProfilePic = image;
     }
 
     public User(String deviceID, String userName, Map<String, Long> eventsAttended) {
@@ -58,16 +61,17 @@ public class User implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
+    public void setContact(String contact) {this.contact = contact;}
     public void setLocation(GeoPoint location) {this.location = location;}
-    public GeoPoint getLocation(){
-        return this.location;
-    }
+    public void setProfilePicture(String picture) {this.ProfilePic = picture;}
     public void createEvent(String id, String name, GeoPoint location, Timestamp time) {
     }
 
     public String getUserID() {return userID;}
     public String getName() {return name;}
-
-
+    public String getContact() {return contact;}
+    public GeoPoint getLocation(){
+        return this.location;
+    }
+    public String getProfilePicture() {return ProfilePic;}
 }

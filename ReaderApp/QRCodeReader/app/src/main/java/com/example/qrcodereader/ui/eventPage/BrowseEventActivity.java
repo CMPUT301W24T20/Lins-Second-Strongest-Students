@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 // OpenAI, 2024, ChatGPT, Prompt the error message from logcat and the code snippet that caused the error
 /**
  *  Activity for users to browse all events, with the option to sign up.
@@ -60,10 +61,15 @@ public class BrowseEventActivity extends AppCompatActivity {
     private ArrayList<Event> eventDataList;
     private EventArrayAdapter eventArrayAdapter;
 
-
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity, sets up the Firestore references, and populates the ListView with events.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_browse_event);
 
         db = FirebaseFirestore.getInstance();

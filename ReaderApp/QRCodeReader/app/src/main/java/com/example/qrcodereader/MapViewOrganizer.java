@@ -41,12 +41,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Map;
-
+// Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
 /**
  * Map Activity
  * @author Khushdeep
+ * Represents a MapView for organizing and displaying a Google Map.
+ * Implements the OnMapReadyCallback interface.
  */
-// Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
 public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCallback{
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;
@@ -56,6 +57,7 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.map_view);
         //user = (User) getIntent().getSerializableExtra("user");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.gmaps);
@@ -70,7 +72,11 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
             }
         });
     }
-
+    /**
+     * Called when the map is ready to be used.
+     *
+     * @param googleMap The GoogleMap instance.
+     */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
@@ -95,6 +101,13 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
         });
         placePins(map);
     }
+    /**
+     * Called when the user responds to a permission request.
+     *
+     * @param requestCode The request code passed when requesting permissions.
+     * @param permissions The requested permissions.
+     * @param grantResults The results of the permission request (either PERMISSION_GRANTED or PERMISSION_DENIED).
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -109,6 +122,11 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
         }
     }
     // Currently places pins on user location and not checkinLocation ideally make in the scanner a call to grab location and upload to event DB
+    /**
+     * Retrieves event locations from Firestore and places pins (markers) on the map.
+     *
+     * @param map The GoogleMap instance where markers will be added.
+     */
     private void placePins(GoogleMap map){
         String organizerName = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
@@ -128,17 +146,21 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
                         for (QueryDocumentSnapshot document : snapshots) {
                             Map<String, Long> attendeesMap = (Map<String, Long>) document.get("attendees");
                             if (attendeesMap != null) {
-                                for (String userId : attendeesMap.keySet()) {
-                                    db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            GeoPoint geoPoint = documentSnapshot.getGeoPoint("location");
-                                            if (geoPoint != null) {
-                                                LatLng checkInLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
-                                                map.addMarker(new MarkerOptions().position(checkInLocation).title(document.getString("name")));
+                                for (Map.Entry<String, Long> entry: attendeesMap.entrySet()) {
+                                    String userId = entry.getKey();
+                                    Long checkInCount = entry.getValue();
+                                    if(checkInCount > 0) {
+                                        db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                GeoPoint geoPoint = documentSnapshot.getGeoPoint("location");
+                                                if (geoPoint != null) {
+                                                    LatLng checkInLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+                                                    map.addMarker(new MarkerOptions().position(checkInLocation).title(document.getString("name")));
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
                         }
