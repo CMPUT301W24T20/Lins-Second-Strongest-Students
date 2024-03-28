@@ -55,6 +55,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
         String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 

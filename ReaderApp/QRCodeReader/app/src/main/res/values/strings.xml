@@ -30,4 +30,10 @@
     <string name="ProfileEditNameText">Name</string>
     <string name="ProfileEditEmailText">Email</string>
     <string name="ProfileEditPhoneText">Phone Number</string>
+
+    <string name="ek_img_content">ExportKit Image</string>
+    <string name="event_name_string">Event Name</string>
+    <string name="organizer_string">Organizer</string>
+    <string name="location_string">Location</string>
+    <string name="time_string">Time</string>
 </resources>

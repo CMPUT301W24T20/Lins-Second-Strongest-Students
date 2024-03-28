@@ -67,6 +67,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.attendee_activity_event);
 
         db = FirebaseFirestore.getInstance();
