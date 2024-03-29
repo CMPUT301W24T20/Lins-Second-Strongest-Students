@@ -56,6 +56,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getNotification() != null) {
             Log.d("NotNullNotif", "Message Body:" + remoteMessage.getNotification().getBody());
+            sendNotification(remoteMessage.getNotification().getBody());
         }
 
     }
@@ -101,7 +102,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("body", messageBody);
         Log.d("Sending...", messageBody);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-
 
     }
 

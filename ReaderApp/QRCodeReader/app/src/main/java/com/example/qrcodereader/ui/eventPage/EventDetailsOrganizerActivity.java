@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 public class EventDetailsOrganizerActivity extends AppCompatActivity {
 
-    private Notifier notifier;
+    private final Notifier notifier = Notifier.getInstance();
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefEvent;
@@ -95,16 +96,24 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
 //                attendeesListView.setAdapter(adapter);
 
                 ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(eventsAttended.entrySet());
+                Map.Entry<String, Long> tester = new AbstractMap.SimpleEntry<String, Long>("f04098499034f5ac", 1L);
+                attendeesList.add(tester);
                 //Set-up button to notify attendees
                 Button notifyButton = findViewById(R.id.notify_button);
                 notifyButton.setOnClickListener(v -> {
                     if (!attendeesList.isEmpty()) {
-                        notifier.notifyUsers(attendeesList, EventDetailsOrganizerActivity.this);
+                        notifier.prompt(EventDetailsOrganizerActivity.this, new Notifier.OnInputListener() {
+                            @Override
+                            public void onInput(String[] details) {
+                                notifier.notifyUsers(attendeesList, details);
+                            }
+                        });
                     } else {
                         //No attendees found
                         Toast.makeText(EventDetailsOrganizerActivity.this, "No attendees found", Toast.LENGTH_SHORT).show();
                     }
                 });
+
                 // Create the custom adapter
                 AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesList);
                 // Set the custom adapter to the ListView

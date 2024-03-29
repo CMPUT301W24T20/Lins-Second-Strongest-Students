@@ -249,11 +249,11 @@ public class MainActivity extends AppCompatActivity {
      * to an arraylist
      */
     private void setupBroadcastReceiver() {
+        Log.d("BroadcastChannel", "Setting up...");
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // See MyFirebaseMessagingService for broadcast
-                //TO-DO:
                 Log.d("Attempting to recieve...", "onReceive");
                 if (MyFirebaseMessagingService.ACTION_BROADCAST.equals(intent.getAction())) {
                     String notificationData = intent.getStringExtra("body"); //key of intent
