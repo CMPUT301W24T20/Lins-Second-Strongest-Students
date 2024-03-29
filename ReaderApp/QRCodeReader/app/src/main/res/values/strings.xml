@@ -36,4 +36,7 @@
     <string name="organizer_string">Organizer</string>
     <string name="location_string">Location</string>
     <string name="time_string">Time</string>
+    <string name="sign_up_string">Sign up</string>
+    <string name="event_poster">Event Poster</string>
+
 </resources>
