@@ -17,6 +17,7 @@ import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
+import com.example.qrcodereader.util.AppDataHolder;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -72,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
     private DocumentReference docRefUser;
 
     public User user;
-    public static String userId;
+    public static String deviceID;
     private FusedLocationProviderClient fusedLocationClient;
+    private AppDataHolder appDataHolder;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -89,8 +91,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
 
+        deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        appDataHolder = AppDataHolder.getInstance();
+        //AppDataHolder.loadUser(this);
+
+        appDataHolder.fetchAndUpdateUserInfo(deviceID, this);
+
 
         initializeFirestore();
         setupNavigation();
@@ -106,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
      * Initializes Firestore and sets up the user document reference.
      */
     private void initializeFirestore() {
-        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
         docRefUser = db.collection("users").document(deviceID);
@@ -165,24 +175,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Failed to fetch account", Toast.LENGTH_LONG).show();
             }
         });
-        docRefUser.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                String userName = documentSnapshot.getString("name");
-                Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
-                GeoPoint location = documentSnapshot.getGeoPoint("location");
-                String image = documentSnapshot.getString("ProfilePic");
-                user = new User(deviceID, userName, location, eventsAttended, image);
-                Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
-                Log.d("Firestore", "Successfully fetch document: ");
-            }
-        }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
-        });
-
-        //        int index = (user.getName().length() % 4)+1;
-//        String P = "P"+index;
-//
-
+        user = AppDataHolder.getInstance().getCurrentUser(this);
+        Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, user.getName(), Toast.LENGTH_LONG).show();
+        Log.d("Firestore", "Successfully fetch document: ");
     }
 
 
