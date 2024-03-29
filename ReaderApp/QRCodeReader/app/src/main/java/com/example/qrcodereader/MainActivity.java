@@ -101,7 +101,9 @@ public class MainActivity extends AppCompatActivity {
         setupNavigation();
         setupProfileButton();
         setupNotificationChannel();
-        setupBroadcastReceiver();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            setupBroadcastReceiver();
+        }
         setupMyEventButton();
         setupMapButton();
         checkAdminStatus();

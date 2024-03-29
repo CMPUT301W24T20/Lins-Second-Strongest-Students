@@ -103,7 +103,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                         notifier.prompt(EventDetailsOrganizerActivity.this, new Notifier.OnInputListener() {
                             @Override
                             public void onInput(String[] details) {
-                                notifier.notifyUsers(attendeesList, details);
+                                notifier.notifyUsers(attendeesList, details, eventID);
                             }
                         });
                     } else {
