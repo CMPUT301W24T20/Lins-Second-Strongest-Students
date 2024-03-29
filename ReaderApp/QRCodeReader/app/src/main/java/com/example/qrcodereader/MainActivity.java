@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     public static ArrayList<String> notificationList = new ArrayList<>();
-
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefUser;
@@ -88,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                     newUser.put("name", "");
                     newUser.put("email", "");
                     newUser.put("phone", "");
+                    newUser.put("phoneRegion", "");
                     newUser.put("eventsAttended", new HashMap<>());
                     newUser.put("location", new GeoPoint(0,0));
                     FirebaseMessaging.getInstance().getToken() //Microsoft Copilot 2024, "get FCM token android"

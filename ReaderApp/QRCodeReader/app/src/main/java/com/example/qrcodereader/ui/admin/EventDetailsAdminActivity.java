@@ -1,4 +1,4 @@
-package com.example.qrcodereader.ui.eventPage;
+package com.example.qrcodereader.ui.admin;
 
 import com.example.qrcodereader.R;
 
@@ -18,13 +18,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.QRCode;
+import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,19 +36,20 @@ import java.util.Map;
 
 
 /**
- *  Activity for users to view details of event they want to sign up to.
+ *  Activity for admin to view details of event and possibly remove it.
  *  <p>
- *      This is where the sign up operation happen
+ *      This is where the remove operation happen
  *  </p>
- *  @author Son and Duy
+ *  @author Son
  */
-public class EventDetailsAttendeeActivity extends AppCompatActivity {
+public class EventDetailsAdminActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
-    private DocumentReference docRefUser;
+    private CollectionReference usersRef;
     private DocumentReference docRefEvent;
     private Event selectedEvent;
+    private final String TAG = "EventDetailsAdminActivity";
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -55,8 +59,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
-        setContentView(R.layout.activity_event_details_attendee);
+        setContentView(R.layout.activity_event_details_admin);
         String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         TextView eventNameTextView = findViewById(R.id.event_name);
@@ -68,7 +71,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         String eventID = getIntent().getStringExtra("eventID");
         docRefEvent = db.collection("events").document(eventID);
-        docRefUser = db.collection("users").document(userid);
+        usersRef = db.collection("users");
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -99,56 +102,34 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
 
-        Button SignUpButton = findViewById(R.id.sign_up_button);
-        SignUpButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Object> newEvent = new HashMap<>();
-
-                // Check if the event is full before allow user to sign up
-                if (!selectedEvent.isFull()) {
-                    newEvent.put("eventsAttended." + eventID, 0);
-                    docRefUser.update(newEvent)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    // Document updated successfully
-                                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Update failed
-                                    Log.w("Firestore", "Error updating document", e);
-                                }
-                            });
-
-                    docRefEvent = db.collection("events").document(eventID);
-                    Map<String, Object> newAttendee = new HashMap<>();
-                    newAttendee.put("attendees." + userid, 0);
-                    docRefEvent.update(newAttendee)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    // Document updated successfully
-                                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Update failed
-                                    Log.w("Firestore", "Error updating document", e);
-                                }
-                            });
-                    Toast.makeText(EventDetailsAttendeeActivity.this, "Signed up to event " + eventID, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(EventDetailsAttendeeActivity.this, "Event is full", Toast.LENGTH_LONG).show();
-                }
-                finish();
+        Button removeButton = findViewById(R.id.remove_button);
+        removeButton.setOnClickListener(v -> {
+            if (eventID != null) {
+                usersRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Check if the user has the event in eventsAttended
+                            Map<String, Object> eventsAttended = (Map<String, Object>) document.get("eventsAttended");
+                            if (eventsAttended != null && eventsAttended.containsKey(eventID)) {
+                                // Prepare the delete operation for the specific eventID
+                                DocumentReference userDocRef = usersRef.document(document.getId());
+                                userDocRef.update("eventsAttended." + eventID, FieldValue.delete())
+                                        .addOnSuccessListener(aVoid -> Log.d(TAG, "Event ID deleted from user's eventsAttended."))
+                                        .addOnFailureListener(e -> Log.w(TAG, "Error deleting event ID from user's eventsAttended", e));
+                            }
+                        }
+                    } else {
+                        Log.w(TAG, "Error getting documents.", task.getException());
+                    }
+                });
+                db.collection("events").document(eventID)
+                        .delete()
+                        .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
+                        .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
             }
+            finish();
         });
+
         Button returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
     }
