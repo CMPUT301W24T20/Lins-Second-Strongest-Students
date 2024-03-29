@@ -12,8 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +19,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -35,14 +32,16 @@ import okhttp3.Response;
  * Code for handling sending notifications to users
  */
 public final class Notifier {
-
+    private  final Context context;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static Notifier notifier;
-    private Notifier(){}
+    private Notifier(Context context){
+        this.context = context;
+    }
 
-    public static Notifier getInstance() {
+    public static Notifier getInstance(Context context) {
         if (notifier == null) {
-            notifier = new Notifier();
+            notifier = new Notifier(context);
         }
 
         return notifier;
@@ -125,6 +124,7 @@ public final class Notifier {
 
     private void notify(String token, String titleText, String bodyText, String eventID) {
         //Microsoft Copilot, 2024: Using OkHttp for FCM messaging
+        String FMCAuth = context.getString(R.string.FMCAuth);
         Log.d("Notifying...", "token" + token);
 
         OkHttpClient client = new OkHttpClient();
@@ -148,7 +148,7 @@ public final class Notifier {
                 .url("https://fcm.googleapis.com/fcm/send")
                 .post(body)
                 .addHeader("content-type", "application/json")
-                .addHeader("authorization", "key=AAAAaYKnoe0:APA91bFKZRTGUhZq9coHi_6e3O3aGLzP-WVrTGt2nozwceiIkFvMO-Jy1-fA6UkG4oLHaoDYmjSto9QOeVVeOwYMYbBIQL8cu99pREFuNQ-Eo7tH4hS1uqlEyMgkKA00bNcMgIDgx319")
+                .addHeader("authorization", FMCAuth)
                 .build();
 
         new Thread(new Runnable() {
