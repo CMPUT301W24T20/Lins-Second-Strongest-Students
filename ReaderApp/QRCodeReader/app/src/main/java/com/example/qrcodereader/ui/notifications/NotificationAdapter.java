@@ -42,7 +42,7 @@ public class NotificationAdapter extends ArrayAdapter<NotificationDetail> {
         title.setText(notification.getTitle());
         body.setText(notification.getBody());
         if (notification.getPoster() == null) {
-            image.setImageBitmap(BitmapFactory.decodeFile("EventPoster/noEventPoster.png"));
+            image.setImageResource(R.drawable._49e43ff77b9c6ecc64d8a9b55622ddd7_2);
         }
         new DownloadImageTask(image)
                 .execute(notification.getPoster());

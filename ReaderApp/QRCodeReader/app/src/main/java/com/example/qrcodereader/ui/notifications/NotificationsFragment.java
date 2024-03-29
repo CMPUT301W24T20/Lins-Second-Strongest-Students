@@ -61,24 +61,28 @@ public class NotificationsFragment extends Fragment {
         ListView listView = view.findViewById(R.id.notification_list);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document(userID).collection("notifications")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<NotificationDetail> notifications = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                NotificationDetail notification = document.toObject(NotificationDetail.class);
-                                notifications.add(notification);
+        try {
+            db.collection("users").document(userID).collection("notifications")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                List<NotificationDetail> notifications = new ArrayList<>();
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    NotificationDetail notification = document.toObject(NotificationDetail.class);
+                                    notifications.add(notification);
+                                }
+                                adapter = new NotificationAdapter(getContext(), notifications);
+                                listView.setAdapter(adapter);
+                            } else {
+                                Log.w("NotifDocRetrieval", "Error getting documents.", task.getException());
                             }
-                            adapter = new NotificationAdapter(getContext(), notifications);
-                            listView.setAdapter(adapter);
-                        } else {
-                            Log.w("NotifDocRetrieval", "Error getting documents.", task.getException());
                         }
-                    }
-                });
+                    });
+        } catch (NullPointerException e) {
+            Toast.makeText(getActivity(), "No New Messages", Toast.LENGTH_SHORT).show();
+        }
 
         final Object[] lastTappedItem = new Object[1];
 
