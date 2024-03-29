@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +33,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -64,6 +67,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author all
  */
 public class MainActivity extends AppCompatActivity {
+
+    private BroadcastReceiver receiver;
 
     private ActivityMainBinding binding;
     public static ArrayList<String> notificationList = new ArrayList<>();
@@ -248,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
      * Adds incoming notifications from FirebaseMessagingService
      * to an arraylist
      */
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void setupBroadcastReceiver() {
         Log.d("BroadcastChannel", "Setting up...");
         BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -262,7 +268,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+
+        // Register the receiver
+        IntentFilter filter = new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST);
+        registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
     }
+
 
     /**
      * Sets up the 'My Event' button for the main activity.
@@ -416,6 +427,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
 }
 
 

@@ -96,8 +96,6 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
 //                attendeesListView.setAdapter(adapter);
 
                 ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(eventsAttended.entrySet());
-                Map.Entry<String, Long> tester = new AbstractMap.SimpleEntry<String, Long>("f04098499034f5ac", 1L);
-                attendeesList.add(tester);
                 //Set-up button to notify attendees
                 Button notifyButton = findViewById(R.id.notify_button);
                 notifyButton.setOnClickListener(v -> {
