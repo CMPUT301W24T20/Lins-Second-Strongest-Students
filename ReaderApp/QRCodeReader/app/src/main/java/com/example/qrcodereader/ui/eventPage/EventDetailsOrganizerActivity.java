@@ -96,8 +96,14 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(eventsAttended.entrySet());
                 //Set-up button to notify attendees
                 Button notifyButton = findViewById(R.id.notify_button);
-                notifyButton.setOnClickListener(v -> notifier.notifyUsers(attendeesList, this));
-
+                notifyButton.setOnClickListener(v -> {
+                    if (!attendeesList.isEmpty()) {
+                        notifier.notifyUsers(attendeesList, EventDetailsOrganizerActivity.this);
+                    } else {
+                        //No attendees found
+                        Toast.makeText(EventDetailsOrganizerActivity.this, "No attendees found", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 // Create the custom adapter
                 AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesList);
                 // Set the custom adapter to the ListView
