@@ -145,7 +145,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
         // Determine the start and end indices for the chunk of event IDs
         int start = lastVisible == null ? 0 : eventIDs.indexOf(lastVisible.getId()) + 1;
-        int end = Math.min(start + 4, eventIDs.size()); // Adjust start + num to choose how many to load at a time
+        int end = Math.min(start + 10, eventIDs.size());
 
         // Get the chunk of event IDs
         List<String> chunk = eventIDs.subList(start, end);
