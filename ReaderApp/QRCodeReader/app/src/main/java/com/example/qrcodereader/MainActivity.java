@@ -239,12 +239,17 @@ public class MainActivity extends AppCompatActivity {
         /*
         Create notification channel to allow for push notifications
          */
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel("default_channel",
-                    "Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setDescription("Default Channel");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = getString(R.string.default_notification_channel_id);
+            String description = getString(R.string.title_notifications);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(name, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(notificationChannel);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
 

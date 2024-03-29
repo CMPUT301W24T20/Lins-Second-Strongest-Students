@@ -91,6 +91,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("Notify", messageBody);
 
         broadcast(messageBody);
+        MainActivity.notificationList.add(messageBody);
 
     }
 
