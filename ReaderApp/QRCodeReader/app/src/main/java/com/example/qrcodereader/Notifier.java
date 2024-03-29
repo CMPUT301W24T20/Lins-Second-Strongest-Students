@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -13,6 +14,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,18 +48,18 @@ public final class Notifier {
         return notifier;
     }
 
-    public void notifyUsers(ArrayList<Map.Entry<String, Long>> attendees, String[] text) {
+    public void notifyUsers(ArrayList<Map.Entry<String, Long>> attendees, String[] text, String event) {
 
         String title = "Message From an Organizer: " + text[0];
         String body = text[1];
 
         for (Map.Entry<String, Long> entry : attendees) {
-            getToken(entry.getKey(), title, body);
+            getToken(entry.getKey(), title, body, event);
         }
 
     }
 
-    private void getToken(String userID, String title, String body) {
+    private void getToken(String userID, String title, String body, String event) {
         db.collection("users").document(userID)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -62,7 +67,7 @@ public final class Notifier {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
                             String token = documentSnapshot.getString("token");
-                            Notifier.this.notify(token, title, body);
+                            Notifier.this.notify(token, title, body, event);
                         } else {
                             System.out.println("No such document!");
                             throw new RuntimeException("FCM Token not found");
@@ -98,9 +103,13 @@ public final class Notifier {
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                input[0] = String.valueOf(enterTitle.getText());
-                input[1] = String.valueOf(enterBody.getText());
-                listener.onInput(input);  // Pass the input to the listener
+                if (enterBody.getText() != null && enterTitle.getText() != null) {
+                    input[0] = String.valueOf(enterTitle.getText());
+                    input[1] = String.valueOf(enterBody.getText());
+                    listener.onInput(input);  // Pass the input to the listener
+                } else {
+                    Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -114,20 +123,26 @@ public final class Notifier {
     }
 
 
-    private void notify(String token, String titleText, String bodyText) {
+    private void notify(String token, String titleText, String bodyText, String eventID) {
         //Microsoft Copilot, 2024: Using OkHttp for FCM messaging
         Log.d("Notifying...", "token" + token);
 
         OkHttpClient client = new OkHttpClient();
+        JSONObject data = new JSONObject();
+        try {
+            data.put("eventID", eventID);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         MediaType mediaType = MediaType.parse("application/json");
 
         String json = String.format(
-                "{\n    \"to\" : \"%s\",\n    \"notification\" : {\n        \"body\" : \"%s\",\n        \"title\": \"%s\"\n    }\n}",
-                token, bodyText, titleText
-        );
+                "{\"to\": \"%s\", \"notification\": {\"body\": \"%s\", \"title\": \"%s\"}, \"data\": %s}",
+                token, bodyText, titleText, data.toString());
 
         RequestBody body = RequestBody.create(mediaType, json);
+
 
         Request request = new Request.Builder()
                 .url("https://fcm.googleapis.com/fcm/send")
