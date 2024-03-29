@@ -4,16 +4,64 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.qrcodereader.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class NotificationDetail {
     private String event;
     private String title;
     private String body;
+
+    private void DeleteDocumentId() {
+
+        final String[] id = new String[1];
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference userRef = db.collection("users").document(MainActivity.userId);
+
+        userRef.collection("notifications").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("GetID", document.getId() + " => " + document.getData());
+                        RemoveFromFirebase(document.getId());
+                    }
+                } else {
+                    Log.w("GetIDFail", "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
+
+    private void RemoveFromFirebase(String docID) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference userRef = db.collection("users").document(MainActivity.userId);
+        DocumentReference notificationRef = userRef.collection("notifications").document(docID);
+
+        notificationRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("DeleteNotif", "Notification successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("DeleteNotifFail", "Error deleting notification", e);
+                    }
+                });
+
+    }
 
     public NotificationDetail() {}
 
@@ -53,7 +101,7 @@ public class NotificationDetail {
         DocumentReference docRef = db.collection("events").document(this.getEvent());
 
         //Default poster
-        final String[] poster = {"https://firebasestorage.googleapis.com/v0/b/linssecondstrongeststudents.appspot.com/o/EventPoster%2FmeowPICTURE.png?alt=media&token=90ad6f2c-b906-4da8-94db-7389c9451a1c"};
+        final String[] poster = {null};
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -72,5 +120,11 @@ public class NotificationDetail {
             }
         });
         return poster[0];
+    }
+
+    public void delete() {
+
+        this.DeleteDocumentId();
+
     }
 }

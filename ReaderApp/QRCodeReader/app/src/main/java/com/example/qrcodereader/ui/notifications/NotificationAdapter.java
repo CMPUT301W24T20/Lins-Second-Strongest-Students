@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.qrcodereader.R;
 
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class NotificationAdapter extends ArrayAdapter<NotificationDetail> {
@@ -40,6 +41,9 @@ public class NotificationAdapter extends ArrayAdapter<NotificationDetail> {
         // Populate the data into the template view using the data object
         title.setText(notification.getTitle());
         body.setText(notification.getBody());
+        if (notification.getPoster() == null) {
+            image.setImageBitmap(BitmapFactory.decodeFile("EventPoster/noEventPoster.png"));
+        }
         new DownloadImageTask(image)
                 .execute(notification.getPoster());
 
@@ -49,10 +53,10 @@ public class NotificationAdapter extends ArrayAdapter<NotificationDetail> {
 
     private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         //Microsoft Copilot, 2024, set imageView from URL
-        ImageView bmImage;
+        private WeakReference<ImageView> bmImage;
 
         public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
+            this.bmImage = new WeakReference<>(bmImage);
         }
 
         protected Bitmap doInBackground(String... urls) {
@@ -69,7 +73,10 @@ public class NotificationAdapter extends ArrayAdapter<NotificationDetail> {
         }
 
         protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+            ImageView imageView = bmImage.get();
+            if (imageView != null && result != null) {
+                imageView.setImageBitmap(result);
+            }
         }
     }
 

@@ -13,9 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -43,15 +46,18 @@ import java.util.List;
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
+    private Button deleteOne;
+    private Button clearAll;
     private NotificationAdapter adapter;
-    ArrayList<String> listItems;
-    String userID = MainActivity.userId;
+    private final String userID = MainActivity.userId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("ID:", "=" + userID);
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
 
+        deleteOne = view.findViewById(R.id.delete_button);
+        clearAll = view.findViewById(R.id.clear_button);
         ListView listView = view.findViewById(R.id.notification_list);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -74,7 +80,44 @@ public class NotificationsFragment extends Fragment {
                     }
                 });
 
+        final Object[] lastTappedItem = new Object[1];
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                lastTappedItem[0] = parent.getItemAtPosition(position);
+            }
+        });
+
+        deleteOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lastTappedItem[0] != null) {
+                    removeItem((NotificationDetail) lastTappedItem[0]);
+                } else {
+                    Toast.makeText(getActivity(), "No item selected", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        clearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i <= adapter.getCount(); i++) {
+                    NotificationDetail item = adapter.getItem(i);
+                    removeItem(item);
+                }
+            }
+        });
+
         return view;
+
+    }
+
+    private void removeItem(NotificationDetail item) {
+        adapter.remove(item);
+        adapter.notifyDataSetChanged();
+        item.delete();
     }
 
     /**

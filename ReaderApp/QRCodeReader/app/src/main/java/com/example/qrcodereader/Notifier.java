@@ -102,7 +102,7 @@ public final class Notifier {
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if (enterBody.getText() != null && enterTitle.getText() != null) {
+                if (enterBody.getText().length() > 0 && enterTitle.getText().length() > 0) {
                     input[0] = String.valueOf(enterTitle.getText());
                     input[1] = String.valueOf(enterBody.getText());
                     listener.onInput(input);  // Pass the input to the listener
