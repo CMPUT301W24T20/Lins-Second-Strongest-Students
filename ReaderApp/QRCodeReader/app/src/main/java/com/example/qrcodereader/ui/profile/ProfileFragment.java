@@ -58,6 +58,7 @@ import java.util.Set;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import com.example.qrcodereader.util.AppDataHolder;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -75,6 +76,7 @@ public class ProfileFragment extends DialogFragment implements ImageUpload {
     private Uri uploaded;
     private int PhoneLength;
     private EditText ETphone;
+    private AppDataHolder appDataHolder;
 
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -192,6 +194,8 @@ public class ProfileFragment extends DialogFragment implements ImageUpload {
                         docRefUser.update("email",  ETemail.getText().toString());
                         docRefUser.update("phone",  ETphone.getText().toString());
                         docRefUser.update("phoneRegion",Sregion.getSelectedItem().toString());
+                        appDataHolder = AppDataHolder.getInstance();
+                        appDataHolder.fetchAndUpdateUserInfo(deviceID, getContext());
                     }
                 });
 
