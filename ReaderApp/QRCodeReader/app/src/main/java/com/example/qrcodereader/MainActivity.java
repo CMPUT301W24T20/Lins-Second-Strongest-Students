@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 GeoPoint location = documentSnapshot.getGeoPoint("location");
                 String image = documentSnapshot.getString("ProfilePic");
                 user = new User(deviceID, userName, location, eventsAttended, image);
+                userId = user.getUserID();
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
             }

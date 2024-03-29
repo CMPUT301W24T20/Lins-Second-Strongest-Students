@@ -15,6 +15,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -59,7 +60,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0 && remoteMessage.getNotification().getBody() != null) {
             Log.d("NotNullNotif", "Message Body:" + remoteMessage.getNotification().getBody());
-            sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getData().get("eventID"));
+            sendNotification(remoteMessage.getNotification().getTitle(),
+                    remoteMessage.getNotification().getBody(),
+                    remoteMessage.getData().get("eventID"));
         }
 
     }
@@ -69,7 +72,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * Sends a push notification upon receiving an FCM message
      * @param messageBody Contents of the FCM message
      */
-    private void sendNotification(String messageBody, String eventID){
+    private void sendNotification(String title, String messageBody, String eventID){
         Context context = MyFirebaseMessagingService.this;
 
         Intent intent= new Intent(context, MainActivity.class);
@@ -94,11 +97,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("Notify", messageBody);
 
         broadcast(messageBody);
-        store(messageBody, eventID);
+        store(title, messageBody, eventID);
 
     }
 
-    private void store(String messageBody, String eventID) {
+    private void store(String title, String messageBody, String eventID) {
         //Microsoft Copilot, 2024, add map to firestore doc
         // Get Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -106,20 +109,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         Map<String, Object> data = new HashMap<>();
-        data.put(eventID, messageBody);
+        data.put("event", eventID);
+        data.put("title", title);
+        data.put("body", messageBody);
 
-        db.collection("users").document(userID)
-                .update("notifications", data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+// Add a new document to the 'notifications' collection of the user document
+        db.collection("users").document(userID).collection("notifications").add(data)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("StoredNotification", "DocumentSnapshot successfully updated!");
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Notification Stored", "DocumentSnapshot added with ID: " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("NotificationNotStored", "Error updating document", e);
+                        Log.w("Notification Not Stored", "Error adding document", e);
                     }
                 });
     }

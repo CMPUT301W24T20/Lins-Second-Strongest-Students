@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class EventDetailsOrganizerActivity extends AppCompatActivity {
 
-    private final Notifier notifier = Notifier.getInstance();
+    private final Notifier notifier = Notifier.getInstance(this);
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefEvent;
