@@ -65,6 +65,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.organizer_activity_event);
 
         db = FirebaseFirestore.getInstance();

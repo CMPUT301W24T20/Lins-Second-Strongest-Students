@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.material:material:<1.12.0-beta01>")
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.firebase:firebase-client-android:2.5.2")
     implementation("com.google.firebase:firebase-analytics")
@@ -83,5 +84,8 @@ dependencies {
 
 
     implementation ("com.squareup.picasso:picasso:2.8")
+
+    implementation ("com.googlecode.libphonenumber:libphonenumber:8.12.33")
+
 
 }

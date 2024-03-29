@@ -58,6 +58,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         TextView eventName = view.findViewById(R.id.event_text);
         TextView organizerName = view.findViewById(R.id.organizer_text);
         TextView locationName = view.findViewById(R.id.event_location_text);
+        TextView timeName = view.findViewById(R.id.time_text);
 
         eventName.setText(event.getEventName());
         organizerName.setText(event.getOrganizer());
