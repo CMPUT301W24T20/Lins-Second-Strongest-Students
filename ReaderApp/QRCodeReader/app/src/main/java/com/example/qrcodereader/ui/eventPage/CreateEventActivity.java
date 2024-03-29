@@ -62,6 +62,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -85,11 +86,14 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
     private EditText eventName;
     private QRCode qrCode;
     private String selectedPastEvent;
+
+    private CheckBox qrReuseCheckBox;
+    private TextView qrReuseWarning;
+    private String deviceID;
     private ImageView Poster;
     private Uri uploaded;
     private HashMap<String, Object> event;
     private StorageReference storage;
-
 
     /**
      * This method is called when the activity is starting.
@@ -109,6 +113,10 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         eventDateTime = Calendar.getInstance();
 
         eventName = findViewById(R.id.event_name);
+
+        deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        checkForPastEventsAndToggleCheckbox();
 
         EditText eventDate = findViewById(R.id.event_date);
         eventDate.setOnClickListener(v -> showDatePickerDialog(eventDate));
@@ -156,10 +164,10 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             }
         });
 
-        CheckBox qrReuseCheckBox = findViewById(R.id.QR_reuse_checkbox);
+        qrReuseCheckBox = findViewById(R.id.QR_reuse_checkbox);
         qrReuseText = findViewById(R.id.QR_reuse);
 
-        TextView qrReuseWarning = findViewById(R.id.QR_reuse_warning);
+        qrReuseWarning = findViewById(R.id.QR_reuse_warning);
 
         // Set checkbox change listener
         qrReuseCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -167,8 +175,10 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                 // If checkbox is checked, make qrReuseText fully opaque
                 qrReuseText.setAlpha(1.0f);
                 qrReuseWarning.setAlpha(1.0f);
+
                 Intent intent = new Intent(CreateEventActivity.this, CreateEventActivityBrowsePastEvent.class);
                 startActivityForResult(intent, 234);
+
             } else {
                 // If checkbox is unchecked, make qrReuseText faded
                 qrReuseText.setAlpha(0.5f);
@@ -209,7 +219,6 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         Button save_button = findViewById(R.id.save_button);
         save_button.setOnClickListener(v -> {
             if (validateUserInput()){
-                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
                 CollectionReference usersRef = db.collection("users");
                 DocumentReference userDocRef = usersRef.document(deviceID);
@@ -257,6 +266,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                             event.put("organizerID", deviceID);
                             event.put("qrCode", selectedQRCode);
                             event.put("time", timeOfEvent);
+
                             if (uploaded != null) {
                                 isUploaded();
                             } else{
@@ -461,5 +471,40 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             }
         });
         // ChatGPT code end here
+    }
+
+    private void checkForPastEventsAndToggleCheckbox() {
+        CollectionReference eventsRef = db.collection("events");
+        Timestamp now = Timestamp.now(); // Current timestamp to compare with event timestamps
+
+        // Query to find events organized by the current user that occurred in the past
+        eventsRef.whereEqualTo("organizerID", deviceID)
+                .whereLessThan("eventTime", now)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Get the number of documents returned by the query
+                        int count = task.getResult() != null ? task.getResult().size() : 0;
+
+                        runOnUiThread(() -> {
+                            if (count > 0) {
+                                // If there are one or more past events, enable the QR reuse checkbox
+                                qrReuseCheckBox.setEnabled(true);
+                                qrReuseText.setAlpha(1.0f);
+                                qrReuseWarning.setText("Select a past event to reuse its QR code.");
+                                qrReuseWarning.setAlpha(0.0f);
+                            } else {
+                                // If there are no past events, disable the QR reuse checkbox
+                                qrReuseCheckBox.setEnabled(false);
+                                qrReuseText.setAlpha(0.5f);
+                                qrReuseWarning.setText("No past events available for QR code reuse.");
+                                qrReuseWarning.setAlpha(1.0f);
+                            }
+                        });
+                    } else {
+                        // In case of an error, log it or handle it as needed
+                        Log.e("checkForPastEvents", "Error querying past events", task.getException());
+                    }
+                });
     }
 }
