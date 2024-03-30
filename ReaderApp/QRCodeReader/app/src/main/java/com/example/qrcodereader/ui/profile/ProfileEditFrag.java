@@ -33,7 +33,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.qrcodereader.ImageUpload;
-import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -62,31 +61,40 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
-import android.widget.Toast;
 
 /**
  * Fragment for displaying the profile of user
  * @author Tiana
  */
-public class ProfileFragment extends DialogFragment implements ImageUpload {
+public class ProfileEditFrag extends DialogFragment implements ImageUpload {
     private ImageView Picture;
     private String image;
     private DocumentReference docRefUser;
     private Uri uploaded;
     private int PhoneLength;
     private EditText ETphone;
+    private OnSaveClickListener onSaveClickListener;
+
+
+
+    public interface OnSaveClickListener {
+
+        void onSaveClicked(String EditName, String EditRegion, String EditPhone, String EditEmail, Uri EditPicture);
+    }
+
+    public void setOnSaveClickListener(OnSaveClickListener listener) {
+        this.onSaveClickListener = listener;
+    }
 
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.profile_frag, null);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.profile_edit_frag, null);
 
         // find Views
         EditText ETname = view.findViewById(R.id.name);
         EditText ETemail = view.findViewById(R.id.email);
         ETphone = view.findViewById(R.id.phone);
         Spinner Sregion = view.findViewById(R.id.SpinnerRegions);
-        Button Upload = view.findViewById(R.id.UploadProfileButton);
-        Button Remove = view.findViewById(R.id.RemoveProfilePicButton);
         Picture = view.findViewById(R.id.ProfilePic);
         int errorColour = ContextCompat.getColor(requireContext(), R.color.red_light);
 
@@ -124,41 +132,14 @@ public class ProfileFragment extends DialogFragment implements ImageUpload {
         });
 
         // upload profile pic
-        Upload.setOnClickListener(new View.OnClickListener() {
+        Picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent, 1);
+                ProfilePictureFrag pictureOption = new ProfilePictureFrag();
+                pictureOption.show(getParentFragmentManager(), "Edit Profile Picture");
             }
         });
 
-        // remove profile pic
-        Remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // set default profile
-                CollectionReference ColRefPic = db.collection("DefaultProfilePics");
-                ColRefPic.document("P4").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                // Get the value of the string field
-                                String imageURL = document.getString("URL");
-                                docRefUser.update("ProfilePic",  imageURL);
-                                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
-                                uploaded = null;
-                            } else {
-                                Log.d("Firestore", "No such document");
-                            }
-                        } else {
-                            Log.e("Firestore", "Error getting document", task.getException());
-                        }
-                    }
-                });
-            }
-        });
 
         // march 25 trim text in an edit text ? programatically?
         Sregion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -192,6 +173,14 @@ public class ProfileFragment extends DialogFragment implements ImageUpload {
                         docRefUser.update("email",  ETemail.getText().toString());
                         docRefUser.update("phone",  ETphone.getText().toString());
                         docRefUser.update("phoneRegion",Sregion.getSelectedItem().toString());
+
+                        if (onSaveClickListener != null) {
+                            onSaveClickListener.onSaveClicked(ETname.getText().toString(),
+                                    ETemail.getText().toString(),
+                                    ETphone.getText().toString(),
+                                    Sregion.getSelectedItem().toString(),
+                                    uploaded);
+                        }
                     }
                 });
 
@@ -264,25 +253,12 @@ public class ProfileFragment extends DialogFragment implements ImageUpload {
             }).addOnFailureListener(e -> {
                 // Handle getting download URL failure
             });
+
+
         } catch (FileNotFoundException e) {e.printStackTrace();
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 
-
-    // Google, March 4 2024, Youtube, https://www.youtube.com/watch?v=H1ja8gvTtBE
-    /**
-     * Handle the result of the gallery intent
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
-            uploaded = data.getData();
-            if (uploaded != null) {
-                Picture.setImageURI(uploaded); // Set the image directly from URI
-            }
-        }
-    }
 
     /**
      * meow
@@ -305,5 +281,14 @@ public class ProfileFragment extends DialogFragment implements ImageUpload {
         }
         // limit length of input based on region selected
         ETphone.setFilters(new InputFilter[]{new InputFilter.LengthFilter(PhoneLength)});
+    }
+
+    public void setPicture(Uri uploaded, String URL, int check){
+        if (check == 0){
+            Picture.setImageURI(uploaded);
+        } else{
+            Picasso.get().load(URL).resize(100, 100).centerInside().into(Picture);
+        }
+        this.uploaded = uploaded;
     }
 }

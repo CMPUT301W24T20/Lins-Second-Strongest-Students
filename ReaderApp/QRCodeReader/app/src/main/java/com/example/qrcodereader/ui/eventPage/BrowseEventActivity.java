@@ -149,10 +149,12 @@ public class BrowseEventActivity extends AppCompatActivity {
                         String organizer = doc.getString("organizer");
                         String organizerID = doc.getString("organizerID");
                         String qrCodeString = doc.getString("qrCode");
+                        String EventPoster = doc.getString("poster");
+
                         QRCode qrCode = new QRCode(qrCodeString);
                         int attendeeLimit = doc.contains("attendeeLimit") ? (int)(long)doc.getLong("attendeeLimit") : -1;
                         Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-                        Event event = new Event(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees);
+                        Event event = new Event(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees, EventPoster);
                         eventDataList.add(event);
                     }
                     eventArrayAdapter.notifyDataSetChanged();

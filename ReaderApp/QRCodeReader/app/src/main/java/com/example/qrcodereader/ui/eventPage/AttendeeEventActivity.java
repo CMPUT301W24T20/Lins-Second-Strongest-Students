@@ -163,13 +163,14 @@ public class AttendeeEventActivity extends AppCompatActivity {
                         Timestamp time = document.getTimestamp("time");
                         String locationName = document.getString("locationName");
                         String organizerID = document.getString("organizerID");
+                        String EventPoster = document.getString("poster");
                         String qrCodeString = document.getString("qrCode");
                         QRCode qrCode = new QRCode(qrCodeString);
                         int attendeeLimit = document.contains("attendeeLimit") ? (int)(long)document.getLong("attendeeLimit") : -1;
                         Map<String, Long> attendees = (Map<String, Long>) document.get("attendees");
 
                         Log.d("Firestore", "Event fetched");
-                        eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees);
+                        eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees, EventPoster);
 
                         lastVisible = document;
                     }

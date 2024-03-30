@@ -81,10 +81,12 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                 String organizer = documentSnapshot.getString("organizer");
                 String organizerID = documentSnapshot.getString("organizerID");
                 String qrCodeString = documentSnapshot.getString("qrCode");
+                String EventPoster = documentSnapshot.getString("poster");
+
                 QRCode qrCode = new QRCode(qrCodeString);
                 int attendeeLimit = documentSnapshot.contains("attendeeLimit") ? (int)(long)documentSnapshot.getLong("attendeeLimit") : -1;
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
-                selectedEvent = new Event(eventID, eventName, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, eventsAttended);
+                selectedEvent = new Event(eventID, eventName, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, eventsAttended, EventPoster);
 
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");

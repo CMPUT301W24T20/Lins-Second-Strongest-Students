@@ -18,12 +18,9 @@ import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 
+import com.example.qrcodereader.ui.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
-import com.example.qrcodereader.ui.profile.ProfileFragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 
@@ -42,8 +39,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.qrcodereader.databinding.ActivityMainBinding;
 
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
@@ -54,7 +49,6 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * MainActivity, the start point of the program
@@ -211,8 +205,8 @@ public class MainActivity extends AppCompatActivity {
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileFragment listfrag = new ProfileFragment();
-                listfrag.show(getSupportFragmentManager(), "Profile Page");
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
     }
