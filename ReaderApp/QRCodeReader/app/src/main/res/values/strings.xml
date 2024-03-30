@@ -38,5 +38,7 @@
     <string name="time_string">Time</string>
     <string name="sign_up_string">Sign up</string>
     <string name="event_poster">Event Poster</string>
+    <string name="no_notifications_to_show">No notifications to show</string>
+    <string name="notifications">Notifications</string>
 
 </resources>

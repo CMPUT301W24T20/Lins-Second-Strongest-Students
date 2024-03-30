@@ -59,6 +59,7 @@ public class NotificationsFragment extends Fragment {
         deleteOne = view.findViewById(R.id.delete_button);
         clearAll = view.findViewById(R.id.clear_button);
         ListView listView = view.findViewById(R.id.notification_list);
+        TextView noMessages = view.findViewById(R.id.no_messages);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         try {
@@ -81,6 +82,12 @@ public class NotificationsFragment extends Fragment {
                         }
                     });
         } catch (NullPointerException e) {
+            noMessages.setVisibility(View.VISIBLE);
+            Toast.makeText(getActivity(), "No New Messages", Toast.LENGTH_SHORT).show();
+        }
+
+        if (adapter == null || adapter.getCount() < 1) {
+            noMessages.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity(), "No New Messages", Toast.LENGTH_SHORT).show();
         }
 
@@ -107,9 +114,13 @@ public class NotificationsFragment extends Fragment {
         clearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i <= adapter.getCount(); i++) {
-                    NotificationDetail item = adapter.getItem(i);
-                    removeItem(item);
+                if (adapter.getCount() == 0) {
+                    Toast.makeText(getActivity(), "Nothing to delete", Toast.LENGTH_SHORT).show();
+                } else {
+                    for (int i = 0; i <= adapter.getCount(); i++) {
+                        NotificationDetail item = adapter.getItem(i);
+                        removeItem(item);
+                    }
                 }
             }
         });
