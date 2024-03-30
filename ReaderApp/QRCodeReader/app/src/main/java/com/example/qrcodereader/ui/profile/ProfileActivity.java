@@ -22,8 +22,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileEditFra
     private TextView email;
     private TextView phone;
     private TextView region;
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
