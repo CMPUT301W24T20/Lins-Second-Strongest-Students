@@ -7,15 +7,14 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,16 +23,17 @@ import com.example.qrcodereader.entity.EventArrayAdapter;
 
 
 import com.example.qrcodereader.entity.QRCode;
+import com.example.qrcodereader.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -53,18 +53,12 @@ import java.util.Map;
  *  </p>
  *  @author Son and Khushdeep and Duy
  */
-        /*
-            OpenAI, ChatGpt, 28/03/2024
-            "(Fed previous un-paginated query) adjust it to use pagination"
-        */
 public class AttendeeEventActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private CollectionReference usersRef;
     private DocumentReference userDocRef;
-    private Map<String, Long> attendeeEvents;
-    private DocumentSnapshot lastVisible;
-    private EventArrayAdapter eventArrayAdapter;
+    private List<String> attendeeEvents;
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the ListView with the events attended by the user.
@@ -73,7 +67,6 @@ public class AttendeeEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.attendee_activity_event);
 
         db = FirebaseFirestore.getInstance();
@@ -90,14 +83,57 @@ public class AttendeeEventActivity extends AppCompatActivity {
         String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         userDocRef = usersRef.document(userid);
-        userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot snapshot) {
-                attendeeEvents = (Map<String, Long>) snapshot.get("eventsAttended");
-                if(attendeeEvents != null && !attendeeEvents.isEmpty()) {
-                    loadPage();
-                } else{
-                    Log.d("Firestore", "No events attended by the user");
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("Firestore", "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Map<String, Long> attendeeEvents = (Map<String, Long>) snapshot.get("eventsAttended");
+                    if(attendeeEvents != null && !attendeeEvents.isEmpty()) {
+                        eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot querySnapshots,
+                                                @Nullable FirebaseFirestoreException error) {
+                                if (error != null) {
+                                    Log.e("Firestore", error.toString());
+                                    return;
+                                }
+                                if (querySnapshots != null) {
+                                    eventDataList.clear();
+                                    for (QueryDocumentSnapshot doc : querySnapshots) {
+                                        String eventID = doc.getId();
+
+                                        // Check if the user has attended the event
+                                        if (attendeeEvents.containsKey(eventID)) {
+                                            String name = doc.getString("name");
+                                            String organizer = doc.getString("organizer");
+                                            GeoPoint location = doc.getGeoPoint("location");
+                                            Timestamp time = doc.getTimestamp("time");
+                                            String locationName = doc.getString("locationName");
+                                            String organizerID = doc.getString("organizerID");
+                                            String qrCodeString = doc.getString("qrCode");
+                                            String EventPoster = doc.getString("poster");
+                                            QRCode qrCode = new QRCode(qrCodeString);
+                                            int attendeeLimit = doc.contains("attendeeLimit") ? (int)(long)doc.getLong("attendeeLimit") : -1;
+                                            Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+
+                                            Log.d("Firestore", "Event fetched");
+                                            eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees, EventPoster);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } else{
+                        Log.d("Firestore", "No events attended by the user");
+                    }
+                } else {
+                    Log.d("Firestore", "Current data: null");
                 }
             }
         });
@@ -125,66 +161,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // No-op
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem + visibleItemCount >= totalItemCount && totalItemCount != 0) {
-                    // The user has scrolled to the bottom, load the next page
-                    loadPage();
-                }
-            }
-        });
     }
-    private void loadPage() {
-        List<String> eventIDs = new ArrayList<>(attendeeEvents.keySet());
-
-        // Determine the start and end indices for the chunk of event IDs
-        int start = lastVisible == null ? 0 : eventIDs.indexOf(lastVisible.getId()) + 1;
-        int end = Math.min(start + 10, eventIDs.size());
-
-        // Get the chunk of event IDs
-        List<String> chunk = eventIDs.subList(start, end);
-
-        Query eventsQuery = eventsRef.whereIn("eventID", chunk).orderBy("time", Query.Direction.DESCENDING);
-        eventsQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String eventID = document.getId();
-                        String name = document.getString("name");
-                        String organizer = document.getString("organizer");
-                        GeoPoint location = document.getGeoPoint("location");
-                        Timestamp time = document.getTimestamp("time");
-                        String locationName = document.getString("locationName");
-                        String organizerID = document.getString("organizerID");
-                        String EventPoster = document.getString("poster");
-                        String qrCodeString = document.getString("qrCode");
-                        QRCode qrCode = new QRCode(qrCodeString);
-                        int attendeeLimit = document.contains("attendeeLimit") ? (int)(long)document.getLong("attendeeLimit") : -1;
-                        Map<String, Long> attendees = (Map<String, Long>) document.get("attendees");
-
-                        Log.d("Firestore", "Event fetched");
-                        eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees, EventPoster);
-
-                        lastVisible = document;
-                    }
-
-                    if (task.getResult().isEmpty()) {
-                        Toast.makeText(AttendeeEventActivity.this, "No more events to load", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d("Firestore", "Error getting documents: ", task.getException());
-                }
-            }
-        });
-    }
-
 
     /**
      * Show the event details in a dialog
@@ -221,8 +198,3 @@ public class AttendeeEventActivity extends AppCompatActivity {
         dialog.show();
     }
 }
-
-
-
-
-
