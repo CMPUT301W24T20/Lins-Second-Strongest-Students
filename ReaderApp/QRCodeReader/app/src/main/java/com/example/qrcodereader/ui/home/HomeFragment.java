@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.MapView;
 import com.example.qrcodereader.MapViewOrganizer;
 import com.example.qrcodereader.R;
@@ -22,7 +21,7 @@ import com.example.qrcodereader.databinding.FragmentHomeBinding;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
-import com.example.qrcodereader.ui.profile.ProfileFragment;
+import com.example.qrcodereader.ui.profile.ProfileActivity;
 
 /**
  * This is the Fragment where all the buttons to go to Events, Map, Profile, and Admin access lies
@@ -50,8 +49,8 @@ public class HomeFragment extends Fragment {
         profile_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileFragment listfrag = new ProfileFragment();
-                listfrag.show(getChildFragmentManager(), "Profile Page");
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                startActivity(intent);
             }
         });
 

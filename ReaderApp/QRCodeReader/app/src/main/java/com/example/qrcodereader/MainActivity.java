@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,14 +19,10 @@ import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
-import com.example.qrcodereader.util.AppDataHolder;
 
+import com.example.qrcodereader.ui.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
-import com.example.qrcodereader.ui.profile.ProfileFragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 
@@ -32,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,8 +42,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.qrcodereader.databinding.ActivityMainBinding;
 
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
@@ -55,7 +52,6 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * MainActivity, the start point of the program
@@ -66,6 +62,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private BroadcastReceiver receiver;
+
     private ActivityMainBinding binding;
     public static ArrayList<String> notificationList = new ArrayList<>();
     private FirebaseFirestore db;
@@ -73,9 +71,8 @@ public class MainActivity extends AppCompatActivity {
     private DocumentReference docRefUser;
 
     public User user;
-    public static String deviceID;
+    public static String userId;
     private FusedLocationProviderClient fusedLocationClient;
-    private AppDataHolder appDataHolder;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -91,22 +88,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
 
-        deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        appDataHolder = AppDataHolder.getInstance();
-        //AppDataHolder.loadUser(this);
-
-        appDataHolder.fetchAndUpdateUserInfo(deviceID, this);
-
 
         initializeFirestore();
         setupNavigation();
         setupProfileButton();
         setupNotificationChannel();
-        setupBroadcastReceiver();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            setupBroadcastReceiver();
+        }
         setupMyEventButton();
         setupMapButton();
         checkAdminStatus();
@@ -116,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
      * Initializes Firestore and sets up the user document reference.
      */
     private void initializeFirestore() {
-        deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
         docRefUser = db.collection("users").document(deviceID);
@@ -142,6 +133,13 @@ public class MainActivity extends AppCompatActivity {
                     newUser.put("phoneRegion", "");
                     newUser.put("eventsAttended", new HashMap<>());
                     newUser.put("location", new GeoPoint(0,0));
+                    FirebaseMessaging.getInstance().getToken() //Microsoft Copilot 2024, "get FCM token android"
+                            .addOnSuccessListener(new OnSuccessListener<String>() {
+                                @Override
+                                public void onSuccess(String token) {
+                                    newUser.put("token", token);
+                                }
+                            });
 
                     // set default profile
                     CollectionReference ColRefPic = db.collection("DefaultProfilePics");
@@ -175,9 +173,25 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Failed to fetch account", Toast.LENGTH_LONG).show();
             }
         });
-        user = AppDataHolder.getInstance().getCurrentUser(this);
-        Toast.makeText(this, "Welcome " + user.getName(), Toast.LENGTH_LONG).show();
-        Log.d("Firestore", "Successfully fetch document: ");
+        docRefUser.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String userName = documentSnapshot.getString("name");
+                Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
+                GeoPoint location = documentSnapshot.getGeoPoint("location");
+                String image = documentSnapshot.getString("ProfilePic");
+                user = new User(deviceID, userName, location, eventsAttended, image);
+                userId = user.getUserID();
+                Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
+                Log.d("Firestore", "Successfully fetch document: ");
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
+        });
+
+        //        int index = (user.getName().length() % 4)+1;
+//        String P = "P"+index;
+//
+
     }
 
 
@@ -206,8 +220,8 @@ public class MainActivity extends AppCompatActivity {
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileFragment listfrag = new ProfileFragment();
-                listfrag.show(getSupportFragmentManager(), "Profile Page");
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -222,12 +236,17 @@ public class MainActivity extends AppCompatActivity {
         /*
         Create notification channel to allow for push notifications
          */
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel("default_channel",
-                    "Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setDescription("Default Channel");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = getString(R.string.default_notification_channel_id);
+            String description = getString(R.string.title_notifications);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(name, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(notificationChannel);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
 
@@ -236,12 +255,13 @@ public class MainActivity extends AppCompatActivity {
      * Adds incoming notifications from FirebaseMessagingService
      * to an arraylist
      */
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void setupBroadcastReceiver() {
+        Log.d("BroadcastChannel", "Setting up...");
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // See MyFirebaseMessagingService for broadcast
-                //TO-DO:
                 Log.d("Attempting to recieve...", "onReceive");
                 if (MyFirebaseMessagingService.ACTION_BROADCAST.equals(intent.getAction())) {
                     String notificationData = intent.getStringExtra("body"); //key of intent
@@ -250,7 +270,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+
+        // Register the receiver
+        IntentFilter filter = new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST);
+        registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
     }
+
 
     /**
      * Sets up the 'My Event' button for the main activity.
@@ -404,6 +429,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
 }
 
 
