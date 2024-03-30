@@ -39,4 +39,12 @@
     <string name="sign_up_string">Sign up</string>
     <string name="event_poster">Event Poster</string>
 
+    <string name="upcoming_events_string">Upcoming events</string>
+    <string name="add_string">Add</string>
+    <string name="home_string">home</string>
+    <string name="scanner_string">scanner</string>
+    <string name="notification_string">notification</string>
+    <string name="event_string">event</string>
+    <string name="profile_string">profile</string>
+
 </resources>

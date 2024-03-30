@@ -176,8 +176,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         user = AppDataHolder.getInstance().getCurrentUser(this);
-        Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
-        Toast.makeText(this, user.getName(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Welcome " + user.getName(), Toast.LENGTH_LONG).show();
         Log.d("Firestore", "Successfully fetch document: ");
     }
 
