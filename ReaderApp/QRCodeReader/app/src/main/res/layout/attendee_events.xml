@@ -76,6 +76,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="60dp"
 			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
 			android:orientation="horizontal"
 			android:background="#ffa4e4ff"
 			android:weightSum="5">

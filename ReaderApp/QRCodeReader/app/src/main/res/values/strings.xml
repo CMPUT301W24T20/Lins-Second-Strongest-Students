@@ -47,4 +47,10 @@
     <string name="event_string">event</string>
     <string name="profile_string">profile</string>
 
+
+    <string name="__780__123_4567_string">(780) 123-4567</string>
+    <string name="hello_example_com_string">hello@example.com</string>
+    <string name="edit_string">Edit</string>
+    <string name="admin_string">Admin</string>
+
 </resources>

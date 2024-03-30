@@ -10,6 +10,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -110,7 +111,7 @@ public class BrowseEventActivity extends AppCompatActivity {
             }
         });
 
-        Button returnButton = findViewById(R.id.return_button_browse);
+        TextView returnButton = findViewById(R.id.return_button_browse);
         returnButton.setOnClickListener(v -> finish());
     }
 
