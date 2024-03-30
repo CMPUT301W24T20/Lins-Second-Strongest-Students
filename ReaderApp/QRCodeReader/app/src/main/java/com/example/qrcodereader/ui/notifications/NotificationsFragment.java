@@ -13,9 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,8 +29,14 @@ import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.MyFirebaseMessagingService;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.databinding.FragmentNotificationsBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * NotificationsFragment
@@ -37,23 +46,93 @@ import java.util.ArrayList;
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
-    private ArrayAdapter<String> adapter;
-    ArrayList<String> listItems;
+    private Button deleteOne;
+    private Button clearAll;
+    private NotificationAdapter adapter;
+    private final String userID = MainActivity.userId;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("ID:", "=" + userID);
+        View view = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        deleteOne = view.findViewById(R.id.delete_button);
+        clearAll = view.findViewById(R.id.clear_button);
+        ListView listView = view.findViewById(R.id.notification_list);
+        TextView noMessages = view.findViewById(R.id.no_messages);
 
-        ListView listView = root.findViewById(R.id.notification_list);
-        listItems = MainActivity.notificationList;
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, listItems);
-        listView.setAdapter(adapter);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        try {
+            db.collection("users").document(userID).collection("notifications")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                List<NotificationDetail> notifications = new ArrayList<>();
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    NotificationDetail notification = document.toObject(NotificationDetail.class);
+                                    notifications.add(notification);
+                                }
+                                adapter = new NotificationAdapter(getContext(), notifications);
+                                listView.setAdapter(adapter);
+                            } else {
+                                Log.w("NotifDocRetrieval", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        } catch (NullPointerException e) {
+            noMessages.setVisibility(View.VISIBLE);
+            Toast.makeText(getActivity(), "No New Messages", Toast.LENGTH_SHORT).show();
+        }
 
-        return root;
+        if (adapter == null || adapter.getCount() < 1) {
+            noMessages.setVisibility(View.VISIBLE);
+            Toast.makeText(getActivity(), "No New Messages", Toast.LENGTH_SHORT).show();
+        }
+
+        final Object[] lastTappedItem = new Object[1];
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                lastTappedItem[0] = parent.getItemAtPosition(position);
+            }
+        });
+
+        deleteOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lastTappedItem[0] != null) {
+                    removeItem((NotificationDetail) lastTappedItem[0]);
+                } else {
+                    Toast.makeText(getActivity(), "No item selected", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        clearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (adapter.getCount() == 0) {
+                    Toast.makeText(getActivity(), "Nothing to delete", Toast.LENGTH_SHORT).show();
+                } else {
+                    for (int i = 0; i <= adapter.getCount(); i++) {
+                        NotificationDetail item = adapter.getItem(i);
+                        removeItem(item);
+                    }
+                }
+            }
+        });
+
+        return view;
+
+    }
+
+    private void removeItem(NotificationDetail item) {
+        adapter.remove(item);
+        adapter.notifyDataSetChanged();
+        item.delete();
     }
 
     /**

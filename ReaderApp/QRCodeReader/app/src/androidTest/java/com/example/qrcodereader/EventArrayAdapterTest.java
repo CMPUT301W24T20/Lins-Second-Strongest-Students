@@ -54,8 +54,9 @@ public class EventArrayAdapterTest {
         Map<String, Long> attendees = new HashMap<>();
         QRCode qrCode = new QRCode();
         String organizerID = "1";
+        String poster = "";
 
-        adapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees);
+        adapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees, poster);
 
         // Check that the event was added to the adapter
         assertEquals(1, adapter.getCount());
