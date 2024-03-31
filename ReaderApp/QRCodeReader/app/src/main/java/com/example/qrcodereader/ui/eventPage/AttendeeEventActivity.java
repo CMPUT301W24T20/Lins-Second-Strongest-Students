@@ -199,8 +199,3 @@ public class AttendeeEventActivity extends AppCompatActivity {
         dialog.show();
     }
 }
-
-
-
-
-
