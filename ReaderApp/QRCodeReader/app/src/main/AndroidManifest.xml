@@ -46,6 +46,8 @@
 
         <activity android:name=".ui.admin.AdminEventActivity"/>
         <activity android:name=".ui.admin.EventDetailsAdminActivity"/>
+        <activity android:name=".ui.admin.AdminImagesOptionActivity"/>
+
 
         <activity
             android:name=".DisplayQRCode"
