@@ -163,6 +163,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
         });
     }
 
+
     /**
      * Show the event details in a dialog
      * @param event The event to show the details of

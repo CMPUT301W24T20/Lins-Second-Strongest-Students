@@ -71,15 +71,17 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.1.0")
 
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
-    implementation("com.google.android.libraries.places:places:3.3.0")
+    implementation("com.google.android.libraries.places:places:3.4.0")
 
     androidTestImplementation("org.slf4j:slf4j-api:1.7.30")
     androidTestImplementation("ch.qos.logback:logback-classic:1.2.3")
     androidTestImplementation("ch.qos.logback:logback-core:1.2.3")
 
-
+    implementation("com.google.code.gson:gson:2.10.1")
 
     implementation ("com.squareup.picasso:picasso:2.8")
 

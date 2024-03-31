@@ -57,6 +57,7 @@ import java.util.Set;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import com.example.qrcodereader.util.AppDataHolder;
 
 import android.text.Editable;
 import android.text.TextWatcher;

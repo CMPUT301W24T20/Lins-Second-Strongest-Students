@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -58,6 +61,8 @@ import java.util.Map;
  * @author all
  */
 public class MainActivity extends AppCompatActivity {
+
+    private BroadcastReceiver receiver;
 
     private ActivityMainBinding binding;
     public static ArrayList<String> notificationList = new ArrayList<>();
@@ -90,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
         setupNavigation();
         setupProfileButton();
         setupNotificationChannel();
-        setupBroadcastReceiver();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            setupBroadcastReceiver();
+        }
         setupMyEventButton();
         setupMapButton();
         checkAdminStatus();
@@ -126,6 +133,13 @@ public class MainActivity extends AppCompatActivity {
                     newUser.put("phoneRegion", "");
                     newUser.put("eventsAttended", new HashMap<>());
                     newUser.put("location", new GeoPoint(0,0));
+                    FirebaseMessaging.getInstance().getToken() //Microsoft Copilot 2024, "get FCM token android"
+                            .addOnSuccessListener(new OnSuccessListener<String>() {
+                                @Override
+                                public void onSuccess(String token) {
+                                    newUser.put("token", token);
+                                }
+                            });
 
                     // set default profile
                     CollectionReference ColRefPic = db.collection("DefaultProfilePics");
@@ -166,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 GeoPoint location = documentSnapshot.getGeoPoint("location");
                 String image = documentSnapshot.getString("ProfilePic");
                 user = new User(deviceID, userName, location, eventsAttended, image);
+                userId = user.getUserID();
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
             }
@@ -221,12 +236,17 @@ public class MainActivity extends AppCompatActivity {
         /*
         Create notification channel to allow for push notifications
          */
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel("default_channel",
-                    "Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setDescription("Default Channel");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = getString(R.string.default_notification_channel_id);
+            String description = getString(R.string.title_notifications);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(name, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(notificationChannel);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
 
@@ -235,12 +255,13 @@ public class MainActivity extends AppCompatActivity {
      * Adds incoming notifications from FirebaseMessagingService
      * to an arraylist
      */
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void setupBroadcastReceiver() {
+        Log.d("BroadcastChannel", "Setting up...");
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // See MyFirebaseMessagingService for broadcast
-                //TO-DO:
                 Log.d("Attempting to recieve...", "onReceive");
                 if (MyFirebaseMessagingService.ACTION_BROADCAST.equals(intent.getAction())) {
                     String notificationData = intent.getStringExtra("body"); //key of intent
@@ -249,7 +270,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+
+        // Register the receiver
+        IntentFilter filter = new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST);
+        registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
     }
+
 
     /**
      * Sets up the 'My Event' button for the main activity.
@@ -403,6 +429,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
 }
 
 
