@@ -13,7 +13,8 @@
     <color name="colorAccent">#D81B60</color>
     <color name="gray">#F4F4F4</color>
     <color name="sky_blue">#00B2FF</color>
-    <color name="sky_blue_variant">#58CDFF</color>
+    <color name="sky_blue_variant">#A4E4FF</color>
+    <color name="navy_blue">#0052CC</color>
     <color name="_bg__android_small___1_ek2_color">#F4F4F4</color>
     <color name="_49e43ff77b9c6ecc64d8a9b55622ddd7_3_color">#ffffff</color>
     <color name="event_name_color">#333333</color>
