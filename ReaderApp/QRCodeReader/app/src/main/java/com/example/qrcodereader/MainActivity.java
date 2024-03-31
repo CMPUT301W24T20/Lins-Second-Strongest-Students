@@ -21,6 +21,7 @@ import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 
 import com.example.qrcodereader.ui.profile.ProfileActivity;
+import com.example.qrcodereader.util.AppDataHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -52,6 +53,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.messaging.FirebaseMessaging;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,6 +92,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
+
+        // Load all the data into the app data holder for convenience access in app
+        AppDataHolder.getInstance().loadData(this);
+        AppDataHolder.getInstance().fetchAndUpdateBrowseEvents(this);
+        AppDataHolder.getInstance().fetchAndUpdateOrganizerEvents(this);
+        AppDataHolder.getInstance().fetchAndUpdateAttendeeEvents(this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
