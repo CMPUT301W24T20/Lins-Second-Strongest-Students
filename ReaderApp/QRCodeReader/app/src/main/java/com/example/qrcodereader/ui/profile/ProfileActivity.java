@@ -3,6 +3,7 @@ package com.example.qrcodereader.ui.profile;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,24 +28,24 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_activity);
+        setContentView(R.layout.profile);
 
-//        setupTextViewButton(R.id.home_button); Uncomment once new profile_activity ui is made
-//        setupTextViewButton(R.id.event_button);
-//        setupTextViewButton(R.id.scanner_button);
-//        setupTextViewButton(R.id.notification_button);
-//        setupTextViewButton(R.id.bottom_profile_icon);
-//        View view = LayoutInflater.from(this).inflate(R.layout.profile_frag, null);
+        setupTextViewButton(R.id.home_button);
+        setupTextViewButton(R.id.event_button);
+        setupTextViewButton(R.id.scanner_button);
+        setupTextViewButton(R.id.notification_button);
+        setupTextViewButton(R.id.bottom_profile_icon);
+        View view = LayoutInflater.from(this).inflate(R.layout.profile, null);
 
         // find Views
 
-        name = findViewById(R.id.NameText);
-        email = findViewById(R.id.EmailText);
-        phone = findViewById(R.id.NumberText);
-        region = findViewById(R.id.RegionText);
+        name = findViewById(R.id.name);
+        email = findViewById(R.id.email);
+        phone = findViewById(R.id.phone);
+        //region = findViewById(R.id.); Missing
 
-        Button Edit = findViewById(R.id.SaveProfileButton);
-        Picture = findViewById(R.id.ProfilePic);
+        //Button Edit = findViewById(R.id.SaveProfileButton); Missing
+        Picture = findViewById(R.id.user_profile_photo);
 
 
         String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -66,14 +67,14 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
 //                    Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
 
-        Edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProfileEditFrag listfrag = new ProfileEditFrag();
-                listfrag.setOnSaveClickListener(ProfileActivity.this);
-                listfrag.show(getSupportFragmentManager(), "Edit Profile");
-            }
-        });
+//        Edit.setOnClickListener(new View.OnClickListener() { Missing
+//            @Override
+//            public void onClick(View v) {
+//                ProfileEditFrag listfrag = new ProfileEditFrag();
+//                listfrag.setOnSaveClickListener(ProfileActivity.this);
+//                listfrag.show(getSupportFragmentManager(), "Edit Profile");
+//            }
+//        });
     }
 
     @Override
