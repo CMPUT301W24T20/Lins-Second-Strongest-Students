@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -109,8 +110,14 @@ public class AdminImageView extends DialogFragment {
     private void deleteSelectedImages() {
         List<String> imagesToDelete = adapter.getSelectedImages();
         for (String imageUrl : imagesToDelete) {
-            // Parse the image URL to extract the image name (assuming it's the last segment of the URL)
-            String imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+            // Decode the image URL to extract the image name
+            String decodedImageUrl = Uri.decode(imageUrl);
+            String imageToken = decodedImageUrl.substring(decodedImageUrl.lastIndexOf("/") + 1);
+            int indexOfQuestionMark = imageToken.indexOf('?');
+//            yea = imageUrl;
+//
+            String imageName = imageToken.substring(0, indexOfQuestionMark);
+
             // Construct the StorageReference for the image to be deleted
             StorageReference imageRef = storageRef.child(imageName);
 
