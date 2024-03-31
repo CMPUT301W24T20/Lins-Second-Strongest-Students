@@ -158,8 +158,3 @@ public class AttendeeEventActivity extends AppCompatActivity {
         eventArrayAdapter.notifyDataSetChanged();
     }
 }
-
-
-
-
-

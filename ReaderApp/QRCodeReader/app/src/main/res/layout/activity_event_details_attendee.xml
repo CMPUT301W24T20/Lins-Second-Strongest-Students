@@ -176,7 +176,6 @@
                 />
 
 
-
             <ImageView android:id="@+id/return_button"
                 android:src="@drawable/vector_ek2"
                 android:contentDescription="vector_ek2"
@@ -191,7 +190,6 @@
         <TextView android:id="@+id/sign_up_button"
             android:textSize="16sp"
             android:textColor="@color/_bg__android_small___1_ek2_color"
-            android:layout_marginTop="580dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="30dp"
