@@ -1,21 +1,11 @@
 package com.example.qrcodereader.ui.notifications;
 
-import static androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED;
 import static androidx.core.content.ContextCompat.registerReceiver;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,19 +13,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.qrcodereader.MainActivity;
-import com.example.qrcodereader.MyFirebaseMessagingService;
 import com.example.qrcodereader.R;
-import com.example.qrcodereader.databinding.FragmentNotificationsBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -47,13 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * NotificationsFragment
+ * NotificationsActivity
  * Handles view for notification menu
  * Stores received firebase messages for reference
  */
-public class NotificationsFragment extends AppCompatActivity {
+public class NotificationsActivity extends AppCompatActivity {
 
-    private FragmentNotificationsBinding binding;
     private Button deleteOne;
     private Button clearAll;
     private Button returnButton;
@@ -64,7 +47,7 @@ public class NotificationsFragment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setupNavigation();
-        setContentView(R.layout.fragment_notifications);
+        setContentView(R.layout.activity_notifications);
         Log.d("ID:", "=" + userID);
 
         deleteOne = findViewById(R.id.delete_button);
@@ -86,7 +69,7 @@ public class NotificationsFragment extends AppCompatActivity {
                                     NotificationDetail notification = document.toObject(NotificationDetail.class);
                                     notifications.add(notification);
                                 }
-                                adapter = new NotificationAdapter(NotificationsFragment.this, notifications);
+                                adapter = new NotificationAdapter(NotificationsActivity.this, notifications);
                                 listView.setAdapter(adapter);
                             } else {
                                 Log.w("NotifDocRetrieval", "Error getting documents.", task.getException());
@@ -95,12 +78,12 @@ public class NotificationsFragment extends AppCompatActivity {
                     });
         } catch (NullPointerException e) {
             noMessages.setVisibility(View.VISIBLE);
-            Toast.makeText(NotificationsFragment.this, "No New Messages", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NotificationsActivity.this, "No New Messages", Toast.LENGTH_SHORT).show();
         }
 
         if (adapter == null || adapter.getCount() < 1) {
             noMessages.setVisibility(View.VISIBLE);
-            Toast.makeText(NotificationsFragment.this, "No New Messages", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NotificationsActivity.this, "No New Messages", Toast.LENGTH_SHORT).show();
         }
 
         final Object[] lastTappedItem = new Object[1];
@@ -118,7 +101,7 @@ public class NotificationsFragment extends AppCompatActivity {
                 if (lastTappedItem[0] != null) {
                     removeItem((NotificationDetail) lastTappedItem[0]);
                 } else {
-                    Toast.makeText(NotificationsFragment.this, "No item selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NotificationsActivity.this, "No item selected", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -127,7 +110,7 @@ public class NotificationsFragment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (adapter.getCount() == 0) {
-                    Toast.makeText(NotificationsFragment.this, "Nothing to delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NotificationsActivity.this, "Nothing to delete", Toast.LENGTH_SHORT).show();
                 } else {
                     for (int i = 0; i <= adapter.getCount(); i++) {
                         NotificationDetail item = adapter.getItem(i);
@@ -159,7 +142,7 @@ public class NotificationsFragment extends AppCompatActivity {
         // Get the NavController from the NavHostFragment
         NavController navController = navHostFragment.getNavController();
 
-        NavigationUI.setupActionBarWithNavController(NotificationsFragment.this, navController, appBarConfiguration);
+        NavigationUI.setupActionBarWithNavController(NotificationsActivity.this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
 
