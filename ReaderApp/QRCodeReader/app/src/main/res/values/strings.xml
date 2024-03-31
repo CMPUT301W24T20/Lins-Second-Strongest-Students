@@ -54,5 +54,7 @@
     <string name="hello_example_com_string">hello@example.com</string>
     <string name="edit_string">Edit</string>
     <string name="admin_string">Admin</string>
+    <string name="OrgTitle">My created events</string>
+    <string name="AtndTitle"> Signed up events</string>
 
 </resources>

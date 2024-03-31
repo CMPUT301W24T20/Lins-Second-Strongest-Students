@@ -30,14 +30,13 @@
             android:value="@string/google_maps_api_key">
         </meta-data>
         <activity android:name=".MapView"
-            android:exported="true" /><!-- change to false once path added -->
+            android:exported="false" />
         <activity android:name=".MapViewOrganizer"
-            android:exported="true" /><!-- change to false once path added -->
+            android:exported="false" />
         <activity
             android:name=".ui.eventPage.CreateEventActivity"
             android:exported="false" />
         <activity android:name=".ui.eventPage.OrganizerEventActivity"/>
-        <activity android:name=".ui.eventPage.AttendeeEventActivity"/>
         <activity android:name=".ui.eventPage.BrowseEventActivity"/>
         <activity android:name=".ui.eventPage.EventDetailsOrganizerActivity"/>
         <activity android:name=".ui.eventPage.EventDetailsAttendeeActivity"/>
@@ -55,7 +54,7 @@
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.eventPage.AttendeeEventActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>

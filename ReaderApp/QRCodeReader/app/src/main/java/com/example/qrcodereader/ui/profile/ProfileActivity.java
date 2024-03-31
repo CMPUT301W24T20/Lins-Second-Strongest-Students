@@ -10,12 +10,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
-public class ProfileActivity extends AppCompatActivity implements ProfileEditFrag.OnSaveClickListener {
+public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveClickListener {
     private ImageView Picture;
     private DocumentReference docRefUser;
     private TextView name;
@@ -27,6 +28,12 @@ public class ProfileActivity extends AppCompatActivity implements ProfileEditFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_activity);
+
+//        setupTextViewButton(R.id.home_button); Uncomment once new profile_activity ui is made
+//        setupTextViewButton(R.id.event_button);
+//        setupTextViewButton(R.id.scanner_button);
+//        setupTextViewButton(R.id.notification_button);
+//        setupTextViewButton(R.id.bottom_profile_icon);
 //        View view = LayoutInflater.from(this).inflate(R.layout.profile_frag, null);
 
         // find Views
@@ -69,12 +76,17 @@ public class ProfileActivity extends AppCompatActivity implements ProfileEditFra
         });
     }
 
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.profile_activity;
+    }
+
 
     /**
      * meow
      */
     private String CheckEmpty(String text){
-        if (text.length() == 0) {return "";}
+        if (text == null || text.length() == 0) {return "";}
         else {return text;}
     }
 

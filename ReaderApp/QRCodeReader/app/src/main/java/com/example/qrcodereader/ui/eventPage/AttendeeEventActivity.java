@@ -1,4 +1,5 @@
 package com.example.qrcodereader.ui.eventPage;
+import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
 
 import android.content.Intent;
@@ -53,7 +54,7 @@ import java.util.Map;
  *  </p>
  *  @author Son and Khushdeep and Duy
  */
-public class AttendeeEventActivity extends AppCompatActivity {
+public class AttendeeEventActivity extends NavBar {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private CollectionReference usersRef;
@@ -67,7 +68,16 @@ public class AttendeeEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.attendee_activity_event);
+        setContentView(R.layout.attendee_events);
+
+        TextView title = findViewById(R.id.upcoming_events);
+        title.setText(R.string.AtndTitle);
+
+        setupTextViewButton(R.id.home_button);
+        setupTextViewButton(R.id.event_button);
+        setupTextViewButton(R.id.scanner_button);
+        setupTextViewButton(R.id.notification_button);
+        setupTextViewButton(R.id.bottom_profile_icon);
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
@@ -148,11 +158,11 @@ public class AttendeeEventActivity extends AppCompatActivity {
             }
         });
 
-        Button returnButton = findViewById(R.id.return_button_attendee);
-        returnButton.setOnClickListener(v -> finish());
+//        Button returnButton = findViewById(R.id.return_button_attendee);
+//        returnButton.setOnClickListener(v -> finish());
 
         // Go to BrowseEventActivity
-        Button browseButton = findViewById(R.id.browse_button);
+        TextView browseButton = findViewById(R.id.browse_button);
         browseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +172,10 @@ public class AttendeeEventActivity extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.attendee_events;
+    }
 
     /**
      * Show the event details in a dialog
