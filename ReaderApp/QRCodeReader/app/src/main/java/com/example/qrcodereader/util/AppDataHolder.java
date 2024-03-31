@@ -1,20 +1,21 @@
 package com.example.qrcodereader.util;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-
 import android.content.Context;
-import android.provider.Settings;
+import android.widget.Toast;
 
+import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.entity.Event;
-import com.example.qrcodereader.util.LocalUserStorage;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A singleton class to hold user info and events.
@@ -23,6 +24,10 @@ import java.util.Map;
 public class AppDataHolder {
     private static User currentUser;
     private static AppDataHolder instance;
+    private static ArrayList<Event> browseEvents;
+    private static ArrayList<Event> attendeeEvents;
+    private static ArrayList<Event> organizerEvents;
+
 
 
     // Private constructor to prevent direct instantiation
@@ -31,11 +36,13 @@ public class AppDataHolder {
     // Get the singleton instance
     public static synchronized AppDataHolder getInstance() {
         if (instance == null) {
+            browseEvents = new ArrayList<>();
+            attendeeEvents = new ArrayList<>();
+            organizerEvents = new ArrayList<>();
             instance = new AppDataHolder();
         }
         return instance;
     }
-
 
     /**
      * Get the current user - the one who is using the app
@@ -45,6 +52,21 @@ public class AppDataHolder {
     public User getCurrentUser(Context context) {
         currentUser = LocalUserStorage.loadUser(context);
         return currentUser;
+    }
+
+    public ArrayList<Event> getBrowseEvents(Context context) {
+        browseEvents = LocalEventsStorage.loadEvents(context, "browseEvents.json");
+        return browseEvents;
+    }
+
+    public ArrayList<Event> getAttendeeEvents(Context context) {
+        attendeeEvents = LocalEventsStorage.loadEvents(context, "attendeeEvents.json");
+        return attendeeEvents;
+    }
+
+    public ArrayList<Event> getOrganizerEvents(Context context) {
+        organizerEvents = LocalEventsStorage.loadEvents(context, "organizerEvents.json");
+        return organizerEvents;
     }
 
     /**
@@ -76,5 +98,88 @@ public class AppDataHolder {
         });
     }
 
+    public void fetchAndUpdateBrowseEvents(Context context) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Timestamp now = Timestamp.now();
 
+        db.collection("events")
+                .whereGreaterThan("time", now) // Query for documents where eventTime is in the future
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            ArrayList<Event> futureEvents = new ArrayList<>();
+
+                            for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
+                                //Event event = documentSnapshot.toObject(Event.class);
+                                String id = documentSnapshot.getId();
+                                String name = documentSnapshot.getString("name");
+                                GeoPoint location = documentSnapshot.getGeoPoint("location");
+                                String locationName = documentSnapshot.getString("locationName");
+                                Timestamp time = documentSnapshot.getTimestamp("time");
+                                String organizer = documentSnapshot.getString("organizer");
+                                String organizerID = documentSnapshot.getString("organizerID");
+                                QRCode qrCode = new QRCode(documentSnapshot.getString("qrCode"));
+                                int attendeeLimit = documentSnapshot.getLong("attendeeLimit").intValue();
+                                Map<String, Long> attendees = (Map<String, Long>) documentSnapshot.get("attendees");
+                                String EPoster = documentSnapshot.getString("EPoster");
+
+                                Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
+//
+                                futureEvents.add(event);
+                                Toast.makeText(context, "Event: " + event.getEventName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            // Save the future events to local storage
+                            LocalEventsStorage.saveEvents(context, futureEvents, "browseEvents.json");
+                            browseEvents = futureEvents;
+                        }
+                    } else {
+                        Toast.makeText(context, "Failed to fetch events", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void fetchAndUpdateOrganizerEvents(Context context) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("events")
+                .whereEqualTo("organizerID", currentUser.getUserID()) // Query for documents where eventTime is in the future
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            ArrayList<Event> futureEvents = new ArrayList<>();
+
+                            for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
+                                //Event event = documentSnapshot.toObject(Event.class);
+                                String id = documentSnapshot.getId();
+                                String name = documentSnapshot.getString("name");
+                                GeoPoint location = documentSnapshot.getGeoPoint("location");
+                                String locationName = documentSnapshot.getString("locationName");
+                                Timestamp time = documentSnapshot.getTimestamp("time");
+                                String organizer = documentSnapshot.getString("organizer");
+                                String organizerID = documentSnapshot.getString("organizerID");
+                                QRCode qrCode = new QRCode(documentSnapshot.getString("qrCode"));
+                                int attendeeLimit = documentSnapshot.getLong("attendeeLimit").intValue();
+                                Map<String, Long> attendees = (Map<String, Long>) documentSnapshot.get("attendees");
+                                String EPoster = documentSnapshot.getString("EPoster");
+
+                                Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
+//
+                                futureEvents.add(event);
+                                Toast.makeText(context, "Event: " + event.getEventName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            // Save the future events to local storage
+                            LocalEventsStorage.saveEvents(context, futureEvents, "browseEvents.json");
+                            browseEvents = futureEvents;
+                        }
+                    } else {
+                        Toast.makeText(context, "Failed to fetch events", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }
