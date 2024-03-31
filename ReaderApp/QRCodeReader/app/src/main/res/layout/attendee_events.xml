@@ -18,6 +18,17 @@
 	 *
 	 */
 	-->
+	<ImageView
+		android:id="@+id/reload_button"
+		android:layout_width="40dp"
+		android:layout_height="40dp"
+		android:padding="10dp"
+		android:src="@drawable/reload_vector"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		android:layout_marginTop="8dp"
+		android:layout_marginEnd="8dp"
+		/>
 	<TextView android:id="@+id/upcoming_events"
 		android:textStyle="bold"
 		android:textSize="30sp"
@@ -46,14 +57,14 @@
 
 	<TextView android:id="@+id/browse_button"
 		android:textSize="16sp"
-		android:textColor="@color/_bg__android_small___1_ek2_color"
+		android:textColor="@color/sky_blue"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:paddingHorizontal="30dp"
 		android:paddingVertical="10dp"
 		android:layout_centerHorizontal="true"
 		android:text="@string/add_string"
-		android:background="@drawable/rectangle_1_shape"
+		android:background="@drawable/ellipse_2_shape"
 		android:elevation="2dp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
