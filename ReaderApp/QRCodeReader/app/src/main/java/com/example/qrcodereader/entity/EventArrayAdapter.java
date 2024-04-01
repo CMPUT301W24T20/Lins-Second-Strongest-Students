@@ -70,9 +70,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
 
         String locationString = (event.getLocationName() != null) ? event.getLocationName() : "No location";
         locationName.setText(locationString);
+        timeName.setText(event.getTime().toDate().toString());
 
         String imagePoster = event.getPoster();
-        Picasso.get().load(imagePoster).resize(100, 100).centerInside().into(PosterPicture);
+        Picasso.get().load(imagePoster).resize(130, 130).centerInside().into(PosterPicture);
 
         return view;
     }

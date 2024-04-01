@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -43,7 +44,7 @@
         <activity android:name=".ui.eventPage.EventDetailsAttendeeActivity"/>
         <activity android:name=".ui.eventPage.CreateEventActivityBrowsePastEvent"/>
         <activity android:name=".ui.profile.ProfileActivity"/>
-
+        <activity android:name=".ui.eventPage.AttendanceActivity"/>
         <activity android:name=".ui.admin.AdminEventActivity"/>
         <activity android:name=".ui.admin.EventDetailsAdminActivity"/>
         <activity android:name=".ui.admin.AdminImagesOptionActivity"/>
@@ -66,6 +67,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.notifications.NotificationsActivity"/>
 <!--        <service-->
 <!--            android:name=".MyFirebaseInstanceIDService">-->
 <!--            <intent-filter>-->
