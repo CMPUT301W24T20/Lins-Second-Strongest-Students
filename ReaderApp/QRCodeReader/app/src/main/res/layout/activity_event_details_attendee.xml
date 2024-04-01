@@ -100,7 +100,7 @@
                     android:layout_height="37dp" />
 
                 <View   android:id="@+id/ellipse_2"
-                    android:background="@drawable/ellipse_2_shape"
+                    android:background="@drawable/ellipse_1_shape"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="0dp"
                     android:layout_width="37dp"
