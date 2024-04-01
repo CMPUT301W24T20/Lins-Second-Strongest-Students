@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
+import com.example.qrcodereader.ui.notifications.NotificationsActivity;
 import com.example.qrcodereader.ui.notifications.NotificationsViewModel;
 import com.example.qrcodereader.ui.profile.ProfileActivity;
 
@@ -37,12 +38,14 @@ public abstract class NavBar extends AppCompatActivity {
     // Method to setup a TextView button
     protected void setupTextViewButton(int viewId) {
         View viewButton = findViewById(viewId);
-        viewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onTextViewButtonClicked(viewId);
-            }
-        });
+        if (viewButton != null) {
+            viewButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onTextViewButtonClicked(viewId);
+                }
+            });
+        }
     }
 
     // Method to handle the TextView button click
@@ -59,11 +62,11 @@ public abstract class NavBar extends AppCompatActivity {
         else if (viewId == R.id.event_button) {
             targetClass = OrganizerEventActivity.class;
         }
-        //else if (viewId == R.id.scanner_button) {
-            //targetClass = ScannerActivity.class; // Replace with your actual ScannerActivity class
-        //}
+//        else if (viewId == R.id.scanner_button) {
+//            targetClass = ScannerActivity.class; // Replace with your actual ScannerActivity class
+//        }
         else if (viewId == R.id.notification_button) {
-            targetClass = NotificationsViewModel.class;
+            targetClass = NotificationsActivity.class;
         }
         else if (viewId == R.id.bottom_profile_icon) {
             targetClass = ProfileActivity.class;

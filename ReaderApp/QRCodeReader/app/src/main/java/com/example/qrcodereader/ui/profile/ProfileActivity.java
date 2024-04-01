@@ -58,7 +58,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 name.setText(CheckEmpty(documentSnapshot.getString("name")));
                 email.setText(CheckEmpty(documentSnapshot.getString("email")));
                 phone.setText(CheckEmpty(documentSnapshot.getString("phone")));
-                region.setText(CheckEmpty(documentSnapshot.getString("phoneRegion")));
+                //region.setText(CheckEmpty(documentSnapshot.getString("phoneRegion")));
 
                 String imageURL = documentSnapshot.getString("ProfilePic");
                 Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
