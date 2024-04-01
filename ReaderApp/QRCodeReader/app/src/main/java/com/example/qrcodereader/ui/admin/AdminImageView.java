@@ -12,14 +12,23 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -31,14 +40,16 @@ public class AdminImageView extends DialogFragment {
     private List<String> selectedImages;
     private ImageAdapter adapter;
     private StorageReference storageRef;
+    private String TypeRef;
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_activity_admin_image_list, null);
 
-//        assert getArguments() != null;
-//        String Title = getArguments().getString("Title");
+        String Title = getArguments().getString("Title");
+        TypeRef = getArguments().getString("Type");
 
-        storageRef = FirebaseStorage.getInstance().getReference().child("EventPoster");
+        storageRef = FirebaseStorage.getInstance().getReference().child(TypeRef);
+
 
 
         imageGridView = view.findViewById(R.id.imageGridView);
@@ -61,28 +72,13 @@ public class AdminImageView extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view)
-                .setTitle("meow")
+                .setTitle(Title)
                 .setNegativeButton("Cancel", null) // do nothing and close
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     // able to press Save Button, it is not greyed out == input in edit texts are valid
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         deleteSelectedImages();
-//                        if (uploaded != null) {
-//                            isUploaded();
-//                        }
-//                        docRefUser.update("name",  ETname.getText().toString());
-//                        docRefUser.update("email",  ETemail.getText().toString());
-//                        docRefUser.update("phone",  ETphone.getText().toString());
-//                        docRefUser.update("phoneRegion",Sregion.getSelectedItem().toString());
-//
-//                        if (onSaveClickListener != null) {
-//                            onSaveClickListener.onSaveClicked(ETname.getText().toString(),
-//                                    ETemail.getText().toString(),
-//                                    ETphone.getText().toString(),
-//                                    Sregion.getSelectedItem().toString(),
-//                                    uploaded);
-//                        }
                     }
                 });
 
@@ -120,6 +116,32 @@ public class AdminImageView extends DialogFragment {
 
             // Construct the StorageReference for the image to be deleted
             StorageReference imageRef = storageRef.child(imageName);
+
+            if (TypeRef.equals("UploadedProfilesPics")){
+                String userID = imageName.substring(0, 15);
+
+                CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePics");
+                ColRefPic.document("P4").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null && document.exists()) {
+                                // Get the value of the string field
+                                String imageURL = document.getString("URL");
+                                DocumentReference docRefUser = FirebaseFirestore.getInstance().collection("users").document(userID);
+
+                                docRefUser.update("ProfilePic",  imageURL);
+
+                            } else {
+                                Log.d("Firestore", "No such document");
+                            }
+                        } else {
+                            Log.e("Firestore", "Error getting document", task.getException());
+                        }
+                    }
+                });
+            }
 
             // Delete the image from Firebase Storage
             imageRef.delete().addOnSuccessListener(aVoid -> {

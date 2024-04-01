@@ -25,6 +25,8 @@ public class AdminImagesOptionActivity extends AppCompatActivity {
                 AdminImageView listfrag = new AdminImageView();
                 Bundle bundle = new Bundle();
                 bundle.putString("Title", "Posters");
+                bundle.putString("Type", "EventPoster");
+                listfrag.setArguments(bundle);
                 listfrag.show(getSupportFragmentManager(), "View Posters");
             }
         });
@@ -35,8 +37,13 @@ public class AdminImagesOptionActivity extends AppCompatActivity {
                 AdminImageView listfrag = new AdminImageView();
                 Bundle bundle = new Bundle();
                 bundle.putString("Title", "Profile Pictures");
+                bundle.putString("Type", "UploadedProfilePics");
+                listfrag.setArguments(bundle);
                 listfrag.show(getSupportFragmentManager(), "View Posters");
             }
         });
+
+        Button returnButton = findViewById(R.id.return_button);
+        returnButton.setOnClickListener(v -> finish());
     }
 }
