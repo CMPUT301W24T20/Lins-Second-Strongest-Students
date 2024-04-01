@@ -1,5 +1,7 @@
 package com.example.qrcodereader.ui.profile;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -10,7 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,6 +37,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.qrcodereader.ImageUpload;
@@ -58,6 +66,7 @@ import java.util.Set;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.example.qrcodereader.util.AppDataHolder;
+import com.squareup.picasso.Transformation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -79,7 +88,6 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
 
 
     public interface OnSaveClickListener {
-
         void onSaveClicked(String EditName, String EditRegion, String EditPhone, String EditEmail, Uri EditPicture);
     }
 
@@ -109,6 +117,9 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
         SpinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Sregion.setAdapter(SpinAdapter);
 
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View customTitleView = inflater.inflate(R.layout.profile_edit_title_layout, null);
+
         String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         docRefUser = db.collection("users").document(deviceID);
@@ -126,7 +137,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                 image = documentSnapshot.getString("ProfilePic");
 
                 String imageURL = documentSnapshot.getString("ProfilePic");
-                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
+                Picasso.get().load(imageURL).transform(new CircleTransformation()).resize(100, 100).centerInside().into(Picture);
             }
         }).addOnFailureListener(e -> {
 //                    Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
@@ -159,9 +170,11 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view)
-                .setTitle("Profile")
+                .setCustomTitle(customTitleView)
                 .setNegativeButton("Cancel", null) // do nothing and close
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     // able to press Save Button, it is not greyed out == input in edit texts are valid
@@ -186,6 +199,20 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                 });
 
         AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                Button saveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+
+                Typeface customFont = ResourcesCompat.getFont(requireContext(), R.font.alata);
+
+                cancelButton.setTypeface(customFont);
+                saveButton.setTypeface(customFont);
+            }
+        });
 
         // how to grey out postive button of dialogue fragment 3/25/24
         ETphone.addTextChangedListener(new TextWatcher() {
@@ -242,20 +269,21 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             }
             byte[] imageData = baos.toByteArray();
             String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
-            String imageName = deviceID + "PROFILE" + ".png";
+            String imageName = deviceID + "PROFILEPICTURE.png";
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
             StorageReference imageRef = storageRef.child("UploadedProfilePics/" + imageName);
             UploadTask uploadTask = imageRef.putBytes(imageData);
 
-            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                image = uri.toString();
-                docRefUser.update("ProfilePic",  image);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    image = uri.toString();
+                    docRefUser.update("ProfilePic",  image);
+                });
+                Log.d(TAG, "Image uploaded successfully: " + imageName);
             }).addOnFailureListener(e -> {
-                // Handle getting download URL failure
+                Log.e(TAG, "Error uploading image " + imageName + ": " + e.getMessage());
             });
-
-
         } catch (FileNotFoundException e) {e.printStackTrace();
         } catch (IOException e) {throw new RuntimeException(e);}
     }
@@ -284,12 +312,47 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
         ETphone.setFilters(new InputFilter[]{new InputFilter.LengthFilter(PhoneLength)});
     }
 
-    public void setPicture(Uri uploaded, String URL, int check){
-        if (check == 0){ // uploaded new profile picture
-            Picture.setImageURI(uploaded);
+    public void setPicture(Uri uploaded, String URL){
+        if (uploaded != null ){ // uploaded new profile picture
+            Picasso.get().load(uploaded).transform(new CircleTransformation()).resize(100, 100).centerInside().into(Picture);
+            this.uploaded = uploaded;
         } else{ // removed current profile picture, URL is the default profile picture that is replacing
-            Picasso.get().load(URL).resize(100, 100).centerInside().into(Picture);
+            Picasso.get().load(URL).transform(new CircleTransformation()).resize(100, 100).centerInside().into(Picture);
+            this.uploaded = Uri.parse(URL);
         }
-        this.uploaded = uploaded;
+    }
+
+    // how do i trim an image to circle april 1
+    public class CircleTransformation implements Transformation {
+        @Override
+        public Bitmap transform(Bitmap source) {
+            int size = Math.min(source.getWidth(), source.getHeight());
+
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+
+            Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
+            if (squaredBitmap != source) {
+                source.recycle();
+            }
+
+            Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
+
+            // Create a circular canvas
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            BitmapShader shader = new BitmapShader(squaredBitmap, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+            paint.setShader(shader);
+            paint.setAntiAlias(true);
+
+            float radius = size / 2f;
+            canvas.drawCircle(radius, radius, radius, paint);
+
+            squaredBitmap.recycle();
+            return bitmap;
+        }
+
+        @Override
+        public String key() {return "circle";} // key method not used in app but is required implementation due to interface Transformation
     }
 }

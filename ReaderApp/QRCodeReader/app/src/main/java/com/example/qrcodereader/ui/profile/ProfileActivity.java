@@ -1,9 +1,15 @@
 package com.example.qrcodereader.ui.profile;
 
+import static android.content.ContentValues.TAG;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+
 import android.view.LayoutInflater;
+
+import android.util.Log;
+
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -72,7 +78,12 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 region.setSelection(pos);
 
                 String imageURL = documentSnapshot.getString("ProfilePic");
-                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(picture);
+
+                
+
+                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
+                Log.e(TAG, "Error deleting image " + imageURL + ": ");
+
             }
         }).addOnFailureListener(e -> {
                  Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
