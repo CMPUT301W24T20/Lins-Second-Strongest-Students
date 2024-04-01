@@ -30,9 +30,8 @@ public class AttendanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_attendance);
         ListView attendeesListView = findViewById(R.id.event_attendees);
         String eventID = getIntent().getStringExtra("eventID");
-        docRefEvent = db.collection("events").document(eventID);
-
         db = FirebaseFirestore.getInstance();
+        docRefEvent = db.collection("events").document(eventID);
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
