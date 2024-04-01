@@ -293,7 +293,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
      * meow
      */
     private String CheckEmpty(String text){
-        if (text == null || text.length() == 0) {return "";}
+        if (text.length() == 0) {return "";}
         else {return text;}
     }
 

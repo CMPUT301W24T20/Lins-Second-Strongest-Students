@@ -1,8 +1,4 @@
 package com.example.qrcodereader.ui.eventPage;
-
-import com.example.qrcodereader.MapView;
-import com.example.qrcodereader.NavBar;
-
 import static android.content.ContentValues.TAG;
 
 import com.example.qrcodereader.R;
@@ -17,12 +13,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
@@ -30,8 +29,8 @@ import com.example.qrcodereader.entity.EventArrayAdapter;
 
 import com.example.qrcodereader.entity.QRCode;
 
-
 import com.example.qrcodereader.util.LaunchSetUp;
+
 
 
 import com.example.qrcodereader.entity.User;
@@ -41,7 +40,6 @@ import com.example.qrcodereader.util.EventFetcher;
 import com.example.qrcodereader.util.LocalEventsStorage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -71,7 +69,7 @@ import java.util.Map;
  *  </p>
  *  @author Son and Khushdeep and Duy
  */
-public class AttendeeEventActivity extends NavBar {
+public class AttendeeEventActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private CollectionReference usersRef;
@@ -88,18 +86,7 @@ public class AttendeeEventActivity extends NavBar {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LaunchSetUp appSetup = new LaunchSetUp(this);
-        appSetup.setup();
-        setContentView(R.layout.attendee_events);
-
-        TextView title = findViewById(R.id.upcoming_events);
-        title.setText(R.string.AtndTitle);
-
-        setupTextViewButton(R.id.home_button);
-        setupTextViewButton(R.id.event_button);
-        setupTextViewButton(R.id.scanner_button);
-        setupTextViewButton(R.id.notification_button);
-        setupTextViewButton(R.id.bottom_profile_icon);
+        setContentView(R.layout.attendee_activity_event);
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
@@ -124,11 +111,11 @@ public class AttendeeEventActivity extends NavBar {
             }
         });
 
-//        Button returnButton = findViewById(R.id.return_button_attendee);
-//        returnButton.setOnClickListener(v -> finish());
+        Button returnButton = findViewById(R.id.return_button_attendee);
+        returnButton.setOnClickListener(v -> finish());
 
         // Go to BrowseEventActivity
-        TextView browseButton = findViewById(R.id.browse_button);
+        Button browseButton = findViewById(R.id.browse_button);
         browseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,19 +124,6 @@ public class AttendeeEventActivity extends NavBar {
                 startActivity(intent);
             }
         });
-        TextView mapButton = findViewById(R.id.map_button);
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AttendeeEventActivity.this, MapView.class);
-                // Sending the user object to BrowseEventActivity
-                startActivity(intent);
-            }
-        });
-    }
-    @Override
-    protected int getLayoutResourceId() {
-        return R.layout.attendee_events;
     }
 
     /**
@@ -186,8 +160,6 @@ public class AttendeeEventActivity extends NavBar {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
 
     public void fetchLocal(Context context) {
         ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
@@ -336,4 +308,3 @@ public class AttendeeEventActivity extends NavBar {
     }
 
 }
-
