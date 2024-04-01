@@ -16,10 +16,10 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 
 @LargeTest
-public class CameraFragmentTest {
+public class CameraActivityTest {
     @Before
     public void setUp() {
-        FragmentScenario.launchInContainer(CameraFragment.class);
+        FragmentScenario.launchInContainer(CameraActivity.class);
     }
 
     @Test
