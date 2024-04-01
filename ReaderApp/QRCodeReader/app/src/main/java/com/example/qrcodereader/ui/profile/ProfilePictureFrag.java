@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.util.SetDefaultProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -48,24 +49,15 @@ public class ProfilePictureFrag extends BottomSheetDialogFragment {
                 String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 DocumentReference docRefUser = db.collection("users").document(deviceID);
-                CollectionReference ColRefPic = db.collection("DefaultProfilePics");
-                ColRefPic.document("P4").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                SetDefaultProfile.fetchAndUpdateProfilePic(deviceID, 2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                // Get the value of the string field
-                                String imageURL = document.getString("URL");
-                                docRefUser.update("ProfilePic",  imageURL);
-                                ProfileEditFrag editProfile = (ProfileEditFrag) requireActivity().getSupportFragmentManager().findFragmentByTag("Edit Profile");
-                                editProfile.setPicture(null, imageURL);
-                            } else {
-                            }
-                        } else {
-                        }
+                    public void onImageURLReceived(String imageURL) {
+                        ProfileEditFrag editProfile = (ProfileEditFrag) requireActivity().getSupportFragmentManager().findFragmentByTag("Edit Profile");
+                        editProfile.setPicture(null, imageURL);
                     }
                 });
+
             }
         });
         return view;
