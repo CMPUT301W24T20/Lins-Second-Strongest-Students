@@ -9,10 +9,13 @@ import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import android.content.Context;
 import android.provider.Settings;
 
+import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.util.LocalUserStorage;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
@@ -31,6 +34,9 @@ import java.util.Map;
 public class AppDataHolder {
     private static User currentUser;
     private static AppDataHolder instance;
+    private static ArrayList<Event> browseEvents;
+    private static ArrayList<Event> attendeeEvents;
+    private static ArrayList<Event> organizerEvents;
 
     private AppDataHolder() { }
 

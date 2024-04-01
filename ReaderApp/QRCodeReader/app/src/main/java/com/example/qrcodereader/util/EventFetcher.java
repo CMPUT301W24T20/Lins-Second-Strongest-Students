@@ -24,6 +24,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +39,11 @@ public class EventFetcher {
         this.context = context;
     }
 
-    public void fetchOrganizerEvents() {
+    public ArrayList<Event> fetchOrganizerEvents() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        ArrayList<Event> events = new ArrayList<>();
 
         db.collection("events")
                 .whereEqualTo("organizerID", deviceID)
@@ -48,7 +52,6 @@ public class EventFetcher {
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
                         if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                            ArrayList<Event> events = new ArrayList<>();
 
                             for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
                                 String id = documentSnapshot.getId();
@@ -67,14 +70,15 @@ public class EventFetcher {
 
                                 events.add(event);
                             }
-                            updateAdapter(events);
                             LocalEventsStorage.saveEvents(context, events, "organizerEvents.json");
                             AppDataHolder.getInstance().loadOrganizerEvents(context);
+                            updateAdapter(events);
                         }
                     } else {
                         Toast.makeText(context, "Failed to fetch events", Toast.LENGTH_SHORT).show();
                     }
                 });
+        return events;
     }
 
     public void fetchAttendeeEvents() {
@@ -131,9 +135,9 @@ public class EventFetcher {
                                         }
                                     }
 
-                                    updateAdapter(events);
                                     LocalEventsStorage.saveEvents(context, events, "attendeeEvents.json");
                                     AppDataHolder.getInstance().loadAttendeeEvents(context);
+                                    updateAdapter(events);
                                 }
                             }
                         });
@@ -179,9 +183,9 @@ public class EventFetcher {
                                 events.add(event);
                             }
 
-                            updateAdapter(events);
                             LocalEventsStorage.saveEvents(context, events, "browseEvents.json");
                             AppDataHolder.getInstance().loadBrowseEvents(context);
+                            updateAdapter(events);
                         }
                     } else {
                         Toast.makeText(context, "Failed to fetch events", Toast.LENGTH_SHORT).show();
@@ -189,11 +193,22 @@ public class EventFetcher {
                 });
     }
 
-    private void updateAdapter(List<Event> events) {
+    private void updateAdapter(ArrayList<Event> events) {
         // Run on UI thread because notifyDataSetChanged() needs to update the UI
         new Handler(Looper.getMainLooper()).post(() -> {
+            if (events.size() >= 2) {
+                Collections.sort(events, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event e1, Event e2) {
+                        return e1.getTime().compareTo(e2.getTime()); // Ascending
+                    }
+                });
+            }
+
             eventArrayAdapter.clear();
-            eventArrayAdapter.addAll(events);
+            for (Event event : events) {
+                eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+            }
             eventArrayAdapter.notifyDataSetChanged();
         });
     }
