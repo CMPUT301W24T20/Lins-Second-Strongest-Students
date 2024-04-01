@@ -57,6 +57,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Initializes Firestore and sets up the user document reference.
      */
-    private void initializeFirestore() {
+    public void initializeFirestore() {
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
@@ -204,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sets up the navigation for the main activity.
      */
-    private void setupNavigation() {
+    public void setupNavigation() {
         /*
         Configure navigation bar
          */
@@ -220,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sets up the profile button for the main activity.
      */
-    private void setupProfileButton() {
+    public void setupProfileButton() {
         Button profileButton = findViewById(R.id.profile_button);
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
      * setupNotificationChannel
      * Creates notification channel for app
      */
-    private void setupNotificationChannel() {
+    public void setupNotificationChannel() {
         /*
         Create notification channel to allow for push notifications
          */
@@ -261,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
      * to an arraylist
      */
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    private void setupBroadcastReceiver() {
+    public void setupBroadcastReceiver() {
         Log.d("BroadcastChannel", "Setting up...");
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
@@ -286,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
      * Sets up the 'My Event' button for the main activity.
      * This button opens a dialog that allows the user to navigate to their event page as an attendee or organizer.
      */
-    private void setupMyEventButton() {
+    public void setupMyEventButton() {
         /*
             OpenAI, ChatGpt, 01/03/24
             "I want to create a dialog box with three option, two of the options go to two different Activity,
@@ -333,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
      * Sets up the 'Map' button for the main activity.
      * This button opens a dialog that allows the user to navigate to the map as an attendee or organizer.
      */
-    private void setupMapButton() {
+    public void setupMapButton() {
         Button mapButton = findViewById(R.id.map_button);
         mapButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -376,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
      * If the user is an admin, it sets up the 'Admin' button to open a dialog that allows the user to navigate to different admin pages.
      * If the user is not an admin, it sets up the 'Admin' button to display a toast message saying "Not An Admin. No Access."
      */
-    private void checkAdminStatus() {
+    public void checkAdminStatus() {
         /*
             OpenAI, ChatGPT, 07/03/24
             "I want the program to check if the deviceID is in the administrator collection as ID.
@@ -440,14 +441,14 @@ public class MainActivity extends AppCompatActivity {
      * Check if notifications are enabled
      * @return True if enabled, else false
      */
-    private boolean areNotificationsEnabled() {
+    public boolean areNotificationsEnabled() {
         return NotificationManagerCompat.from(this).areNotificationsEnabled();
     }
 
     /**
      * Show dialog asking user to enable notifications
      */
-    private void showEnableNotificationsDialog() {
+    public void showEnableNotificationsDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Enable Notifications")
                 .setMessage("Please enable notifications to receive updates from organizers.")
