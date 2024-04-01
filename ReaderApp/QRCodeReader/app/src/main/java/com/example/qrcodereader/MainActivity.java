@@ -169,13 +169,13 @@ public class MainActivity extends AppCompatActivity {
                             // created default profile picture, thus can now set
                             docRefUser.set(newUser);
                         }
-                    });
+                      });
 
 
-                        user = new User(deviceID, "", new GeoPoint(0, 0), new HashMap<>(), imageURL);
-                        LocalUserStorage.saveUser(this, user);
-                        AppDataHolder.getInstance().fetchAndLoadBrowseEvents(this);
-                        Toast.makeText(this, "Made new account", Toast.LENGTH_LONG).show();
+                      user = new User(deviceID, "", new GeoPoint(0, 0), new HashMap<>(), imageURL);
+                      LocalUserStorage.saveUser(this, user);
+                      AppDataHolder.getInstance().fetchAndLoadBrowseEvents(this);
+                      Toast.makeText(this, "Made new account", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Log.d("Firestore", "Failed to fetch document: ", task.getException());
