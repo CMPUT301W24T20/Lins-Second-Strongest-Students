@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.qrcodereader.entity.User;
-import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
@@ -69,7 +68,7 @@ public class MapView extends AppCompatActivity implements OnMapReadyCallback {
         buttonBackToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapView.this, AttendeeEventActivity.class);
+                Intent intent = new Intent(MapView.this, MainActivity.class);
                 startActivity(intent);
             }
         });
