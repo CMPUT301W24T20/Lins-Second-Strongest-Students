@@ -21,6 +21,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.util.SetDefaultProfile;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,8 +50,6 @@ public class AdminImageView extends DialogFragment {
         TypeRef = getArguments().getString("Type");
 
         storageRef = FirebaseStorage.getInstance().getReference().child(TypeRef);
-
-
 
         imageGridView = view.findViewById(R.id.imageGridView);
         selectedImages = new ArrayList<>();
@@ -110,39 +109,20 @@ public class AdminImageView extends DialogFragment {
             String decodedImageUrl = Uri.decode(imageUrl);
             String imageToken = decodedImageUrl.substring(decodedImageUrl.lastIndexOf("/") + 1);
             int indexOfQuestionMark = imageToken.indexOf('?');
-//            yea = imageUrl;
-//
             String imageName = imageToken.substring(0, indexOfQuestionMark);
 
-            // Construct the StorageReference for the image to be deleted
-            StorageReference imageRef = storageRef.child(imageName);
-
-            if (TypeRef.equals("UploadedProfilesPics")){
-                String userID = imageName.substring(0, 15);
-
-                CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePics");
-                ColRefPic.document("P4").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            if (TypeRef.equals("UploadedProfilePics")){
+                String deviceID = imageName.substring(0, 16);
+                DocumentReference docRefUser = FirebaseFirestore.getInstance().collection("users").document(deviceID);
+                SetDefaultProfile.generate(deviceID, 2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                // Get the value of the string field
-                                String imageURL = document.getString("URL");
-                                DocumentReference docRefUser = FirebaseFirestore.getInstance().collection("users").document(userID);
-
-                                docRefUser.update("ProfilePic",  imageURL);
-
-                            } else {
-                                Log.d("Firestore", "No such document");
-                            }
-                        } else {
-                            Log.e("Firestore", "Error getting document", task.getException());
-                        }
+                    public void onImageURLReceived(String imageURL) {
+                        Log.d(TAG, "Default profile picture regenerated successfully for user " + deviceID);
                     }
                 });
             }
 
+            StorageReference imageRef = storageRef.child(imageName);
             // Delete the image from Firebase Storage
             imageRef.delete().addOnSuccessListener(aVoid -> {
                 // Image deleted successfully

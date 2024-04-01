@@ -24,6 +24,7 @@ import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.example.qrcodereader.ui.profile.ProfileActivity;
 import com.example.qrcodereader.util.AppDataHolder;
 import com.example.qrcodereader.util.LocalUserStorage;
+import com.example.qrcodereader.util.SetDefaultProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -160,31 +161,17 @@ public class MainActivity extends AppCompatActivity {
                                         newUser.put("token", token);
                                     }
                                 });
+                      
+                       // generate default profile picture
+                      SetDefaultProfile.generate(deviceID, 1, newUser, null, new SetDefaultProfile.ProfilePicCallback() {
+                        @Override
+                        public void onImageURLReceived(String imageURL) {
+                            // created default profile picture, thus can now set
+                            docRefUser.set(newUser);
+                        }
+                    });
 
-                        // set default profile
-                        CollectionReference ColRefPic = db.collection("DefaultProfilePics");
-                        ColRefPic.document("P4").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document != null && document.exists()) {
-                                        // Get the value of the string field
-                                        imageURL = document.getString("URL");
-                                        newUser.put("ProfilePic", imageURL);
-                                        docRefUser.set(newUser);
-                                        Map<String, Long> attendeeEvents = new HashMap<>();
-//                                    Toast.makeText(MainActivity.this, "Image URL: " + imageURL, Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Log.d("Firestore", "No such document");
-                                        Toast.makeText(MainActivity.this, "No such document", Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Log.e("Firestore", "Error getting document", task.getException());
-                                    Toast.makeText(MainActivity.this, "Error getting document: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+
                         user = new User(deviceID, "", new GeoPoint(0, 0), new HashMap<>(), imageURL);
                         LocalUserStorage.saveUser(this, user);
                         AppDataHolder.getInstance().fetchAndLoadBrowseEvents(this);
@@ -211,13 +198,7 @@ public class MainActivity extends AppCompatActivity {
 //            Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
 //        });
 
-
-        //        int index = (user.getName().length() % 4)+1;
-//        String P = "P"+index;
-//
-
     }
-
 
 
     /**
