@@ -60,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileEditFra
 
                 
 
-                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(picture);
+                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
 
                 Log.e(TAG, "Error deleting image " + imageURL + ": ");
             }
