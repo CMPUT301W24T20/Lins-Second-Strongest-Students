@@ -11,7 +11,7 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
-    <fragment
+    <activity
         android:id="@+id/navigation_camera"
         android:name="com.example.qrcodereader.ui.dashboard.DashboardFragment"
         android:label="@string/title_scan"

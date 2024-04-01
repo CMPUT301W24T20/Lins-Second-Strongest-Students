@@ -19,9 +19,4 @@ public class DashboardFragment extends CameraFragment {
      */
     private FragmentCameraBinding binding;
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 }
