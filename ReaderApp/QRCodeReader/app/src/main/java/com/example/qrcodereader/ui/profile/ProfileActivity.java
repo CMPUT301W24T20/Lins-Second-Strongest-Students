@@ -81,7 +81,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
 
                 
 
-                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
+                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(picture);
                 Log.e(TAG, "Error deleting image " + imageURL + ": ");
 
             }

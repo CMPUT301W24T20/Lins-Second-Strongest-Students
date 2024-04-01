@@ -149,23 +149,26 @@ public class OrganizerEventActivity extends NavBar {
     }
 
     public void fetchEvents(Context context) {
-        eventDataList.clear();
-        eventDataList = AppDataHolder.getInstance().getOrganizerEvents(context);
+        ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getOrganizerEvents(context);
+        if(tempEventDataList != null) {
+            eventDataList = tempEventDataList;
+            eventDataList.clear();
 
-        if (eventDataList.size() >= 2) {
-            Collections.sort(eventDataList, new Comparator<Event>() {
-                @Override
-                public int compare(Event e1, Event e2) {
-                    return e1.getTime().compareTo(e2.getTime()); // Ascending
-                }
-            });
+            if (eventDataList.size() >= 2) {
+                Collections.sort(eventDataList, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event e1, Event e2) {
+                        return e1.getTime().compareTo(e2.getTime()); // Ascending
+                    }
+                });
+            }
+
+            for (Event event : eventDataList) {
+                eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+            }
+
+            eventArrayAdapter.notifyDataSetChanged();
         }
-
-        for (Event event : eventDataList) {
-            eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
-        }
-
-        eventArrayAdapter.notifyDataSetChanged();
     }
 
     public void fetchOrganizerEvents() {
