@@ -1,20 +1,25 @@
 package com.example.qrcodereader.ui.profile;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.util.SetDefaultProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,7 +28,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.util.Map;
 
 public class ProfilePictureFrag extends BottomSheetDialogFragment {
     @Nullable
@@ -50,14 +60,25 @@ public class ProfilePictureFrag extends BottomSheetDialogFragment {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 DocumentReference docRefUser = db.collection("users").document(deviceID);
 
-                SetDefaultProfile.fetchAndUpdateProfilePic(deviceID, 2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
+                // remove Uploaded Picture
+                String imageName = deviceID + "PROFILEPICTURE.png";
+                StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("UploadedProfilePics").child(imageName);
+                // Delete the image from Firebase Storage
+                imageRef.delete().addOnSuccessListener(aVoid -> {
+                    // Image deleted successfully
+                    Log.d(TAG, "Image deleted successfully: " + imageName);
+                }).addOnFailureListener(exception -> {
+                    // Handle any errors
+                    Log.e(TAG, "Error deleting image " + imageName + ": " + exception.getMessage());
+                });
+
+                SetDefaultProfile.generate(deviceID, 2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
                     @Override
                     public void onImageURLReceived(String imageURL) {
                         ProfileEditFrag editProfile = (ProfileEditFrag) requireActivity().getSupportFragmentManager().findFragmentByTag("Edit Profile");
                         editProfile.setPicture(null, imageURL);
                     }
                 });
-
             }
         });
         return view;

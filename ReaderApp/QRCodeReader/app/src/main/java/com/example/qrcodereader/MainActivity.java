@@ -149,10 +149,11 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
 
-                    // set default profile
-                    SetDefaultProfile.fetchAndUpdateProfilePic(deviceID, 1, newUser, null, new SetDefaultProfile.ProfilePicCallback() {
+                    // generate default profile picture
+                    SetDefaultProfile.generate(deviceID, 1, newUser, null, new SetDefaultProfile.ProfilePicCallback() {
                         @Override
                         public void onImageURLReceived(String imageURL) {
+                            // created poster, thus can now set
                             docRefUser.set(newUser);
                         }
                     });

@@ -14,18 +14,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Map;
 
 public class SetDefaultProfile {
+
+    // how do i return the value of imageURL, april 1
     public interface ProfilePicCallback {
         void onImageURLReceived(String imageURL);
     }
 
-
-    public static void fetchAndUpdateProfilePic(String deviceID, int SetCode, Map<String, Object> newUser, DocumentReference userDoc, ProfilePicCallback callback) {
+    public static void generate(String deviceID, int SetCode, Map<String, Object> newUser, DocumentReference userDoc, ProfilePicCallback callback) {
         CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePics");
 
         // determine default profile picture based on first character of deviceID
-//        int index = (Character.getNumericValue(Integer.parseInt(deviceID.substring(0,0))) % 4)+1;
-//        String P = "P"+index;
-//        final String[] URL = {""};
+        int index = (int) (deviceID.charAt(0) %4)+1;
+        String P = "P"+index;
         ColRefPic.document("P4").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

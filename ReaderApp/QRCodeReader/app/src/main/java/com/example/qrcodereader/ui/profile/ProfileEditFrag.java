@@ -1,5 +1,7 @@
 package com.example.qrcodereader.ui.profile;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -268,20 +270,21 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             }
             byte[] imageData = baos.toByteArray();
             String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
-            String imageName = deviceID + "PROFILE" + ".png";
+            String imageName = deviceID + "PROFILEPICTURE.png";
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
             StorageReference imageRef = storageRef.child("UploadedProfilePics/" + imageName);
             UploadTask uploadTask = imageRef.putBytes(imageData);
 
-            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                image = uri.toString();
-                docRefUser.update("ProfilePic",  image);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    image = uri.toString();
+                    docRefUser.update("ProfilePic",  image);
+                });
+                Log.d(TAG, "Image uploaded successfully: " + imageName);
             }).addOnFailureListener(e -> {
-                // Handle getting download URL failure
+                Log.e(TAG, "Error uploading image " + imageName + ": " + e.getMessage());
             });
-
-
         } catch (FileNotFoundException e) {e.printStackTrace();
         } catch (IOException e) {throw new RuntimeException(e);}
     }
@@ -313,14 +316,15 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
     public void setPicture(Uri uploaded, String URL){
         if (uploaded != null ){ // uploaded new profile picture
             Picasso.get().load(uploaded).transform(new CircleTransformation()).resize(100, 100).centerInside().into(Picture);
+            this.uploaded = uploaded;
         } else{ // removed current profile picture, URL is the default profile picture that is replacing
             Picasso.get().load(URL).transform(new CircleTransformation()).resize(100, 100).centerInside().into(Picture);
+            this.uploaded = Uri.parse(URL);
         }
-        this.uploaded = uploaded;
     }
 
+    // how do i trim an image to circle april 1
     public class CircleTransformation implements Transformation {
-
         @Override
         public Bitmap transform(Bitmap source) {
             int size = Math.min(source.getWidth(), source.getHeight());
@@ -347,11 +351,6 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
 
             squaredBitmap.recycle();
             return bitmap;
-        }
-
-        @Override
-        public String key() {
-            return "circle";
         }
     }
 }
