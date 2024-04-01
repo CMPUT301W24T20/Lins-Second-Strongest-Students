@@ -50,6 +50,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *  Activity for users to view all events they have created.
@@ -69,6 +71,9 @@ public class OrganizerEventActivity extends AppCompatActivity {
     private ListView eventList;
     private EventArrayAdapter eventArrayAdapter;
     private ArrayList<Event> eventDataList;
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+
 
     /**
      * This method is called when the activity is starting.
@@ -91,7 +96,7 @@ public class OrganizerEventActivity extends AppCompatActivity {
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
-        fetchEvents(this);
+        fetchLocal(this);
         setupRealTimeEventUpdates();
 
         Button createEventButton = findViewById(R.id.create_event_button);
@@ -141,8 +146,6 @@ public class OrganizerEventActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        ArrayList<Event> events = new ArrayList<>();
-
         db.collection("events")
                 .whereEqualTo("organizerID", deviceID)
                 .get()
@@ -150,27 +153,46 @@ public class OrganizerEventActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
                         if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            executorService.execute(() -> {
+                                ArrayList<Event> events = new ArrayList<>();
+                                for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
+                                    String id = documentSnapshot.getId();
+                                    String name = documentSnapshot.getString("name");
+                                    GeoPoint location = documentSnapshot.getGeoPoint("location");
+                                    String locationName = documentSnapshot.getString("locationName");
+                                    Timestamp time = documentSnapshot.getTimestamp("time");
+                                    String organizer = documentSnapshot.getString("organizer");
+                                    String organizerID = documentSnapshot.getString("organizerID");
+                                    QRCode qrCode = new QRCode(documentSnapshot.getString("qrCode"));
+                                    int attendeeLimit = documentSnapshot.getLong("attendeeLimit").intValue();
+                                    Map<String, Long> attendees = (Map<String, Long>) documentSnapshot.get("attendees");
+                                    String EPoster = documentSnapshot.getString("EPoster");
 
-                            for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
-                                String id = documentSnapshot.getId();
-                                String name = documentSnapshot.getString("name");
-                                GeoPoint location = documentSnapshot.getGeoPoint("location");
-                                String locationName = documentSnapshot.getString("locationName");
-                                Timestamp time = documentSnapshot.getTimestamp("time");
-                                String organizer = documentSnapshot.getString("organizer");
-                                String organizerID = documentSnapshot.getString("organizerID");
-                                QRCode qrCode = new QRCode(documentSnapshot.getString("qrCode"));
-                                int attendeeLimit = documentSnapshot.getLong("attendeeLimit").intValue();
-                                Map<String, Long> attendees = (Map<String, Long>) documentSnapshot.get("attendees");
-                                String EPoster = documentSnapshot.getString("EPoster");
+                                    Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
 
-                                Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
+                                    events.add(event);
+                                }
+                                LocalEventsStorage.saveEvents(this, events, "organizerEvents.json");
+                                AppDataHolder.getInstance().loadOrganizerEvents(this);
 
-                                events.add(event);
-                            }
-                            LocalEventsStorage.saveEvents(this, events, "organizerEvents.json");
-                            AppDataHolder.getInstance().loadOrganizerEvents(this);
-                            updateAdapter(events);
+                                if (events.size() >= 2) {
+                                    Collections.sort(events, new Comparator<Event>() {
+                                        @Override
+                                        public int compare(Event e1, Event e2) {
+                                            return e1.getTime().compareTo(e2.getTime()); // Ascending
+                                        }
+                                    });
+                                }
+
+                                mainThreadHandler.post(() -> {
+                                    eventDataList = events;
+                                    eventArrayAdapter.clear();
+                                    for (Event event : events) {
+                                        eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+                                    }
+                                    eventArrayAdapter.notifyDataSetChanged();
+                                });
+                            });
                         }
                     } else {
                         Toast.makeText(this, "Failed to fetch events", Toast.LENGTH_SHORT).show();
@@ -216,5 +238,36 @@ public class OrganizerEventActivity extends AppCompatActivity {
                         fetchOrganizerEvents();
                     }
                 });
+    }
+
+    public void fetchLocal(Context context) {
+        // Execute in background
+        executorService.execute(() -> {
+            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
+
+            if (tempEventDataList.size() >= 2) {
+                Collections.sort(tempEventDataList, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event e1, Event e2) {
+                        // Assuming getTime() returns a Comparable type
+                        return e1.getTime().compareTo(e2.getTime()); // Ascending
+                    }
+                });
+            }
+
+            //ArrayList<Event> finalList = new ArrayList<>(tempEventDataList); // Prepare final list in background
+
+            // Post to main thread to update UI components
+            mainThreadHandler.post(() -> {
+                eventDataList.clear();
+                eventDataList = tempEventDataList;
+
+                eventArrayAdapter.clear();
+                for (Event event : eventDataList) {
+                    eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+                }
+                eventArrayAdapter.notifyDataSetChanged(); // This must be on the main thread
+            });
+        });
     }
 }
