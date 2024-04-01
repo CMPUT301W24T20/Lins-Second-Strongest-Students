@@ -1,5 +1,6 @@
 package com.example.qrcodereader;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -62,9 +63,9 @@ public abstract class NavBar extends AppCompatActivity {
         else if (viewId == R.id.event_button) {
             targetClass = OrganizerEventActivity.class;
         }
-//        else if (viewId == R.id.scanner_button) {
-//            targetClass = ScannerActivity.class; // Replace with your actual ScannerActivity class
-//        }
+        else if (viewId == R.id.scanner_button) {
+            targetClass = CameraActivity.class; // Replace with your actual ScannerActivity class
+        }
         else if (viewId == R.id.notification_button) {
             targetClass = NotificationsActivity.class;
         }

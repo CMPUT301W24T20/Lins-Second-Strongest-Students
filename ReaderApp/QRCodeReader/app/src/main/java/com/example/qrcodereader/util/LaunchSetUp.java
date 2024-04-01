@@ -12,24 +12,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.MyFirebaseMessagingService;
 import com.example.qrcodereader.R;
-import com.example.qrcodereader.databinding.ActivityMainBinding;
 import com.example.qrcodereader.entity.User;
-import com.example.qrcodereader.ui.admin.AdminEventActivity;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -40,11 +33,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class launchSetUp {
+public class LaunchSetUp {
     private Context context;
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
@@ -53,7 +45,7 @@ public class launchSetUp {
     private User user;
     private String userId;
 
-    public launchSetUp(Context context) {
+    public LaunchSetUp(Context context) {
         this.context = context;
     }
 
