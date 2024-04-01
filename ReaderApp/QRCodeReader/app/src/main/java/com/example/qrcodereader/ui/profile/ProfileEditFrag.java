@@ -88,7 +88,6 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
 
 
     public interface OnSaveClickListener {
-
         void onSaveClicked(String EditName, String EditRegion, String EditPhone, String EditEmail, Uri EditPicture);
     }
 
@@ -354,6 +353,6 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
         }
 
         @Override
-        public String key() {return null;} // key method not used in app but is required implementation due to interface Transformation
+        public String key() {return "circle";} // key method not used in app but is required implementation due to interface Transformation
     }
 }

@@ -63,12 +63,9 @@ public class ProfilePictureFrag extends BottomSheetDialogFragment {
                 // remove Uploaded Picture
                 String imageName = deviceID + "PROFILEPICTURE.png";
                 StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("UploadedProfilePics").child(imageName);
-                // Delete the image from Firebase Storage
                 imageRef.delete().addOnSuccessListener(aVoid -> {
-                    // Image deleted successfully
                     Log.d(TAG, "Image deleted successfully: " + imageName);
                 }).addOnFailureListener(exception -> {
-                    // Handle any errors
                     Log.e(TAG, "Error deleting image " + imageName + ": " + exception.getMessage());
                 });
 

@@ -1,5 +1,7 @@
 package com.example.qrcodereader.util;
 
+import static android.content.ContentValues.TAG;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
