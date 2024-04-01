@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,12 +21,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveClickListener {
-    private ImageView Picture;
+    private ImageView picture;
     private DocumentReference docRefUser;
     private TextView name;
     private TextView email;
     private TextView phone;
-    private TextView region;
+    private Spinner region;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +45,10 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
         phone = findViewById(R.id.phone);
-        //region = findViewById(R.id.); Missing
+        region = findViewById(R.id.regionSelector);
 
-        //Button Edit = findViewById(R.id.SaveProfileButton); Missing
-        Picture = findViewById(R.id.user_profile_photo);
+        //Button Edit = findViewById(R.id.SaveProfileButton); Missing changed functionality to tapping the pfp
+        picture = findViewById(R.id.user_profile_photo);
 
 
         String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -58,23 +61,31 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 name.setText(CheckEmpty(documentSnapshot.getString("name")));
                 email.setText(CheckEmpty(documentSnapshot.getString("email")));
                 phone.setText(CheckEmpty(documentSnapshot.getString("phone")));
-                //region.setText(CheckEmpty(documentSnapshot.getString("phoneRegion")));
+                String regionCheck = CheckEmpty(documentSnapshot.getString("phoneRegion"));
+                int pos = 0;
+                ArrayAdapter adapter = (ArrayAdapter) region.getAdapter();
+                if (regionCheck != null && adapter != null){
+                    //Microsoft CoPilot 2024 Fix this function (provided code)
+
+                    pos = adapter.getPosition(regionCheck);
+                }
+                region.setSelection(pos);
 
                 String imageURL = documentSnapshot.getString("ProfilePic");
-                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
+                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(picture);
             }
         }).addOnFailureListener(e -> {
-//                    Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
+                 Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
 
-//        Edit.setOnClickListener(new View.OnClickListener() { Missing
-//            @Override
-//            public void onClick(View v) {
-//                ProfileEditFrag listfrag = new ProfileEditFrag();
-//                listfrag.setOnSaveClickListener(ProfileActivity.this);
-//                listfrag.show(getSupportFragmentManager(), "Edit Profile");
-//            }
-//        });
+        picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileEditFrag listfrag = new ProfileEditFrag();
+                listfrag.setOnSaveClickListener(ProfileActivity.this);
+                listfrag.show(getSupportFragmentManager(), "Edit Profile");
+            }
+        });
     }
 
     @Override
@@ -96,7 +107,14 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         name.setText(EditName);
         email.setText(EditEmail);
         phone.setText(EditPhone);
-        region.setText(EditRegion);
-        Picasso.get().load(EditPicture).resize(100, 100).centerInside().into(Picture);
+        int pos = 0;
+        ArrayAdapter adapterE = (ArrayAdapter) region.getAdapter();
+        if (EditRegion != null && adapterE != null){
+            //Microsoft CoPilot 2024 Fix this function (provided code)
+
+            pos = adapterE.getPosition(EditRegion);
+        }
+        region.setSelection(pos);
+        Picasso.get().load(EditPicture).resize(100, 100).centerInside().into(picture);
     }
 }

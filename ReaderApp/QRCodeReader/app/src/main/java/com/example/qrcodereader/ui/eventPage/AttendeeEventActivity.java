@@ -27,6 +27,7 @@ import com.example.qrcodereader.entity.EventArrayAdapter;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.util.AppDataHolder;
+import com.example.qrcodereader.util.launchSetUp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -73,6 +74,8 @@ public class AttendeeEventActivity extends NavBar {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        launchSetUp appSetup = new launchSetUp(this);
+        appSetup.setup();
         setContentView(R.layout.attendee_events);
 
         TextView title = findViewById(R.id.upcoming_events);
@@ -125,6 +128,17 @@ public class AttendeeEventActivity extends NavBar {
         return R.layout.attendee_events;
     }
 
+    public void fetchLocal(Context context) {
+        // Fetch events from local storage
+        eventDataList.clear();
+        eventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
+
+        for (Event event : eventDataList) {
+            eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+        }
+        eventArrayAdapter.notifyDataSetChanged();
+    }
+
     /**
      * Show the event details in a dialog
      * @param event The event to show the details of
@@ -158,16 +172,5 @@ public class AttendeeEventActivity extends NavBar {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public void fetchLocal(Context context) {
-        // Fetch events from local storage
-        eventDataList.clear();
-        eventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
-
-        for (Event event : eventDataList) {
-            eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
-        }
-        eventArrayAdapter.notifyDataSetChanged();
     }
 }
