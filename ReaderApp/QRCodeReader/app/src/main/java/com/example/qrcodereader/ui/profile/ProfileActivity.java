@@ -56,7 +56,12 @@ public class ProfileActivity extends AppCompatActivity implements ProfileEditFra
                 region.setText(CheckEmpty(documentSnapshot.getString("phoneRegion")));
 
                 String imageURL = documentSnapshot.getString("ProfilePic");
-                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
+
+
+                
+
+                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(picture);
+
                 Log.e(TAG, "Error deleting image " + imageURL + ": ");
             }
         }).addOnFailureListener(e -> {

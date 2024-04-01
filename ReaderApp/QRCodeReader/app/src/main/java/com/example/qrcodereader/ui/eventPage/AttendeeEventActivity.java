@@ -28,6 +28,11 @@ import com.example.qrcodereader.entity.EventArrayAdapter;
 
 
 import com.example.qrcodereader.entity.QRCode;
+
+import com.example.qrcodereader.util.LaunchSetUp;
+
+
+
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.util.AppDataHolder;
 import com.example.qrcodereader.util.EventFetcher;
@@ -157,23 +162,26 @@ public class AttendeeEventActivity extends AppCompatActivity {
     }
 
     public void fetchLocal(Context context) {
-        eventDataList.clear();
-        eventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
+        ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
+        if(tempEventDataList != null) {
+            eventDataList = tempEventDataList;
+            eventDataList.clear();
 
-        if (eventDataList.size() >= 2) {
-            Collections.sort(eventDataList, new Comparator<Event>() {
-                @Override
-                public int compare(Event e1, Event e2) {
-                    return e1.getTime().compareTo(e2.getTime()); // Ascending
-                }
-            });
+            if (eventDataList.size() >= 2) {
+                Collections.sort(eventDataList, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event e1, Event e2) {
+                        return e1.getTime().compareTo(e2.getTime()); // Ascending
+                    }
+                });
+            }
+
+            for (Event event : eventDataList) {
+                eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+            }
+
+            eventArrayAdapter.notifyDataSetChanged();
         }
-
-        for (Event event : eventDataList) {
-            eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
-        }
-
-        eventArrayAdapter.notifyDataSetChanged();
     }
 
     public void fetchAttendeeEvents() {
