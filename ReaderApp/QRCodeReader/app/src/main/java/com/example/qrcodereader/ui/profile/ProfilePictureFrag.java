@@ -59,7 +59,7 @@ public class ProfilePictureFrag extends BottomSheetDialogFragment {
                                 String imageURL = document.getString("URL");
                                 docRefUser.update("ProfilePic",  imageURL);
                                 ProfileEditFrag editProfile = (ProfileEditFrag) requireActivity().getSupportFragmentManager().findFragmentByTag("Edit Profile");
-                                editProfile.setPicture(null, imageURL, 1);
+                                editProfile.setPicture(null, imageURL);
                             } else {
                             }
                         } else {
@@ -82,7 +82,7 @@ public class ProfilePictureFrag extends BottomSheetDialogFragment {
             Uri uploaded = data.getData();
             if (uploaded != null) {
                 ProfileEditFrag editProfile = (ProfileEditFrag) requireActivity().getSupportFragmentManager().findFragmentByTag("Edit Profile");
-                editProfile.setPicture(uploaded, null, 0); // Set the image directly from URI
+                editProfile.setPicture(uploaded, null); // Set the image directly from URI
             }
         }
     }

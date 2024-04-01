@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/blue_gradient_above">
 
     <EditText
         android:id="@+id/name"
@@ -46,6 +47,7 @@
         android:digits="1234567890"
         android:hint="@string/ProfileEditPhoneText"
         android:inputType="phone|number"
+        android:fontFamily="@font/alata"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/SpinnerRegions"
         app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -55,6 +57,8 @@
         android:layout_width="100sp"
         android:layout_height="100sp"
         android:layout_marginTop="69dp"
+        android:background="@drawable/circle_profile"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -66,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
+        android:fontFamily="@font/alata"
         app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
