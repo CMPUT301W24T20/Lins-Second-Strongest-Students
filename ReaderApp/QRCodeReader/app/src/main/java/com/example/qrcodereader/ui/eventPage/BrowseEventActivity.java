@@ -23,10 +23,6 @@ import com.example.qrcodereader.entity.EventArrayAdapter;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.CreateEventActivity;
-import com.example.qrcodereader.util.AppDataHolder;
-import com.example.qrcodereader.util.EventFetcher;
-import com.example.qrcodereader.util.LocalEventsStorage;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -65,8 +61,6 @@ public class BrowseEventActivity extends AppCompatActivity {
     private DocumentSnapshot lastVisible;
     private ArrayList<Event> eventDataList;
     private EventArrayAdapter eventArrayAdapter;
-    private EventFetcher eventFetcher;
-    private int visitCount = 0;
 
     /**
      * This method is called when the activity is starting.
@@ -88,7 +82,7 @@ public class BrowseEventActivity extends AppCompatActivity {
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
-        eventFetcher = new EventFetcher(eventArrayAdapter, this);
+        fetchEvents();
 
         eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -119,12 +113,6 @@ public class BrowseEventActivity extends AppCompatActivity {
 
         TextView returnButton = findViewById(R.id.return_button_browse);
         returnButton.setOnClickListener(v -> finish());
-    }
-
-    protected void onResume() {
-        super.onResume();
-        fetchLocal(this);
-        eventFetcher.fetchBrowseEvents();
     }
 
     /**
@@ -183,16 +171,5 @@ public class BrowseEventActivity extends AppCompatActivity {
                 Log.e("Firestore", "Error fetching events", e);
             }
         });
-    }
-  
-    public void fetchLocal(Context context) {
-        eventDataList.clear();
-        eventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
-        //eventDataList = LocalEventsStorage.loadEvents(context, "browseEvents.json");
-
-        for (Event event : eventDataList) {
-            eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
-        }
-        eventArrayAdapter.notifyDataSetChanged();
     }
 }
