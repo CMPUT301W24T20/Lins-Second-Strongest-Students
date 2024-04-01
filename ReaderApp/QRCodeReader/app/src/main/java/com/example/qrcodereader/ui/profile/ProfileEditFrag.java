@@ -285,9 +285,9 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
     }
 
     public void setPicture(Uri uploaded, String URL, int check){
-        if (check == 0){
+        if (check == 0){ // uploaded new profile picture
             Picture.setImageURI(uploaded);
-        } else{
+        } else{ // removed current profile picture, URL is the default profile picture that is replacing
             Picasso.get().load(URL).resize(100, 100).centerInside().into(Picture);
         }
         this.uploaded = uploaded;

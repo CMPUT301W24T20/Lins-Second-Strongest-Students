@@ -44,9 +44,12 @@
         <activity android:name=".ui.eventPage.EventDetailsAttendeeActivity"/>
         <activity android:name=".ui.eventPage.CreateEventActivityBrowsePastEvent"/>
         <activity android:name=".ui.profile.ProfileActivity"/>
-
+        <activity android:name=".ui.eventPage.AttendanceActivity"/>
         <activity android:name=".ui.admin.AdminEventActivity"/>
         <activity android:name=".ui.admin.EventDetailsAdminActivity"/>
+        <activity android:name=".ui.admin.AdminImagesOptionActivity"/>
+        <activity android:name=".ui.dashboard.CameraActivityDisplay"/>
+
 
         <activity
             android:name=".DisplayQRCode"
@@ -83,6 +86,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id"/>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

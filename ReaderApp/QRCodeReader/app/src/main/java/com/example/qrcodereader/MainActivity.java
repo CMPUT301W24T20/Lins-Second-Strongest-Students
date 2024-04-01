@@ -17,6 +17,7 @@ import android.provider.Settings;
 
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
+import com.example.qrcodereader.ui.admin.AdminImagesOptionActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 
@@ -54,7 +55,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.messaging.FirebaseMessaging;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -441,7 +441,8 @@ public class MainActivity extends AppCompatActivity {
                     // Cancel button
                     builder.setNeutralButton("View Pictures", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
+                            Intent intent = new Intent(MainActivity.this, AdminImagesOptionActivity.class);
+                            MainActivity.this.startActivity(intent);
                         }
                     });
 

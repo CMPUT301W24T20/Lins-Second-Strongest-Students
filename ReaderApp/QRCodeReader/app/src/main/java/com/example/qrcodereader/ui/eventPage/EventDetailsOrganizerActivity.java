@@ -1,6 +1,7 @@
 package com.example.qrcodereader.ui.eventPage;
 
 import com.example.qrcodereader.DisplayQRCode;
+import com.example.qrcodereader.MapViewOrganizer;
 import com.example.qrcodereader.Notifier;
 import com.example.qrcodereader.R;
 
@@ -8,24 +9,19 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.QRCode;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -36,7 +32,6 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
 
     private final Notifier notifier = Notifier.getInstance(this);
     private FirebaseFirestore db;
-    private CollectionReference eventsRef;
     private DocumentReference docRefEvent;
     private QRCode qrCode;
     /**
@@ -50,25 +45,22 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_organizer);
-
-
         TextView eventNameTextView = findViewById(R.id.event_name);
         TextView eventOrganizerTextView = findViewById(R.id.event_organizer);
         TextView eventLocationTextView = findViewById(R.id.event_location);
         TextView eventTimeTextView = findViewById(R.id.event_time);
-        ListView attendeesListView = findViewById(R.id.event_attendees);
-
         db = FirebaseFirestore.getInstance();
         String eventID = getIntent().getStringExtra("eventID");
+
         docRefEvent = db.collection("events").document(eventID);
 
-        Button seeQRCodeButton = findViewById(R.id.see_qr_button);
+        TextView seeQRCodeButton = findViewById(R.id.see_qr_button);
         seeQRCodeButton.setOnClickListener(v -> {
 
             Intent intent = new Intent(this, DisplayQRCode.class);
             intent.putExtra("qrCode", qrCode.getBitmap());
             startActivity(intent);
-                });
+        });
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -80,7 +72,6 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String qrCodeString = documentSnapshot.getString("qrCode");
                 qrCode = new QRCode(qrCodeString);
-                Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
 
                 eventNameTextView.setText(eventName);
@@ -95,34 +86,33 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
 //                        this, android.R.layout.simple_list_item_1, attendeesList);
 //                attendeesListView.setAdapter(adapter);
 
-                ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(eventsAttended.entrySet());
-                //Set-up button to notify attendees
-                Button notifyButton = findViewById(R.id.notify_button);
-                notifyButton.setOnClickListener(v -> {
-                    if (!attendeesList.isEmpty()) {
-                        notifier.prompt(EventDetailsOrganizerActivity.this, new Notifier.OnInputListener() {
-                            @Override
-                            public void onInput(String[] details) {
-                                notifier.notifyUsers(attendeesList, details, eventID);
-                            }
-                        });
-                    } else {
-                        //No attendees found
-                        Toast.makeText(EventDetailsOrganizerActivity.this, "No attendees found", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                // Create the custom adapter
-                AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesList);
-                // Set the custom adapter to the ListView
-                attendeesListView.setAdapter(attendeesAdapter);
             }
         }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
+            Log.d("Firestore", "Failed to fetch document");
         });
 
-        Button returnButton = findViewById(R.id.return_button);
+        ImageView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
 
+        LinearLayout attendeeButton = findViewById(R.id.attendee_button);
+        attendeeButton.setOnClickListener((v -> {
+            Intent intent = new Intent(this, AttendanceActivity.class);
+            intent.putExtra("eventID", eventID);
+            startActivity(intent);
+        }));
+
+        LinearLayout mapButton = findViewById(R.id.map_button);
+        mapButton.setOnClickListener(v -> {
+            goToMapActivity();
+        });
+    }
+
+    private void goToAttendeeActivity() {
+
+    }
+
+    private void goToMapActivity() {
+        Intent intent = new Intent(this, MapViewOrganizer.class);
+        startActivity(intent);
     }
 }

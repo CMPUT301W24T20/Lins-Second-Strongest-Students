@@ -4,27 +4,25 @@ import android.content.Context;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
-import androidx.annotation.Nullable;
+import android.content.Context;
+import android.provider.Settings;
 
-import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.entity.Event;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
+import com.example.qrcodereader.util.LocalUserStorage;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
+
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.core.EventManager;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A singleton class to hold user info and events.
@@ -33,10 +31,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class AppDataHolder {
     private static User currentUser;
     private static AppDataHolder instance;
-    private static ArrayList<Event> browseEvents;
-    private static ArrayList<Event> attendeeEvents;
-    private static ArrayList<Event> organizerEvents;
-
 
     private AppDataHolder() { }
 
@@ -47,6 +41,7 @@ public class AppDataHolder {
         }
         return instance;
     }
+
 
     /**
      * Get the current user - the one who is using the app

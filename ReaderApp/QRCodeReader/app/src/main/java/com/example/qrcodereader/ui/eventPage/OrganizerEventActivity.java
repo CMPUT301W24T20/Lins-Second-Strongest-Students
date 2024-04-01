@@ -2,7 +2,6 @@ package com.example.qrcodereader.ui.eventPage;
 import com.example.qrcodereader.R;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -24,6 +23,7 @@ import com.example.qrcodereader.entity.EventArrayAdapter;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.util.AppDataHolder;
 import com.example.qrcodereader.util.EventFetcher;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -83,51 +83,6 @@ public class OrganizerEventActivity extends AppCompatActivity {
         eventList.setAdapter(eventArrayAdapter);
 
         eventFetcher = new EventFetcher(eventArrayAdapter, this);
-
-
-        //String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        //fetchEvents(this);
-
-//        eventsRef.whereEqualTo("organizerID", deviceID)
-//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onEvent(@Nullable QuerySnapshot querySnapshots,
-//                                        @Nullable FirebaseFirestoreException error) {
-//                        if (error != null) {
-//                            Log.e("Firestore", error.toString());
-//                            return;
-//                        }
-//                        if (querySnapshots != null) {
-//                            eventDataList.clear();
-//                            for (QueryDocumentSnapshot doc : querySnapshots) {
-//                                String eventID = doc.getId();
-//                                String name = doc.getString("name");
-//                                GeoPoint location = doc.getGeoPoint("location");
-//
-//                                String locationName;
-//                                if (doc.getString("locationName") != null) {
-//                                    locationName = doc.getString("locationName");
-//                                } else {
-//                                    locationName = "No location";
-//                                }
-//
-//                                Timestamp time = doc.getTimestamp("time");
-//                                String organizer = doc.getString("organizer");
-//                                String organizerID = doc.getString("organizerID");
-//                                String EventPoster = doc.getString("poster");
-//
-//                                String qrCodeString = doc.getString("qrCode");
-//                                QRCode qrCode = new QRCode(qrCodeString);
-//                                int attendeeLimit = doc.contains("attendeeLimit") ? (int) (long) doc.getLong("attendeeLimit") : -1;
-//                                Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-//
-//                                Log.d("Firestore", "Event fetched");
-//                                //Toast.makeText(OrganizerEventActivity.this, "Event fetched", Toast.LENGTH_SHORT).show();
-//                                eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees, EventPoster);
-//                            }
-//                        }
-//                    }
-//                });
 
         Button createEventButton = findViewById(R.id.create_event_button);
         createEventButton.setOnClickListener(v -> {

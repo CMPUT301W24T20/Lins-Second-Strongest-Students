@@ -2,7 +2,6 @@ package com.example.qrcodereader.ui.eventPage;
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +26,7 @@ import com.example.qrcodereader.ui.eventPage.CreateEventActivity;
 import com.example.qrcodereader.util.AppDataHolder;
 import com.example.qrcodereader.util.EventFetcher;
 import com.example.qrcodereader.util.LocalEventsStorage;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -184,7 +184,7 @@ public class BrowseEventActivity extends AppCompatActivity {
             }
         });
     }
-
+  
     public void fetchLocal(Context context) {
         eventDataList.clear();
         eventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
@@ -195,6 +195,4 @@ public class BrowseEventActivity extends AppCompatActivity {
         }
         eventArrayAdapter.notifyDataSetChanged();
     }
-
-
 }

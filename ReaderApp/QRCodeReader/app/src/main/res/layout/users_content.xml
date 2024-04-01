@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="180dp"
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
         android:layout_marginTop="13dp"
@@ -13,11 +13,11 @@
         app:cardCornerRadius="25dp"
         app:cardElevation="5dp">
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             app:cardCornerRadius="25dp">
             <ImageView
-                android:src="@drawable/ic_dashboard_black_24dp"
+                android:src="@drawable/user_profile_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/gray"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:text="@string/user_id"
             android:textColor="@color/event_name_color"
-            android:layout_marginStart="180dp"
+            android:layout_marginStart="200dp"
             android:layout_marginTop="15dp"
             />
         <TextView
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@string/ProfileEditNameText"
             android:textColor="@color/event_name_color"
-            android:layout_marginStart="180dp"
+            android:layout_marginStart="200dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="15dp"
             />
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:text="@string/ProfileEditEmailText"
             android:textColor="@color/event_name_color"
-            android:layout_marginStart="180dp"
+            android:layout_marginStart="200dp"
             android:layout_marginTop="65dp"
             android:layout_marginEnd="15dp"
             />
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:text="@string/ca"
             android:textColor="@color/event_name_color"
-            android:layout_marginStart="180dp"
+            android:layout_marginStart="200dp"
             android:layout_marginTop="90dp"
             android:layout_marginEnd="15dp"
             />
@@ -75,8 +75,30 @@
             android:layout_height="wrap_content"
             android:text="@string/__780__123_4567_string"
             android:textColor="@color/event_name_color"
-            android:layout_marginStart="210dp"
+            android:layout_marginStart="230dp"
             android:layout_marginTop="90dp"
+            android:layout_marginEnd="15dp"
+            />
+        <TextView
+            android:id="@+id/checked_in"
+            android:layout_width="match_parent"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:text="@string/checked_in"
+            android:textColor="@color/event_name_color"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="115dp"
+            android:layout_marginEnd="15dp"
+            />
+        <TextView
+            android:id="@+id/check_in_count"
+            android:layout_width="match_parent"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:text="@string/check_in_count"
+            android:textColor="@color/event_name_color"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="140dp"
             android:layout_marginEnd="15dp"
             />
 

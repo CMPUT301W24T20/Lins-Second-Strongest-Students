@@ -1,7 +1,6 @@
 package com.example.qrcodereader.ui.eventPage;
 import com.example.qrcodereader.R;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -27,6 +26,7 @@ import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.util.AppDataHolder;
 import com.example.qrcodereader.util.EventFetcher;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -62,10 +62,10 @@ public class AttendeeEventActivity extends AppCompatActivity {
     private CollectionReference usersRef;
     private DocumentReference userDocRef;
     private List<String> attendeeEvents;
-
     private ArrayList<Event> eventDataList;
     private EventArrayAdapter eventArrayAdapter;
     private EventFetcher eventFetcher;
+
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the ListView with the events attended by the user.
@@ -82,8 +82,8 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
 
         ListView eventList = findViewById(R.id.event_list_attendee);
-        eventDataList = new ArrayList<>();
-        eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
+        ArrayList<Event> eventDataList = new ArrayList<>();
+        EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
         eventFetcher = new EventFetcher(eventArrayAdapter, this);
@@ -153,16 +153,5 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public void fetchLocal(Context context) {
-        // Fetch events from local storage
-        eventDataList.clear();
-        eventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
-
-        for (Event event : eventDataList) {
-            eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
-        }
-        eventArrayAdapter.notifyDataSetChanged();
     }
 }
