@@ -23,6 +23,7 @@ import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.util.AppDataHolder;
+import com.example.qrcodereader.util.EventFetcher;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -57,7 +58,8 @@ public class OrganizerEventActivity extends AppCompatActivity {
     private String username;
     private ListView eventList;
     private EventArrayAdapter eventArrayAdapter;
-    ArrayList<Event> eventDataList;
+    private ArrayList<Event> eventDataList;
+    private EventFetcher eventFetcher;
 
     /**
      * This method is called when the activity is starting.
@@ -80,9 +82,11 @@ public class OrganizerEventActivity extends AppCompatActivity {
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
+        eventFetcher = new EventFetcher(eventArrayAdapter, this);
 
-        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        fetchEvents(this);
+
+        //String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        //fetchEvents(this);
 
 //        eventsRef.whereEqualTo("organizerID", deviceID)
 //                .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -148,13 +152,21 @@ public class OrganizerEventActivity extends AppCompatActivity {
         });
     }
 
+    protected void onResume() {
+        super.onResume();
+        fetchEvents(this);
+        eventFetcher.fetchOrganizerEvents();
+    }
+
     public void fetchEvents(Context context) {
         eventDataList.clear();
+        eventArrayAdapter.clear();
         eventDataList = AppDataHolder.getInstance().getOrganizerEvents(context);
 
         for (Event event : eventDataList) {
             eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
         }
+
         eventArrayAdapter.notifyDataSetChanged();
     }
 }

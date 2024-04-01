@@ -29,6 +29,7 @@ public class LocalUserStorage {
             return gson.fromJson(isr, User.class);
         } catch (IOException e) {
             e.printStackTrace();
+            // Return an empty list if there's an issue loading the file
             return null;
         }
     }

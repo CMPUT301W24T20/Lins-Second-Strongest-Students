@@ -26,6 +26,7 @@ import com.example.qrcodereader.entity.EventArrayAdapter;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.util.AppDataHolder;
+import com.example.qrcodereader.util.EventFetcher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -64,6 +65,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
     private ArrayList<Event> eventDataList;
     private EventArrayAdapter eventArrayAdapter;
+    private EventFetcher eventFetcher;
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the ListView with the events attended by the user.
@@ -84,7 +86,7 @@ public class AttendeeEventActivity extends AppCompatActivity {
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
-        fetchLocal(this);
+        eventFetcher = new EventFetcher(eventArrayAdapter, this);
 
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -109,6 +111,12 @@ public class AttendeeEventActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    protected void onResume() {
+        super.onResume();
+        fetchLocal(this);
+        eventFetcher.fetchAttendeeEvents();
     }
 
 
