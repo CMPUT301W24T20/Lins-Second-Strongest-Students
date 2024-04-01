@@ -5,18 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.qrcodereader.R;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import com.squareup.picasso.Picasso;
 
 /**
  *  The Array Adapter for displaying events in ListViews
@@ -58,12 +62,18 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         TextView eventName = view.findViewById(R.id.event_text);
         TextView organizerName = view.findViewById(R.id.organizer_text);
         TextView locationName = view.findViewById(R.id.event_location_text);
+        TextView timeName = view.findViewById(R.id.time_text);
+        ImageView PosterPicture = view.findViewById(R.id.rectangle_1);
 
         eventName.setText(event.getEventName());
         organizerName.setText(event.getOrganizer());
 
         String locationString = (event.getLocationName() != null) ? event.getLocationName() : "No location";
         locationName.setText(locationString);
+        timeName.setText(event.getTime().toDate().toString());
+
+        String imagePoster = event.getPoster();
+        Picasso.get().load(imagePoster).resize(130, 130).centerInside().into(PosterPicture);
 
         return view;
     }
@@ -81,8 +91,8 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
      * @param attendeeLimit the event attendee limit
      * @param attendees the event attendees
      */
-    public void addEvent(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, int attendeeLimit, Map<String, Long> attendees) {
-        events.add(new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees));
+    public void addEvent(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, int attendeeLimit, Map<String, Long> attendees, String poster) {
+        events.add(new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees, poster));
         notifyDataSetChanged();
     }
 }

@@ -29,6 +29,7 @@ public class Event {
     private QRCode qrCode;
     private int attendeeLimit; // -1: no limit, else limit is the number that the organizer entered
     private Map<String, Long> attendees;
+    private String poster;
 
     /**
      * Constructor for the Event class
@@ -38,7 +39,7 @@ public class Event {
      * @param eventLocation The location of the event
      * @param eventTime The time of the event
      */
-    public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime) {
+    public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime, String EPoster) {
         this.time = eventTime;
         this.eventID = id;
         this.location = eventLocation;
@@ -46,6 +47,7 @@ public class Event {
         this.organizer = organizer;
         this.qrCode = new QRCode();
         this.attendees =  new HashMap<String, Long>();
+        this.poster = EPoster;
     }
 
     /**
@@ -61,7 +63,7 @@ public class Event {
      * @param attendeeLimit The maximum number of attendees
      * @param attendees The map of attendees
      */
-    public Event(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, int attendeeLimit, Map<String, Long> attendees) {
+    public Event(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, int attendeeLimit, Map<String, Long> attendees, String EPoster) {
         this.eventID = id;
         this.name = name;
         this.location = location;
@@ -72,6 +74,7 @@ public class Event {
         this.qrCode = qrCode;
         this.attendeeLimit = attendeeLimit;
         this.attendees = attendees;
+        this.poster = EPoster;
     }
 
     /**
@@ -183,6 +186,8 @@ public class Event {
     public void setOrganizer(String organizer) {
         this.organizer = organizer;
     }
+
+    public String getPoster() {return this.poster;}
 
     /**
      * Set the time of the event

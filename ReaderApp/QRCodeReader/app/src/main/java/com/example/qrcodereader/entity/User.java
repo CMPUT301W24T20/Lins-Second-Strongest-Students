@@ -48,12 +48,6 @@ public class User implements Serializable {
         this.ProfilePic = image;
     }
 
-    public User(String deviceID, String userName, Map<String, Long> eventsAttended) {
-        this.userID = deviceID;
-        this.name = userName;
-        this.eventsAttended = eventsAttended;
-    }
-
     public void setUserID(String userID) {
         this.userID = userID;
     }
@@ -74,4 +68,7 @@ public class User implements Serializable {
         return this.location;
     }
     public String getProfilePicture() {return ProfilePic;}
+    public Map<String, Long> getEventsAttended() {
+        return eventsAttended;
+    }
 }

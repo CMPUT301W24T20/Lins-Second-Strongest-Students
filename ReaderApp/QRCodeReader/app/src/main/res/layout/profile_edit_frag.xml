@@ -9,68 +9,66 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="69dp"
+        android:layout_marginEnd="69dp"
+        android:fontFamily="@font/alata"
         android:hint="@string/ProfileEditNameText"
         android:inputType="text"
         android:maxLength="50"
-        app:layout_constraintBottom_toTopOf="@+id/email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ProfilePic"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:hint="@string/ProfileEditEmailText"
-        android:inputType="text"
-        android:maxLength="50"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ProfilePic" />
 
     <EditText
-        android:id="@+id/phone"
+        android:id="@+id/email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:hint="@string/ProfileEditPhoneText"
-        android:inputType="number"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:fontFamily="@font/alata"
+        android:hint="@string/ProfileEditEmailText"
+        android:inputType="text"
         android:maxLength="50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
-
-    <Button
-        android:id="@+id/UploadProfileButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/UploadProfilePicText"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phone" />
 
-    <Button
-        android:id="@+id/RemoveProfilePicButton"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/RemoveProfilePictureText"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:digits="1234567890"
+        android:hint="@string/ProfileEditPhoneText"
+        android:inputType="phone|number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UploadProfileButton" />
+        app:layout_constraintStart_toEndOf="@+id/SpinnerRegions"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <ImageView
         android:id="@+id/ProfilePic"
         android:layout_width="100sp"
         android:layout_height="100sp"
+        android:layout_marginTop="69dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/email"
-        app:layout_constraintEnd_toStartOf="@+id/name"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <Spinner
+        android:id="@+id/SpinnerRegions"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

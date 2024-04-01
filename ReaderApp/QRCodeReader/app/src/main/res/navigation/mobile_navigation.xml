@@ -11,15 +11,15 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
-    <fragment
+    <activity
         android:id="@+id/navigation_camera"
-        android:name="com.example.qrcodereader.ui.dashboard.DashboardFragment"
+        android:name="com.example.qrcodereader.ui.dashboard.CameraActivityDisplay"
         android:label="@string/title_scan"
         tools:layout="@layout/fragment_camera" />
 
-    <fragment
+    <activity
         android:id="@+id/navigation_notifications"
-        android:name="com.example.qrcodereader.ui.notifications.NotificationsFragment"
+        android:name="com.example.qrcodereader.ui.notifications.NotificationsActivity"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/activity_notifications" />
 </navigation>

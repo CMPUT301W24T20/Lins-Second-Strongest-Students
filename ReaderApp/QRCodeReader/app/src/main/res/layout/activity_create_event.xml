@@ -43,24 +43,33 @@
         android:inputType="text"
         tools:layout_editor_absoluteX="16dp" />
 
+        <!-- Horizontal row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <EditText
-        android:id="@+id/event_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:focusable="false"
-        android:hint="Select Date"
-        tools:layout_editor_absoluteX="16dp" />
+            <EditText
+                android:id="@+id/event_date"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="Select Date"
+                android:textSize="25sp"
+                tools:layout_editor_absoluteX="16dp" />
 
-    <EditText
-        android:id="@+id/event_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:focusable="false"
-        android:hint="Select Time"
-        tools:layout_editor_absoluteX="16dp" />
+            <EditText
+                android:id="@+id/event_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="Select Time"
+                android:textSize="25sp"
+                tools:layout_editor_absoluteX="16dp" />
+        </LinearLayout>
+
+
+
 
         <EditText
             android:id="@+id/attendee_limit"
@@ -102,6 +111,12 @@
             android:alpha="0"
             android:text="@string/warning_by_reusing_a_qr_code_a_new_qr_code_will_be_generated_to_replace_the_past_event_that_the_qr_is_chosen_from"
             android:textColor="#EA0000" />
+
+        <ImageView
+            android:id="@+id/PosterUpload"
+            android:layout_width="match_parent"
+            android:layout_height="130sp"
+            tools:srcCompat="@tools:sample/avatars" />
 
     </LinearLayout>
 

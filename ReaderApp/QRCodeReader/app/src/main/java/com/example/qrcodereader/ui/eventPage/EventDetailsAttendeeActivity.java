@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,13 +56,14 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
         String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         TextView eventNameTextView = findViewById(R.id.event_name);
-        TextView eventOrganizerTextView = findViewById(R.id.event_organizer);
-        TextView eventLocationTextView = findViewById(R.id.event_location);
-        TextView eventTimeTextView = findViewById(R.id.event_time);
+        TextView eventOrganizerTextView = findViewById(R.id.organizer);
+        TextView eventLocationTextView = findViewById(R.id.location);
+        TextView eventTimeTextView = findViewById(R.id.time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
 
         db = FirebaseFirestore.getInstance();
@@ -79,26 +81,28 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                 String organizer = documentSnapshot.getString("organizer");
                 String organizerID = documentSnapshot.getString("organizerID");
                 String qrCodeString = documentSnapshot.getString("qrCode");
+                String EventPoster = documentSnapshot.getString("poster");
+
                 QRCode qrCode = new QRCode(qrCodeString);
                 int attendeeLimit = documentSnapshot.contains("attendeeLimit") ? (int)(long)documentSnapshot.getLong("attendeeLimit") : -1;
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
-                selectedEvent = new Event(eventID, eventName, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, eventsAttended);
+                selectedEvent = new Event(eventID, eventName, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, eventsAttended, EventPoster);
 
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
 
                 eventNameTextView.setText(eventName);
-                String organizerText = "Organizer: " + organizer;
+                String organizerText = organizer;
                 eventOrganizerTextView.setText(organizerText);
                 eventLocationTextView.setText(locationName);
-                String timeText = "Time: " + time.toDate().toString();
+                String timeText = time.toDate().toString();
                 eventTimeTextView.setText(timeText);
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
 
-        Button SignUpButton = findViewById(R.id.sign_up_button);
+        TextView SignUpButton = findViewById(R.id.sign_up_button);
         SignUpButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +152,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                 finish();
             }
         });
-        Button returnButton = findViewById(R.id.return_button);
+        ImageView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
     }
 }

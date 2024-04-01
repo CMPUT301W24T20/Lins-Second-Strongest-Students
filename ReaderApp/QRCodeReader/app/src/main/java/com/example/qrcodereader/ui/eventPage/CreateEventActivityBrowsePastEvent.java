@@ -54,6 +54,7 @@ public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.organizer_browse_past_event);
 
         db = FirebaseFirestore.getInstance();
@@ -98,7 +99,7 @@ public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
                                 Timestamp time = doc.getTimestamp("time");
                                 String organizer = doc.getString("organizer");
                                 String organizerID = doc.getString("organizerID");
-
+                                String EventPoster = doc.getString("poster");
                                 String qrCodeString = doc.getString("qrCode");
                                 QRCode qrCode = new QRCode(qrCodeString);
                                 int attendeeLimit = doc.contains("attendeeLimit") ? (int)(long)doc.getLong("attendeeLimit") : -1;
@@ -106,7 +107,7 @@ public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
 
                                 Log.d("Firestore", "Event fetched");
                                 Toast.makeText(CreateEventActivityBrowsePastEvent.this, "Event fetched", Toast.LENGTH_SHORT).show();
-                                eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees);
+                                eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EventPoster);
                             }
                         }
                     }

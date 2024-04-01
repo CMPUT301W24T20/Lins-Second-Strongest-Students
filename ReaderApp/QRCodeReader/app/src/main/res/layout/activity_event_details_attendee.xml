@@ -1,71 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--
+    /*
+     *	This content is generated from the API File Info.
+     *	(Alt+Shift+Ctrl+I).
+     *
+     *	@desc
+     *	@file 		android_small___1
+     *	@date 		Friday 29th of March 2024 02:46:47 AM
+     *	@title 		Page 1
+     *	@author
+     *	@keywords
+     *	@generator 	Export Kit v1.3.figma
+     *
+     */
+    -->
 
-    <TextView
-        android:id="@+id/event_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="20dp"
-        android:text="Event Name"
-        android:textSize="30sp" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-
-    <TextView
-        android:id="@+id/event_organizer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="22sp"
-        android:layout_marginTop="15dp"/>
-
-    <TextView
-        android:id="@+id/event_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="22sp"
-        android:layout_marginTop="15dp"/>
-
-    <TextView
-        android:id="@+id/event_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="22sp"
-        android:layout_marginTop="15dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        android:layout_gravity="bottom">
-        <Button
-            android:id="@+id/sign_up_button"
-            android:layout_width="0dp"
+        <RelativeLayout android:id="@+id/page_android_small___1_ek1"
+            android:layout_marginTop="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="10dp"
-            android:layout_weight="1"
-            android:text="Sign Up" />
-        <Button
-            android:id="@+id/return_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="10dp"
-            android:layout_weight="1"
-            android:text="Return" />
-    </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
 
-</LinearLayout>
+
+            <ImageView android:id="@+id/event_poster"
+                android:src="@drawable/_49e43ff77b9c6ecc64d8a9b55622ddd7_2"
+                android:contentDescription="@string/event_poster"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:scaleType="centerCrop"
+                android:elevation="-2dp"
+                />
+
+            <View   android:id="@+id/rectangle_2"
+                android:background="@drawable/rectangle_2_shape"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="220dp"
+                android:layout_width="match_parent"
+                android:layout_height="600dp" />
+
+            <View   android:id="@+id/image_gradient"
+                android:background="@drawable/_49e43ff77b9c6ecc64d8a9b55622ddd7_3_shape"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:alpha="0.2"
+                android:elevation="-1dp"/>
+
+            <TextView android:id="@+id/event_name"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:textColor="@color/event_name_color"
+                android:elevation="1dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="250dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event_name_string"
+                />
+
+            <TextView android:id="@+id/organizer"
+                android:textSize="20sp"
+                android:textColor="@color/_bg__group_2_ek1_color"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="295dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/organizer_string"
+                android:elevation="2dp"
+                />
+
+
+            <RelativeLayout android:id="@+id/group_2"
+                android:layout_marginTop="343dp"
+                android:layout_marginStart="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="1dp"
+                >
+
+                <View   android:id="@+id/_bg__group_2_ek1"
+                    android:background="@drawable/_bg__group_2_ek1_shape"
+                    android:layout_marginStart="-30dp"
+                    android:layout_marginTop="-335dp"
+                    android:layout_width="37dp"
+                    android:elevation="1dp"
+                    android:layout_height="37dp" />
+
+                <View   android:id="@+id/ellipse_2"
+                    android:background="@drawable/ellipse_1_shape"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_width="37dp"
+                    android:layout_height="37dp" />
+
+                <ImageView android:id="@+id/vector"
+                    android:src="@drawable/vector"
+                    android:contentDescription="vector"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_width="15.75dp"
+                    android:layout_height="22.5dp" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout android:id="@+id/group_1"
+                android:layout_marginTop="400dp"
+                android:layout_marginStart="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
+                <View
+                    android:id="@+id/_bg__group_1_ek1"
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="-30dp"
+                    android:layout_marginTop="-400dp"
+                    android:background="@drawable/_bg__group_1_ek1_shape" />
+
+                <View   android:id="@+id/ellipse_1"
+                    android:background="@drawable/ellipse_1_shape"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:elevation="2dp"/>
+
+                <ImageView android:id="@+id/vector_ek1"
+                    android:src="@drawable/vector_ek1"
+                    android:contentDescription="vector_ek1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="9dp"
+                    android:layout_width="17dp"
+                    android:layout_height="19dp"
+                    android:elevation="4dp"/>
+
+            </RelativeLayout>
+
+
+            <TextView android:id="@+id/location"
+                android:textSize="18sp"
+                android:textColor="@color/event_name_color"
+                android:layout_marginLeft="74dp"
+                android:layout_marginTop="350dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location_string"
+                android:elevation="2dp"
+                />
+
+
+            <TextView android:id="@+id/time"
+                android:textSize="18sp"
+                android:textColor="@color/event_name_color"
+                android:layout_marginLeft="74dp"
+                android:layout_marginTop="407dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/time_string"
+                android:elevation="2dp"
+                />
+
+
+            <ImageView android:id="@+id/return_button"
+                android:src="@drawable/vector_ek2"
+                android:contentDescription="vector_ek2"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="19dp"
+                android:layout_width="13.13dp"
+                android:layout_height="22.27dp"
+                android:elevation="2dp"/>
+
+        </RelativeLayout>
+
+        <TextView android:id="@+id/sign_up_button"
+            android:textSize="16sp"
+            android:textColor="@color/_bg__android_small___1_ek2_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="10dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/sign_up_string"
+            android:background="@drawable/rectangle_1_shape"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="10dp"
+            />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

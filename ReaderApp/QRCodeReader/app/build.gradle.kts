@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.material:material:<1.12.0-beta01>")
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.firebase:firebase-client-android:2.5.2")
     implementation("com.google.firebase:firebase-analytics")
@@ -44,6 +45,7 @@ dependencies {
 
     implementation("androidx.activity:activity:1.8.2")
     implementation("com.google.firebase:firebase-messaging:23.4.1")
+    implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
     debugImplementation("androidx.fragment:fragment-testing:1.6.2")
     val camerax_version = "1.3.1"
     implementation("androidx.camera:camera-core:1.3.1")
@@ -70,16 +72,21 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.1.0")
 
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
-    implementation("com.google.android.libraries.places:places:3.3.0")
+    implementation("com.google.android.libraries.places:places:3.4.0")
 
     androidTestImplementation("org.slf4j:slf4j-api:1.7.30")
     androidTestImplementation("ch.qos.logback:logback-classic:1.2.3")
     androidTestImplementation("ch.qos.logback:logback-core:1.2.3")
 
-
+    implementation("com.google.code.gson:gson:2.10.1")
 
     implementation ("com.squareup.picasso:picasso:2.8")
+
+    implementation ("com.googlecode.libphonenumber:libphonenumber:8.12.33")
+
 
 }

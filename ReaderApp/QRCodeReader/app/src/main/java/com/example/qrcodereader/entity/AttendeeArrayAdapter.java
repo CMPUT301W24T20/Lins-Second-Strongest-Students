@@ -45,12 +45,12 @@ public class AttendeeArrayAdapter extends ArrayAdapter<Map.Entry<String, Long>> 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.attendees_content, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.users_content, parent, false);
         }
 
         Map.Entry<String, Long> attendee = attendees.get(position);
 
-        TextView attendeeIdTextView = convertView.findViewById(R.id.attendee_id);
+        TextView attendeeIdTextView = convertView.findViewById(R.id.user_id);
         TextView attendeeNumberTextView = convertView.findViewById(R.id.attendee_number);
         TextView attendeeCheckTextView = convertView.findViewById(R.id.attendee_check);
 
