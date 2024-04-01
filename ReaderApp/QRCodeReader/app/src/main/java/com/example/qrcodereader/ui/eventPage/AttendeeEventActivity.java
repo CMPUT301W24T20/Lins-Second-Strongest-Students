@@ -1,7 +1,6 @@
 package com.example.qrcodereader.ui.eventPage;
 import com.example.qrcodereader.R;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -25,7 +24,6 @@ import com.example.qrcodereader.entity.EventArrayAdapter;
 
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
-import com.example.qrcodereader.util.AppDataHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -61,9 +59,6 @@ public class AttendeeEventActivity extends AppCompatActivity {
     private CollectionReference usersRef;
     private DocumentReference userDocRef;
     private List<String> attendeeEvents;
-
-    private ArrayList<Event> eventDataList;
-    private EventArrayAdapter eventArrayAdapter;
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the ListView with the events attended by the user.
@@ -80,11 +75,68 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
 
         ListView eventList = findViewById(R.id.event_list_attendee);
-        eventDataList = new ArrayList<>();
-        eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
+        ArrayList<Event> eventDataList = new ArrayList<>();
+        EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
-        fetchLocal(this);
+        // Getting user through MainActivity. This is the user who is using the app
+        String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        userDocRef = usersRef.document(userid);
+        userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("Firestore", "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Map<String, Long> attendeeEvents = (Map<String, Long>) snapshot.get("eventsAttended");
+                    if(attendeeEvents != null && !attendeeEvents.isEmpty()) {
+                        eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot querySnapshots,
+                                                @Nullable FirebaseFirestoreException error) {
+                                if (error != null) {
+                                    Log.e("Firestore", error.toString());
+                                    return;
+                                }
+                                if (querySnapshots != null) {
+                                    eventDataList.clear();
+                                    for (QueryDocumentSnapshot doc : querySnapshots) {
+                                        String eventID = doc.getId();
+
+                                        // Check if the user has attended the event
+                                        if (attendeeEvents.containsKey(eventID)) {
+                                            String name = doc.getString("name");
+                                            String organizer = doc.getString("organizer");
+                                            GeoPoint location = doc.getGeoPoint("location");
+                                            Timestamp time = doc.getTimestamp("time");
+                                            String locationName = doc.getString("locationName");
+                                            String organizerID = doc.getString("organizerID");
+                                            String qrCodeString = doc.getString("qrCode");
+                                            String EventPoster = doc.getString("poster");
+                                            QRCode qrCode = new QRCode(qrCodeString);
+                                            int attendeeLimit = doc.contains("attendeeLimit") ? (int)(long)doc.getLong("attendeeLimit") : -1;
+                                            Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+
+                                            Log.d("Firestore", "Event fetched");
+                                            eventArrayAdapter.addEvent(eventID, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees, EventPoster);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } else{
+                        Log.d("Firestore", "No events attended by the user");
+                    }
+                } else {
+                    Log.d("Firestore", "Current data: null");
+                }
+            }
+        });
 
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -145,16 +197,5 @@ public class AttendeeEventActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public void fetchLocal(Context context) {
-        // Fetch events from local storage
-        eventDataList.clear();
-        eventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
-
-        for (Event event : eventDataList) {
-            eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
-        }
-        eventArrayAdapter.notifyDataSetChanged();
     }
 }
