@@ -95,16 +95,14 @@
 					android:layout_height="22dp" />
 
 			</RelativeLayout>
-
 			<Spinner
-				android:id="@+id/regionSelector"
+				android:textSize="16sp"
+				android:textColor="@color/black"
+				android:layout_marginStart="20dp"
 				android:layout_width="35dp"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical"
-				android:layout_marginStart="20dp"
-				android:paddingVertical="5dp"
-				android:textColor="@color/black"
-				android:textSize="16sp" />
+				android:paddingVertical="5dp" />
 			<EditText android:id="@+id/phone"
 				android:textSize="16sp"
 				android:textColor="@color/black"

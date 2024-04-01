@@ -64,11 +64,6 @@
     <string name="map">Map</string>
     <string name="user_id">User ID</string>
     <string name="ca">CA</string>
-
-    <string name="OrgTitle">My created events</string>
-    <string name="AtndTitle"> Signed up events</string>
-
-
     <string name="display_qr_string">Display QR</string>
     <string name="attendee_string">attendee</string>
     <string name="map_string">map</string>
