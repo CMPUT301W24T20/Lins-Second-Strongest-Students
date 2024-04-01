@@ -352,5 +352,8 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             squaredBitmap.recycle();
             return bitmap;
         }
+
+        @Override
+        public String key() {return null;} // key method not used in app but is required implementation due to interface Transformation
     }
 }
