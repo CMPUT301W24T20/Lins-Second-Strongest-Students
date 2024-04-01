@@ -53,6 +53,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 // OpenAI, 2024, ChatGPT, Prompt the error message from logcat and the code snippet that caused the error
@@ -72,6 +74,9 @@ public class BrowseEventActivity extends AppCompatActivity {
     private DocumentSnapshot lastVisible;
     private ArrayList<Event> eventDataList;
     private EventArrayAdapter eventArrayAdapter;
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+
 
 
     /**
@@ -187,87 +192,87 @@ public class BrowseEventActivity extends AppCompatActivity {
         });
     }
   
-    public void fetchLocal(Context context) {
-        eventDataList.clear();
-        eventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
-
-        if (eventDataList.size() >= 2) {
-            Collections.sort(eventDataList, new Comparator<Event>() {
-                @Override
-                public int compare(Event e1, Event e2) {
-                    return e1.getTime().compareTo(e2.getTime()); // Ascending
-                }
-            });
-        }
-
-        for (Event event : eventDataList) {
-            eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
-        }
-        eventArrayAdapter.notifyDataSetChanged();
-    }
-
-    public void fetchBrowseEvents() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Timestamp now = Timestamp.now();
-
-        db.collection("events")
-                .whereGreaterThan("time", now) // Query for documents where eventTime is in the future
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                            ArrayList<Event> events = new ArrayList<>();
-
-                            for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
-                                //Event event = documentSnapshot.toObject(Event.class);
-                                String id = documentSnapshot.getId();
-                                String name = documentSnapshot.getString("name");
-                                GeoPoint location = documentSnapshot.getGeoPoint("location");
-                                String locationName = documentSnapshot.getString("locationName");
-                                Timestamp time = documentSnapshot.getTimestamp("time");
-                                String organizer = documentSnapshot.getString("organizer");
-                                String organizerID = documentSnapshot.getString("organizerID");
-                                QRCode qrCode = new QRCode(documentSnapshot.getString("qrCode"));
-                                int attendeeLimit = documentSnapshot.getLong("attendeeLimit").intValue();
-                                Map<String, Long> attendees = (Map<String, Long>) documentSnapshot.get("attendees");
-                                String EPoster = documentSnapshot.getString("EPoster");
-
-                                Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
-
-                                events.add(event);
-                            }
-
-                            LocalEventsStorage.saveEvents(this, events, "browseEvents.json");
-                            AppDataHolder.getInstance().loadBrowseEvents(this);
-                            updateAdapter(events);
-                        }
-                    } else {
-                        Toast.makeText(this, "Failed to fetch events", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void updateAdapter(ArrayList<Event> events) {
-        // Run on UI thread because notifyDataSetChanged() needs to update the UI
-        new Handler(Looper.getMainLooper()).post(() -> {
-            if (events.size() >= 2) {
-                Collections.sort(events, new Comparator<Event>() {
-                    @Override
-                    public int compare(Event e1, Event e2) {
-                        return e1.getTime().compareTo(e2.getTime()); // Ascending
-                    }
-                });
-            }
-
-            eventDataList = events;
-            eventArrayAdapter.clear();
-            for (Event event : events) {
-                eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
-            }
-            eventArrayAdapter.notifyDataSetChanged();
-        });
-    }
+//    public void fetchLocal(Context context) {
+//        eventDataList.clear();
+//        eventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
+//
+//        if (eventDataList.size() >= 2) {
+//            Collections.sort(eventDataList, new Comparator<Event>() {
+//                @Override
+//                public int compare(Event e1, Event e2) {
+//                    return e1.getTime().compareTo(e2.getTime()); // Ascending
+//                }
+//            });
+//        }
+//
+//        for (Event event : eventDataList) {
+//            eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+//        }
+//        eventArrayAdapter.notifyDataSetChanged();
+//    }
+//
+//    public void fetchBrowseEvents() {
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        Timestamp now = Timestamp.now();
+//
+//        db.collection("events")
+//                .whereGreaterThan("time", now) // Query for documents where eventTime is in the future
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        QuerySnapshot querySnapshot = task.getResult();
+//                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+//                            ArrayList<Event> events = new ArrayList<>();
+//
+//                            for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
+//                                //Event event = documentSnapshot.toObject(Event.class);
+//                                String id = documentSnapshot.getId();
+//                                String name = documentSnapshot.getString("name");
+//                                GeoPoint location = documentSnapshot.getGeoPoint("location");
+//                                String locationName = documentSnapshot.getString("locationName");
+//                                Timestamp time = documentSnapshot.getTimestamp("time");
+//                                String organizer = documentSnapshot.getString("organizer");
+//                                String organizerID = documentSnapshot.getString("organizerID");
+//                                QRCode qrCode = new QRCode(documentSnapshot.getString("qrCode"));
+//                                int attendeeLimit = documentSnapshot.getLong("attendeeLimit").intValue();
+//                                Map<String, Long> attendees = (Map<String, Long>) documentSnapshot.get("attendees");
+//                                String EPoster = documentSnapshot.getString("EPoster");
+//
+//                                Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
+//
+//                                events.add(event);
+//                            }
+//
+//                            LocalEventsStorage.saveEvents(this, events, "browseEvents.json");
+//                            AppDataHolder.getInstance().loadBrowseEvents(this);
+//                            updateAdapter(events);
+//                        }
+//                    } else {
+//                        Toast.makeText(this, "Failed to fetch events", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
+//
+//    private void updateAdapter(ArrayList<Event> events) {
+//        // Run on UI thread because notifyDataSetChanged() needs to update the UI
+//        new Handler(Looper.getMainLooper()).post(() -> {
+//            if (events.size() >= 2) {
+//                Collections.sort(events, new Comparator<Event>() {
+//                    @Override
+//                    public int compare(Event e1, Event e2) {
+//                        return e1.getTime().compareTo(e2.getTime()); // Ascending
+//                    }
+//                });
+//            }
+//
+//            eventDataList = events;
+//            eventArrayAdapter.clear();
+//            for (Event event : events) {
+//                eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+//            }
+//            eventArrayAdapter.notifyDataSetChanged();
+//        });
+//    }
 
     private void setupRealTimeEventUpdates() {
         Timestamp now = Timestamp.now();
@@ -290,4 +295,101 @@ public class BrowseEventActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    public void fetchBrowseEvents() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Timestamp now = Timestamp.now();
+
+        db.collection("events")
+                .whereGreaterThan("time", now) // Query for documents where eventTime is in the future
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            // Execute data processing in background
+                            executorService.execute(() -> {
+                                ArrayList<Event> events = new ArrayList<>();
+
+                                for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
+                                    //Event event = documentSnapshot.toObject(Event.class);
+                                    String id = documentSnapshot.getId();
+                                    String name = documentSnapshot.getString("name");
+                                    GeoPoint location = documentSnapshot.getGeoPoint("location");
+                                    String locationName = documentSnapshot.getString("locationName");
+                                    Timestamp time = documentSnapshot.getTimestamp("time");
+                                    String organizer = documentSnapshot.getString("organizer");
+                                    String organizerID = documentSnapshot.getString("organizerID");
+                                    QRCode qrCode = new QRCode(documentSnapshot.getString("qrCode"));
+                                    int attendeeLimit = documentSnapshot.getLong("attendeeLimit").intValue();
+                                    Map<String, Long> attendees = (Map<String, Long>) documentSnapshot.get("attendees");
+                                    String EPoster = documentSnapshot.getString("EPoster");
+
+                                    Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
+
+                                    events.add(event);
+                                }
+
+                                LocalEventsStorage.saveEvents(this, events, "browseEvents.json");
+                                AppDataHolder.getInstance().loadBrowseEvents(this);
+
+                                if (events.size() >= 2) {
+                                    Collections.sort(events, new Comparator<Event>() {
+                                        @Override
+                                        public int compare(Event e1, Event e2) {
+                                            return e1.getTime().compareTo(e2.getTime()); // Ascending
+                                        }
+                                    });
+                                }
+
+                                mainThreadHandler.post(() -> {
+                                    eventDataList = events;
+                                    eventArrayAdapter.clear();
+                                    for (Event event : events) {
+                                        eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+                                    }
+                                    eventArrayAdapter.notifyDataSetChanged();
+                                });
+                            });
+                        }
+                    } else {
+                        Toast.makeText(BrowseEventActivity.this, "Failed to fetch events", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void fetchLocal(Context context) {
+        // Execute in background
+        executorService.execute(() -> {
+            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
+
+            if (tempEventDataList.size() >= 2) {
+                Collections.sort(tempEventDataList, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event e1, Event e2) {
+                        // Assuming getTime() returns a Comparable type
+                        return e1.getTime().compareTo(e2.getTime()); // Ascending
+                    }
+                });
+            }
+
+            //ArrayList<Event> finalList = new ArrayList<>(tempEventDataList); // Prepare final list in background
+
+            // Post to main thread to update UI components
+            mainThreadHandler.post(() -> {
+                eventDataList.clear();
+                eventDataList = tempEventDataList;
+
+                eventArrayAdapter.clear();
+                for (Event event : eventDataList) {
+                    eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+                }
+                eventArrayAdapter.notifyDataSetChanged(); // This must be on the main thread
+            });
+        });
+    }
+
+
+
+
 }
