@@ -1,4 +1,7 @@
 package com.example.qrcodereader.ui.eventPage;
+import com.example.qrcodereader.MapView;
+import com.example.qrcodereader.MapViewOrganizer;
+import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
 
 import android.app.Activity;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -45,7 +49,7 @@ import java.util.Map;
  *  </p>
  *  @author Son and Duy and Khushdeep
  */
-public class OrganizerEventActivity extends AppCompatActivity {
+public class OrganizerEventActivity extends NavBar {
 
 
     private FirebaseFirestore db;
@@ -65,14 +69,22 @@ public class OrganizerEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
-        setContentView(R.layout.organizer_activity_event);
+        setContentView(R.layout.attendee_events);
+        TextView title = findViewById(R.id.upcoming_events);
+        title.setText(R.string.OrgTitle);
+
+        setupTextViewButton(R.id.home_button);
+        setupTextViewButton(R.id.event_button);
+        setupTextViewButton(R.id.scanner_button);
+        setupTextViewButton(R.id.notification_button);
+        setupTextViewButton(R.id.bottom_profile_icon);
+
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
         pastEventsRef = db.collection("pastEvents");
 
-        eventList = findViewById(R.id.event_list_organizer);
+        eventList = findViewById(R.id.event_list_attendee);
         eventDataList = new ArrayList<>();
 
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
@@ -122,16 +134,25 @@ public class OrganizerEventActivity extends AppCompatActivity {
                     }
                 });
 
-        Button createEventButton = findViewById(R.id.create_event_button);
+        TextView createEventButton = findViewById(R.id.browse_button);
         createEventButton.setOnClickListener(v -> {
             Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
             intent.putExtra("userid", userid);
             intent.putExtra("username", username);
             startActivity(intent);
         });
+        TextView mapButton = findViewById(R.id.map_button);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OrganizerEventActivity.this, MapViewOrganizer.class);
+                // Sending the user object to BrowseEventActivity
+                startActivity(intent);
+            }
+        });
 
-        Button returnButton = findViewById(R.id.return_button_organizer);
-        returnButton.setOnClickListener(v -> finish());
+//        Button returnButton = findViewById(R.id.return_button_organizer);
+//        returnButton.setOnClickListener(v -> finish());
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -144,4 +165,11 @@ public class OrganizerEventActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.attendee_events;
+    }
+
 }
