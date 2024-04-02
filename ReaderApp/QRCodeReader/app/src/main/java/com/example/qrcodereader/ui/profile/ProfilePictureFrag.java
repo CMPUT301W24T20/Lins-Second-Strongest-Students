@@ -13,14 +13,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.util.SetDefaultProfile;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import java.util.Map;
 
 public class ProfilePictureFrag extends BottomSheetDialogFragment {
     @Nullable
@@ -31,9 +44,12 @@ public class ProfilePictureFrag extends BottomSheetDialogFragment {
         TextView Upload = view.findViewById(R.id.UploadProfile);
         TextView Remove = view.findViewById(R.id.RemoveProfile);
 
-        Upload.setOnClickListener(v -> {
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(galleryIntent, 1);
+        Upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, 1);
+            }
         });
 
         Remove.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +92,6 @@ public class ProfilePictureFrag extends BottomSheetDialogFragment {
             Uri uploaded = data.getData();
             if (uploaded != null) {
                 ProfileEditFrag editProfile = (ProfileEditFrag) requireActivity().getSupportFragmentManager().findFragmentByTag("Edit Profile");
-                assert editProfile != null;
                 editProfile.setPicture(uploaded, null); // Set the image directly from URI
             }
         }
