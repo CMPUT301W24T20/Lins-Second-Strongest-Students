@@ -194,7 +194,7 @@ public class AttendeeEventActivity extends NavBar {
     public void fetchLocal(Context context) {
         // Execute in background
         executorService.execute(() -> {
-            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
+            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
 
             if (tempEventDataList == null) {
                 tempEventDataList = new ArrayList<>();
