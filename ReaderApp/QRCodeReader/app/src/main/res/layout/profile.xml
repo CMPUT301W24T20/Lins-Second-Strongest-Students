@@ -96,7 +96,7 @@
 
 			</RelativeLayout>
 
-			<TextView
+			<Spinner
 				android:id="@+id/regionSelector"
 				android:layout_width="35dp"
 				android:layout_height="wrap_content"
@@ -104,10 +104,8 @@
 				android:layout_marginStart="20dp"
 				android:paddingVertical="5dp"
 				android:textColor="@color/black"
-				android:textSize="16sp"
-				android:text = "CA"
-				/>
-			<TextView android:id="@+id/phone"
+				android:textSize="16sp" />
+			<EditText android:id="@+id/phone"
 				android:textSize="16sp"
 				android:textColor="@color/black"
 				android:layout_marginStart="5dp"
@@ -162,7 +160,7 @@
 
 
 			</RelativeLayout>
-			<TextView android:id="@+id/email"
+			<EditText android:id="@+id/email"
 				android:textSize="16sp"
 				android:textColor="@color/black"
 				android:layout_marginLeft="20dp"
@@ -174,7 +172,7 @@
 		</LinearLayout>
 	</RelativeLayout>
 
-	<TextView android:id="@+id/EditButton"
+	<TextView android:id="@+id/RemoveProfilePicButton"
 		android:textSize="16sp"
 		android:textColor="@color/sky_blue"
 		android:layout_width="125dp"
@@ -182,7 +180,7 @@
 		android:paddingHorizontal="30dp"
 		android:paddingVertical="10dp"
 		android:layout_centerHorizontal="true"
-		android:text="@string/edit_string"
+		android:text="@string/remove"
 		android:background="@drawable/ellipse_2_shape"
 		android:elevation="2dp"
 		app:layout_constraintBottom_toBottomOf="parent"
@@ -203,7 +201,7 @@
 		android:text="@string/admin_string"
 		android:background="@drawable/ellipse_2_shape"
 		android:elevation="2dp"
-		app:layout_constraintBottom_toTopOf="@id/EditButton"
+		app:layout_constraintBottom_toTopOf="@id/RemoveProfilePicButton"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		android:layout_marginBottom="5dp"

@@ -140,7 +140,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                 Picasso.get().load(imageURL).transform(new CircleTransformation()).resize(100, 100).centerInside().into(Picture);
             }
         }).addOnFailureListener(e -> {
-            Log.e(TAG, "Error getting user " + e.getMessage());
+//                    Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
 
         // upload profile pic
@@ -151,6 +151,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                 pictureOption.show(getParentFragmentManager(), "Edit Profile Picture");
             }
         });
+
 
         // march 25 trim text in an edit text ? programatically?
         Sregion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -169,6 +170,8 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view)
                 .setCustomTitle(customTitleView)
@@ -186,8 +189,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                         docRefUser.update("phoneRegion",Sregion.getSelectedItem().toString());
 
                         if (onSaveClickListener != null) {
-                            onSaveClickListener.onSaveClicked(
-                                    ETname.getText().toString(),
+                            onSaveClickListener.onSaveClicked(ETname.getText().toString(),
                                     ETemail.getText().toString(),
                                     ETphone.getText().toString(),
                                     Sregion.getSelectedItem().toString(),
