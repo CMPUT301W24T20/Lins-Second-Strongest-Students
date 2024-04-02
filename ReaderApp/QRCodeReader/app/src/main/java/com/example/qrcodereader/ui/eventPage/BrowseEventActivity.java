@@ -364,22 +364,27 @@ public class BrowseEventActivity extends AppCompatActivity {
         executorService.execute(() -> {
             ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
 
-            if (tempEventDataList.size() >= 2) {
-                Collections.sort(tempEventDataList, new Comparator<Event>() {
-                    @Override
-                    public int compare(Event e1, Event e2) {
-                        // Assuming getTime() returns a Comparable type
-                        return e1.getTime().compareTo(e2.getTime()); // Ascending
-                    }
-                });
+            if (tempEventDataList == null) {
+                tempEventDataList = new ArrayList<>();
+            }
+            else {
+                if (tempEventDataList.size() >= 2) {
+                    Collections.sort(tempEventDataList, new Comparator<Event>() {
+                        @Override
+                        public int compare(Event e1, Event e2) {
+                            // Assuming getTime() returns a Comparable type
+                            return e1.getTime().compareTo(e2.getTime()); // Ascending
+                        }
+                    });
+                }
             }
 
-            //ArrayList<Event> finalList = new ArrayList<>(tempEventDataList); // Prepare final list in background
+            ArrayList<Event> finalList = tempEventDataList;
 
             // Post to main thread to update UI components
             mainThreadHandler.post(() -> {
                 eventDataList.clear();
-                eventDataList = tempEventDataList;
+                eventDataList = finalList;
 
                 eventArrayAdapter.clear();
                 for (Event event : eventDataList) {
