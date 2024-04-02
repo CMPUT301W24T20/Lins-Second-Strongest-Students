@@ -41,12 +41,14 @@
         <activity android:name=".ui.eventPage.AttendeeEventActivity"/>
         <activity android:name=".ui.eventPage.BrowseEventActivity"/>
         <activity android:name=".ui.eventPage.EventDetailsOrganizerActivity"/>
+        <activity android:name=".ui.eventPage.UserDetailsOrganizerActivity"/>
         <activity android:name=".ui.eventPage.EventDetailsAttendeeActivity"/>
         <activity android:name=".ui.eventPage.CreateEventActivityBrowsePastEvent"/>
         <activity android:name=".ui.profile.ProfileActivity"/>
         <activity android:name=".ui.eventPage.AttendanceActivity"/>
         <activity android:name=".ui.admin.AdminEventActivity"/>
         <activity android:name=".ui.admin.EventDetailsAdminActivity"/>
+        <activity android:name=".ui.admin.AdminUserActivity"/>
 
         <activity
             android:name=".DisplayQRCode"
