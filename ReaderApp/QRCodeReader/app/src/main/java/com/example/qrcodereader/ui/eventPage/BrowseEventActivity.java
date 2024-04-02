@@ -131,7 +131,12 @@ public class BrowseEventActivity extends AppCompatActivity {
         });
 
         TextView returnButton = findViewById(R.id.return_button_browse);
-        returnButton.setOnClickListener(v -> finish());
+        returnButton.setOnClickListener(v -> {
+            Intent intent = new Intent(BrowseEventActivity.this, AttendeeEventActivity.class);
+            // Flags to clear activities on top of AttendeeEventActivity and reuse the same instance
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        });
     }
 
 
