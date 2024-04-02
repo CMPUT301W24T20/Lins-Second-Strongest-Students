@@ -39,7 +39,7 @@ public class Event {
      * @param eventLocation The location of the event
      * @param eventTime The time of the event
      */
-    public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime) {
+    public Event(String id, String name, String organizer, GeoPoint eventLocation, Timestamp eventTime, String EPoster) {
         this.time = eventTime;
         this.eventID = id;
         this.location = eventLocation;
@@ -47,6 +47,7 @@ public class Event {
         this.organizer = organizer;
         this.qrCode = new QRCode();
         this.attendees =  new HashMap<String, Long>();
+        this.poster = EPoster;
     }
 
     /**

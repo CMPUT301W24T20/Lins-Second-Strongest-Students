@@ -144,7 +144,7 @@ public class AdminEventActivity extends AppCompatActivity {
                         // Assuming Event class has a constructor matching this data
                         Event event = new Event(doc.getId(), doc.getString("name"),
                                 doc.getString("organizer"), doc.getGeoPoint("location"),
-                                doc.getTimestamp("time"));
+                                doc.getTimestamp("time"), doc.getString("poster"));
                         eventDataList.add(event);
                     }
                     eventArrayAdapter.notifyDataSetChanged();
