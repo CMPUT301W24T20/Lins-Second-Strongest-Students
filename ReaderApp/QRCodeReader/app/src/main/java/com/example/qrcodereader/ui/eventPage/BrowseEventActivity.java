@@ -100,6 +100,7 @@ public class BrowseEventActivity extends AppCompatActivity {
         eventList.setAdapter(eventArrayAdapter);
 
         fetchLocal(this);
+        fetchBrowseEvents();
         setupRealTimeEventUpdates();
 
         eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -384,7 +385,7 @@ public class BrowseEventActivity extends AppCompatActivity {
                 for (Event event : eventDataList) {
                     eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
                 }
-                eventArrayAdapter.notifyDataSetChanged(); // This must be on the main thread
+                eventArrayAdapter.notifyDataSetChanged();
             });
         });
     }
