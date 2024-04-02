@@ -231,8 +231,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
     /**
      * setupNotificationChannel
      * Creates notification channel for app

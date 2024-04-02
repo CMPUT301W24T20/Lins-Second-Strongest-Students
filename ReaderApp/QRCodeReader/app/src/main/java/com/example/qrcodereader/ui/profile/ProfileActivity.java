@@ -88,6 +88,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfileEditFra
         email.setText(EditEmail);
         phone.setText(EditPhone);
         region.setText(EditRegion);
-        Picasso.get().load(EditPicture).resize(100, 100).centerInside().into(Picture);
+        if (EditPicture!= null){
+            Picasso.get().load(EditPicture).resize(100, 100).centerInside().into(Picture);
+        }
     }
 }
