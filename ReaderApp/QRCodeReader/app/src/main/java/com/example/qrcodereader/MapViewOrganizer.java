@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.qrcodereader.entity.User;
+import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
@@ -67,7 +68,7 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
         buttonBackToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapViewOrganizer.this, MainActivity.class);
+                Intent intent = new Intent(MapViewOrganizer.this, OrganizerEventActivity.class);
                 startActivity(intent);
             }
         });

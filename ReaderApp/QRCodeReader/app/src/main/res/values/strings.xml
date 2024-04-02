@@ -73,4 +73,6 @@
     <string name="check_in_count">Check-in count: </string>
     <string name="notify">Notify</string>
     <string name="ImagesText">Images</string>
+    <string name="OrgTitle">My created events</string>
+    <string name="AtndTitle"> Signed up events</string>
 </resources>

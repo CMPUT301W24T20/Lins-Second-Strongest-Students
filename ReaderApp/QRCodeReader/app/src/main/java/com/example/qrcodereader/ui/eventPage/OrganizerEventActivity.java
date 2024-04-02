@@ -1,6 +1,8 @@
 package com.example.qrcodereader.ui.eventPage;
 import static android.content.ContentValues.TAG;
 
+import com.example.qrcodereader.MapViewOrganizer;
+import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
 
 import android.app.Activity;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -60,7 +63,7 @@ import java.util.concurrent.Executors;
  *  </p>
  *  @author Son and Duy and Khushdeep
  */
-public class OrganizerEventActivity extends AppCompatActivity {
+public class OrganizerEventActivity extends NavBar {
 
 
     private FirebaseFirestore db;
@@ -83,14 +86,23 @@ public class OrganizerEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
-        setContentView(R.layout.organizer_activity_event);
+        setContentView(R.layout.attendee_events);
+        TextView title = findViewById(R.id.upcoming_events);
+        title.setText(R.string.OrgTitle);
+
+        setupTextViewButton(R.id.home_button);
+        setupTextViewButton(R.id.event_button);
+        setupTextViewButton(R.id.scanner_button);
+        setupTextViewButton(R.id.notification_button);
+        setupTextViewButton(R.id.bottom_profile_icon);
+        //getSupportActionBar().hide();
+
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
         pastEventsRef = db.collection("pastEvents");
 
-        eventList = findViewById(R.id.event_list_organizer);
+        eventList = findViewById(R.id.event_list_attendee);
         eventDataList = new ArrayList<>();
 
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
@@ -99,16 +111,22 @@ public class OrganizerEventActivity extends AppCompatActivity {
         fetchLocal(this);
         setupRealTimeEventUpdates();
 
-        Button createEventButton = findViewById(R.id.create_event_button);
+        TextView createEventButton = findViewById(R.id.browse_button);
         createEventButton.setOnClickListener(v -> {
             Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
             intent.putExtra("userid", userid);
             intent.putExtra("username", username);
             startActivity(intent);
         });
-
-        Button returnButton = findViewById(R.id.return_button_organizer);
-        returnButton.setOnClickListener(v -> finish());
+        TextView mapButton = findViewById(R.id.map_button);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OrganizerEventActivity.this, MapViewOrganizer.class);
+                // Sending the user object to BrowseEventActivity
+                startActivity(intent);
+            }
+        });
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -122,24 +140,32 @@ public class OrganizerEventActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.attendee_events;
+    }
+
     public void fetchEvents(Context context) {
-        eventDataList.clear();
-        eventDataList = AppDataHolder.getInstance().getOrganizerEvents(context);
+        ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getOrganizerEvents(context);
+        if(tempEventDataList != null) {
+            eventDataList = tempEventDataList;
+            eventDataList.clear();
 
-        if (eventDataList.size() >= 2) {
-            Collections.sort(eventDataList, new Comparator<Event>() {
-                @Override
-                public int compare(Event e1, Event e2) {
-                    return e1.getTime().compareTo(e2.getTime()); // Ascending
-                }
-            });
+            if (eventDataList.size() >= 2) {
+                Collections.sort(eventDataList, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event e1, Event e2) {
+                        return e1.getTime().compareTo(e2.getTime()); // Ascending
+                    }
+                });
+            }
+
+            for (Event event : eventDataList) {
+                eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+            }
+
+            eventArrayAdapter.notifyDataSetChanged();
         }
-
-        for (Event event : eventDataList) {
-            eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
-        }
-
-        eventArrayAdapter.notifyDataSetChanged();
     }
 
     public void fetchOrganizerEvents() {
