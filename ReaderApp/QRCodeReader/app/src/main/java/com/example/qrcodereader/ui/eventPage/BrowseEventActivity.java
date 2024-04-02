@@ -93,7 +93,7 @@ public class BrowseEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
 
-        ListView eventList = findViewById(R.id.event_list_browse);
+        ListView eventList = findViewById(R.id.event_list);
         eventDataList = new ArrayList<>();
 
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);

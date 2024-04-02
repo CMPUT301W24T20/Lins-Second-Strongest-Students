@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,7 +104,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
 
-        Button removeButton = findViewById(R.id.remove_button);
+        TextView removeButton = findViewById(R.id.remove_button);
         removeButton.setOnClickListener(v -> {
             if (eventID != null) {
                 usersRef.get().addOnCompleteListener(task -> {
@@ -131,7 +132,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
             finish();
         });
 
-        Button returnButton = findViewById(R.id.return_button);
+        ImageView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
     }
 }
