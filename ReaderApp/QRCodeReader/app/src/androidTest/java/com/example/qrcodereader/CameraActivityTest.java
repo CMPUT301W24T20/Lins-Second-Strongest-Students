@@ -2,6 +2,7 @@ package com.example.qrcodereader;
 
 
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -16,10 +17,10 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 
 @LargeTest
-public class CameraFragmentTest {
+public class CameraActivityTest {
     @Before
     public void setUp() {
-        FragmentScenario.launchInContainer(CameraFragment.class);
+        ActivityScenario.launch(CameraActivity.class);
     }
 
     @Test

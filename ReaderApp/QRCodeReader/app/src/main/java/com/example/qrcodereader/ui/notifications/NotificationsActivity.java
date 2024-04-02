@@ -19,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.qrcodereader.MainActivity;
+import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,7 +36,7 @@ import java.util.List;
  * Handles view for notification menu
  * Stores received firebase messages for reference
  */
-public class NotificationsActivity extends AppCompatActivity {
+public class NotificationsActivity extends NavBar {
 
     private Button deleteOne;
     private Button clearAll;
@@ -55,6 +56,11 @@ public class NotificationsActivity extends AppCompatActivity {
         returnButton = findViewById(R.id.return_button);
         ListView listView = findViewById(R.id.notification_list);
         TextView noMessages = findViewById(R.id.no_messages);
+        setupTextViewButton(R.id.home_button);
+        setupTextViewButton(R.id.event_button);
+        setupTextViewButton(R.id.scanner_button);
+        setupTextViewButton(R.id.notification_button);
+        setupTextViewButton(R.id.bottom_profile_icon);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         try {
@@ -127,6 +133,11 @@ public class NotificationsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_notifications;
     }
 
     private void setupNavigation() {

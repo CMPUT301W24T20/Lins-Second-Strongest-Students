@@ -1,19 +1,19 @@
 package com.example.qrcodereader.util;
 
 import android.content.Context;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
 import com.example.qrcodereader.entity.Event;
+import com.google.gson.reflect.TypeToken;
+
+import com.google.gson.Gson;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class LocalEventsStorage {
-    //private static final String FILE_NAME = "events.json";
 
     public static void saveEvents(Context context, ArrayList<Event> events, String fileName) {
         Gson gson = new Gson();
@@ -28,11 +28,10 @@ public class LocalEventsStorage {
 
     public static ArrayList<Event> loadEvents(Context context, String fileName) {
         Gson gson = new Gson();
-        Type eventType = new TypeToken<ArrayList<Event>>() {}.getType();
 
         try (FileInputStream fis = context.openFileInput(fileName)) {
             InputStreamReader isr = new InputStreamReader(fis);
-            return gson.fromJson(isr, eventType);
+            return gson.fromJson(isr, new TypeToken<ArrayList<Event>>(){}.getType());
         } catch (IOException e) {
             e.printStackTrace();
             // Return an empty list if there's an issue loading the file

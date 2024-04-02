@@ -104,4 +104,7 @@ public class User implements Serializable {
         return this.location;
     }
     public String getProfilePicture() {return ProfilePic;}
+    public Map<String, Long> getEventsAttended() {
+        return eventsAttended;
+    }
 }

@@ -52,7 +52,7 @@
 
     <string name="__780__123_4567_string">(780) 123-4567</string>
     <string name="hello_example_com_string">hello@example.com</string>
-    <string name="edit_string">Edit</string>
+    <string name="edit_string">EDIT</string>
     <string name="admin_string">Admin</string>
     <string name="new_event">New Event</string>
     <string name="location">Location</string>
@@ -64,7 +64,6 @@
     <string name="map">Map</string>
     <string name="user_id">User ID</string>
     <string name="ca">CA</string>
-
     <string name="display_qr_string">Display QR</string>
     <string name="attendee_string">attendee</string>
     <string name="map_string">map</string>
@@ -75,4 +74,8 @@
     <string name="notify">Notify</string>
     <string name="events_cap">Events</string>
     <string name="users_cap">Users</string>
+    <string name="ImagesText">Images</string>
+    <string name="OrgTitle">My created events</string>
+    <string name="AtndTitle"> Signed up events</string>
+
 </resources>
