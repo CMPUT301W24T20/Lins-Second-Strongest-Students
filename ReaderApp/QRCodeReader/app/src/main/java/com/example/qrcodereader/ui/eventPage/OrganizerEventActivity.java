@@ -269,7 +269,7 @@ public class OrganizerEventActivity extends NavBar {
     public void fetchLocal(Context context) {
         // Execute in background
         executorService.execute(() -> {
-            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
+            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getOrganizerEvents(context);
 
             if (tempEventDataList == null) {
                 tempEventDataList = new ArrayList<>();
