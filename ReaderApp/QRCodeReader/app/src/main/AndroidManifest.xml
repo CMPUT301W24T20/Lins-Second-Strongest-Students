@@ -37,8 +37,12 @@
         <activity
             android:name=".ui.eventPage.CreateEventActivity"
             android:exported="false" />
-        <activity android:name=".ui.eventPage.OrganizerEventActivity"/>
-        <activity android:name=".ui.eventPage.BrowseEventActivity"/>
+        <activity
+            android:name=".ui.eventPage.OrganizerEventActivity"
+            android:launchMode="singleTop"/>
+        <activity
+            android:name=".ui.eventPage.BrowseEventActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".ui.eventPage.EventDetailsOrganizerActivity"/>
         <activity android:name=".ui.eventPage.UserDetailsOrganizerActivity"/>
         <activity android:name=".ui.eventPage.EventDetailsAttendeeActivity"/>
@@ -61,6 +65,7 @@
             tools:replace="screenOrientation" />
         <activity
             android:name=".ui.eventPage.AttendeeEventActivity"
+            android:launchMode="singleTop"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
