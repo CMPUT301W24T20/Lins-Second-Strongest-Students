@@ -81,11 +81,6 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 String timeText = "Time: " + time.toDate().toString();
                 eventTimeTextView.setText(timeText);
 
-//                List<String> attendeesList = new ArrayList<>(eventsAttended.keySet());
-//                ArrayAdapter<String> adapter = new ArrayAdapter<>(
-//                        this, android.R.layout.simple_list_item_1, attendeesList);
-//                attendeesListView.setAdapter(adapter);
-
             }
         }).addOnFailureListener(e -> {
             Log.d("Firestore", "Failed to fetch document");
