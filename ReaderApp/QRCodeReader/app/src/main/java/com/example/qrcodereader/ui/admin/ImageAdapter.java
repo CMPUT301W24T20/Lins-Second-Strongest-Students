@@ -1,7 +1,6 @@
 package com.example.qrcodereader.ui.admin;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;

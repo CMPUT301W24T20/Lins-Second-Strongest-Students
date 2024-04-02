@@ -123,6 +123,10 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
             pos = adapterE.getPosition(EditRegion);
         }
         region.setSelection(pos);
+      if (EditPicture!= null){
         Picasso.get().load(EditPicture).resize(100, 100).centerInside().into(Picture);
+      }
+        // region.setText(EditRegion);
+
     }
 }
