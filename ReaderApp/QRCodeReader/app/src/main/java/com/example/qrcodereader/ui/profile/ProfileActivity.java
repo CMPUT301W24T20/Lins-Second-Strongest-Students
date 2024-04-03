@@ -76,9 +76,9 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 String imageURL = documentSnapshot.getString("ProfilePic");
 
 
-                
 
-                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
+
+                Picasso.get().load(imageURL).resize(200, 200).centerInside().into(Picture);
 
                 Log.e(TAG, "Error deleting image " + imageURL + ": ");
             }
@@ -123,6 +123,6 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
             pos = adapterE.getPosition(EditRegion);
         }
         region.setSelection(pos);
-        Picasso.get().load(EditPicture).resize(100, 100).centerInside().into(Picture);
+        Picasso.get().load(EditPicture).resize(200, 200).centerInside().into(Picture);
     }
 }
