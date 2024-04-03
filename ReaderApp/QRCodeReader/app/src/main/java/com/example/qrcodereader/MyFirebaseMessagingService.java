@@ -41,8 +41,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static final String ACTION_BROADCAST = MyFirebaseMessagingService.class.getName() + "Broadcast";
 
-
-
     @Override
     public void onNewToken(@NonNull String token) {
 
@@ -70,7 +68,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * sendNotification(String)
      * Sends a push notification upon receiving an FCM message
+     * @param title Title of notification
      * @param messageBody Contents of the FCM message
+     * @param eventID ID of event that sends message
      */
     private void sendNotification(String title, String messageBody, String eventID){
         Context context = MyFirebaseMessagingService.this;
@@ -101,6 +101,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
+    /**
+     * Store
+     * Stores notification on firebase under document for user
+     * @param title title of message
+     * @param messageBody body of message
+     * @param eventID ID of event sending message
+     */
     private void store(String title, String messageBody, String eventID) {
         //Microsoft Copilot, 2024, add map to firestore doc
         // Get Firestore instance
@@ -113,7 +120,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         data.put("title", title);
         data.put("body", messageBody);
 
-// Add a new document to the 'notifications' collection of the user document
+        // Add a new document to the 'notifications' collection of the user document
         db.collection("users").document(userID).collection("notifications").add(data)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
