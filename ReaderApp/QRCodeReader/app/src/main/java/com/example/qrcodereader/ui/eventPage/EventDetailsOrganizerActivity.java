@@ -7,6 +7,7 @@ import com.example.qrcodereader.R;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.squareup.picasso.Picasso;
 
 import java.util.Map;
 
@@ -49,6 +51,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         TextView eventOrganizerTextView = findViewById(R.id.event_organizer);
         TextView eventLocationTextView = findViewById(R.id.event_location);
         TextView eventTimeTextView = findViewById(R.id.event_time);
+        ImageView eventPoster = findViewById(R.id.event_poster);
         db = FirebaseFirestore.getInstance();
         String eventID = getIntent().getStringExtra("eventID");
 
@@ -71,6 +74,8 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 String organizer = documentSnapshot.getString("organizer");
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String qrCodeString = documentSnapshot.getString("qrCode");
+                String poster = documentSnapshot.getString("poster");
+                Picasso.get().load(poster).resize(200, 130).centerInside().into(eventPoster);
                 qrCode = new QRCode(qrCodeString);
                 Log.d("Firestore", "Successfully fetch document: ");
 

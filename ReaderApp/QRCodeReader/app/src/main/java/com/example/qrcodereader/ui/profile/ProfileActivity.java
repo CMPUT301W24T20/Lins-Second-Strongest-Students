@@ -66,7 +66,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
 
                 String imageURL = documentSnapshot.getString("ProfilePic");
 
-                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
+                Picasso.get().load(imageURL).resize(200, 200).centerInside().into(Picture);
             }
         }).addOnFailureListener(e -> {
                    Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
@@ -129,7 +129,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         phone.setText(EditPhone);
         region.setText(EditRegion);
         if (EditPicture != null){
-            Picasso.get().load(EditPicture).resize(100, 100).centerInside().into(Picture);
+            Picasso.get().load(EditPicture).resize(200, 200).centerInside().into(Picture);
         }
     }
 
@@ -140,7 +140,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         docRefUser.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {;
                 String imageURL = documentSnapshot.getString("ProfilePic");
-                Picasso.get().load(imageURL).resize(100, 100).centerInside().into(Picture);
+                Picasso.get().load(imageURL).resize(200, 200).centerInside().into(Picture);
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
