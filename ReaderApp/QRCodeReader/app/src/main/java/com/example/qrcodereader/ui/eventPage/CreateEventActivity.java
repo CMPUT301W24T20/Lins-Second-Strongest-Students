@@ -291,7 +291,12 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         });
 
         Button cancel_button = findViewById(R.id.cancel_button);
-        cancel_button.setOnClickListener(v -> finish());
+        cancel_button.setOnClickListener(v -> {
+            Intent intent = new Intent(CreateEventActivity.this, OrganizerEventActivity.class);
+            // Flags to clear activities on top of AttendeeEventActivity and reuse the same instance
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        });
     }
     @Override
     public void isUploaded() {
