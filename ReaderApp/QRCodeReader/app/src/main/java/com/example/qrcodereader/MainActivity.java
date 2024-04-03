@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         setupMyEventButton();
         setupMapButton();
         checkAdminStatus();
+        setupMilestoneListener();
     }
 
     /**
@@ -472,6 +473,11 @@ public class MainActivity extends AppCompatActivity {
         intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
         intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
         startActivity(intent);
+    }
+
+    private void setupMilestoneListener() {
+        Intent intent = new Intent(this, MilestoneListeningService.class);
+        startService(intent);
     }
 
     @Override

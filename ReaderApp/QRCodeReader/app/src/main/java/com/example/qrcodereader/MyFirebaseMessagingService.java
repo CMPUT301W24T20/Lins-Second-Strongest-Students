@@ -73,54 +73,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
-    public void MilestoneListener() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference eventsRef = db.collection("events");
-        Notifier notifier = Notifier.getInstance(this);
-
-        eventsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String eventId = document.getId();
-
-                        // Set up a listener for each event's users subcollection
-                        CollectionReference usersRef = eventsRef.document(eventId).collection("users");
-                        CollectionReference eventRef = eventsRef.document(eventId);
-                        usersRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot snapshots,
-                                                @Nullable FirebaseFirestoreException e) {
-                                if (e != null) {
-                                    // Log the exception
-                                    return;
-                                }
-
-                                // Get the current number of users
-                                int numUsers = snapshots.size();
-
-                                // Get the current milestone
-                                int milestone = (Integer) (document.get("milestone"));
-
-                                // Check if the number of users has reached the milestone
-                                if (numUsers >= milestone) {
-                                    // Call the milestoneNotify method
-                                    notifier.milestoneNotification(eventId, milestone);
-
-                                    // Increase the milestone
-                                    eventRef.update("milestone", milestone + 10);
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    // Log the exception
-                }
-            }
-        });
-    }
-
     /**
      * sendNotification(String)
      * Sends a push notification upon receiving an FCM message
