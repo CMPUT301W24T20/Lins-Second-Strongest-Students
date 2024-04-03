@@ -75,7 +75,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String qrCodeString = documentSnapshot.getString("qrCode");
                 String poster = documentSnapshot.getString("poster");
-                Picasso.get().load(poster).resize(200, 130).centerInside().into(eventPoster);
+                Picasso.get().load(poster).resize(410, 240).centerInside().into(eventPoster);
                 qrCode = new QRCode(qrCodeString);
                 Log.d("Firestore", "Successfully fetch document: ");
 

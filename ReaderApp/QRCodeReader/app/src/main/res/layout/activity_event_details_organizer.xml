@@ -47,14 +47,15 @@
 			android:layout_width="match_parent"
 			android:layout_height="600dp" />
 
-		<View   android:id="@+id/image_gradient"
-			android:background="@drawable/_49e43ff77b9c6ecc64d8a9b55622ddd7_3_shape"
-			android:layout_marginStart="0dp"
-			android:layout_marginTop="0dp"
+		<View
+			android:id="@+id/image_gradient"
 			android:layout_width="match_parent"
 			android:layout_height="240dp"
+			android:layout_marginStart="0dp"
+			android:layout_marginTop="0dp"
 			android:alpha="0.2"
-			android:elevation="-1dp"/>
+			android:background="@drawable/_49e43ff77b9c6ecc64d8a9b55622ddd7_3_shape"
+			android:elevation="-1dp" />
 
 		<TextView android:id="@+id/event_name"
 			android:textStyle="bold"
