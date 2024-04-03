@@ -51,8 +51,8 @@ public abstract class NavBar extends AppCompatActivity {
 
     // Method to handle the TextView button click
     protected void onTextViewButtonClicked(int viewId) {
-        Intent intent;
-
+        Intent intent = null;
+        boolean shouldStartActivity = true;
 
 
         Class<?> targetClass = null;
@@ -73,13 +73,25 @@ public abstract class NavBar extends AppCompatActivity {
             targetClass = ProfileActivity.class;
         }
 
+//        // Check if the target activity is the same as the current activity
+//        if (this.getClass().equals(targetClass)) {
+//            return; // If it is, do nothing
+//        }
+//
+//        // Otherwise, start the target activity
+//        intent = new Intent(this, targetClass);
+//        startActivity(intent);
+
         // Check if the target activity is the same as the current activity
         if (this.getClass().equals(targetClass)) {
-            return; // If it is, do nothing
+            shouldStartActivity = false; // If it is, do not start the activity
         }
 
-        // Otherwise, start the target activity
-        intent = new Intent(this, targetClass);
-        startActivity(intent);
+        // Otherwise, start the target activity with FLAG_ACTIVITY_REORDER_TO_FRONT
+        if (shouldStartActivity && targetClass != null) {
+            intent = new Intent(this, targetClass);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        }
     }
 }

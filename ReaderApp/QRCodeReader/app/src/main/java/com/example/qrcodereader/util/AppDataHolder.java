@@ -26,6 +26,8 @@ import com.google.firebase.firestore.core.EventManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * A singleton class to hold user info and events.
@@ -48,7 +50,6 @@ public class AppDataHolder {
         return instance;
     }
 
-
     /**
      * Get the current user - the one who is using the app
      * @param context The context
@@ -66,6 +67,19 @@ public class AppDataHolder {
         organizerEvents = LocalEventsStorage.loadEvents(context, "organizerEvents.json");
     }
 
+//    public static void loadData(Context context) {
+//        ExecutorService executor = Executors.newSingleThreadExecutor();
+//        executor.execute(() -> {
+//            // Load your data here
+//            currentUser = LocalUserStorage.loadUser(context);
+//            browseEvents = LocalEventsStorage.loadEvents(context, "browseEvents.json");
+//            attendeeEvents = LocalEventsStorage.loadEvents(context, "attendeeEvents.json");
+//            organizerEvents = LocalEventsStorage.loadEvents(context, "organizerEvents.json");
+//
+//            // No need to post anything to the UI thread if no UI update is necessary
+//        });
+//    }
+
     public static void loadBrowseEvents(Context context) {
         browseEvents = LocalEventsStorage.loadEvents(context, "browseEvents.json");
     }
@@ -77,13 +91,25 @@ public class AppDataHolder {
     }
 
     public static ArrayList<Event> getBrowseEvents(Context context) {
+        // Check if the browseEvents are already loaded
+        if (browseEvents == null) {
+            loadBrowseEvents(context);
+        }
         return browseEvents;
     }
 
     public static ArrayList<Event> getAttendeeEvents(Context context) {
+        // Check if the attendeeEvents are already loaded
+        if (attendeeEvents == null) {
+            loadAttendeeEvents(context);
+        }
         return attendeeEvents;
     }
     public static ArrayList<Event> getOrganizerEvents(Context context) {
+        // Check if the organizerEvents are already loaded
+        if (organizerEvents == null) {
+            loadOrganizerEvents(context);
+        }
         return organizerEvents;
     }
 
