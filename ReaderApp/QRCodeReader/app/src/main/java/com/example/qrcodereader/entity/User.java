@@ -25,8 +25,9 @@ import com.google.firebase.firestore.GeoPoint;
 public class User implements Serializable {
     private String userID;
     private String name;
-
-    private String contact;
+    private String email;
+    private String phoneRegion;
+    private String phone;
     private Map<String, Long> eventsAttended;
     private GeoPoint location;
     private String ProfilePic;
@@ -48,6 +49,17 @@ public class User implements Serializable {
         this.ProfilePic = image;
     }
 
+    public User(String deviceID, String userName, GeoPoint location, Map<String, Long> eventsAttended, String image, String email, String phoneRegion, String phone) {
+        this.userID = deviceID;
+        this.name = userName;
+        this.eventsAttended = eventsAttended;
+        this.location = location;
+        this.ProfilePic = image;
+        this.email = email;
+        this.phoneRegion = phoneRegion;
+        this.phone = phone;
+    }
+
     public void setUserID(String userID) {
         this.userID = userID;
     }
@@ -55,15 +67,39 @@ public class User implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public void setContact(String contact) {this.contact = contact;}
     public void setLocation(GeoPoint location) {this.location = location;}
     public void setProfilePicture(String picture) {this.ProfilePic = picture;}
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setPhoneRegion(String phoneRegion) {
+        this.phoneRegion = phoneRegion;
+    }
+
     public void createEvent(String id, String name, GeoPoint location, Timestamp time) {
     }
 
     public String getUserID() {return userID;}
     public String getName() {return name;}
-    public String getContact() {return contact;}
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getPhoneRegion() {
+        return phoneRegion;
+    }
+
     public GeoPoint getLocation(){
         return this.location;
     }

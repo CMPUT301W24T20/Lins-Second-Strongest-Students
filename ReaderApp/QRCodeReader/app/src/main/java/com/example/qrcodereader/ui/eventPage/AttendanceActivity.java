@@ -1,6 +1,8 @@
 package com.example.qrcodereader.ui.eventPage;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -11,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.Notifier;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
+import com.example.qrcodereader.entity.User;
+import com.example.qrcodereader.ui.admin.AdminUserActivity;
+import com.example.qrcodereader.ui.admin.UserDetailsAdminActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -22,43 +27,61 @@ public class AttendanceActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private DocumentReference docRefEvent;
     private final Notifier notifier = Notifier.getInstance(this);
+    private Map.Entry<String, Long> selectedUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_attendance);
-        ListView attendeesListView = findViewById(R.id.event_attendees);
+        ListView attendeesList = findViewById(R.id.event_attendees);
         String eventID = getIntent().getStringExtra("eventID");
         db = FirebaseFirestore.getInstance();
         docRefEvent = db.collection("events").document(eventID);
 
+
+
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
-                ArrayList<Map.Entry<String, Long>> attendeesList = new ArrayList<>(eventsAttended.entrySet());
+                ArrayList<Map.Entry<String, Long>> attendeesDataList = new ArrayList<>(eventsAttended.entrySet());
 
                 TextView notifyButton = findViewById(R.id.notify_button);
                 notifyButton.setOnClickListener(v -> {
-                    if (!attendeesList.isEmpty()) {
+                    if (!attendeesDataList.isEmpty()) {
                         notifier.prompt(AttendanceActivity.this, new Notifier.OnInputListener() {
                             @Override
                             public void onInput(String[] details) {
-                                notifier.notifyUsers(attendeesList, details, eventID);
+                                notifier.notifyUsers(attendeesDataList, details, eventID);
                             }
                         });
                     } else {
                         //No attendees found
-                        Toast.makeText(AttendanceActivity.this, "No attendees found", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(AttendanceActivity.this, "No attendees found", Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 // Create the custom adapter
-                AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesList);
+                AttendeeArrayAdapter attendeesAdapter = new AttendeeArrayAdapter(this, attendeesDataList);
                 // Set the custom adapter to the ListView
-                attendeesListView.setAdapter(attendeesAdapter);
+                attendeesList.setAdapter(attendeesAdapter);
+
+                attendeesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
+                        // Get the item that was clicked
+                        selectedUser = attendeesDataList.get(position);
+
+                        // Display a toast with the selected item
+                        Intent detailIntent = new Intent(AttendanceActivity.this, UserDetailsOrganizerActivity.class);
+                        detailIntent.putExtra("attendeeID", selectedUser.getKey());
+                        startActivity(detailIntent);
+                        selectedUser = null;
+                    }
+                });
             }
         });
+
 
         TextView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());

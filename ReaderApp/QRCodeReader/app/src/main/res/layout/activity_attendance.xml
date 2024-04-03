@@ -43,6 +43,44 @@
         android:text="@string/attendance"
         />
 
+    <LinearLayout
+        android:id="@+id/attendees_checked_in_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:weightSum="10"
+        app:layout_constraintTop_toBottomOf="@id/attendance_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="5dp"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/sky_blue"
+            android:layout_weight="5"
+            android:text="@string/attendees"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/sky_blue"
+            android:layout_weight="3"
+            android:text="@string/checked_in"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/sky_blue"
+            android:layout_weight="2"
+            android:text="@string/count"
+            android:gravity="end"/>
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/event_attendees"
@@ -51,10 +89,11 @@
         android:layout_weight="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/attendance_text"
+        app:layout_constraintTop_toBottomOf="@id/attendees_checked_in_count"
         app:layout_constraintBottom_toTopOf="@id/return_button"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="15dp">
+        android:layout_marginBottom="15dp"
+        android:layout_marginHorizontal="5dp">
 
     </ListView>
 
