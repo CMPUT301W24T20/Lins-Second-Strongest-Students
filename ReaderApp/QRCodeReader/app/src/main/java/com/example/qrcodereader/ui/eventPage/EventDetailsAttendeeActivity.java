@@ -58,7 +58,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
-        String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        String userid = AttendeeEventActivity.userID;
 
         TextView eventNameTextView = findViewById(R.id.event_name);
         TextView eventOrganizerTextView = findViewById(R.id.organizer);
