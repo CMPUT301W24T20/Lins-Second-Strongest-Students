@@ -2,6 +2,7 @@ package com.example.qrcodereader.ui.eventPage;
 import static android.content.ContentValues.TAG;
 
 import com.example.qrcodereader.MapView;
+import com.example.qrcodereader.MilestoneListeningService;
 import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
 
@@ -145,6 +146,9 @@ public class AttendeeEventActivity extends NavBar {
                 startActivity(intent);
             }
         });
+
+        setupMilestoneListener();
+
     }
 
     @Override
@@ -331,6 +335,12 @@ public class AttendeeEventActivity extends NavBar {
                 }
             }
         });
+    }
+
+    public void setupMilestoneListener() {
+        Log.d("MilestoneInit", "Initializing");
+        Intent intent = new Intent(this, MilestoneListeningService.class);
+        startService(intent);
     }
 
 }

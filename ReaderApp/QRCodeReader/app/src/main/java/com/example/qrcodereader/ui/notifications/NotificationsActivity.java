@@ -140,23 +140,6 @@ public class NotificationsActivity extends NavBar {
         return R.layout.activity_notifications;
     }
 
-    private void setupNavigation() {
-        /*
-        Configure navigation bar
-         */
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_camera, R.id.navigation_notifications)
-                .build();
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
-
-        // Get the NavController from the NavHostFragment
-        NavController navController = navHostFragment.getNavController();
-
-        NavigationUI.setupActionBarWithNavController(NotificationsActivity.this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
-    }
-
     private void removeItem(NotificationDetail item) {
         adapter.remove(item);
         adapter.notifyDataSetChanged();
