@@ -55,9 +55,10 @@ public class MilestoneListeningService extends Service {
                             public void onEvent(@Nullable QuerySnapshot snapshots,
                                                 @Nullable FirebaseFirestoreException e) {
                                 if (e != null) {
-                                    // Log the exception
+                                    Log.d("MilestoneFail", "Snapshot failed");
                                     return;
                                 }
+                                Log.d("MilestoneListener", "Listener triggered for event: " + eventId);
 
                                 // Get the current number of users
                                 int numUsers = snapshots.size();

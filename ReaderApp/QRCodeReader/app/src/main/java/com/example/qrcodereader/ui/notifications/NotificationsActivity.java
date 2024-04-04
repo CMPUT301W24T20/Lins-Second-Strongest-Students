@@ -115,7 +115,7 @@ public class NotificationsActivity extends NavBar {
         clearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (adapter.getCount() == 0) {
+                if (adapter == null || adapter.getCount() == 0) {
                     Toast.makeText(NotificationsActivity.this, "Nothing to delete", Toast.LENGTH_SHORT).show();
                 } else {
                     for (int i = 0; i <= adapter.getCount(); i++) {
