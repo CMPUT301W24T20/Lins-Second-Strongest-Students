@@ -86,6 +86,8 @@ public class AttendeeEventActivity extends NavBar {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
+    public static String userID;
+
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the ListView with the events attended by the user.
@@ -97,6 +99,7 @@ public class AttendeeEventActivity extends NavBar {
         LaunchSetUp appSetup = new LaunchSetUp(this);
         appSetup.setup();
         setContentView(R.layout.attendee_events);
+        userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         TextView title = findViewById(R.id.upcoming_events);
         title.setText(R.string.AtndTitle);

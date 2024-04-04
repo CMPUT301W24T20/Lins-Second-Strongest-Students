@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.QRCode;
+import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -61,7 +62,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details_admin);
-        String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        String userid = AttendeeEventActivity.userID;
 
         TextView eventNameTextView = findViewById(R.id.event_name);
         TextView eventOrganizerTextView = findViewById(R.id.event_organizer);

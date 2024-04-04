@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.qrcodereader.MainActivity;
+import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,13 +21,13 @@ public class NotificationDetail {
     private String event;
     private String title;
     private String body;
+    String userID = AttendeeEventActivity.userID;
 
     private void DeleteDocumentId() {
 
         final String[] id = new String[1];
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        DocumentReference userRef = db.collection("users").document(userId);
+        DocumentReference userRef = db.collection("users").document(userID);
 
         userRef.collection("notifications").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -46,7 +47,7 @@ public class NotificationDetail {
     private void RemoveFromFirebase(String docID) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference userRef = db.collection("users").document(MainActivity.userId);
+        DocumentReference userRef = db.collection("users").document(userID);
         DocumentReference notificationRef = userRef.collection("notifications").document(docID);
 
         notificationRef.delete()
