@@ -271,6 +271,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                                 isUploaded();
                             } else{
                                 // event.put ( the default poster)
+                                event.put("poster", "");
                                 AddEvent();
                             }
                             finish();

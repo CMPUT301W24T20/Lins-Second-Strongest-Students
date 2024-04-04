@@ -116,6 +116,7 @@
             android:id="@+id/PosterUpload"
             android:layout_width="match_parent"
             android:layout_height="130sp"
+            android:scaleType="fitCenter"
             tools:srcCompat="@tools:sample/avatars" />
 
     </LinearLayout>

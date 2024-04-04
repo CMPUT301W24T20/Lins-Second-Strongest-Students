@@ -193,7 +193,7 @@ public class OrganizerEventActivity extends NavBar {
                                     QRCode qrCode = new QRCode(documentSnapshot.getString("qrCode"));
                                     int attendeeLimit = documentSnapshot.getLong("attendeeLimit").intValue();
                                     Map<String, Long> attendees = (Map<String, Long>) documentSnapshot.get("attendees");
-                                    String EPoster = documentSnapshot.getString("EPoster");
+                                    String EPoster = documentSnapshot.getString("poster");
 
                                     Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
 
