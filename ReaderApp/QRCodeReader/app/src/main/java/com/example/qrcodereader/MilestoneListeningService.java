@@ -11,14 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Map;
 
 public class MilestoneListeningService extends Service {
 
@@ -45,32 +49,35 @@ public class MilestoneListeningService extends Service {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String eventId = document.getId();
+                    for (QueryDocumentSnapshot event : task.getResult()) {
+                        String eventId = event.getId();
                         DocumentReference eventRef = eventsRef.document(eventId);
 
-                        // Set up a listener for each event's users subcollection
-                        CollectionReference usersRef = eventRef.collection("users");
-                        usersRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        // Set up a listener for each event's attendees subcollection
+                        eventRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
-                            public void onEvent(@Nullable QuerySnapshot snapshots,
-                                                @Nullable FirebaseFirestoreException e) {
-                                if (e != null) {
-                                    Log.d("MilestoneFail", "Snapshot failed");
-                                    return;
-                                }
-                                Log.d("MilestoneListener", "Listener triggered for event: " + eventId);
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.exists()) {
+                                    Map<String, Object> attendeesMap = (Map<String, Object>) documentSnapshot.get("attendees");
 
-                                // Get the current number of users
-                                int numUsers = snapshots.size();
+                                    if (attendeesMap != null) {
+                                        // Get the current number of attendees
+                                        int numUsers = attendeesMap.size();
 
-                                // Assign milestone
-                                int milestone = 10;
+                                        // Assign milestone
+                                        int milestone = 10;
 
-                                // Check if the number of users has reached the milestone
-                                if (numUsers % milestone == 0 && numUsers > 9) {
-                                    // Call the milestoneNotify method
-                                    notifier.milestoneNotification(eventId, numUsers);
+                                        // Check if the number of attendees has reached the milestone
+                                        if (numUsers % 10 == 0 && numUsers > 9) {
+                                            // Call the milestoneNotify method
+                                            notifier.milestoneNotification(eventId, numUsers);
+                                            Log.d("Event Notified:", "ID:" + eventId);
+                                        }
+                                    } else {
+                                        Log.d("MilestoneFail", "No attendees map in the document");
+                                    }
+                                } else {
+                                    Log.d("MilestoneFail", "Document does not exist");
                                 }
                             }
                         });
