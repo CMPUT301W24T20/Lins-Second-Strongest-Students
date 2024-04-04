@@ -93,13 +93,14 @@ public class BrowseEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
 
-        ListView eventList = findViewById(R.id.event_list_browse);
+        ListView eventList = findViewById(R.id.event_list);
         eventDataList = new ArrayList<>();
 
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
         eventList.setAdapter(eventArrayAdapter);
 
         fetchLocal(this);
+        fetchBrowseEvents();
         setupRealTimeEventUpdates();
 
         eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -130,7 +131,12 @@ public class BrowseEventActivity extends AppCompatActivity {
         });
 
         TextView returnButton = findViewById(R.id.return_button_browse);
-        returnButton.setOnClickListener(v -> finish());
+        returnButton.setOnClickListener(v -> {
+            Intent intent = new Intent(BrowseEventActivity.this, AttendeeEventActivity.class);
+            // Flags to clear activities on top of AttendeeEventActivity and reuse the same instance
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        });
     }
 
 
@@ -363,28 +369,33 @@ public class BrowseEventActivity extends AppCompatActivity {
         executorService.execute(() -> {
             ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
 
-            if (tempEventDataList.size() >= 2) {
-                Collections.sort(tempEventDataList, new Comparator<Event>() {
-                    @Override
-                    public int compare(Event e1, Event e2) {
-                        // Assuming getTime() returns a Comparable type
-                        return e1.getTime().compareTo(e2.getTime()); // Ascending
-                    }
-                });
+            if (tempEventDataList == null) {
+                tempEventDataList = new ArrayList<>();
+            }
+            else {
+                if (tempEventDataList.size() >= 2) {
+                    Collections.sort(tempEventDataList, new Comparator<Event>() {
+                        @Override
+                        public int compare(Event e1, Event e2) {
+                            // Assuming getTime() returns a Comparable type
+                            return e1.getTime().compareTo(e2.getTime()); // Ascending
+                        }
+                    });
+                }
             }
 
-            //ArrayList<Event> finalList = new ArrayList<>(tempEventDataList); // Prepare final list in background
+            ArrayList<Event> finalList = tempEventDataList;
 
             // Post to main thread to update UI components
             mainThreadHandler.post(() -> {
                 eventDataList.clear();
-                eventDataList = tempEventDataList;
+                eventDataList = finalList;
 
                 eventArrayAdapter.clear();
                 for (Event event : eventDataList) {
                     eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
                 }
-                eventArrayAdapter.notifyDataSetChanged(); // This must be on the main thread
+                eventArrayAdapter.notifyDataSetChanged();
             });
         });
     }

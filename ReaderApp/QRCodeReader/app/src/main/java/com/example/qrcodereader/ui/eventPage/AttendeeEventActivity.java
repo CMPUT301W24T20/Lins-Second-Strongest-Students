@@ -59,6 +59,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 // OpenAI, 2024, ChatGPT, Prompt the error message from logcat and the code snippet that caused the error
@@ -80,6 +82,8 @@ public class AttendeeEventActivity extends NavBar {
     private List<String> attendeeEvents;
     private ArrayList<Event> eventDataList;
     private EventArrayAdapter eventArrayAdapter;
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
     /**
      * This method is called when the activity is starting.
@@ -133,7 +137,8 @@ public class AttendeeEventActivity extends NavBar {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AttendeeEventActivity.this, BrowseEventActivity.class);
-                // Sending the user object to BrowseEventActivity
+                // Use FLAG_ACTIVITY_REORDER_TO_FRONT to bring an existing instance to the front
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         });
@@ -192,26 +197,39 @@ public class AttendeeEventActivity extends NavBar {
     }
 
     public void fetchLocal(Context context) {
-        ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
-        if(tempEventDataList != null) {
-            eventDataList = tempEventDataList;
-            eventDataList.clear();
+        // Execute in background
+        executorService.execute(() -> {
+            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
 
-            if (eventDataList.size() >= 2) {
-                Collections.sort(eventDataList, new Comparator<Event>() {
-                    @Override
-                    public int compare(Event e1, Event e2) {
-                        return e1.getTime().compareTo(e2.getTime()); // Ascending
-                    }
-                });
+            if (tempEventDataList == null) {
+                tempEventDataList = new ArrayList<>();
+            }
+            else {
+                if (tempEventDataList.size() >= 2) {
+                    Collections.sort(tempEventDataList, new Comparator<Event>() {
+                        @Override
+                        public int compare(Event e1, Event e2) {
+                            // Assuming getTime() returns a Comparable type
+                            return e1.getTime().compareTo(e2.getTime()); // Ascending
+                        }
+                    });
+                }
             }
 
-            for (Event event : eventDataList) {
-                eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
-            }
+            // Post to main thread to update UI components
+            ArrayList<Event> finalTempEventDataList = tempEventDataList;
 
-            eventArrayAdapter.notifyDataSetChanged();
-        }
+            mainThreadHandler.post(() -> {
+                eventDataList.clear();
+                eventDataList = finalTempEventDataList;
+
+                eventArrayAdapter.clear();
+                for (Event event : eventDataList) {
+                    eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+                }
+                eventArrayAdapter.notifyDataSetChanged(); // This must be on the main thread
+            });
+        });
     }
 
     public void fetchAttendeeEvents() {
@@ -244,33 +262,52 @@ public class AttendeeEventActivity extends NavBar {
                                     return;
                                 }
                                 if (querySnapshots != null) {
-                                    ArrayList<Event> events = new ArrayList<>();
+                                    executorService.execute(() -> {
+                                        ArrayList<Event> events = new ArrayList<>();
 
-                                    for (QueryDocumentSnapshot doc : querySnapshots) {
-                                        String id = doc.getId();
+                                        for (QueryDocumentSnapshot doc : querySnapshots) {
+                                            String id = doc.getId();
 
-                                        // Check if the user has attended the event
-                                        if (attendeeEvents.containsKey(id)) {
-                                            String name = doc.getString("name");
-                                            GeoPoint location = doc.getGeoPoint("location");
-                                            String locationName = doc.getString("locationName");
-                                            Timestamp time = doc.getTimestamp("time");
-                                            String organizer = doc.getString("organizer");
-                                            String organizerID = doc.getString("organizerID");
-                                            QRCode qrCode = new QRCode(doc.getString("qrCode"));
-                                            int attendeeLimit = doc.getLong("attendeeLimit").intValue();
-                                            Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-                                            String EPoster = doc.getString("EPoster");
+                                            // Check if the user has attended the event
+                                            if (attendeeEvents.containsKey(id)) {
+                                                String name = doc.getString("name");
+                                                GeoPoint location = doc.getGeoPoint("location");
+                                                String locationName = doc.getString("locationName");
+                                                Timestamp time = doc.getTimestamp("time");
+                                                String organizer = doc.getString("organizer");
+                                                String organizerID = doc.getString("organizerID");
+                                                QRCode qrCode = new QRCode(doc.getString("qrCode"));
+                                                int attendeeLimit = doc.getLong("attendeeLimit").intValue();
+                                                Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
+                                                String EPoster = doc.getString("EPoster");
 
-                                            Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
+                                                Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
 
-                                            events.add(event);
+                                                events.add(event);
+                                            }
                                         }
-                                    }
 
-                                    LocalEventsStorage.saveEvents(AttendeeEventActivity.this, events, "attendeeEvents.json");
-                                    AppDataHolder.getInstance().loadAttendeeEvents(AttendeeEventActivity.this);
-                                    updateAdapter(events);
+                                        LocalEventsStorage.saveEvents(AttendeeEventActivity.this, events, "attendeeEvents.json");
+                                        AppDataHolder.getInstance().loadAttendeeEvents(AttendeeEventActivity.this);
+
+                                        if (events.size() >= 2) {
+                                            Collections.sort(events, new Comparator<Event>() {
+                                                @Override
+                                                public int compare(Event e1, Event e2) {
+                                                    return e1.getTime().compareTo(e2.getTime()); // Ascending
+                                                }
+                                            });
+                                        }
+
+                                        mainThreadHandler.post(() -> {
+                                            eventDataList = events;
+                                            eventArrayAdapter.clear();
+                                            for (Event event : events) {
+                                                eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+                                            }
+                                            eventArrayAdapter.notifyDataSetChanged();
+                                        });
+                                    });
                                 }
                             }
                         });

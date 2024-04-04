@@ -69,10 +69,14 @@
     <string name="map_string">map</string>
     <string name="attendees">Attendees</string>
     <string name="attendance">Attendance</string>
-    <string name="checked_in">Checked in: </string>
-    <string name="check_in_count">Check-in count: </string>
+    <string name="checked_in">Checked in</string>
+    <string name="count">Count</string>
     <string name="notify">Notify</string>
+    <string name="events_cap">Events</string>
+    <string name="users_cap">Users</string>
+
     <string name="ImagesText">Images</string>
     <string name="OrgTitle">My created events</string>
     <string name="AtndTitle"> Signed up events</string>
+
 </resources>
