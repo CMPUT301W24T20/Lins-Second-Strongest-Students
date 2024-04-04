@@ -21,6 +21,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.ui.profile.ProfileActivity;
+import com.example.qrcodereader.ui.profile.ProfileEditFrag;
 import com.example.qrcodereader.util.SetDefaultProfile;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.ValueEventListener;
@@ -42,6 +44,8 @@ public class AdminImageView extends DialogFragment {
     private ImageAdapter adapter;
     private StorageReference storageRef;
     private String TypeRef;
+
+
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_activity_admin_image_list, null);

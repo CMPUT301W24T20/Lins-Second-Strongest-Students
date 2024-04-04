@@ -136,7 +136,8 @@ public class AttendeeEventActivity extends NavBar {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AttendeeEventActivity.this, BrowseEventActivity.class);
-                // Sending the user object to BrowseEventActivity
+                // Use FLAG_ACTIVITY_REORDER_TO_FRONT to bring an existing instance to the front
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         });
@@ -194,7 +195,7 @@ public class AttendeeEventActivity extends NavBar {
     public void fetchLocal(Context context) {
         // Execute in background
         executorService.execute(() -> {
-            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
+            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getAttendeeEvents(context);
 
             if (tempEventDataList == null) {
                 tempEventDataList = new ArrayList<>();

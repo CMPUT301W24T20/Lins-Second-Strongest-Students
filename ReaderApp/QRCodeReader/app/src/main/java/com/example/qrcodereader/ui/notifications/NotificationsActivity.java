@@ -3,6 +3,7 @@ package com.example.qrcodereader.ui.notifications;
 import static androidx.core.content.ContextCompat.registerReceiver;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,13 +43,14 @@ public class NotificationsActivity extends NavBar {
     private Button clearAll;
     private Button returnButton;
     private NotificationAdapter adapter;
-    private final String userID = MainActivity.userId;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setupNavigation();
         setContentView(R.layout.activity_notifications);
+        userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         Log.d("ID:", "=" + userID);
 
         deleteOne = findViewById(R.id.delete_button);
@@ -115,7 +117,7 @@ public class NotificationsActivity extends NavBar {
         clearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (adapter.getCount() == 0) {
+                if (adapter == null || adapter.getCount() == 0) {
                     Toast.makeText(NotificationsActivity.this, "Nothing to delete", Toast.LENGTH_SHORT).show();
                 } else {
                     for (int i = 0; i <= adapter.getCount(); i++) {

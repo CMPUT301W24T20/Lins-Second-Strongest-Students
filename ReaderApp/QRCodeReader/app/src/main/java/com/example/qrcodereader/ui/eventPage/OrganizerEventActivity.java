@@ -116,6 +116,7 @@ public class OrganizerEventActivity extends NavBar {
             Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
             intent.putExtra("userid", userid);
             intent.putExtra("username", username);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         });
         TextView mapButton = findViewById(R.id.map_button);
@@ -269,7 +270,7 @@ public class OrganizerEventActivity extends NavBar {
     public void fetchLocal(Context context) {
         // Execute in background
         executorService.execute(() -> {
-            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getBrowseEvents(context);
+            ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getOrganizerEvents(context);
 
             if (tempEventDataList == null) {
                 tempEventDataList = new ArrayList<>();

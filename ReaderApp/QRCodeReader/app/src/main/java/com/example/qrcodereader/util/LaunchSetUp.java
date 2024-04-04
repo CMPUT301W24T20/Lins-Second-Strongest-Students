@@ -50,6 +50,7 @@ public class LaunchSetUp {
 
     public void setup() {
         initializeFirestore();
+        AppDataHolder.getInstance().loadData(context);
         if (!areNotificationsEnabled()) {
             showEnableNotificationsDialog();
         }
