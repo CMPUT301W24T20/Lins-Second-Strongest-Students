@@ -1,5 +1,6 @@
 package com.example.qrcodereader.ui.notifications;
 
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -24,7 +25,8 @@ public class NotificationDetail {
 
         final String[] id = new String[1];
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference userRef = db.collection("users").document(MainActivity.userId);
+        String userId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        DocumentReference userRef = db.collection("users").document(userId);
 
         userRef.collection("notifications").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

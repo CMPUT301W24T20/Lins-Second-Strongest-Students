@@ -8,6 +8,7 @@ import com.example.qrcodereader.R;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -377,7 +378,9 @@ public class AttendeeEventActivity extends NavBar {
     public void setupMilestoneListener() {
         Log.d("MilestoneInit", "Initializing");
         Intent intent = new Intent(this, MilestoneListeningService.class);
-        startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startService(intent);
+        }
     }
 
 }

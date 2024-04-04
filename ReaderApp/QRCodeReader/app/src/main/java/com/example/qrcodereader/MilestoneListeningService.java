@@ -68,9 +68,9 @@ public class MilestoneListeningService extends Service {
                                 int milestone = 10;
 
                                 // Check if the number of users has reached the milestone
-                                if (numUsers % milestone == 0) {
+                                if (numUsers % milestone == 0 && numUsers > 9) {
                                     // Call the milestoneNotify method
-                                    notifier.milestoneNotification(eventId, milestone);
+                                    notifier.milestoneNotification(eventId, numUsers);
                                 }
                             }
                         });
