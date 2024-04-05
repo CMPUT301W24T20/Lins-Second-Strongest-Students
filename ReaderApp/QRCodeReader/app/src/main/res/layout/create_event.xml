@@ -244,7 +244,7 @@
             />
     </LinearLayout>
 
-    <TextView android:id="@+id/browse_button"
+    <TextView android:id="@+id/create_button"
         android:textSize="25sp"
         android:textColor="@color/_bg__android_small___1_ek2_color"
         android:layout_width="wrap_content"
