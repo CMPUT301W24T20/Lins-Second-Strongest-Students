@@ -73,7 +73,7 @@ public class AllButtonsTest {
         intended(hasComponent(AttendeeEventActivity.class.getName()));
 
         //Click the return button
-        onView(withId(R.id.return_button_attendee)).perform(click());
+        onView(withId(R.id.return_button)).perform(click());
 
         // Perform a click on the events button again
         onView(withId(R.id.my_event_button)).perform(click());

@@ -41,6 +41,17 @@ public class User implements Serializable {
 
     }
 
+    public User(String deviceID, String userName, String email, String phoneRegion, String phone) {
+        this.userID = deviceID;
+        this.name = userName;
+        this.email = email;
+        this.phoneRegion = phoneRegion;
+        this.phone = phone;
+        this.eventsAttended = new HashMap<String, Long>();
+        this.location = null;
+        this.ProfilePic = null;
+    }
+
     public User(String deviceID, String userName, GeoPoint location, Map<String, Long> eventsAttended, String image) {
         this.userID = deviceID;
         this.name = userName;

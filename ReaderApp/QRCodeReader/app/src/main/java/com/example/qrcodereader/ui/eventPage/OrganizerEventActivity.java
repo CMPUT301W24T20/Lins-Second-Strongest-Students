@@ -86,7 +86,8 @@ public class OrganizerEventActivity extends NavBar {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.attendee_events);
+        getSupportActionBar().hide();
+        setContentView(R.layout.organizer_events);
         TextView title = findViewById(R.id.upcoming_events);
         title.setText(R.string.OrgTitle);
 
@@ -118,15 +119,6 @@ public class OrganizerEventActivity extends NavBar {
             intent.putExtra("username", username);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
-        });
-        TextView mapButton = findViewById(R.id.map_button);
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(OrganizerEventActivity.this, MapViewOrganizer.class);
-                // Sending the user object to BrowseEventActivity
-                startActivity(intent);
-            }
         });
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
