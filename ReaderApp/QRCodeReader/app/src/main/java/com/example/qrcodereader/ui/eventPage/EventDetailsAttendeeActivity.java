@@ -64,8 +64,8 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initializeFirestore();
         super.onCreate(savedInstanceState);
+        
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
         userid = AttendeeEventActivity.userID;
@@ -76,7 +76,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         TextView eventTimeTextView = findViewById(R.id.time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
 
-
+        initializeFirestore();
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
