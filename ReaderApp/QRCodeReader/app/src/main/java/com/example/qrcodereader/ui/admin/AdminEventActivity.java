@@ -11,6 +11,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -52,8 +53,6 @@ public class AdminEventActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
-    private DocumentReference userDocRef;
-    private DocumentReference eventDocRef;
     private Event selectedEvent = null;
     private boolean isFetching = false;
     private static final int PAGE_SIZE = 10;
@@ -113,8 +112,7 @@ public class AdminEventActivity extends AppCompatActivity {
         */
 
 
-
-        Button returnButton = findViewById(R.id.return_button);
+        TextView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
     }
 
