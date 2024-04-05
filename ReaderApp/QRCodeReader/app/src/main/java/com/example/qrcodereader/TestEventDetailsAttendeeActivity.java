@@ -1,24 +1,19 @@
-package com.example.qrcodereader.ui.eventPage;
+package com.example.qrcodereader;
 
-import com.example.qrcodereader.R;
-
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
-import com.example.qrcodereader.entity.QRCode;
+import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
+import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -27,21 +22,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
-
-/**
- *  Activity for users to view details of event they want to sign up to.
- *  <p>
- *      This is where the sign up operation happen
- *  </p>
- *  @author Son and Duy
- */
-public class EventDetailsAttendeeActivity extends AppCompatActivity {
-
+public class TestEventDetailsAttendeeActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefUser;
@@ -49,21 +33,9 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     private Event selectedEvent;
     String eventID;
     String userid;
-    boolean success = false;
-    protected void initializeFirestore() {
-        db = FirebaseFirestore.getInstance();
-        eventID = getIntent().getStringExtra("eventID");
-        docRefEvent = db.collection("events").document(eventID);
-        docRefUser = db.collection("users").document(userid);
-    }
-    /**
-     * This method is called when the activity is starting.
-     * It initializes the activity, sets up the Firestore references, and populates the views with event data.
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
-     */
-    @SuppressLint("SetTextI18n")
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         initializeFirestore();
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
@@ -163,12 +135,13 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         returnButton.setOnClickListener(v -> finish());
     }
 
-
-    public boolean getSuccess() {
-        return success;
+    protected void initializeFirestore() {
+        db = FirebaseFirestore.getInstance();
+        docRefEvent = db.collection("eventsTest").document("vtLdBOt2ujnXybkviXg9");
+        docRefUser = db.collection("usersTest").document("1d141a0fd4e29d60");
     }
 
-    public FirebaseFirestore getDb() {
-        return db;
+    public DocumentReference getDocRefEvent() {
+        return docRefEvent;
     }
 }

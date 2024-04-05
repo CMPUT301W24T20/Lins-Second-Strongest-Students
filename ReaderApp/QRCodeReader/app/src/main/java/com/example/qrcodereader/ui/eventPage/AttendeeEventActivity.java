@@ -130,7 +130,9 @@ public class AttendeeEventActivity extends NavBar {
                 // Get the selected event
                 Event selectedEvent = eventDataList.get(position);
                 // Show event details in a dialog
-                showEventDetailsDialog(selectedEvent);
+                Intent detailIntent = new Intent(AttendeeEventActivity.this, EventRemoveAttendeeActivity.class);
+                detailIntent.putExtra("eventID", selectedEvent.getEventID());
+                startActivity(detailIntent);
             }
         });
 
@@ -159,6 +161,7 @@ public class AttendeeEventActivity extends NavBar {
         });
 
         setupMilestoneListener();
+
 
     }
 

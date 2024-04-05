@@ -83,5 +83,6 @@
     <string name="title">Title</string>
     <string name="body">Body</string>
     <string name="event">Event</string>
+    <string name="upload_poster">Upload Poster</string>
 
 </resources>
