@@ -7,12 +7,15 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.GrantPermissionRule;
 
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,29 +24,34 @@ import org.junit.runner.RunWith;
 public class SignUpTest {
 
     @Rule
-    public ActivityScenarioRule<TestEventDetailsAttendeeActivity> activityScenarioRule = new ActivityScenarioRule<>(TestEventDetailsAttendeeActivity.class);
-
-    @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.INTERNET);
+
+    @Before
+    public void setUp() {
+        // Set the Firestore collections to test versions
+        FirestoreManager.getInstance().setEventCollection("eventsTest");
+        FirestoreManager.getInstance().setUserCollection("usersTest");
+        FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
+        FirestoreManager.getInstance().setEventDocRef("vtLdBOt2ujnXybkviXg9");
+    }
 
     @Test
     public void whenButtonIsPressed_VariableShouldChange() {
-        // Use Espresso to find the button and click it
-//        onView(withId(R.id.sign_up_button)).perform(click());
 
-        // Now you can retrieve the activity and check the variable's state
-        // This assumes that your activity has a method to get the variable
-//        activityScenarioRule.getScenario().onActivity(activity -> {
-//            assertTrue("Boolean should be true after clicking the sign-up button", activity.getSuccess());
-//        });
+        try (ActivityScenario<EventDetailsAttendeeActivity> scenario = ActivityScenario.launch(EventDetailsAttendeeActivity.class)) {
+            // Rest of your test code...
 
-        activityScenarioRule.getScenario().onActivity(activity -> {
-            assertNotNull("Boolean should be true after clicking the sign-up button", activity.getDb());
-        });
+            // Use Espresso to find the button and click it
+            onView(withId(R.id.sign_up_button)).perform(click());
 
-        activityScenarioRule.getScenario().onActivity(activity -> {
-            assertNotNull("Boolean should be true after clicking the sign-up button", activity.getDocRefEvent());
-        });
+            // Now you can retrieve the activity and check the variable's state
+            // This assumes that your activity has a method to get the variable
+            scenario.onActivity(activity -> {
+                assertNotNull("Boolean should be true after clicking the sign-up button", activity.getDb());
+                assertNotNull("Boolean should be true after clicking the sign-up button", activity.getDocRefEvent());
+                assertTrue("Boolean should be true after clicking the sign-up button", activity.getSuccess());
+            });
+        }
     }
 }
 
