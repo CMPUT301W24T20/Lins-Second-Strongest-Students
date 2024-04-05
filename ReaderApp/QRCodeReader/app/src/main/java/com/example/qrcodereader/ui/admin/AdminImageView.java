@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -18,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
@@ -39,56 +42,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminImageView extends DialogFragment {
-    private GridView imageGridView;
+    private RecyclerView imageRecyclerView;
     private List<String> selectedImages;
+    private List<String> loadedImages;
     private ImageAdapter adapter;
     private StorageReference storageRef;
     private String TypeRef;
 
-
+    @Nullable
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_activity_admin_image_list, null);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.fragment_activity_admin_image_list, null);
 
         String Title = getArguments().getString("Title");
         TypeRef = getArguments().getString("Type");
 
         storageRef = FirebaseStorage.getInstance().getReference().child(TypeRef);
 
-        imageGridView = view.findViewById(R.id.imageGridView);
+        imageRecyclerView = view.findViewById(R.id.imageRecyclerView);
+        loadedImages  = new ArrayList<>();
         selectedImages = new ArrayList<>();
         adapter = new ImageAdapter(requireContext(), selectedImages);
-        imageGridView.setAdapter(adapter);
+        imageRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3)); // 3 columns grid layout
+        imageRecyclerView.setAdapter(adapter);
 
         populateListView();
 
-        imageGridView.setOnItemClickListener((parent, view1, position, id) -> {
-            String imageUrl = (String) parent.getItemAtPosition(position);
-            if (selectedImages.contains(imageUrl)) { // deselect
-                selectedImages.remove(imageUrl);
-            } else {
-                selectedImages.add(imageUrl); //select
-            }
-            adapter.notifyDataSetChanged();
-        });
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view)
                 .setTitle(Title)
-                .setNegativeButton("Cancel", null) // do nothing and close
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    // able to press Save Button, it is not greyed out == input in edit texts are valid
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        deleteSelectedImages();
-                    }
-                });
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Save", (dialog, which) -> deleteSelectedImages());
 
-        AlertDialog alertDialog = builder.create();
-
-
-        return alertDialog;
+        return builder.create();
     }
 
     private void populateListView() {

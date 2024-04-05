@@ -27,7 +27,6 @@ import com.example.qrcodereader.util.ImageUpload;
 import com.example.qrcodereader.entity.QRCode;
 
 import com.example.qrcodereader.R;
-//import com.google.android.libraries.places.api.Places;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
