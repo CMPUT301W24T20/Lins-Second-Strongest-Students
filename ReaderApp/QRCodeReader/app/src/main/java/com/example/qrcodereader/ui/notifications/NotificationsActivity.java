@@ -48,8 +48,9 @@ public class NotificationsActivity extends NavBar {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
 //        setupNavigation();
-        setContentView(R.layout.activity_notifications);
+        setContentView(R.layout.notification_page);
         userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         Log.d("ID:", "=" + userID);
 
@@ -57,7 +58,6 @@ public class NotificationsActivity extends NavBar {
         clearAll = findViewById(R.id.clear_button);
         returnButton = findViewById(R.id.return_button);
         ListView listView = findViewById(R.id.notification_list);
-        TextView noMessages = findViewById(R.id.no_messages);
         setupTextViewButton(R.id.home_button);
         setupTextViewButton(R.id.event_button);
         setupTextViewButton(R.id.scanner_button);
@@ -85,14 +85,9 @@ public class NotificationsActivity extends NavBar {
                         }
                     });
         } catch (NullPointerException e) {
-            noMessages.setVisibility(View.VISIBLE);
             Toast.makeText(NotificationsActivity.this, "No New Messages", Toast.LENGTH_SHORT).show();
         }
 
-        if (adapter == null || adapter.getCount() < 1) {
-            noMessages.setVisibility(View.VISIBLE);
-            Toast.makeText(NotificationsActivity.this, "No New Messages", Toast.LENGTH_SHORT).show();
-        }
 
         final Object[] lastTappedItem = new Object[1];
 

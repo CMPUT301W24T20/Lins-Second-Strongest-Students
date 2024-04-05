@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,9 +33,11 @@ public class UserDetailsOrganizerActivity extends AppCompatActivity {
         TextView userPhoneRegion = findViewById(R.id.phone_region);
         TextView userPhone = findViewById(R.id.phone);
 
+
+
         String attendeeID = getIntent().getStringExtra("attendeeID");
         db = FirebaseFirestore.getInstance();
-        docRefUser = db.collection("events").document(attendeeID);
+        docRefUser = db.collection("users").document(attendeeID);
 
         // Removing remove button from layout
         TextView removeButton = findViewById(R.id.remove_button);
@@ -46,22 +49,25 @@ public class UserDetailsOrganizerActivity extends AppCompatActivity {
                 String email = documentSnapshot.getString("email");
                 String phoneRegion= documentSnapshot.getString("phoneRegion");
                 String phone= documentSnapshot.getString("phone");
-                Log.d("Firestore", "Successfully fetch document: ");
-
                 userName.setText(name);
                 userEmail.setText(email);
                 userPhoneRegion.setText(phoneRegion);
                 userPhone.setText(phone);
+                Log.d("Firestore", "Successfully fetch document: ");
 
 //                List<String> attendeesList = new ArrayList<>(usersAttended.keySet());
 //                ArrayAdapter<String> adapter = new ArrayAdapter<>(
 //                        this, android.R.layout.simple_list_item_1, attendeesList);
 //                attendeesListView.setAdapter(adapter);
 
+            } else {
+                Toast.makeText(UserDetailsOrganizerActivity.this, "Unsuccessfully fetch document", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(e -> {
+            Toast.makeText(UserDetailsOrganizerActivity.this, "Unsuccessfully fetch document", Toast.LENGTH_SHORT).show();
             Log.d("Firestore", "Failed to fetch document");
         });
+
 
         TextView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());

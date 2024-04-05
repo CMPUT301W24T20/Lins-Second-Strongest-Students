@@ -92,6 +92,7 @@ public class AttendeeEventActivity extends NavBar {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         LaunchSetUp appSetup = new LaunchSetUp(this);
         appSetup.setup();
         setContentView(R.layout.attendee_events);
@@ -138,15 +139,6 @@ public class AttendeeEventActivity extends NavBar {
                 Intent intent = new Intent(AttendeeEventActivity.this, BrowseEventActivity.class);
                 // Use FLAG_ACTIVITY_REORDER_TO_FRONT to bring an existing instance to the front
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-            }
-        });
-        TextView mapButton = findViewById(R.id.map_button);
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AttendeeEventActivity.this, MapView.class);
-                // Sending the user object to BrowseEventActivity
                 startActivity(intent);
             }
         });

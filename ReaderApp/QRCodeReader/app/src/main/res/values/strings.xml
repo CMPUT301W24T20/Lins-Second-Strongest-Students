@@ -77,5 +77,11 @@
     <string name="ImagesText">Images</string>
     <string name="OrgTitle">My created events</string>
     <string name="AtndTitle"> Signed up events</string>
+    <string name="notification">Notification</string>
+    <string name="delete">Delete</string>
+    <string name="clear_all">Clear All</string>
+    <string name="title">Title</string>
+    <string name="body">Body</string>
+    <string name="event">Event</string>
 
 </resources>

@@ -2,6 +2,7 @@ package com.example.qrcodereader.ui.eventPage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -75,6 +76,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         // Display a toast with the selected item
                         Intent detailIntent = new Intent(AttendanceActivity.this, UserDetailsOrganizerActivity.class);
                         detailIntent.putExtra("attendeeID", selectedUser.getKey());
+                        Log.d("UserDetailsOrganizer", "Received attendee ID: " + selectedUser.getKey());
                         startActivity(detailIntent);
                         selectedUser = null;
                     }

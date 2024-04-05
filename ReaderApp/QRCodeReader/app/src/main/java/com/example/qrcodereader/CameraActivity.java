@@ -63,6 +63,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     public void onCreate(Bundle savedInstanceState) {
         //Set up fragment
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.fragment_camera);
         scanButton = (Button) findViewById(R.id.scan_button);
         scanButton.setOnClickListener(this);
