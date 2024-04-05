@@ -39,9 +39,9 @@ import java.util.List;
  */
 public class NotificationsActivity extends NavBar {
 
-    private Button deleteOne;
-    private Button clearAll;
-    private Button returnButton;
+    private TextView deleteOne;
+    private TextView clearAll;
+    private TextView returnButton;
     private NotificationAdapter adapter;
     private String userID;
 

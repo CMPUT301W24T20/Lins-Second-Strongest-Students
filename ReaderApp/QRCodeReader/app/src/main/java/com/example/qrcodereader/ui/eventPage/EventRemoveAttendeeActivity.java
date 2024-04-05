@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
-import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -76,6 +75,7 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
         //ListView attendeesListView = findViewById(R.id.event_attendees);
         TextView removeButton = findViewById(R.id.sign_up_button);
         removeButton.setText("Remove");
+
 
         docRefEvent = FirestoreManager.getInstance().getEventDocRef();
         docRefUser = FirestoreManager.getInstance().getUserDocRef();

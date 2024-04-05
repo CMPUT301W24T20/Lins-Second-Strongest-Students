@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
-import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,6 +59,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
 
@@ -67,6 +67,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         eventID = FirestoreManager.getInstance().getEventID();
         docRefEvent = FirestoreManager.getInstance().getEventDocRef();
         docRefUser = FirestoreManager.getInstance().getUserDocRef();
+
 
         TextView eventNameTextView = findViewById(R.id.event_name);
         TextView eventOrganizerTextView = findViewById(R.id.organizer);
