@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.Notifier;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.admin.AdminUserActivity;
 import com.example.qrcodereader.ui.admin.UserDetailsAdminActivity;
@@ -36,9 +37,8 @@ public class AttendanceActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_attendance);
         ListView attendeesList = findViewById(R.id.event_attendees);
-        String eventID = getIntent().getStringExtra("eventID");
-        db = FirebaseFirestore.getInstance();
-        docRefEvent = db.collection("events").document(eventID);
+        String eventID = FirestoreManager.getInstance().getEventID();
+        docRefEvent = FirestoreManager.getInstance().getEventDocRef();
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {

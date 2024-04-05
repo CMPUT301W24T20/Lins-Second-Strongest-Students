@@ -31,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.ImageUpload;
 import com.example.qrcodereader.MainActivity;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 
 import com.example.qrcodereader.R;
@@ -107,14 +108,13 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_create_event);
 
-        db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
+        eventsRef = FirestoreManager.getInstance().getEventCollection();
 
         eventDateTime = Calendar.getInstance();
 
         eventName = findViewById(R.id.event_name);
 
-        deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        deviceID = FirestoreManager.getInstance().getUserID();
 
         checkForPastEventsAndToggleCheckbox();
 

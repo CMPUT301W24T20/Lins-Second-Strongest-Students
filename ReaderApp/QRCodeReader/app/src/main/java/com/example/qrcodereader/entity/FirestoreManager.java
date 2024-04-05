@@ -68,4 +68,8 @@ public class FirestoreManager {
     public String getEventID() {
         return eventDocRef;
     }
+
+    public FirebaseFirestore getDb() {
+        return db;
+    }
 }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.admin.AdminAllOptionsFrag;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.admin.AdminImagesOptionActivity;
@@ -54,9 +55,9 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         TextView Edit = findViewById(R.id.EditButton);
         Picture = findViewById(R.id.user_profile_photo);
 
-        String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        docRefUser = db.collection("users").document(deviceID);
+        FirebaseFirestore db = FirestoreManager.getInstance().getDb();
+        String deviceID = FirestoreManager.getInstance().getUserID();
+        docRefUser = FirestoreManager.getInstance().getUserDocRef();
 
         docRefUser.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {

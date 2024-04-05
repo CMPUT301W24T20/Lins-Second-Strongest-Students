@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.util.AppDataHolder;
 import com.example.qrcodereader.util.EventFetcher;
@@ -127,7 +128,7 @@ public class OrganizerEventActivity extends NavBar {
                 Event selectedEvent = eventDataList.get(position);
 
                 Intent detailIntent = new Intent(OrganizerEventActivity.this, EventDetailsOrganizerActivity.class);
-                detailIntent.putExtra("eventID", selectedEvent.getEventID());
+                FirestoreManager.getInstance().setEventDocRef(selectedEvent.getEventID());
                 startActivity(detailIntent);
             }
         });
