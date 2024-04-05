@@ -49,7 +49,6 @@ public class NotificationsActivity extends NavBar {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-//        setupNavigation();
         setContentView(R.layout.notification_page);
         userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         Log.d("ID:", "=" + userID);
