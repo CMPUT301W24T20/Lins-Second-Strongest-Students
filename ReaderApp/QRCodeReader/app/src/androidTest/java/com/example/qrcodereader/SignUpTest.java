@@ -40,6 +40,8 @@ public class SignUpTest {
 
         try (ActivityScenario<EventDetailsAttendeeActivity> scenario = ActivityScenario.launch(EventDetailsAttendeeActivity.class)) {
             // Rest of your test code...
+            // Wait for 3 seconds after the activity has launched
+            Thread.sleep(3000);
 
             // Use Espresso to find the button and click it
             onView(withId(R.id.sign_up_button)).perform(click());
@@ -51,6 +53,8 @@ public class SignUpTest {
                 assertNotNull("Boolean should be true after clicking the sign-up button", activity.getDocRefEvent());
                 assertTrue("Boolean should be true after clicking the sign-up button", activity.getSuccess());
             });
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

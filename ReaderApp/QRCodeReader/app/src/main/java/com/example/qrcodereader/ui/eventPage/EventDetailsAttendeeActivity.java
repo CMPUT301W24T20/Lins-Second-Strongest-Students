@@ -63,8 +63,10 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
-        userid = AttendeeEventActivity.userID;
-        eventID = getIntent().getStringExtra("eventID");
+        //userid = AttendeeEventActivity.userID;
+        userid = FirestoreManager.getInstance().getUserID();
+        eventID = FirestoreManager.getInstance().getEventID();
+        //eventID = getIntent().getStringExtra("eventID");
         docRefEvent = FirestoreManager.getInstance().getEventDocRef();
         docRefUser = FirestoreManager.getInstance().getUserDocRef();
 
@@ -73,8 +75,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         TextView eventLocationTextView = findViewById(R.id.location);
         TextView eventTimeTextView = findViewById(R.id.time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
-
-
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -158,6 +158,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                 // Use FLAG_ACTIVITY_REORDER_TO_FRONT to bring an existing instance to the front
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
+                //finish();
             }
         });
         ImageView returnButton = findViewById(R.id.return_button);
@@ -175,6 +176,9 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     }
 
     public FirebaseFirestore getDb() {
-        return db;
+        return FirebaseFirestore.getInstance();
+    }
+    public DocumentReference getDocRefEvent() {
+        return docRefEvent;
     }
 }
