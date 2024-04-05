@@ -96,6 +96,7 @@ public class AttendeeEventActivity extends NavBar {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         LaunchSetUp appSetup = new LaunchSetUp(this);
         appSetup.setup();
         setContentView(R.layout.attendee_events);
@@ -146,6 +147,7 @@ public class AttendeeEventActivity extends NavBar {
                 startActivity(intent);
             }
         });
+
         TextView mapButton = findViewById(R.id.map_button);
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override

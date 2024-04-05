@@ -1,25 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<com.google.android.material.card.MaterialCardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_marginStart="14dp"
+    android:layout_marginEnd="14dp"
+    android:layout_marginTop="13dp"
+    android:layout_marginBottom="13dp"
+    app:cardCornerRadius="25dp"
+    app:cardElevation="5dp">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:cardCornerRadius="25dp">
+        <ImageView
+            android:id="@+id/image"
+            android:src="@drawable/_49e43ff77b9c6ecc64d8a9b55622ddd7_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray"
+            android:scaleType="centerCrop"/>
 
-    <ImageView
-        android:id="@+id/image"
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <TextView
+        android:id="@+id/event"
         android:layout_width="wrap_content"
+        android:textSize="16sp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_dashboard_black_24dp" />
-
+        android:text="@string/event"
+        android:textColor="@color/event_name_color"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="15dp"
+        />
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
+        android:textSize="16sp"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
-
+        android:text="@string/title"
+        android:textColor="@color/event_name_color"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="40dp"
+        />
     <TextView
         android:id="@+id/body"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="16sp"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:text="@string/body"
+        android:textColor="@color/event_name_color"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="15dp"
+        />
+
+</com.google.android.material.card.MaterialCardView>
+
+
+
 </LinearLayout>
