@@ -43,11 +43,11 @@
 
     <string name="upcoming_events_string">Upcoming events</string>
     <string name="add_string">Add</string>
-    <string name="home_string">home</string>
-    <string name="scanner_string">scanner</string>
-    <string name="notification_string">notification</string>
-    <string name="event_string">event</string>
-    <string name="profile_string">profile</string>
+    <string name="home_string">Home</string>
+    <string name="scanner_string">Scan</string>
+    <string name="notification_string">Alerts</string>
+    <string name="event_string">Events</string>
+    <string name="profile_string">Profile</string>
 
 
     <string name="__780__123_4567_string">(780) 123-4567</string>
