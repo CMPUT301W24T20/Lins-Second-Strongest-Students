@@ -3,6 +3,7 @@ package com.example.qrcodereader.ui.eventPage;
 import com.example.qrcodereader.R;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -64,7 +65,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_details_attendee);
         userid = AttendeeEventActivity.userID;
         eventID = getIntent().getStringExtra("eventID");
-        docRefEvent = FirestoreManager.getInstance().getEventCollection().document(eventID);
+        docRefEvent = FirestoreManager.getInstance().getEventDocRef();
         docRefUser = FirestoreManager.getInstance().getUserDocRef();
 
         TextView eventNameTextView = findViewById(R.id.event_name);
@@ -132,7 +133,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                                 }
                             });
 
-                    docRefEvent = db.collection("events").document(eventID);
                     Map<String, Object> newAttendee = new HashMap<>();
                     newAttendee.put("attendees." + userid, 0);
                     docRefEvent.update(newAttendee)
@@ -153,11 +153,20 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(EventDetailsAttendeeActivity.this, "Event is full", Toast.LENGTH_LONG).show();
                 }
-                finish();
+
+                Intent intent = new Intent(EventDetailsAttendeeActivity.this, BrowseEventActivity.class);
+                // Use FLAG_ACTIVITY_REORDER_TO_FRONT to bring an existing instance to the front
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
             }
         });
         ImageView returnButton = findViewById(R.id.return_button);
-        returnButton.setOnClickListener(v -> finish());
+        returnButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventDetailsAttendeeActivity.this, BrowseEventActivity.class);
+            // Flags to clear activities on top of AttendeeEventActivity and reuse the same instance
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        });
     }
 
 
