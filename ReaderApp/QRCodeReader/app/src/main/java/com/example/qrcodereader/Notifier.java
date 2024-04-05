@@ -58,7 +58,7 @@ public final class Notifier {
      */
     public void notifyUsers(ArrayList<Map.Entry<String, Long>> attendees, String[] text, String event) {
 
-        String title = "Message From an Organizer: " + text[0];
+        String title = text[0];
         String body = text[1];
 
         for (Map.Entry<String, Long> entry : attendees) {
