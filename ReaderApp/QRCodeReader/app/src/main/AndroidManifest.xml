@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -47,8 +48,9 @@
         <activity android:name=".ui.eventPage.UserDetailsOrganizerActivity"/>
         <activity android:name=".ui.eventPage.EventDetailsAttendeeActivity"/>
         <activity android:name=".ui.eventPage.CreateEventActivityBrowsePastEvent"/>
-        <activity android:name=".ui.profile.ProfileActivity"/>
         <activity android:name=".ui.eventPage.AttendanceActivity"/>
+        <activity android:name=".ui.eventPage.EventRemoveAttendeeActivity"/>
+        <activity android:name=".ui.profile.ProfileActivity"/>
         <activity android:name=".ui.admin.AdminEventActivity"/>
         <activity android:name=".ui.admin.EventDetailsAdminActivity"/>
         <activity android:name=".ui.admin.AdminUserActivity"/>
@@ -56,6 +58,7 @@
         <activity android:name=".ui.admin.AdminImagesOptionActivity"/>
         <activity android:name=".ui.dashboard.CameraActivityDisplay"/>
         <activity android:name=".CameraActivity" />
+        <activity android:name=".TestEventDetailsAttendeeActivity"/>
 
         <activity
             android:name=".DisplayQRCode"

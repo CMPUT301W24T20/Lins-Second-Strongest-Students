@@ -1,4 +1,4 @@
-package com.example.qrcodereader.ui.admin;
+package com.example.qrcodereader.ui.eventPage;
 
 import com.example.qrcodereader.R;
 
@@ -19,8 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.QRCode;
-import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
-import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -31,6 +29,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import org.w3c.dom.Text;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -38,40 +39,48 @@ import java.util.Map;
 
 
 /**
- *  Activity for admin to view details of event and possibly remove it.
+ *  Activity for users to view details of event they want to sign up to.
  *  <p>
- *      This is where the remove operation happen
+ *      This is where the sign up operation happen
  *  </p>
- *  @author Son
+ *  @author Son and Duy
  */
-public class EventDetailsAdminActivity extends AppCompatActivity {
+public class EventRemoveAttendeeActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
-    private CollectionReference usersRef;
+    private DocumentReference docRefUser;
     private DocumentReference docRefEvent;
     private Event selectedEvent;
-    private final String TAG = "EventDetailsAdminActivity";
-    String eventID;
+    private final String TAG = "EventRemoveAttendeeActivity";
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
      * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
      */
+
+
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_details_admin);
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_event_details_attendee);
         String userid = AttendeeEventActivity.userID;
 
         TextView eventNameTextView = findViewById(R.id.event_name);
-        TextView eventOrganizerTextView = findViewById(R.id.event_organizer);
-        TextView eventLocationTextView = findViewById(R.id.event_location);
-        TextView eventTimeTextView = findViewById(R.id.event_time);
+        TextView eventOrganizerTextView = findViewById(R.id.organizer);
+        TextView eventLocationTextView = findViewById(R.id.location);
+        TextView eventTimeTextView = findViewById(R.id.time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
+        TextView removeButton = findViewById(R.id.sign_up_button);
+        removeButton.setText("Remove");
 
-        initializeFirestore();
+        db = FirebaseFirestore.getInstance();
+        String eventID = getIntent().getStringExtra("eventID");
+        docRefEvent = db.collection("events").document(eventID);
+        docRefUser = db.collection("users").document(userid);
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -82,8 +91,9 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String organizer = documentSnapshot.getString("organizer");
                 String organizerID = documentSnapshot.getString("organizerID");
-                String EventPoster = documentSnapshot.getString("poster");
                 String qrCodeString = documentSnapshot.getString("qrCode");
+                String EventPoster = documentSnapshot.getString("poster");
+
                 QRCode qrCode = new QRCode(qrCodeString);
                 int attendeeLimit = documentSnapshot.contains("attendeeLimit") ? (int)(long)documentSnapshot.getLong("attendeeLimit") : -1;
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
@@ -93,52 +103,36 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
                 Log.d("Firestore", "Successfully fetch document: ");
 
                 eventNameTextView.setText(eventName);
-                String organizerText = "Organizer: " + organizer;
+                String organizerText = organizer;
                 eventOrganizerTextView.setText(organizerText);
                 eventLocationTextView.setText(locationName);
-                String timeText = "Time: " + time.toDate().toString();
+                String timeText = time.toDate().toString();
                 eventTimeTextView.setText(timeText);
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
         });
 
-        TextView removeButton = findViewById(R.id.remove_button);
         removeButton.setOnClickListener(v -> {
-            if (eventID != null) {
-                usersRef.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Check if the user has the event in eventsAttended
-                            Map<String, Object> eventsAttended = (Map<String, Object>) document.get("eventsAttended");
-                            if (eventsAttended != null && eventsAttended.containsKey(eventID)) {
-                                // Prepare the delete operation for the specific eventID
-                                DocumentReference userDocRef = usersRef.document(document.getId());
-                                userDocRef.update("eventsAttended." + eventID, FieldValue.delete())
-                                        .addOnSuccessListener(aVoid -> Log.d(TAG, "Event ID deleted from user's eventsAttended."))
-                                        .addOnFailureListener(e -> Log.w(TAG, "Error deleting event ID from user's eventsAttended", e));
-                            }
-                        }
-                    } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
+            docRefUser.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    Map<String, Object> eventsAttended = (Map<String, Object>) documentSnapshot.get("eventsAttended");
+                    if (eventsAttended != null && eventsAttended.containsKey(eventID)) {
+                        // Prepare the delete operation for the specific eventID
+                        docRefUser.update("eventsAttended." + eventID, FieldValue.delete())
+                                .addOnSuccessListener(aVoid -> Log.d(TAG, "Event ID deleted from user's eventsAttended."))
+                                .addOnFailureListener(e -> Log.w(TAG, "Error deleting event ID from user's eventsAttended", e));
                     }
-                });
-                db.collection("events").document(eventID)
-                        .delete()
-                        .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
-                        .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
-            }
+                }
+            }).addOnFailureListener(e -> {
+                // Handle the error
+                Log.d(TAG, "Can't delete");
+                throw new RuntimeException("Can't delete");
+            });
             finish();
         });
 
         ImageView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
-    }
-
-    protected void initializeFirestore() {
-        db = FirebaseFirestore.getInstance();
-        eventID = getIntent().getStringExtra("eventID");
-        docRefEvent = db.collection("events").document(eventID);
-        usersRef = db.collection("users");
     }
 }
