@@ -2,11 +2,13 @@ package com.example.qrcodereader.ui.eventPage;
 import static android.content.ContentValues.TAG;
 
 import com.example.qrcodereader.MapView;
+import com.example.qrcodereader.MilestoneListeningService;
 import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -84,6 +86,8 @@ public class AttendeeEventActivity extends NavBar {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
+    public static String userID;
+
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the ListView with the events attended by the user.
@@ -96,6 +100,7 @@ public class AttendeeEventActivity extends NavBar {
         LaunchSetUp appSetup = new LaunchSetUp(this);
         appSetup.setup();
         setContentView(R.layout.attendee_events);
+        userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         TextView title = findViewById(R.id.upcoming_events);
         title.setText(R.string.AtndTitle);
@@ -142,6 +147,19 @@ public class AttendeeEventActivity extends NavBar {
                 startActivity(intent);
             }
         });
+
+        TextView mapButton = findViewById(R.id.map_button);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AttendeeEventActivity.this, MapView.class);
+                // Sending the user object to BrowseEventActivity
+                startActivity(intent);
+            }
+        });
+
+        setupMilestoneListener();
+
     }
 
     @Override
@@ -360,6 +378,14 @@ public class AttendeeEventActivity extends NavBar {
                 }
             }
         });
+    }
+
+    public void setupMilestoneListener() {
+        Log.d("MilestoneInit", "Initializing");
+        Intent intent = new Intent(this, MilestoneListeningService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startService(intent);
+        }
     }
 
 }

@@ -40,12 +40,11 @@ public class AttendanceActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         docRefEvent = db.collection("events").document(eventID);
 
-
-
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
                 ArrayList<Map.Entry<String, Long>> attendeesDataList = new ArrayList<>(eventsAttended.entrySet());
+                String eventName = (String) documentSnapshot.get("name");
 
                 TextView notifyButton = findViewById(R.id.notify_button);
                 notifyButton.setOnClickListener(v -> {
@@ -53,6 +52,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         notifier.prompt(AttendanceActivity.this, new Notifier.OnInputListener() {
                             @Override
                             public void onInput(String[] details) {
+                                details[0] = eventName + ": " + details[0];
                                 notifier.notifyUsers(attendeesDataList, details, eventID);
                             }
                         });

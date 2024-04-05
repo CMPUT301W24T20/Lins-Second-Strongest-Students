@@ -47,9 +47,18 @@ public final class Notifier {
         return notifier;
     }
 
+    /**
+     * notifyUsers
+     * Function called to send notification to users
+     * @param attendees ArrayList of map entries where the key of each
+     *                  entry is the ID of the user to be notified
+     * @param text Array of strings for notification, [0] = title
+     *             [1] = body
+     * @param event ID of event sending notification
+     */
     public void notifyUsers(ArrayList<Map.Entry<String, Long>> attendees, String[] text, String event) {
 
-        String title = "Message From an Organizer: " + text[0];
+        String title = text[0];
         String body = text[1];
 
         for (Map.Entry<String, Long> entry : attendees) {
@@ -58,6 +67,14 @@ public final class Notifier {
 
     }
 
+    /**
+     * getToken
+     * Finds FCM token matching provided user and calls notify on it
+     * @param userID ID of user to notify
+     * @param title Title of message
+     * @param body Body of message
+     * @param event Event sending message
+     */
     private void getToken(String userID, String title, String body, String event) {
         db.collection("users").document(userID)
                 .get()
@@ -76,10 +93,20 @@ public final class Notifier {
 
     }
 
+    /**
+     * OnInputListener
+     * Used to get input from dialog in prompt()
+     * synchronously with calling class
+     */
     public interface OnInputListener {
         void onInput(String[] input);
     }
 
+    /**
+     * Creates and shows a dialog to get notification input
+     * @param context Calling context
+     * @param listener OnInputListener required to send strings after entry
+     */
     public void prompt(Context context, OnInputListener listener) {
         String[] input = new String[2];
 
@@ -121,7 +148,43 @@ public final class Notifier {
         alertDialog.show();
     }
 
+    private void findOrganizer(String eventID, int milestone) {
 
+        String title = "Your event has reached a milestone!";
+        String body = milestone + " users have scanned into your event.";
+
+        db.collection("events").document(eventID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            String organizerID = documentSnapshot.getString("organizerID");
+                            getToken(organizerID, title, body, eventID);
+                        } else {
+                            System.out.println("No such document!");
+                            throw new RuntimeException("FCM Token not found");
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Notifies an event organizer when their event reaches a number of scans
+     * @param eventID ID of event
+     * @param milestone Number of users
+     */
+    public void milestoneNotification(String eventID, int milestone) {
+        findOrganizer(eventID, milestone);
+    }
+
+    /**
+     * Sends a message to provided token with provided details
+     * @param token FCM token of receiving device
+     * @param titleText Notification title
+     * @param bodyText Notification body
+     * @param eventID ID of event sending message
+     */
     private void notify(String token, String titleText, String bodyText, String eventID) {
         //Microsoft Copilot, 2024: Using OkHttp for FCM messaging
         String FMCAuth = context.getString(R.string.FMCAuth);
