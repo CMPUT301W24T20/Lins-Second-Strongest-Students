@@ -51,7 +51,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     private Event selectedEvent;
     String eventID;
     String userid;
-    boolean success = false;
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -63,10 +62,9 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
-        //userid = AttendeeEventActivity.userID;
+
         userid = FirestoreManager.getInstance().getUserID();
         eventID = FirestoreManager.getInstance().getEventID();
-        //eventID = getIntent().getStringExtra("eventID");
         docRefEvent = FirestoreManager.getInstance().getEventDocRef();
         docRefUser = FirestoreManager.getInstance().getUserDocRef();
 
@@ -122,7 +120,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
                                     // Document updated successfully
                                     Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                                    success = true;
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -170,10 +167,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         });
     }
 
-
-    public boolean getSuccess() {
-        return success;
-    }
 
     public FirebaseFirestore getDb() {
         return FirebaseFirestore.getInstance();
