@@ -73,7 +73,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         timeName.setText(event.getTime().toDate().toString());
 
         String imagePoster = event.getPoster();
-        Picasso.get().load(imagePoster).resize(200, 130).centerInside().fit().into(PosterPicture);
+        Picasso.get().load(imagePoster).centerInside().fit().into(PosterPicture);
 
         return view;
     }
