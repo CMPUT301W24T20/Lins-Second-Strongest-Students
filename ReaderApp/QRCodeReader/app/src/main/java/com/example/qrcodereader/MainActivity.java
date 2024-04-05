@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.provider.Settings;
 
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.admin.AdminImagesOptionActivity;
@@ -122,9 +123,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initializeFirestore() {
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        FirestoreManager.getInstance().setEventCollection("events");
+        FirestoreManager.getInstance().setUserCollection("users");
+        FirestoreManager.getInstance().setUserDocRef(deviceID);
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
-        docRefUser = db.collection("users").document(deviceID);
+        eventsRef = FirestoreManager.getInstance().getEventCollection();
+        docRefUser = FirestoreManager.getInstance().getUserDocRef();
 
         user = LocalUserStorage.loadUser(this);
 
