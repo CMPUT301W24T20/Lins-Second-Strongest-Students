@@ -52,7 +52,7 @@
 
     <string name="__780__123_4567_string">(780) 123-4567</string>
     <string name="hello_example_com_string">hello@example.com</string>
-    <string name="edit_string">EDIT</string>
+    <string name="edit_string">Edit</string>
     <string name="admin_string">Admin</string>
     <string name="new_event">New Event</string>
     <string name="location">Location</string>
@@ -78,5 +78,7 @@
     <string name="ImagesText">Images</string>
     <string name="OrgTitle">My created events</string>
     <string name="AtndTitle"> Signed up events</string>
+    <string name="GalleryImageText">Choose from gallery</string>
+    <string name="RemoveProfilePicText">Remove current picture</string>
 
 </resources>
