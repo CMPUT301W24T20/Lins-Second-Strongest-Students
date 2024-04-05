@@ -102,6 +102,7 @@ public class AttendeeEventActivity extends NavBar {
         setContentView(R.layout.attendee_events);
         userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+
         TextView title = findViewById(R.id.upcoming_events);
         title.setText(R.string.AtndTitle);
 
