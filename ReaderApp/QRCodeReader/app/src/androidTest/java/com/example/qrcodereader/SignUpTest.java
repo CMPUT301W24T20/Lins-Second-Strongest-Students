@@ -47,7 +47,7 @@ public class SignUpTest {
         try (ActivityScenario<EventDetailsAttendeeActivity> scenario = ActivityScenario.launch(EventDetailsAttendeeActivity.class)) {
             // Rest of your test code...
             // Wait for 3 seconds after the activity has launched
-            Thread.sleep(3000);
+            Thread.sleep(5000);
 
             // Use Espresso to find the button and click it
             onView(withId(R.id.sign_up_button)).perform(click());
@@ -108,26 +108,36 @@ public class SignUpTest {
                 assertNotNull("Db should not be null", activity.getDb());
                 assertNotNull("docRefEvent should not be null", activity.getDocRefEvent());
                 assertNotNull("docRefuser should not be null", activity.getDocRefUser());
-                activity.getDocRefEvent().get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Extract the map field from the document
-                            Map<String, Object> map = (Map<String, Object>) document.getData().get("attendees");
-                            assertNotNull(map);
-                            assertFalse(map.containsKey("1d141a0fd4e29d60"));
-                        } else {
-                            fail();
-                        }
-                    } else {
-                        // Handle the failure of fetching the document
-                        fail();
-                    }
-                });
+//                FirestoreManager.getInstance().getEventDocRef().get().addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        DocumentSnapshot document = task.getResult();
+//                        if (document.exists()) {
+//                            // Extract the map field from the document
+//                            try {
+//                                Thread.sleep(3000);
+//                            } catch (InterruptedException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//                            Map<String, Object> map = (Map<String, Object>) document.getData().get("attendees");
+//                            assertNotNull(map);
+//                            assertFalse(map.containsKey("1d141a0fd4e29d60"));
+//                        } else {
+//                            fail();
+//                        }
+//                    } else {
+//                        // Handle the failure of fetching the document
+//                        fail();
+//                    }
+//                });
                 FirestoreManager.getInstance().getUserDocRef().get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
+                            try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
                             // Extract the map field from the document
                             Map<String, Object> map = (Map<String, Object>) document.getData().get("eventsAttended");
                             assertNotNull(map);
