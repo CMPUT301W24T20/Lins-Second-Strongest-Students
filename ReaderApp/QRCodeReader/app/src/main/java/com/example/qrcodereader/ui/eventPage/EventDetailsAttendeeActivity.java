@@ -3,7 +3,6 @@ package com.example.qrcodereader.ui.eventPage;
 import com.example.qrcodereader.R;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -50,6 +49,13 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     private Event selectedEvent;
     String eventID;
     String userid;
+    boolean success = false;
+    protected void initializeFirestore() {
+        db = FirebaseFirestore.getInstance();
+        eventID = getIntent().getStringExtra("eventID");
+        docRefEvent = db.collection("events").document(eventID);
+        docRefUser = db.collection("users").document(userid);
+    }
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -62,18 +68,15 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
-
-        userid = FirestoreManager.getInstance().getUserID();
-        eventID = FirestoreManager.getInstance().getEventID();
-        docRefEvent = FirestoreManager.getInstance().getEventDocRef();
-        docRefUser = FirestoreManager.getInstance().getUserDocRef();
-
+        userid = AttendeeEventActivity.userID;
 
         TextView eventNameTextView = findViewById(R.id.event_name);
         TextView eventOrganizerTextView = findViewById(R.id.organizer);
         TextView eventLocationTextView = findViewById(R.id.location);
         TextView eventTimeTextView = findViewById(R.id.time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
+
+        initializeFirestore();
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -121,6 +124,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
                                     // Document updated successfully
                                     Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                                    success = true;
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -131,6 +135,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                                 }
                             });
 
+                    docRefEvent = db.collection("events").document(eventID);
                     Map<String, Object> newAttendee = new HashMap<>();
                     newAttendee.put("attendees." + userid, 0);
                     docRefEvent.update(newAttendee)
@@ -151,28 +156,19 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(EventDetailsAttendeeActivity.this, "Event is full", Toast.LENGTH_LONG).show();
                 }
-
-                Intent intent = new Intent(EventDetailsAttendeeActivity.this, BrowseEventActivity.class);
-                // Use FLAG_ACTIVITY_REORDER_TO_FRONT to bring an existing instance to the front
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                //finish();
+                finish();
             }
         });
         ImageView returnButton = findViewById(R.id.return_button);
-        returnButton.setOnClickListener(v -> {
-            Intent intent = new Intent(EventDetailsAttendeeActivity.this, BrowseEventActivity.class);
-            // Flags to clear activities on top of AttendeeEventActivity and reuse the same instance
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-        });
+        returnButton.setOnClickListener(v -> finish());
     }
 
+
+    public boolean getSuccess() {
+        return success;
+    }
 
     public FirebaseFirestore getDb() {
-        return FirebaseFirestore.getInstance();
-    }
-    public DocumentReference getDocRefEvent() {
-        return docRefEvent;
+        return db;
     }
 }

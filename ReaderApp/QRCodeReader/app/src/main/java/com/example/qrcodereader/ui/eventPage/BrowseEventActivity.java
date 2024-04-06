@@ -125,9 +125,7 @@ public class BrowseEventActivity extends AppCompatActivity {
 
                 // Display a toast with the selected item
                 Intent detailIntent = new Intent(BrowseEventActivity.this, EventDetailsAttendeeActivity.class);
-
-                FirestoreManager.getInstance().setEventDocRef(selectedEvent.getEventID());
-                detailIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                detailIntent.putExtra("eventID", selectedEvent.getEventID());
                 startActivity(detailIntent);
             }
         });
