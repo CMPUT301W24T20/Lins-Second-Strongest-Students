@@ -132,7 +132,7 @@ public class AttendeeEventActivity extends NavBar {
 
 
         // Go to BrowseEventActivity
-        TextView browseButton = findViewById(R.id.ViewProfilePics);
+        TextView browseButton = findViewById(R.id.browse_button);
         browseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -101,7 +101,7 @@ public class OrganizerEventActivity extends NavBar {
         fetchLocal(this);
         setupRealTimeEventUpdates();
 
-        TextView createEventButton = findViewById(R.id.ViewProfilePics);
+        TextView createEventButton = findViewById(R.id.browse_button);
         createEventButton.setOnClickListener(v -> {
             Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
             intent.putExtra("userid", userid);

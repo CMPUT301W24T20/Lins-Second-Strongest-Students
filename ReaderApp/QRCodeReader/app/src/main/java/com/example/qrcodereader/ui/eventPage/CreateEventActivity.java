@@ -24,7 +24,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.util.ImageUpload;
-import com.example.qrcodereader.ImageUpload;
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
