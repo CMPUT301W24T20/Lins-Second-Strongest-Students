@@ -50,13 +50,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     private Event selectedEvent;
     String eventID;
     String userid;
-    boolean success = false;
-    protected void initializeFirestore() {
-        db = FirebaseFirestore.getInstance();
-        eventID = getIntent().getStringExtra("eventID");
-        docRefEvent = db.collection("events").document(eventID);
-        docRefUser = db.collection("users").document(userid);
-    }
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -69,7 +62,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
 
-
+        db = FirestoreManager.getInstance().getDb();
         userid = FirestoreManager.getInstance().getUserID();
         eventID = FirestoreManager.getInstance().getEventID();
         docRefEvent = FirestoreManager.getInstance().getEventDocRef();
@@ -82,7 +75,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         TextView eventTimeTextView = findViewById(R.id.time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
 
-        initializeFirestore();
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -130,7 +122,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
                                     // Document updated successfully
                                     Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                                    success = true;
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -140,8 +131,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                                     Log.w("Firestore", "Error updating document", e);
                                 }
                             });
-
-                    docRefEvent = db.collection("events").document(eventID);
                     Map<String, Object> newAttendee = new HashMap<>();
                     newAttendee.put("attendees." + userid, 0);
                     docRefEvent.update(newAttendee)
@@ -169,12 +158,11 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         returnButton.setOnClickListener(v -> finish());
     }
 
-
-    public boolean getSuccess() {
-        return success;
-    }
-
     public FirebaseFirestore getDb() {
         return db;
+    }
+
+    public DocumentReference getDocRefEvent() {
+        return docRefEvent;
     }
 }

@@ -130,10 +130,37 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
                 Log.d(TAG, "Can't delete");
                 throw new RuntimeException("Can't delete");
             });
+            docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    Map<String, Object> attendees = (Map<String, Object>) documentSnapshot.get("attendees");
+                    if (attendees != null && attendees.containsKey(eventID)) {
+                        // Prepare the delete operation for the specific eventID
+                        docRefEvent.update("attendees." + eventID, FieldValue.delete())
+                                .addOnSuccessListener(aVoid -> Log.d(TAG, "User ID deleted from event's attendees."))
+                                .addOnFailureListener(e -> Log.w(TAG, "Error deleting User ID from event's attendees.", e));
+                    }
+                }
+            }).addOnFailureListener(e -> {
+                // Handle the error
+                Log.d(TAG, "Can't delete");
+                throw new RuntimeException("Can't delete");
+            });
             finish();
         });
 
         ImageView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
+    }
+
+    public FirebaseFirestore getDb() {
+        return db;
+    }
+
+    public DocumentReference getDocRefEvent() {
+        return docRefEvent;
+    }
+
+    public DocumentReference getDocRefUser() {
+        return docRefEvent;
     }
 }

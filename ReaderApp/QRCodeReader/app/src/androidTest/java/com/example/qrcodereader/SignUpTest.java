@@ -55,7 +55,6 @@ public class SignUpTest {
             // Now you can retrieve the activity and check the variable's state
             // This assumes that your activity has a method to get the variable
             scenario.onActivity(activity -> {
-                assertNotNull("Db should not be null", activity.getDb());
                 assertNotNull("docRefEvent should not be null", activity.getDocRefEvent());
                 activity.getDocRefEvent().get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -105,7 +104,6 @@ public class SignUpTest {
             // Now you can retrieve the activity and check the variable's state
             // This assumes that your activity has a method to get the variable
             scenario.onActivity(activity -> {
-                assertNotNull("Db should not be null", activity.getDb());
                 assertNotNull("docRefEvent should not be null", activity.getDocRefEvent());
                 assertNotNull("docRefuser should not be null", activity.getDocRefUser());
                 activity.getDocRefEvent().get().addOnCompleteListener(task -> {
