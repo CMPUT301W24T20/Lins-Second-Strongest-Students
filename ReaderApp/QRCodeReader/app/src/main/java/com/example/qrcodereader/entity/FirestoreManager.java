@@ -14,12 +14,14 @@ public class FirestoreManager {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String userCollection;
     private String eventCollection;
+    private String qrCodeCollection;
     private String userDocRef;
     private String eventDocRef;
 
     private FirestoreManager() {
         this.userCollection = "users";
         this.eventCollection = "events";
+        this.qrCodeCollection = "QRCodes";
     }
 
     public static synchronized FirestoreManager getInstance() {
@@ -51,6 +53,9 @@ public class FirestoreManager {
 
     public CollectionReference getEventCollection() {
         return db.collection(eventCollection);
+    }
+    public CollectionReference getQrCodeCollection() {
+        return db.collection(qrCodeCollection);
     }
 
     public DocumentReference getUserDocRef() {

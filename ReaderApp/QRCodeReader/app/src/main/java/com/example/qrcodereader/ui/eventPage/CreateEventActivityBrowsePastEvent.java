@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -55,12 +56,12 @@ public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.organizer_browse_past_event);
+        setContentView(R.layout.organizer_past_event);
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
 
-        eventList = findViewById(R.id.event_list_organizer);
+        eventList = findViewById(R.id.event_list);
         eventDataList = new ArrayList<>();
 
         eventArrayAdapter = new EventArrayAdapter(this, eventDataList);
@@ -69,10 +70,10 @@ public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
         // Get the current time as a Timestamp
         Timestamp currentTime = Timestamp.now();
 
-
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         eventsRef.whereLessThan("time", currentTime)
+                .whereNotEqualTo("qrCode", "-1")
                 .whereEqualTo("organizerID", deviceID)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -124,6 +125,18 @@ public class CreateEventActivityBrowsePastEvent extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("selectedQRCode", qrCodeString);
                 resultIntent.putExtra("selectedEventID", selectedEvent.getEventID());
+
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            }
+        });
+
+        TextView back = findViewById(R.id.return_button);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("selectedEventID", "none");
 
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();

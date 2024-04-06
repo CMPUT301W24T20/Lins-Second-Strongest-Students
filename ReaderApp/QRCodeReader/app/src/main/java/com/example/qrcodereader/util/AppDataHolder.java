@@ -36,9 +36,10 @@ import java.util.concurrent.Executors;
 public class AppDataHolder {
     private static User currentUser;
     private static AppDataHolder instance;
-    private static ArrayList<Event> browseEvents;
-    private static ArrayList<Event> attendeeEvents;
-    private static ArrayList<Event> organizerEvents;
+    private static ArrayList<Event> browseEvents = new ArrayList<>();
+    private static ArrayList<Event> attendeeEvents = new ArrayList<>();
+    private static ArrayList<Event> organizerEvents = new ArrayList<>();
+    private static ArrayList<Event> pastEvents = new ArrayList<>();
 
     private AppDataHolder() { }
 
@@ -62,9 +63,10 @@ public class AppDataHolder {
 
     public static void loadData(Context context) {
         currentUser = LocalUserStorage.loadUser(context);
-        browseEvents = LocalEventsStorage.loadEvents(context, "browseEvents.json");
-        attendeeEvents = LocalEventsStorage.loadEvents(context, "attendeeEvents.json");
-        organizerEvents = LocalEventsStorage.loadEvents(context, "organizerEvents.json");
+        loadOrganizerEvents(context);
+        loadBrowseEvents(context);
+        loadAttendeeEvents(context);
+        loadPastEvents(context);
     }
 
 //    public static void loadData(Context context) {
@@ -90,6 +92,26 @@ public class AppDataHolder {
         organizerEvents = LocalEventsStorage.loadEvents(context, "organizerEvents.json");
     }
 
+    public static void loadPastEvents(Context context) {
+        // Ensure organizerEvents are loaded
+        if (organizerEvents == null) {
+            loadOrganizerEvents(context);
+        }
+
+        // Filter out past events from organizerEvents
+        ArrayList<Event> pastEventsFiltered = new ArrayList<>();
+        Timestamp now = Timestamp.now();
+
+        for (Event event : organizerEvents) {
+            if (event.getTime().compareTo(now) < 0 && (!event.getQrCode().getString().equals("-1"))) { // Check if the event time is in the past
+                pastEventsFiltered.add(event);
+            }
+        }
+
+        // Update the pastEvents ArrayList
+        pastEvents = pastEventsFiltered;
+    }
+
     public static ArrayList<Event> getBrowseEvents(Context context) {
         // Check if the browseEvents are already loaded
         if (browseEvents == null) {
@@ -111,6 +133,20 @@ public class AppDataHolder {
             loadOrganizerEvents(context);
         }
         return organizerEvents;
+    }
+
+    public static ArrayList<Event> getPastEvents(Context context) {
+        // Check if the pastEvents are already loaded
+        if (pastEvents == null) {
+            loadPastEvents(context);
+        }
+        return pastEvents;
+    }
+
+    public static void loadOrganizerEventToLocal(ArrayList<Event> events, Context context) {
+        LocalEventsStorage.saveEvents(context, events, "organizerEvents.json");
+        organizerEvents = events;
+        loadPastEvents(context);
     }
 
     /**
