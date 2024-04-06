@@ -196,12 +196,8 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                             event.put("name", eventName.getText().toString());
                             event.put("organizer", userName);
                             event.put("organizerID", deviceID);
-                            event.put("qrCode", selectedQRCode);
                             event.put("time", timeOfEvent);
                             event.put("poster", "");
-
-                            AddEvent();
-
 
                             if (!attendeeLimit.getText().toString().isEmpty()) {
                                 event.put("attendeeLimit", Integer.parseInt(attendeeLimit.getText().toString()));
@@ -217,12 +213,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                                 event.put("qrCode", generatedQRCode);
                             }
 
-                            if (uploaded != null) {
-                                //isUploaded();
-                            } else{
-                                // event.put ( the default poster)
-                                AddEvent();
-                            }
+                            AddEvent();
 
                             finish();
 
