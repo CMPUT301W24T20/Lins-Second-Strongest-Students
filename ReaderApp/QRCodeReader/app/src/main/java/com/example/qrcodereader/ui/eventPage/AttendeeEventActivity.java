@@ -15,15 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
@@ -34,14 +31,9 @@ import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.util.LaunchSetUp;
 
 
-
-import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.util.AppDataHolder;
-import com.example.qrcodereader.util.EventFetcher;
 
 import com.example.qrcodereader.util.LocalEventsStorage;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -131,7 +123,7 @@ public class AttendeeEventActivity extends NavBar {
 
 
         // Go to BrowseEventActivity
-        TextView browseButton = findViewById(R.id.browse_button);
+        TextView browseButton = findViewById(R.id.ViewProfilePics);
         browseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

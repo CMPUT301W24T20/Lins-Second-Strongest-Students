@@ -64,7 +64,7 @@
 		android:layout_marginBottom="75dp"
 		android:elevation="2dp"
 		android:weightSum="2">
-		<TextView android:id="@+id/browse_button"
+		<TextView android:id="@+id/ViewProfilePics"
 			android:textSize="16sp"
 			android:textColor="@color/sky_blue"
 			android:layout_width="0dp"

@@ -40,10 +40,10 @@
         android:text ="@string/ProfileEditEmailText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone" />
+        app:layout_constraintTop_toBottomOf="@+id/UserDeviceText" />
 
     <EditText
-        android:id="@+id/phone"
+        android:id="@+id/UserDeviceText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"

@@ -22,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,7 +41,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminImageView extends DialogFragment {
+public class AdminImageView extends DialogFragment implements ImageAdapter.OnImageLongClickListener{
     private RecyclerView imageRecyclerView;
     private List<String> loadedImages;
     private ImageAdapter adapter;
@@ -67,12 +69,18 @@ public class AdminImageView extends DialogFragment {
         imageRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3)); // 3 columns grid layout
         imageRecyclerView.setAdapter(adapter);
 
+        adapter.setOnImageLongClickListener(this);
+
+        populateListView();
+
         builder.setView(view)
                 .setTitle(Title)
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("Save", (dialog, which) -> deleteSelectedImages());
+                .setPositiveButton("Delete", (dialog, which) -> deleteSelectedImages());
 
         return builder.create();
+
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -123,5 +131,15 @@ public class AdminImageView extends DialogFragment {
                 Log.e(TAG, "Error deleting image " + imageName + ": " + exception.getMessage());
             });
         }
+    }
+
+    @Override
+    public void onImageLongClick(String imageUrl) {
+        ImageDetail details = new ImageDetail();
+        Bundle args = new Bundle();
+        args.putString("URL", imageUrl);
+        args.putString("type", TypeRef);
+        details.setArguments(args);
+        details.show(getParentFragmentManager(), "View Images");
     }
 }

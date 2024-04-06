@@ -102,7 +102,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
 
         EditText ETname = view.findViewById(R.id.name);
         EditText ETemail = view.findViewById(R.id.email);
-        ETphone = view.findViewById(R.id.phone);
+        ETphone = view.findViewById(R.id.UserDeviceText);
         Spinner Sregion = view.findViewById(R.id.SpinnerRegions);
         Picture = view.findViewById(R.id.ProfilePic);
         int errorColour = ContextCompat.getColor(requireContext(), R.color.red);
@@ -211,8 +211,10 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                 if (s.length() < PhoneLength) {
                     // phone input not long enough
                     ETphone.setTextColor(errorColour);
+                    ETphone.setHintTextColor(errorColour);
                 } else {
                     ETphone.setTextColor(Color.BLACK);
+                    ETphone.setHintTextColor(Color.BLACK);
                 }
             }
         });
@@ -230,8 +232,10 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                 if (s.length()>0 && !Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
                     // there is email input and it is not of valid email format
                     ETemail.setTextColor(errorColour);
+                    ETemail.setHintTextColor(errorColour);
                 } else {
-                    ETemail.setTextColor(Color.BLACK);
+                    ETemail.setTextColor(Color.GRAY);
+                    ETemail.setHintTextColor(Color.GRAY);
                 }
             }
         });

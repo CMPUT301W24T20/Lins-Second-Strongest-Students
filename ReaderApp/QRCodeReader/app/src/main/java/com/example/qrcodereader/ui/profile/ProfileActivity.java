@@ -41,7 +41,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
 
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
-        phone = findViewById(R.id.phone);
+        phone = findViewById(R.id.UserDeviceText);
         region = findViewById(R.id.regionSelector);
         Picture = findViewById(R.id.user_profile_photo);
         TextView adminButton = findViewById(R.id.admin_button);

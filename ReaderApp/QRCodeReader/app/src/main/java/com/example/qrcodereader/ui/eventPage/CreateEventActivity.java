@@ -277,7 +277,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                 baos.write(buffer, 0, len);
             }
             byte[] imageData = baos.toByteArray();
-            String imageName = eventID + ".png";
+            String imageName = eventID + "_" + deviceID + ".png";
             StorageReference imageRef = storage.child("EventPoster/" + imageName);
             UploadTask uploadTask = imageRef.putBytes(imageData);
 

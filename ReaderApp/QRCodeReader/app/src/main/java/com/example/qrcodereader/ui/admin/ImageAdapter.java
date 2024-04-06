@@ -24,11 +24,22 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private List<String> mImageUrls;
     private SparseBooleanArray selectedPositions;
     private int preloadCount = 6;
+    private OnImageLongClickListener longClickListener;
 
     public ImageAdapter(Context context, List<String> imageUrls) {
         mContext = context;
         mImageUrls = imageUrls;
         selectedPositions = new SparseBooleanArray();
+    }
+
+    public interface OnImageLongClickListener {
+        void onImageLongClick(String imageUrl);
+    }
+
+    public void setOnImageLongClickListener(OnImageLongClickListener listener) {
+        if (listener != null) {
+            this.longClickListener = listener;
+        }
     }
 
     public void toggleSelection(int position) {
@@ -66,12 +77,23 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     }
 
     @Override
-    public int getItemCount() {
-        return mImageUrls.size();
-    }
+    public int getItemCount() {return mImageUrls.size();}
 
-    public class ImageViewHolder extends RecyclerView.ViewHolder {
+    public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         ImageView imageView;
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (longClickListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    String imageUrl = mImageUrls.get(position);
+                    longClickListener.onImageLongClick(imageUrl);
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +101,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         }
 
         public void bind(int position) {
+            imageView.setTag(position);
+            imageView.setOnLongClickListener(this); // Set the long click listener here
+
             if (selectedPositions.get(position)) {
                 // Add a blue overlay on the selected image
                 imageView.setColorFilter(ContextCompat.getColor(mContext, R.color.sky_blue_translucent));

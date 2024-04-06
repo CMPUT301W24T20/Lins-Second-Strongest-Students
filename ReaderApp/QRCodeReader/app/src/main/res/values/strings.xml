@@ -32,7 +32,7 @@
     <string name="ProfileEditPhoneText">Phone Number</string>
 
     <string name="ek_img_content">ExportKit Image</string>
-    <string name="event_name_string">Event Name</string>
+    <string name="event_name_string">Event Name: </string>
     <string name="organizer_string">Organizer</string>
     <string name="location_string">Location</string>
     <string name="time_string">Time</string>
@@ -80,5 +80,7 @@
     <string name="AtndTitle"> Signed up events</string>
     <string name="GalleryImageText">Choose from gallery</string>
     <string name="RemoveProfilePicText">Remove current picture</string>
+    <string name="deviceString">Device:</string>
+    <string name="event_id">Event ID:</string>
 
 </resources>

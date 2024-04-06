@@ -107,7 +107,7 @@
 				android:textSize="20sp"
 				android:text = "@string/ca"
 				/>
-			<TextView android:id="@+id/phone"
+			<TextView android:id="@+id/UserDeviceText"
 				android:textSize="20sp"
 				android:textColor="@color/black"
 				android:layout_marginStart="5dp"
