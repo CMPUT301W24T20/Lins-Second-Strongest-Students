@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.CreateEventActivity;
@@ -90,8 +91,7 @@ public class BrowseEventActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_browse_event);
 
-        db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
+        eventsRef = FirestoreManager.getInstance().getEventCollection();
 
         ListView eventList = findViewById(R.id.event_list);
         eventDataList = new ArrayList<>();
@@ -125,7 +125,10 @@ public class BrowseEventActivity extends AppCompatActivity {
 
                 // Display a toast with the selected item
                 Intent detailIntent = new Intent(BrowseEventActivity.this, EventDetailsAttendeeActivity.class);
-                detailIntent.putExtra("eventID", selectedEvent.getEventID());
+
+                FirestoreManager.getInstance().setEventDocRef(selectedEvent.getEventID());
+               // detailIntent.putExtra("eventID", selectedEvent.getEventID());
+                detailIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(detailIntent);
             }
         });

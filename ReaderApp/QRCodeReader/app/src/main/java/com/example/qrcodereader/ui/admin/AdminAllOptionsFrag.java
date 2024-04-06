@@ -30,7 +30,8 @@ public class AdminAllOptionsFrag extends DialogFragment {
         // Button to go to OrganizerEventActivity
         builder.setNegativeButton("View Profiles", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
+                Intent intent = new Intent(requireActivity(), AdminUserActivity.class);
+                startActivity(intent);
             }
         });
 

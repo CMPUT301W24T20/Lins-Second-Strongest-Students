@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.QRCode;
+import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,6 +52,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
     private DocumentReference docRefEvent;
     private Event selectedEvent;
     private final String TAG = "EventDetailsAdminActivity";
+    String eventID;
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -61,7 +63,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details_admin);
-        String userid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        String userid = AttendeeEventActivity.userID;
 
         TextView eventNameTextView = findViewById(R.id.event_name);
         TextView eventOrganizerTextView = findViewById(R.id.event_organizer);
@@ -69,10 +71,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
         TextView eventTimeTextView = findViewById(R.id.event_time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
 
-        db = FirebaseFirestore.getInstance();
-        String eventID = getIntent().getStringExtra("eventID");
-        docRefEvent = db.collection("events").document(eventID);
-        usersRef = db.collection("users");
+        initializeFirestore();
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -134,5 +133,12 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
 
         ImageView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
+    }
+
+    protected void initializeFirestore() {
+        db = FirebaseFirestore.getInstance();
+        eventID = getIntent().getStringExtra("eventID");
+        docRefEvent = db.collection("events").document(eventID);
+        usersRef = db.collection("users");
     }
 }

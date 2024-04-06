@@ -17,6 +17,7 @@
             android:layout_height="160dp"
             app:cardCornerRadius="25dp">
             <ImageView
+                android:id="@+id/profile_picture"
                 android:src="@drawable/user_profile_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

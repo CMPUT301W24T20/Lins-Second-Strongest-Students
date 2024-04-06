@@ -2,6 +2,7 @@ package com.example.qrcodereader.ui.eventPage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.Notifier;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.admin.AdminUserActivity;
 import com.example.qrcodereader.ui.admin.UserDetailsAdminActivity;
@@ -35,16 +37,14 @@ public class AttendanceActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_attendance);
         ListView attendeesList = findViewById(R.id.event_attendees);
-        String eventID = getIntent().getStringExtra("eventID");
-        db = FirebaseFirestore.getInstance();
-        docRefEvent = db.collection("events").document(eventID);
-
-
+        String eventID = FirestoreManager.getInstance().getEventID();
+        docRefEvent = FirestoreManager.getInstance().getEventDocRef();
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
                 ArrayList<Map.Entry<String, Long>> attendeesDataList = new ArrayList<>(eventsAttended.entrySet());
+                String eventName = (String) documentSnapshot.get("name");
 
                 TextView notifyButton = findViewById(R.id.notify_button);
                 notifyButton.setOnClickListener(v -> {
@@ -52,6 +52,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         notifier.prompt(AttendanceActivity.this, new Notifier.OnInputListener() {
                             @Override
                             public void onInput(String[] details) {
+                                details[0] = eventName + ": " + details[0];
                                 notifier.notifyUsers(attendeesDataList, details, eventID);
                             }
                         });
@@ -75,6 +76,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         // Display a toast with the selected item
                         Intent detailIntent = new Intent(AttendanceActivity.this, UserDetailsOrganizerActivity.class);
                         detailIntent.putExtra("attendeeID", selectedUser.getKey());
+                        Log.d("UserDetailsOrganizer", "Received attendee ID: " + selectedUser.getKey());
                         startActivity(detailIntent);
                         selectedUser = null;
                     }

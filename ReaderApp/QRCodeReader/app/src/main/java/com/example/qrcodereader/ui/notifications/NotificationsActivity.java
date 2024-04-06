@@ -3,6 +3,7 @@ package com.example.qrcodereader.ui.notifications;
 import static androidx.core.content.ContextCompat.registerReceiver;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,24 +39,25 @@ import java.util.List;
  */
 public class NotificationsActivity extends NavBar {
 
-    private Button deleteOne;
-    private Button clearAll;
-    private Button returnButton;
+    private TextView deleteOne;
+    private TextView clearAll;
+    private TextView returnButton;
     private NotificationAdapter adapter;
-    private final String userID = MainActivity.userId;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
 //        setupNavigation();
-        setContentView(R.layout.activity_notifications);
+        setContentView(R.layout.notification_page);
+        userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         Log.d("ID:", "=" + userID);
 
         deleteOne = findViewById(R.id.delete_button);
         clearAll = findViewById(R.id.clear_button);
         returnButton = findViewById(R.id.return_button);
         ListView listView = findViewById(R.id.notification_list);
-        TextView noMessages = findViewById(R.id.no_messages);
         setupTextViewButton(R.id.home_button);
         setupTextViewButton(R.id.event_button);
         setupTextViewButton(R.id.scanner_button);
@@ -83,14 +85,9 @@ public class NotificationsActivity extends NavBar {
                         }
                     });
         } catch (NullPointerException e) {
-            noMessages.setVisibility(View.VISIBLE);
             Toast.makeText(NotificationsActivity.this, "No New Messages", Toast.LENGTH_SHORT).show();
         }
 
-        if (adapter == null || adapter.getCount() < 1) {
-            noMessages.setVisibility(View.VISIBLE);
-            Toast.makeText(NotificationsActivity.this, "No New Messages", Toast.LENGTH_SHORT).show();
-        }
 
         final Object[] lastTappedItem = new Object[1];
 
@@ -115,10 +112,10 @@ public class NotificationsActivity extends NavBar {
         clearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (adapter.getCount() == 0) {
+                if (adapter == null || adapter.getCount() == 0) {
                     Toast.makeText(NotificationsActivity.this, "Nothing to delete", Toast.LENGTH_SHORT).show();
                 } else {
-                    for (int i = 0; i <= adapter.getCount(); i++) {
+                    for (int i = adapter.getCount() - 1; i >= 0; i--) {
                         NotificationDetail item = adapter.getItem(i);
                         removeItem(item);
                     }
@@ -138,23 +135,6 @@ public class NotificationsActivity extends NavBar {
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_notifications;
-    }
-
-    private void setupNavigation() {
-        /*
-        Configure navigation bar
-         */
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_camera, R.id.navigation_notifications)
-                .build();
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
-
-        // Get the NavController from the NavHostFragment
-        NavController navController = navHostFragment.getNavController();
-
-        NavigationUI.setupActionBarWithNavController(NotificationsActivity.this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
     }
 
     private void removeItem(NotificationDetail item) {

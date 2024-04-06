@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.admin.AdminAllOptionsFrag;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -26,6 +27,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
     private TextView phone;
     private TextView region;
     private Uri pictureUri;
+    private TextView reviewLocationPermissions;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         setupTextViewButton(R.id.scanner_button);
         setupTextViewButton(R.id.notification_button);
         setupTextViewButton(R.id.bottom_profile_icon);
+        //reviewLocationPermissions = findViewById(R.id.reviewPerms);
         View view = LayoutInflater.from(this).inflate(R.layout.profile, null);
 
         name = findViewById(R.id.name);
@@ -48,9 +51,9 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         TextView Edit = findViewById(R.id.EditButton);
 
 
-        String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        docRefUser = db.collection("users").document(deviceID);
+        FirebaseFirestore db = FirestoreManager.getInstance().getDb();
+        String deviceID = FirestoreManager.getInstance().getUserID();
+        docRefUser = FirestoreManager.getInstance().getUserDocRef();
 
         docRefUser.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -112,6 +115,18 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 optionfrag.show(getSupportFragmentManager(), "Admin Actions");
             }
         });
+        // Microsoft Copilot 2024 "Create a button which takes me to location settings"
+//        reviewLocationPermissions.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Direct the user to app settings
+//                Intent intent = new Intent();
+//                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                Uri uri = Uri.fromParts("package", getPackageName(), null);
+//                intent.setData(uri);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     @Override

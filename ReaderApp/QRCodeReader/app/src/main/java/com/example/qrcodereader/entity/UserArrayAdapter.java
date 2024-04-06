@@ -44,7 +44,8 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
         TextView phone = view.findViewById(R.id.UserDeviceText);
         ImageView ProfilePicture = view.findViewById(R.id.user_profile_photo);
 
-        userName.setText(user.getUserID());
+        userId.setText(user.getUserID());
+        userName.setText(user.getName());
         email.setText(user.getEmail());
         phoneRegion.setText(user.getPhoneRegion());
         phone.setText(user.getPhone());
