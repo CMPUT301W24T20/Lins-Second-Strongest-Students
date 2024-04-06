@@ -37,6 +37,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private DocumentReference docRefEvent;
     private QRCode qrCode;
+    String eventID;
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -54,7 +55,9 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         TextView eventTimeTextView = findViewById(R.id.event_time);
         ImageView eventPoster = findViewById(R.id.event_poster);
         db = FirebaseFirestore.getInstance();
-        String eventID = getIntent().getStringExtra("eventID");
+        eventID = getIntent().getStringExtra("eventID");
+        String TAG = "MapOrg";
+        Log.d(TAG, "Event ID: " + eventID);
 
         db = FirebaseFirestore.getInstance();
         docRefEvent = FirestoreManager.getInstance().getEventDocRef();
@@ -113,7 +116,12 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
     }
 
     private void goToMapActivity() {
+        double latitude = getIntent().getDoubleExtra("latitude", 0);
+        double longitude = getIntent().getDoubleExtra("longitude", 0);
         Intent intent = new Intent(this, MapViewOrganizer.class);
+        intent.putExtra("eventID", eventID);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
         startActivity(intent);
     }
 }

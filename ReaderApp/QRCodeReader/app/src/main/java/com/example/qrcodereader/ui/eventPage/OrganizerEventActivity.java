@@ -114,8 +114,12 @@ public class OrganizerEventActivity extends NavBar {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the selected event
                 Event selectedEvent = eventDataList.get(position);
-
+                String eventID = selectedEvent.getEventID();
+                GeoPoint location = selectedEvent.getLocation();
                 Intent detailIntent = new Intent(OrganizerEventActivity.this, EventDetailsOrganizerActivity.class);
+                detailIntent.putExtra("eventID",eventID);
+                detailIntent.putExtra("latitude", location.getLatitude());
+                detailIntent.putExtra("longitude", location.getLongitude());
                 FirestoreManager.getInstance().setEventDocRef(selectedEvent.getEventID());
                 startActivity(detailIntent);
             }
