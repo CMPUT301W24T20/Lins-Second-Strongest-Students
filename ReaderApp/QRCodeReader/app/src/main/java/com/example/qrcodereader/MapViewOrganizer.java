@@ -52,6 +52,7 @@ import java.util.Map;
 public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCallback{
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;
+    String eventID;
     //private User user;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -61,6 +62,7 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
         getSupportActionBar().hide();
         setContentView(R.layout.map_view);
         //user = (User) getIntent().getSerializableExtra("user");
+        eventID = getIntent().getStringExtra("eventID");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.gmaps);
         mapFragment.getMapAsync(this);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -87,19 +89,23 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},100);
             return;
         }
-        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                LatLng position;
-                if (location == null) {
-                    position = new LatLng(53.5461, 13.4937);
-                } else {
-                    position = new LatLng(location.getLatitude(), location.getLongitude());
-                }
-                //user.setLocation(location);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 10));
-            }
-        });
+//        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
+//            @Override
+//            public void onSuccess(Location location) {
+//                LatLng position;
+//                if (location == null) {
+//                    position = new LatLng(53.5461, 13.4937);
+//                } else {
+//                    position = new LatLng(location.getLatitude(), location.getLongitude());
+//                }
+//                //user.setLocation(location);
+//                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 10));
+//            }
+//        });
+        double latitude = getIntent().getDoubleExtra("latitude", 53.5461);
+        double longitude = getIntent().getDoubleExtra("longitude", 113.4937);
+        LatLng eventLocation = new LatLng(latitude, longitude);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, 10));
         placePins(map);
     }
     /**
@@ -129,43 +135,31 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
      * @param map The GoogleMap instance where markers will be added.
      */
     private void placePins(GoogleMap map){
-        String organizerName = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        db.collection("events").document(eventID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                map.clear(); // clear old markers
 
-        db.collection("events")
-                .whereEqualTo("organizer", organizerName)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "listen:error", e);
-                            return;
-                        }
-
-                        map.clear(); // clear old markers
-
-                        for (QueryDocumentSnapshot document : snapshots) {
-                            Map<String, Long> attendeesMap = (Map<String, Long>) document.get("attendees");
-                            if (attendeesMap != null) {
-                                for (Map.Entry<String, Long> entry: attendeesMap.entrySet()) {
-                                    String userId = entry.getKey();
-                                    Long checkInCount = entry.getValue();
-                                    if(checkInCount > 0) {
-                                        db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                GeoPoint geoPoint = documentSnapshot.getGeoPoint("location");
-                                                if (geoPoint != null) {
-                                                    LatLng checkInLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
-                                                    map.addMarker(new MarkerOptions().position(checkInLocation).title(document.getString("name")));
-                                                }
-                                            }
-                                        });
+                Map<String, Long> attendeesMap = (Map<String, Long>) documentSnapshot.get("attendees");
+                if (attendeesMap != null) {
+                    for (Map.Entry<String, Long> entry: attendeesMap.entrySet()) {
+                        String userId = entry.getKey();
+                        Long checkInCount = entry.getValue();
+                        if(checkInCount > 0) {
+                            db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    GeoPoint geoPoint = documentSnapshot.getGeoPoint("location");
+                                    if (geoPoint != null) {
+                                        LatLng checkInLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+                                        map.addMarker(new MarkerOptions().position(checkInLocation).title(documentSnapshot.getString("name")));
                                     }
                                 }
-                            }
+                            });
                         }
                     }
-                });
+                }
+            }
+        });
     }
 }
