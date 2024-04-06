@@ -87,6 +87,7 @@ public class OrganizerEventActivity extends NavBar {
         setupTextViewButton(R.id.bottom_profile_icon);
         //getSupportActionBar().hide();
 
+        userid = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
