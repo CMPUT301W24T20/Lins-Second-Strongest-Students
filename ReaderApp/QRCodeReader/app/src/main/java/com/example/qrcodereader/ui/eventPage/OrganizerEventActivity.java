@@ -179,7 +179,7 @@ public class OrganizerEventActivity extends NavBar {
 
                                     events.add(event);
                                 }
-                                LocalEventsStorage.saveEvents(this, events, "organizerEvents.json");
+                                AppDataHolder.getInstance().loadOrganizerEventToLocal(events, this);
                                 AppDataHolder.getInstance().loadOrganizerEvents(this);
 
                                 if (events.size() >= 2) {
