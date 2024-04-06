@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
@@ -49,10 +50,9 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         TextView eventOrganizerTextView = findViewById(R.id.event_organizer);
         TextView eventLocationTextView = findViewById(R.id.event_location);
         TextView eventTimeTextView = findViewById(R.id.event_time);
-        db = FirebaseFirestore.getInstance();
-        String eventID = getIntent().getStringExtra("eventID");
 
-        docRefEvent = db.collection("events").document(eventID);
+        db = FirebaseFirestore.getInstance();
+        docRefEvent = FirestoreManager.getInstance().getEventDocRef();
 
         TextView seeQRCodeButton = findViewById(R.id.see_qr_button);
         seeQRCodeButton.setOnClickListener(v -> {
@@ -92,7 +92,6 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         LinearLayout attendeeButton = findViewById(R.id.attendee_button);
         attendeeButton.setOnClickListener((v -> {
             Intent intent = new Intent(this, AttendanceActivity.class);
-            intent.putExtra("eventID", eventID);
             startActivity(intent);
         }));
 
