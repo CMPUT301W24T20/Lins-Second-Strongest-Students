@@ -73,7 +73,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         timeName.setText(event.getTime().toDate().toString());
 
         String imagePoster = event.getPoster();
-        Picasso.get().load(imagePoster).resize(130, 130).centerInside().into(PosterPicture);
+        Picasso.get().load(imagePoster).centerInside().fit().into(PosterPicture);
 
         return view;
     }
@@ -90,6 +90,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
      * @param qrCode the event qr code
      * @param attendeeLimit the event attendee limit
      * @param attendees the event attendees
+     * @param poster the event poster
      */
     public void addEvent(String id, String name, GeoPoint location, String locationName, Timestamp time, String organizer, String organizerID, QRCode qrCode, int attendeeLimit, Map<String, Long> attendees, String poster) {
         events.add(new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit,attendees, poster));

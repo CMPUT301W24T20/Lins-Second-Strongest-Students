@@ -9,15 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.R;
-import com.example.qrcodereader.entity.QRCode;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
-
-import org.w3c.dom.Text;
-
-import java.util.Map;
 
 public class UserDetailsOrganizerActivity extends AppCompatActivity {
     private FirebaseFirestore db;

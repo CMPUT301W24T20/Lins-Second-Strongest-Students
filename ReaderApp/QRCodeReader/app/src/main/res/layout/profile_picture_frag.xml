@@ -11,22 +11,27 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="Choose from gallery"
+        android:text="@string/GalleryImageText"
+        android:textColor="@color/black"
         android:textSize="27sp"
         android:textStyle="bold"
+        android:fontFamily="@font/alata"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/RemoveProfile"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="Remove current picture"
-        android:textColor="@android:color/holo_red_dark"
+        android:layout_marginBottom="20dp"
+        android:text="@string/RemoveProfilePicText"
+        android:textColor="@color/red"
         android:textSize="27sp"
         android:textStyle="bold"
+        android:fontFamily="@font/alata"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UploadProfile" />
 </androidx.constraintlayout.widget.ConstraintLayout>
