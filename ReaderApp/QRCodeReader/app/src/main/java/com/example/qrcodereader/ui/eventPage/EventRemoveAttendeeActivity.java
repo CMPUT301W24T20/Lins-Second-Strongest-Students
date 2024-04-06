@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -67,7 +68,6 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
-        String userid = AttendeeEventActivity.userID;
 
         TextView eventNameTextView = findViewById(R.id.event_name);
         TextView eventOrganizerTextView = findViewById(R.id.organizer);
@@ -77,10 +77,11 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
         TextView removeButton = findViewById(R.id.sign_up_button);
         removeButton.setText("Remove");
 
-        db = FirebaseFirestore.getInstance();
-        String eventID = getIntent().getStringExtra("eventID");
-        docRefEvent = db.collection("events").document(eventID);
-        docRefUser = db.collection("users").document(userid);
+
+        docRefEvent = FirestoreManager.getInstance().getEventDocRef();
+        docRefUser = FirestoreManager.getInstance().getUserDocRef();
+        String eventID = FirestoreManager.getInstance().getEventID();
+        String userid = FirestoreManager.getInstance().getUserID();
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
