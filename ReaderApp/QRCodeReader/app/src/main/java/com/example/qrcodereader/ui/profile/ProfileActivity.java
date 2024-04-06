@@ -1,5 +1,6 @@
 package com.example.qrcodereader.ui.profile;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -39,12 +40,12 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         setupTextViewButton(R.id.scanner_button);
         setupTextViewButton(R.id.notification_button);
         setupTextViewButton(R.id.bottom_profile_icon);
-        //reviewLocationPermissions = findViewById(R.id.reviewPerms);
+        reviewLocationPermissions = findViewById(R.id.reviewPerms);
         View view = LayoutInflater.from(this).inflate(R.layout.profile, null);
 
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
-        phone = findViewById(R.id.UserDeviceText);
+        phone = findViewById(R.id.phone);
         region = findViewById(R.id.regionSelector);
         Picture = findViewById(R.id.user_profile_photo);
         TextView adminButton = findViewById(R.id.admin_button);
@@ -115,18 +116,18 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 optionfrag.show(getSupportFragmentManager(), "Admin Actions");
             }
         });
-        // Microsoft Copilot 2024 "Create a button which takes me to location settings"
-//        reviewLocationPermissions.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Direct the user to app settings
-//                Intent intent = new Intent();
-//                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//                Uri uri = Uri.fromParts("package", getPackageName(), null);
-//                intent.setData(uri);
-//                startActivity(intent);
-//            }
-//        });
+         //Microsoft Copilot 2024 "Create a button which takes me to location settings"
+        reviewLocationPermissions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Direct the user to app settings
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
