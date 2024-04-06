@@ -453,7 +453,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
     }
 
     private void checkForPastEventsAndToggleCheckbox() {
-        CollectionReference eventsRef = db.collection("events");
+        eventsRef = FirestoreManager.getInstance().getEventCollection();
         Timestamp now = Timestamp.now(); // Current timestamp to compare with event timestamps
 
         // Query to find events organized by the current user that occurred in the past
