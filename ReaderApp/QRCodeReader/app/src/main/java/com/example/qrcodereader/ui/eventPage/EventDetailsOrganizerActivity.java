@@ -7,6 +7,7 @@ import com.example.qrcodereader.R;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.squareup.picasso.Picasso;
 
 import java.util.Map;
 
@@ -35,6 +37,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private DocumentReference docRefEvent;
     private QRCode qrCode;
+    String eventID;
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -50,6 +53,11 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         TextView eventOrganizerTextView = findViewById(R.id.event_organizer);
         TextView eventLocationTextView = findViewById(R.id.event_location);
         TextView eventTimeTextView = findViewById(R.id.event_time);
+        ImageView eventPoster = findViewById(R.id.event_poster);
+        db = FirebaseFirestore.getInstance();
+        eventID = getIntent().getStringExtra("eventID");
+        String TAG = "MapOrg";
+        Log.d(TAG, "Event ID: " + eventID);
 
         db = FirebaseFirestore.getInstance();
         docRefEvent = FirestoreManager.getInstance().getEventDocRef();
@@ -71,6 +79,8 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 String organizer = documentSnapshot.getString("organizer");
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String qrCodeString = documentSnapshot.getString("qrCode");
+                String poster = documentSnapshot.getString("poster");
+                Picasso.get().load(poster).resize(410, 240).centerInside().into(eventPoster);
                 qrCode = new QRCode(qrCodeString);
                 Log.d("Firestore", "Successfully fetch document: ");
 
@@ -106,7 +116,12 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
     }
 
     private void goToMapActivity() {
+        double latitude = getIntent().getDoubleExtra("latitude", 0);
+        double longitude = getIntent().getDoubleExtra("longitude", 0);
         Intent intent = new Intent(this, MapViewOrganizer.class);
+        intent.putExtra("eventID", eventID);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
         startActivity(intent);
     }
 }

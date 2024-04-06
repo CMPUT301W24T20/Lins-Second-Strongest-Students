@@ -113,4 +113,15 @@ public class AdminUserActivity extends AppCompatActivity {
             isFetching = false;
         });
     }
+    // Microsoft Copilot 2024 "Activity lifecycle issue, want user list to reset once I come back given code"
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Clear the existing user data list
+        userDataList.clear();
+
+        // Fetch the users again
+        fetchUsers();
+    }
 }

@@ -2,7 +2,6 @@ package com.example.qrcodereader.ui.profile;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -11,42 +10,31 @@ import android.content.DialogInterface;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 
 import android.provider.Settings;
 import android.text.InputFilter;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.qrcodereader.ImageUpload;
+import com.example.qrcodereader.util.ImageUpload;
 import com.example.qrcodereader.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -65,7 +53,6 @@ import java.util.Set;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import com.example.qrcodereader.util.AppDataHolder;
 import com.squareup.picasso.Transformation;
 
 import android.text.Editable;
@@ -85,85 +72,93 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
     private EditText ETphone;
     private OnSaveClickListener onSaveClickListener;
 
-
-
+    /**
+     * This listener interface handles saving the inputs of this edit fragment into database events
+     */
     public interface OnSaveClickListener {
+        /**
+         * Called when user clicks the positive(save) button in this edit fragment
+         * @param EditName the possibly edited name entered by the user
+         * @param EditRegion the possibly edited region selected by the user
+         * @param EditPhone the possibly edited phone number entered by the user
+         * @param EditEmail the possibly edited email address entered by the use
+         * @param EditPicture the URI of the possibly changed profile picture selected by the user
+         */
         void onSaveClicked(String EditName, String EditRegion, String EditPhone, String EditEmail, Uri EditPicture);
     }
 
+    /**
+     * This method sets the listener to be notified when the user clicks the positive(save) button in this edit fragment
+     * @param listener the listener to be set
+     */
     public void setOnSaveClickListener(OnSaveClickListener listener) {
         this.onSaveClickListener = listener;
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.profile_edit_frag, null);
+        View view = getLayoutInflater().inflate(R.layout.profile_edit_frag, null);
 
-        // find Views
         EditText ETname = view.findViewById(R.id.name);
         EditText ETemail = view.findViewById(R.id.email);
         ETphone = view.findViewById(R.id.phone);
         Spinner Sregion = view.findViewById(R.id.SpinnerRegions);
         Picture = view.findViewById(R.id.ProfilePic);
-        int errorColour = ContextCompat.getColor(requireContext(), R.color.red_light);
+        int errorColour = ContextCompat.getColor(requireContext(), R.color.red);
 
+        /*
+        OpenAI, ChatGPT, 03/25/24
+        How do I retrieve all available phone region codes and set it to a spinner?
+        */
+        // ChatGPT code starts here
         Set<String> retrievedRegions = PhoneNumberUtil.getInstance().getSupportedRegions();
         Set<String> regions = new HashSet<>(retrievedRegions);
         regions.add(" ");
         List<String> supportedRegions = new ArrayList<>(regions);
         Collections.sort(supportedRegions);
-        ArrayAdapter<String> SpinAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, supportedRegions);
-        // Specify the layout to use when the list of choices appears
-        SpinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> SpinAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_dropdown, supportedRegions);
+        SpinAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         Sregion.setAdapter(SpinAdapter);
+        // ChatGPT code ends here
 
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View customTitleView = inflater.inflate(R.layout.profile_edit_title_layout, null);
+        Bundle args = getArguments();
+        ETname.setText(args.getString("name", ""));
+        ETemail.setText(args.getString("email", ""));
+        ETphone.setText(args.getString("phone", ""));
+        Sregion.setSelection(supportedRegions.indexOf(args.getString("region", "")));
+        setRegionPhone(args.getString("region", ""));
+        Uri imageUri = args.getParcelable("pfp");
+        Picasso.get().load(imageUri).transform(new CircleTransformation()).resize(127, 127).into(Picture);
 
         String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         docRefUser = db.collection("users").document(deviceID);
 
-        docRefUser.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                Sregion.setSelection(supportedRegions.indexOf(documentSnapshot.getString("phoneRegion")));
-                String UserRegion = documentSnapshot.getString("phoneRegion");
-                setRegionPhone(UserRegion);
-
-                ETname.setText(CheckEmpty(documentSnapshot.getString("name")));
-                ETemail.setText(CheckEmpty(documentSnapshot.getString("email")));
-                ETphone.setText(CheckEmpty(documentSnapshot.getString("phone")));
-
-                image = documentSnapshot.getString("ProfilePic");
-
-                String imageURL = documentSnapshot.getString("ProfilePic");
-                Picasso.get().load(imageURL).transform(new CircleTransformation()).resize(100, 100).centerInside().into(Picture);
-            }
-        }).addOnFailureListener(e -> {
-            Log.e(TAG, "Error getting user " + e.getMessage());
-        });
-
-        // upload profile pic
         Picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // show profile picture options
                 ProfilePictureFrag pictureOption = new ProfilePictureFrag();
                 pictureOption.show(getParentFragmentManager(), "Edit Profile Picture");
             }
         });
 
-        // march 25 trim text in an edit text ? programatically?
         Sregion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedRegion = parentView.getItemAtPosition(position).toString();
                 setRegionPhone(selectedRegion);
-
-                // if pre-existing text, trim down to region phone number length
                 String originalInput = ETphone.getText().toString();
+                /*
+                OpenAI, ChatGPT, 03/25/24
+                Trim text in an edit text?
+                */
+                // ChatGPT code starts here
                 String trimmedInput = originalInput.substring(0, Math.min(originalInput.length(), PhoneLength));
                 ETphone.setText(trimmedInput);
                 ETphone.setSelection(trimmedInput.length()); // move cursor
+                // ChatGPT code ends here
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
@@ -171,14 +166,14 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view)
-                .setCustomTitle(customTitleView)
+                .setTitle("Edit Profile Details")
                 .setNegativeButton("Cancel", null) // do nothing and close
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     // able to press Save Button, it is not greyed out == input in edit texts are valid
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (uploaded != null) {
-                            isUploaded();
+                            isUploaded(deviceID);
                         }
                         docRefUser.update("name",  ETname.getText().toString());
                         docRefUser.update("email",  ETemail.getText().toString());
@@ -198,21 +193,11 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-                Button saveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-
-                Typeface customFont = ResourcesCompat.getFont(requireContext(), R.font.alata);
-
-                cancelButton.setTypeface(customFont);
-                saveButton.setTypeface(customFont);
-            }
-        });
-
-        // how to grey out postive button of dialogue fragment 3/25/24
+        /*
+        OpenAI, ChatGPT, 03/25/24
+        how to grey out positive button of dialogue fragment
+        */
+        // Reference to the ChatGPT code starts here
         ETphone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -220,14 +205,16 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                // Enable/disable positive button based on text length
+                // Enable/disable positive(save) button based on text length
                 alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(s.length() >= PhoneLength);
+
                 if (s.length() < PhoneLength) {
-                    // Text is not long enough, change EditText's background color to red
-                    ETphone.setBackgroundColor(errorColour);
+                    // phone input not long enough
+                    ETphone.setTextColor(errorColour);
+                    ETphone.setHintTextColor(errorColour);
                 } else {
-                    // Text is long enough, reset EditText's background color
-                    ETphone.setBackgroundColor(Color.WHITE);
+                    ETphone.setTextColor(Color.BLACK);
+                    ETphone.setHintTextColor(Color.BLACK);
                 }
             }
         });
@@ -239,22 +226,28 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                // Enable/disable positive button based on if email valid format or not
+                // Enable/disable positive(save) button based on if email valid format or not
                 alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(s.length()==0 || Patterns.EMAIL_ADDRESS.matcher(s).matches());
+
                 if (s.length()>0 && !Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
-                    // there is email input and it is not of right format
-                    ETemail.setBackgroundColor(errorColour);
+                    // there is email input and it is not of valid email format
+                    ETemail.setTextColor(errorColour);
+                    ETemail.setHintTextColor(errorColour);
                 } else {
-                    // email input is valid
-                    ETemail.setBackgroundColor(Color.WHITE);
+                    ETemail.setTextColor(Color.GRAY);
+                    ETemail.setHintTextColor(Color.GRAY);
                 }
             }
         });
-
+        // Reference to the ChatGPT code ends here
         return alertDialog;
     }
+
+    /**
+     * meow
+     */
     @Override
-    public void isUploaded(){
+    public void isUploaded(String deviceID){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Context context = getContext();
         ContentResolver contentResolver = context.getContentResolver();
@@ -266,7 +259,6 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                 baos.write(buffer, 0, len);
             }
             byte[] imageData = baos.toByteArray();
-            String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
             String imageName = deviceID + "PROFILEPICTURE.png";
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -286,17 +278,9 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 
-
     /**
-     * meow
-     */
-    private String CheckEmpty(String text){
-        if (text == null || text.length() == 0) {return "";}
-        else {return text;}
-    }
-
-    /**
-     * meowwwwwwwwwww
+     * This method alters the length restriction of the EditText for phone input based on the phone region selected
+     * @param regionCode the String of the phone region selected
      */
     private void setRegionPhone(String regionCode){
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
@@ -310,18 +294,36 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
         ETphone.setFilters(new InputFilter[]{new InputFilter.LengthFilter(PhoneLength)});
     }
 
+    /**
+     * This method alters the length restriction of the EditText for phone input based on the phone region selected
+     * @param uploaded the Uri of image from user's photo gallery
+     * @param URL the String of image URL from database that is default profile picture
+     */
     public void setPicture(Uri uploaded, String URL){
         if (uploaded != null ){ // uploaded new profile picture
-            Picasso.get().load(uploaded).transform(new CircleTransformation()).resize(100, 100).centerInside().into(Picture);
+            Picasso.get().load(uploaded).transform(new CircleTransformation()).resize(127, 127).centerInside().into(Picture);
             this.uploaded = uploaded;
         } else{ // removed current profile picture, URL is the default profile picture that is replacing
-            Picasso.get().load(URL).transform(new CircleTransformation()).resize(100, 100).centerInside().into(Picture);
+            Picasso.get().load(URL).transform(new CircleTransformation()).resize(127, 127).centerInside().into(Picture);
             this.uploaded = Uri.parse(URL);
         }
     }
 
-    // how do i trim an image to circle april 1
-    public class CircleTransformation implements Transformation {
+    /*
+    OpenAI, ChatGPT, 04/01/24
+    how do i trim an image to circle
+    */
+    // ChatGPT code starts here excluding the javadoc
+    /**
+     * A class that implements Transformation interface to transform a Bitmap into a circular shape
+     * This transformation is used for displaying circular images
+     */
+    private static class CircleTransformation implements Transformation {
+        /**
+         * This method transforms the source Bitmap into a circular shape
+         * @param source the source Bitmap to be transformed
+         * @return a new Bitmap that is a circular transformation of the source Bitmap
+         */
         @Override
         public Bitmap transform(Bitmap source) {
             int size = Math.min(source.getWidth(), source.getHeight());
@@ -349,8 +351,8 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             squaredBitmap.recycle();
             return bitmap;
         }
-
         @Override
         public String key() {return "circle";} // key method not used in app but is required implementation due to interface Transformation
     }
+    // ChatGPT code ends here
 }
