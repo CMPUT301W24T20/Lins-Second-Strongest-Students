@@ -116,8 +116,7 @@ public class OrganizerEventActivity extends NavBar {
         TextView createEventButton = findViewById(R.id.browse_button);
         createEventButton.setOnClickListener(v -> {
             Intent intent = new Intent(OrganizerEventActivity.this, CreateEventActivity.class);
-            intent.putExtra("userid", userid);
-            intent.putExtra("username", username);
+            FirestoreManager.getInstance().setUserDocRef(userid);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         });
@@ -243,7 +242,7 @@ public class OrganizerEventActivity extends NavBar {
     private void setupRealTimeEventUpdates() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference eventsRef = db.collection("events");
-        String userid = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        String userid = FirestoreManager.getInstance().getUserID();
 
         eventsRef.whereEqualTo("organizerID", userid)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
