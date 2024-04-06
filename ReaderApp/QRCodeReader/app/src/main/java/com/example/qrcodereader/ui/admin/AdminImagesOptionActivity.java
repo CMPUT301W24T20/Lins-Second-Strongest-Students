@@ -22,28 +22,24 @@ public class AdminImagesOptionActivity extends AppCompatActivity {
         SeePoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AdminImageView listfrag = new AdminImageView();
-                Bundle bundle = new Bundle();
-                bundle.putString("Title", "Posters");
-                bundle.putString("Type", "EventPoster");
-                listfrag.setArguments(bundle);
-                listfrag.show(getSupportFragmentManager(), "View Posters");
+                preload("Event Posters", "EventPoster");
             }
         });
 
         SeeProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AdminImageView listfrag = new AdminImageView();
-                Bundle bundle = new Bundle();
-                bundle.putString("Title", "Profile Pictures");
-                bundle.putString("Type", "UploadedProfilePics");
-                listfrag.setArguments(bundle);
-                listfrag.show(getSupportFragmentManager(), "View Posters");
+                preload("Profile Pictures", "UploadedProfilePics");
             }
         });
 
         Button returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
+    }
+
+    private void preload(String title, String type){
+        AdminImageView listfrag = new AdminImageView(title, type);
+        listfrag.populateListView(); // Fetch images before showing the dialog
+        listfrag.show(getSupportFragmentManager(), "View Images");
     }
 }

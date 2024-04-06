@@ -23,6 +23,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private Context mContext;
     private List<String> mImageUrls;
     private SparseBooleanArray selectedPositions;
+    private int preloadCount = 6;
 
     public ImageAdapter(Context context, List<String> imageUrls) {
         mContext = context;
@@ -55,6 +56,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         holder.bind(position);
+
+        int nextPosition = position + preloadCount;
+        if (nextPosition < mImageUrls.size()) {
+            Picasso.get()
+                    .load(mImageUrls.get(nextPosition)).resize(100, 100).centerCrop()
+                    .fetch(); // Asynchronously load the image without displaying it
+        }
     }
 
     @Override
@@ -82,7 +90,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             imageView.setOnClickListener(v -> {
                 toggleSelection(getAdapterPosition());
             });
-            Picasso.get().load(mImageUrls.get(position)).into(imageView);
+            Picasso.get().load(mImageUrls.get(position)).resize(100, 100).centerCrop().into(imageView);
         }
     }
 }

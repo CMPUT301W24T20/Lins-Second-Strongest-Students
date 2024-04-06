@@ -2,8 +2,11 @@ package com.example.qrcodereader.ui.admin;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,11 +30,6 @@ import com.example.qrcodereader.R;
 import com.example.qrcodereader.ui.profile.ProfileActivity;
 import com.example.qrcodereader.ui.profile.ProfileEditFrag;
 import com.example.qrcodereader.util.SetDefaultProfile;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.ValueEventListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,32 +41,31 @@ import java.util.List;
 
 public class AdminImageView extends DialogFragment {
     private RecyclerView imageRecyclerView;
-    private List<String> selectedImages;
     private List<String> loadedImages;
     private ImageAdapter adapter;
     private StorageReference storageRef;
     private String TypeRef;
+    private String Title;
 
-    @Nullable
+    // Constructor to initialize AdminImageView with the required parameters
+    public AdminImageView(String title, String type) {
+        this.Title = title;
+        this.TypeRef = type;
+        this.storageRef = FirebaseStorage.getInstance().getReference().child(this.TypeRef);
+    }
+
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_activity_admin_image_list, null);
 
-        String Title = getArguments().getString("Title");
-        TypeRef = getArguments().getString("Type");
-
-        storageRef = FirebaseStorage.getInstance().getReference().child(TypeRef);
-
         imageRecyclerView = view.findViewById(R.id.imageRecyclerView);
         loadedImages  = new ArrayList<>();
-        selectedImages = new ArrayList<>();
-        adapter = new ImageAdapter(requireContext(), selectedImages);
+        adapter = new ImageAdapter(requireContext(), loadedImages);
         imageRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3)); // 3 columns grid layout
         imageRecyclerView.setAdapter(adapter);
-
-        populateListView();
 
         builder.setView(view)
                 .setTitle(Title)
@@ -78,12 +75,15 @@ public class AdminImageView extends DialogFragment {
         return builder.create();
     }
 
-    private void populateListView() {
+    @SuppressLint("NotifyDataSetChanged")
+    public void populateListView() {
         storageRef.listAll().addOnSuccessListener(listResult -> {
             for (StorageReference item : listResult.getItems()) {
                 item.getDownloadUrl().addOnSuccessListener(uri -> {
-                    selectedImages.add(uri.toString());
-                    adapter.notifyDataSetChanged();
+                    loadedImages.add(uri.toString());
+
+                    // Notify adapter about the newly added item
+                    adapter.notifyItemInserted(loadedImages.size() - 1);
                 }).addOnFailureListener(exception -> {
                     // Handle any errors
                 });
@@ -123,9 +123,5 @@ public class AdminImageView extends DialogFragment {
                 Log.e(TAG, "Error deleting image " + imageName + ": " + exception.getMessage());
             });
         }
-
-        // Clear the list of selected images
-        selectedImages.clear();
     }
-
 }
