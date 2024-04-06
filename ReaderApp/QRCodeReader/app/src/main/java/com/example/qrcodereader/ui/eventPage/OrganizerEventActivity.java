@@ -5,7 +5,6 @@ import com.example.qrcodereader.MapViewOrganizer;
 import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,44 +14,33 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.util.AppDataHolder;
-import com.example.qrcodereader.util.EventFetcher;
 
 import com.example.qrcodereader.util.LocalEventsStorage;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -185,7 +173,7 @@ public class OrganizerEventActivity extends NavBar {
                                     QRCode qrCode = new QRCode(documentSnapshot.getString("qrCode"));
                                     int attendeeLimit = documentSnapshot.getLong("attendeeLimit").intValue();
                                     Map<String, Long> attendees = (Map<String, Long>) documentSnapshot.get("attendees");
-                                    String EPoster = documentSnapshot.getString("EPoster");
+                                    String EPoster = documentSnapshot.getString("poster");
 
                                     Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
 

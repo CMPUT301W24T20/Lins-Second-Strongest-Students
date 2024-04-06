@@ -9,15 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.R;
-import com.example.qrcodereader.entity.QRCode;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
-
-import org.w3c.dom.Text;
-
-import java.util.Map;
 
 public class UserDetailsOrganizerActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -31,7 +24,7 @@ public class UserDetailsOrganizerActivity extends AppCompatActivity {
         TextView userName = findViewById(R.id.name);
         TextView userEmail = findViewById(R.id.email);
         TextView userPhoneRegion = findViewById(R.id.phone_region);
-        TextView userPhone = findViewById(R.id.phone);
+        TextView userPhone = findViewById(R.id.UserDeviceText);
 
 
 

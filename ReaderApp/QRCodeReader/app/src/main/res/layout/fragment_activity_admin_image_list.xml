@@ -7,32 +7,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="20dp"
-        android:text="@string/ImagesText"
-        android:textSize="30sp" />
-
-    <GridView
-        android:id="@+id/imageGridView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imageRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="100dp"
-        android:numColumns="3"
-        android:horizontalSpacing="8dp"
-        android:verticalSpacing="8dp"
-        android:padding="8dp"
-        android:gravity="center"/>
-
-    <Button
-        android:id="@+id/ReturnButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:padding="10dp"
-        android:text="@string/return_string" />
-
+        android:padding="5dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
+        tools:listitem="@layout/item_image" />
 </LinearLayout>

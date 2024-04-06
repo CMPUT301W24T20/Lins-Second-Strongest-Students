@@ -17,7 +17,7 @@ public class AdminAllOptionsFrag extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
-        builder.setTitle("Choose Action (Click Outside to Cancel)");
+        builder.setTitle("Choose Action");
 
         // Button to go to AttendeeEventActivity
         builder.setPositiveButton("View Events", new DialogInterface.OnClickListener() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/blue_gradient_above">
+    android:background="@color/white">
 
     <EditText
         android:id="@+id/name"
@@ -12,13 +12,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="69dp"
         android:layout_marginEnd="69dp"
-        android:fontFamily="@font/alata"
+        android:textSize="20sp"
         android:hint="@string/ProfileEditNameText"
         android:inputType="text"
         android:maxLength="50"
+        android:textColor="@color/black"
+        android:text ="@string/ProfileEditNameText"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"
         android:gravity="center"
+        android:layout_centerHorizontal="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ProfilePic" />
@@ -29,34 +31,38 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
-        android:fontFamily="@font/alata"
+        android:textSize="17sp"
         android:hint="@string/ProfileEditEmailText"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         android:maxLength="50"
         android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:text ="@string/ProfileEditEmailText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone" />
+        app:layout_constraintTop_toBottomOf="@+id/UserDeviceText" />
 
     <EditText
-        android:id="@+id/phone"
+        android:id="@+id/UserDeviceText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
-        android:digits="1234567890"
+        android:textSize="17sp"
         android:hint="@string/ProfileEditPhoneText"
         android:inputType="phone|number"
-        android:fontFamily="@font/alata"
+        android:textColor="@color/black"
+        android:text ="@string/ProfileEditPhoneText"
+        android:digits="1234567890"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/SpinnerRegions"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <ImageView
         android:id="@+id/ProfilePic"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        android:layout_marginTop="69dp"
+        android:layout_width="127sp"
+        android:layout_height="127sp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/circle_profile"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,10 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
-        android:fontFamily="@font/alata"
         app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

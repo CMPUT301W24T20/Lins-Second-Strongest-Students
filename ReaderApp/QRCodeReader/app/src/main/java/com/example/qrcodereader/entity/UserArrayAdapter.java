@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.qrcodereader.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,7 +41,7 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
         TextView userName = view.findViewById(R.id.name);
         TextView email = view.findViewById(R.id.email);
         TextView phoneRegion = view.findViewById(R.id.phone_region);
-        TextView phone = view.findViewById(R.id.phone);
+        TextView phone = view.findViewById(R.id.UserDeviceText);
         ImageView ProfilePicture = view.findViewById(R.id.user_profile_photo);
 
         userId.setText(user.getUserID());

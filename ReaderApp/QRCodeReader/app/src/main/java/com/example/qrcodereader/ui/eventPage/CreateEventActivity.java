@@ -1,15 +1,10 @@
 package com.example.qrcodereader.ui.eventPage;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,19 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.ImageUpload;
+import com.example.qrcodereader.util.ImageUpload;
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 
 import com.example.qrcodereader.R;
-//import com.google.android.libraries.places.api.Places;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -50,25 +41,21 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *  Activity for users to create events by entering the details and press create.
@@ -148,6 +135,8 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         });
         // ChatGPT code end here
 
+
+
         CheckBox checkBox = findViewById(R.id.attendee_limit_checkbox);
         EditText attendeeLimit = findViewById(R.id.attendee_limit);
 
@@ -188,26 +177,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         storage = FirebaseStorage.getInstance().getReference();
         StorageReference storageRef = storage.child("EventPoster/noEventPoster.png");
         Poster = findViewById(R.id.PosterUpload);
-        // Download the image into a local file
-        try {
-            File localFile = File.createTempFile("default", ".png"); // Create a temporary file to store the downloaded image
-            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                    Poster.setImageBitmap(bitmap);
-                    Poster.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // Handle any errors
-                    Log.e(TAG, "Failed to download image", e);
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         Poster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,13 +236,10 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                             event.put("organizerID", deviceID);
                             event.put("qrCode", selectedQRCode);
                             event.put("time", timeOfEvent);
+                            event.put("poster", "");
 
-                            if (uploaded != null) {
-                                isUploaded();
-                            } else{
-                                // event.put ( the default poster)
-                                AddEvent();
-                            }
+                            AddEvent();
+
                             finish();
 
                         } else {
@@ -298,8 +265,9 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             startActivity(intent);
         });
     }
+
     @Override
-    public void isUploaded() {
+    public void isUploaded(String eventID) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ContentResolver contentResolver = getContentResolver();
         try {
@@ -310,21 +278,22 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                 baos.write(buffer, 0, len);
             }
             byte[] imageData = baos.toByteArray();
-            String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-            String imageName = eventName.getText().toString() + "_"+ deviceID + "POSTER" + ".png";
+            String imageName = eventID + "_" + deviceID + ".png";
             StorageReference imageRef = storage.child("EventPoster/" + imageName);
             UploadTask uploadTask = imageRef.putBytes(imageData);
 
             uploadTask.addOnSuccessListener(taskSnapshot -> {
                 // Get the download URL directly from the task snapshot
                 Task<Uri> downloadUrlTask = taskSnapshot.getStorage().getDownloadUrl();
-                downloadUrlTask.addOnSuccessListener(uri -> {
-                    event.put("poster", uri.toString());
-                    AddEvent();
 
+                downloadUrlTask.addOnSuccessListener(uri -> {
+                    DocumentReference newEvent = db.collection("events").document(eventID);
+                    newEvent.update("poster", uri.toString());
                 }).addOnFailureListener(e -> {
+                    Log.e("CreateEventActivity", "Error assigning poster to event" + eventID, e);
                 });
             }).addOnFailureListener(e -> {
+                Log.e("CreateEventActivity", "Error uploading poster for event" + eventID, e);
             });
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -336,8 +305,13 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
     public void AddEvent(){
         eventsRef.add(event)
                 .addOnSuccessListener(documentReference -> {
-                    Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
-                                        Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
+                    String documentId = documentReference.getId();
+                    if (uploaded !=null){
+                        isUploaded(documentId);
+                    }
+
+                    Log.d("CreateEventActivity", "Event added with ID: " + documentId);
+                    Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .addOnFailureListener(e -> {
