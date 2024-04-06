@@ -218,7 +218,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                             }
 
                             if (uploaded != null) {
-                                isUploaded();
+                                //isUploaded();
                             } else{
                                 // event.put ( the default poster)
                                 AddEvent();
@@ -288,7 +288,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                 .addOnSuccessListener(documentReference -> {
 
                     String documentId = documentReference.getId();
-                    updateQRCodeReference(documentID);
+                    updateQRCodeReference(documentId);
                     if (uploaded !=null){
                         isUploaded(documentId);
                     }
