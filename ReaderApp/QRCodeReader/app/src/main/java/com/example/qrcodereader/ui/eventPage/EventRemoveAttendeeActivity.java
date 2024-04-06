@@ -133,9 +133,9 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
             docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
                     Map<String, Object> attendees = (Map<String, Object>) documentSnapshot.get("attendees");
-                    if (attendees != null && attendees.containsKey(eventID)) {
+                    if (attendees != null && attendees.containsKey(userid)) {
                         // Prepare the delete operation for the specific eventID
-                        docRefEvent.update("attendees." + eventID, FieldValue.delete())
+                        docRefEvent.update("attendees." + userid, FieldValue.delete())
                                 .addOnSuccessListener(aVoid -> Log.d(TAG, "User ID deleted from event's attendees."))
                                 .addOnFailureListener(e -> Log.w(TAG, "Error deleting User ID from event's attendees.", e));
                     }

@@ -47,47 +47,46 @@ public class SignUpTest {
         try (ActivityScenario<EventDetailsAttendeeActivity> scenario = ActivityScenario.launch(EventDetailsAttendeeActivity.class)) {
             // Rest of your test code...
             // Wait for 3 seconds after the activity has launched
-            Thread.sleep(3000);
+            Thread.sleep(5000);
 
             // Use Espresso to find the button and click it
             onView(withId(R.id.sign_up_button)).perform(click());
 
+            Thread.sleep(3000);
+
             // Now you can retrieve the activity and check the variable's state
             // This assumes that your activity has a method to get the variable
-            scenario.onActivity(activity -> {
-                assertNotNull("docRefEvent should not be null", activity.getDocRefEvent());
-                activity.getDocRefEvent().get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Extract the map field from the document
-                            Map<String, Object> map = (Map<String, Object>) document.getData().get("attendees");
-                            assertNotNull(map);
-                            assertTrue(map.containsKey("1d141a0fd4e29d60"));
-                        } else {
-                            fail();
-                        }
+            FirestoreManager.getInstance().getEventDocRef().get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Extract the map field from the document
+                        Map<String, Object> map = (Map<String, Object>) document.getData().get("attendees");
+                        assertNotNull(map);
+                        assertTrue(map.containsKey("1d141a0fd4e29d60"));
                     } else {
-                        // Handle the failure of fetching the document
                         fail();
                     }
-                });
-                FirestoreManager.getInstance().getUserDocRef().get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Extract the map field from the document
-                            Map<String, Object> map = (Map<String, Object>) document.getData().get("eventsAttended");
-                            assertNotNull(map);
-                            assertTrue(map.containsKey("vtLdBOt2ujnXybkviXg9"));
-                        } else {
-                            fail();
-                        }
+                } else {
+                    // Handle the failure of fetching the document
+                    fail();
+                }
+            });
+            FirestoreManager.getInstance().getUserDocRef().get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Extract the map field from the document
+                        Map<String, Object> map = (Map<String, Object>) document.getData().get("eventsAttended");
+                        assertNotNull(map);
+                        assertTrue(map.containsKey("vtLdBOt2ujnXybkviXg9"));
                     } else {
-                        // Handle the failure of fetching the document
                         fail();
                     }
-                });
+                } else {
+                    // Handle the failure of fetching the document
+                    fail();
+                }
             });
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -101,46 +100,54 @@ public class SignUpTest {
             // Use Espresso to find the button and click it
             onView(withId(R.id.sign_up_button)).perform(click());
 
+            Thread.sleep(3000);
             // Now you can retrieve the activity and check the variable's state
             // This assumes that your activity has a method to get the variable
-            scenario.onActivity(activity -> {
-                assertNotNull("docRefEvent should not be null", activity.getDocRefEvent());
-                assertNotNull("docRefuser should not be null", activity.getDocRefUser());
-                activity.getDocRefEvent().get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Extract the map field from the document
-                            Map<String, Object> map = (Map<String, Object>) document.getData().get("attendees");
-                            assertNotNull(map);
-                            assertFalse(map.containsKey("1d141a0fd4e29d60"));
-                        } else {
-                            fail();
+            FirestoreManager.getInstance().getEventDocRef().get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Extract the map field from the document
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
                         }
+                        Map<String, Object> map = (Map<String, Object>) document.getData().get("attendees");
+                        assertNotNull(map);
+                        assertFalse(map.containsKey("1d141a0fd4e29d60"));
                     } else {
-                        // Handle the failure of fetching the document
                         fail();
                     }
-                });
-                FirestoreManager.getInstance().getUserDocRef().get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Extract the map field from the document
-                            Map<String, Object> map = (Map<String, Object>) document.getData().get("eventsAttended");
-                            assertNotNull(map);
-                            assertFalse(map.containsKey("vtLdBOt2ujnXybkviXg9"));
-                        } else {
-                            fail();
+                } else {
+                    // Handle the failure of fetching the document
+                    fail();
+                }
+            });
+            FirestoreManager.getInstance().getUserDocRef().get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
                         }
+                        // Extract the map field from the document
+                        Map<String, Object> map = (Map<String, Object>) document.getData().get("eventsAttended");
+                        assertNotNull(map);
+                        assertFalse(map.containsKey("vtLdBOt2ujnXybkviXg9"));
                     } else {
-                        // Handle the failure of fetching the document
                         fail();
                     }
-                });
+                } else {
+                    // Handle the failure of fetching the document
+                    fail();
+                }
             });
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 }
+
