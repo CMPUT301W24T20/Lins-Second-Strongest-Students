@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -67,7 +68,6 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
-        String userid = AttendeeEventActivity.userID;
 
         TextView eventNameTextView = findViewById(R.id.event_name);
         TextView eventOrganizerTextView = findViewById(R.id.organizer);
@@ -77,10 +77,11 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
         TextView removeButton = findViewById(R.id.sign_up_button);
         removeButton.setText("Remove");
 
-        db = FirebaseFirestore.getInstance();
-        String eventID = getIntent().getStringExtra("eventID");
-        docRefEvent = db.collection("events").document(eventID);
-        docRefUser = db.collection("users").document(userid);
+
+        docRefEvent = FirestoreManager.getInstance().getEventDocRef();
+        docRefUser = FirestoreManager.getInstance().getUserDocRef();
+        String eventID = FirestoreManager.getInstance().getEventID();
+        String userid = FirestoreManager.getInstance().getUserID();
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -129,10 +130,37 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
                 Log.d(TAG, "Can't delete");
                 throw new RuntimeException("Can't delete");
             });
+            docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    Map<String, Object> attendees = (Map<String, Object>) documentSnapshot.get("attendees");
+                    if (attendees != null && attendees.containsKey(userid)) {
+                        // Prepare the delete operation for the specific eventID
+                        docRefEvent.update("attendees." + userid, FieldValue.delete())
+                                .addOnSuccessListener(aVoid -> Log.d(TAG, "User ID deleted from event's attendees."))
+                                .addOnFailureListener(e -> Log.w(TAG, "Error deleting User ID from event's attendees.", e));
+                    }
+                }
+            }).addOnFailureListener(e -> {
+                // Handle the error
+                Log.d(TAG, "Can't delete");
+                throw new RuntimeException("Can't delete");
+            });
             finish();
         });
 
         ImageView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
+    }
+
+    public FirebaseFirestore getDb() {
+        return db;
+    }
+
+    public DocumentReference getDocRefEvent() {
+        return docRefEvent;
+    }
+
+    public DocumentReference getDocRefUser() {
+        return docRefEvent;
     }
 }

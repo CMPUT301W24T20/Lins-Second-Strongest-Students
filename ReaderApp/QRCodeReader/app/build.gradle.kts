@@ -78,7 +78,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
     implementation("com.google.android.libraries.places:places:3.4.0")
 
-
     implementation("com.google.code.gson:gson:2.10.1")
 
     implementation ("com.squareup.picasso:picasso:2.8")

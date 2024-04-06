@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,13 +50,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     private Event selectedEvent;
     String eventID;
     String userid;
-    boolean success = false;
-    protected void initializeFirestore() {
-        db = FirebaseFirestore.getInstance();
-        eventID = getIntent().getStringExtra("eventID");
-        docRefEvent = db.collection("events").document(eventID);
-        docRefUser = db.collection("users").document(userid);
-    }
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -64,18 +58,22 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initializeFirestore();
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_attendee);
-        userid = AttendeeEventActivity.userID;
+
+        db = FirestoreManager.getInstance().getDb();
+        userid = FirestoreManager.getInstance().getUserID();
+        eventID = FirestoreManager.getInstance().getEventID();
+        docRefEvent = FirestoreManager.getInstance().getEventDocRef();
+        docRefUser = FirestoreManager.getInstance().getUserDocRef();
+
 
         TextView eventNameTextView = findViewById(R.id.event_name);
         TextView eventOrganizerTextView = findViewById(R.id.organizer);
         TextView eventLocationTextView = findViewById(R.id.location);
         TextView eventTimeTextView = findViewById(R.id.time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
-
 
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
@@ -124,7 +122,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
                                     // Document updated successfully
                                     Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                                    success = true;
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -134,8 +131,6 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                                     Log.w("Firestore", "Error updating document", e);
                                 }
                             });
-
-                    docRefEvent = db.collection("events").document(eventID);
                     Map<String, Object> newAttendee = new HashMap<>();
                     newAttendee.put("attendees." + userid, 0);
                     docRefEvent.update(newAttendee)
@@ -163,12 +158,11 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         returnButton.setOnClickListener(v -> finish());
     }
 
-
-    public boolean getSuccess() {
-        return success;
-    }
-
     public FirebaseFirestore getDb() {
         return db;
+    }
+
+    public DocumentReference getDocRefEvent() {
+        return docRefEvent;
     }
 }

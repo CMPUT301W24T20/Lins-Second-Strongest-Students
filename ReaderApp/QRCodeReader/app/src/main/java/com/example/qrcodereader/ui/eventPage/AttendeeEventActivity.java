@@ -31,6 +31,7 @@ import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 
 
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 
 import com.example.qrcodereader.util.LaunchSetUp;
@@ -100,7 +101,6 @@ public class AttendeeEventActivity extends NavBar {
         LaunchSetUp appSetup = new LaunchSetUp(this);
         appSetup.setup();
         setContentView(R.layout.attendee_events);
-        userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         TextView title = findViewById(R.id.upcoming_events);
         title.setText(R.string.AtndTitle);
@@ -111,9 +111,10 @@ public class AttendeeEventActivity extends NavBar {
         setupTextViewButton(R.id.notification_button);
         setupTextViewButton(R.id.bottom_profile_icon);
 
-        db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
-        usersRef = db.collection("users");
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        eventsRef = FirestoreManager.getInstance().getEventCollection();
+        usersRef = FirestoreManager.getInstance().getUserCollection();
+        FirestoreManager.getInstance().setUserDocRef(deviceID);
 
 
         ListView eventList = findViewById(R.id.event_list_attendee);
@@ -131,7 +132,7 @@ public class AttendeeEventActivity extends NavBar {
                 Event selectedEvent = eventDataList.get(position);
                 // Show event details in a dialog
                 Intent detailIntent = new Intent(AttendeeEventActivity.this, EventRemoveAttendeeActivity.class);
-                detailIntent.putExtra("eventID", selectedEvent.getEventID());
+                FirestoreManager.getInstance().setEventDocRef(selectedEvent.getEventID());
                 startActivity(detailIntent);
             }
         });
