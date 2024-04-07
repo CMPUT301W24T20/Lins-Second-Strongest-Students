@@ -162,7 +162,9 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
                                         Log.d("PlacePins", "GeoPoint is not null for user: " + userId);
                                         LatLng checkInLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                                         Log.d("PlacePins", "Latitude: " + geoPoint.getLatitude() + ", Longitude: " + geoPoint.getLongitude());
-                                        map.addMarker(new MarkerOptions().position(checkInLocation).title(documentSnapshot.getString("name")));
+                                        Marker marker = map.addMarker(new MarkerOptions().position(checkInLocation).title(documentSnapshot.getString("name")));
+                                        marker.setTag(userId); // Set the tag to the userId
+                                        markers.add(marker); // Add the marker to the list
                                         Log.d("PlacePins", "Marker added for user: " + userId);
                                         
                                     } else {
@@ -184,5 +186,9 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
                 Log.d("PlacePins", "Failed to fetch document", e);
             }
         });
+    }
+
+    public List<Marker> getMarkers(){
+        return markers;
     }
 }
