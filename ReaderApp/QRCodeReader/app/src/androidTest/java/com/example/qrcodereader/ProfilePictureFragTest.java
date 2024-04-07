@@ -38,7 +38,6 @@ public class ProfilePictureFragTest {
         Espresso.onView(ViewMatchers.withId(R.id.RemoveProfile))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
-
     @Test
     public void testButtonsAreClickable() {
         // Click the edit button to launch the ProfileEditFrag
@@ -56,3 +55,4 @@ public class ProfilePictureFragTest {
                 .check(ViewAssertions.matches(ViewMatchers.isClickable()));
     }
 }
+
