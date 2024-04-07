@@ -1,12 +1,15 @@
 package com.example.qrcodereader;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.qrcodereader.entity.QRCode;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.io.File;
@@ -26,20 +30,51 @@ import java.io.IOException;
  * @author Duy
  */
 public class DisplayQRCode extends AppCompatActivity {
+    String type = "Check in";
+    Bitmap qrCodeBitmap;
+    Bitmap qrCodeBitmapPromotional;
     // OpenAI, 2024, ChatGPT, given the code snippet, prompt to display the generated QR code from the bitmap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         EdgeToEdge.enable(this);
+
+        String qrCode = getIntent().getStringExtra("qrCode");
+        String qrCodePromotional = getIntent().getStringExtra("promotionalQRCode");
+
+        qrCodeBitmap = new QRCode(qrCode).getBitmap();
+        qrCodeBitmapPromotional = new QRCode(qrCodePromotional).getBitmap();
+
         setContentView(R.layout.activity_display_qrcode);
 
         ImageView qrCodeImageView = findViewById(R.id.qrCodeImageView);
         Button backButton = findViewById(R.id.backButton);
 
-        // Get the QR code bitmap from the intent
-        Bitmap qrCodeBitmap = getIntent().getParcelableExtra("qrCode");
+        TextView typeTextView = findViewById(R.id.QR_type);
 
+        ImageView switchButton = findViewById(R.id.switch_button);
+
+        switchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (type.equals("Check in")) {
+                    type = "Promotional";
+                    typeTextView.setText(type);
+                    // Get the QR code bitmap from the intent
+                    // Set the QR code bitmap to the ImageView
+                    qrCodeImageView.setImageBitmap(qrCodeBitmapPromotional);
+                } else {
+                    type = "Check in";
+                    typeTextView.setText(type);
+                    // Get the QR code bitmap from the intent
+                    // Set the QR code bitmap to the ImageView
+                    qrCodeImageView.setImageBitmap(qrCodeBitmap);
+                }
+            }
+        });
+
+        // Get the QR code bitmap from the intent
         // Set the QR code bitmap to the ImageView
         qrCodeImageView.setImageBitmap(qrCodeBitmap);
 
@@ -51,7 +86,12 @@ public class DisplayQRCode extends AppCompatActivity {
         // Share the QR code image
         Button shareButton = findViewById(R.id.shareButton);
         shareButton.setOnClickListener(v -> {
-            File file = bitmapToFile(qrCodeBitmap, this);
+            File file;
+            if (type.equals("Check in")) {
+                file = bitmapToFile(qrCodeBitmap, this);
+            } else {
+                file = bitmapToFile(qrCodeBitmapPromotional, this);
+            }
             shareImageFile(file, this);
         });
     }

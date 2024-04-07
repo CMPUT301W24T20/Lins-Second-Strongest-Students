@@ -136,7 +136,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
+    private void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
         if (eventID != null) {
             usersRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
