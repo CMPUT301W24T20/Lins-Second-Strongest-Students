@@ -168,6 +168,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                         Log.d("EventDetailsOrganizer", "Error getting promotional QR code: ", task.getException());
                     }
                 });
+    }
 
     private void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
         if (eventID != null) {
