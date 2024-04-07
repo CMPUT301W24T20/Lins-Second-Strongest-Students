@@ -54,36 +54,10 @@ public class ScanHandler {
     /**
      * findEvent(String code)
      * Retrieves the eventID matching the code scanned
-     * Calls updateAttendance(code)
+     * Calls updateAttendance(code) on check-ins
+     * Calls handlePromotionalCode on promos
      * @param code String matching QR code scanned
      */
-    private void findEvent2(String code) {
-        /*
-        Microsoft Copilot, 07/03/24
-        "I need a way to find a document in firebase based off of the of one
-        of the fields"
-         */
-
-        // Get a reference to the 'events' collection
-        CollectionReference eventsRef = db.collection("events");
-
-        // Query the collection for documents where the 'qrCode' field equals 'pointCode'
-        eventsRef.whereEqualTo("qrCode", code).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String documentName = document.getId();
-                        updateAttendance(documentName);
-                    }
-                } else {
-                    Log.d("EventFindError", "Error getting documents: ", task.getException());
-                }
-            }
-        });
-
-    }
-
     private void findEvent(String code) {
         // Get a reference to the 'events' or the specific collection where QR codes are stored
         CollectionReference qrCodesRef = FirestoreManager.getInstance().getQrCodeCollection();
@@ -111,7 +85,12 @@ public class ScanHandler {
         });
     }
 
-    // Implement the handlePromotionalCode method based on your application's logic for handling promotional QR codes
+    /**
+     * handlePromotionalCode
+     * Opens the event details for the event matching the
+     * ID provided
+     * @param eventId ID of event to open
+     */
     private void handlePromotionalCode(String eventId) {
         Intent detailIntent = new Intent(context, EventDetailsAttendeeScanActivity.class);
 
