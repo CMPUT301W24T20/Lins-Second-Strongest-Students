@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 import android.util.Log;
@@ -54,7 +55,11 @@ public class MapViewOrganizerTest {
                 simulateUserSignUpFromLocation(testLatitude, testLongitude);
 
                 // Wait for the activity to initialize and Firestore operations to complete
-                Thread.sleep(5000);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
 
                 List<Marker> markers = activity.getMarkers();
                 if (markers != null) {
