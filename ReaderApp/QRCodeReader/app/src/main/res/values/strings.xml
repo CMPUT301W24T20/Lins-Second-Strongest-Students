@@ -89,5 +89,6 @@
     <string name="event">Event</string>
     <string name="upload_poster">Upload Poster</string>
     <string name="Consent">Location</string>
+    <string name="event_name">Event Name</string>
 
 </resources>

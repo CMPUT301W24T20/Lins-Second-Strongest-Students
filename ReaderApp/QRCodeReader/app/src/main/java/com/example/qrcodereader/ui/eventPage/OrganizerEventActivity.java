@@ -100,6 +100,7 @@ public class OrganizerEventActivity extends NavBar {
         eventList.setAdapter(eventArrayAdapter);
 
         fetchLocal(this);
+        fetchOrganizerEvents();
         setupRealTimeEventUpdates();
 
         TextView createEventButton = findViewById(R.id.browse_button);
@@ -164,7 +165,7 @@ public class OrganizerEventActivity extends NavBar {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                        if (querySnapshot != null) {
                             executorService.execute(() -> {
                                 ArrayList<Event> events = new ArrayList<>();
                                 for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {

@@ -58,122 +58,126 @@
                 android:layout_height="240dp"
                 android:alpha="0.2"
                 android:elevation="-1dp"/>
-
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="250dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="40dp">
             <TextView android:id="@+id/event_name"
                 android:textStyle="bold"
                 android:textSize="30sp"
                 android:textColor="@color/event_name_color"
                 android:elevation="1dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="250dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/event_name_string"
+                android:text="@string/event_name"
                 />
 
             <TextView android:id="@+id/organizer"
                 android:textSize="20sp"
                 android:textColor="@color/_bg__group_2_ek1_color"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="295dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/event_name"
+                app:layout_constraintStart_toStartOf="parent"
                 android:text="@string/organizer_string"
                 android:elevation="2dp"
                 />
 
-
-            <RelativeLayout android:id="@+id/group_2"
-                android:layout_marginTop="343dp"
-                android:layout_marginStart="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="1dp"
-                >
-
-                <View   android:id="@+id/_bg__group_2_ek1"
-                    android:background="@drawable/_bg__group_2_ek1_shape"
-                    android:layout_marginStart="-30dp"
-                    android:layout_marginTop="-335dp"
-                    android:layout_width="37dp"
-                    android:elevation="1dp"
-                    android:layout_height="37dp" />
-
-                <View   android:id="@+id/ellipse_2"
-                    android:background="@drawable/ellipse_1_shape"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_width="37dp"
-                    android:layout_height="37dp" />
-
-                <ImageView android:id="@+id/vector"
-                    android:src="@drawable/vector"
-                    android:contentDescription="vector"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginTop="7dp"
-                    android:layout_width="15.75dp"
-                    android:layout_height="22.5dp" />
-
-            </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/location_linear_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintTop_toBottomOf="@id/organizer"
+                    app:layout_constraintStart_toStartOf="parent"
+                    >
+                    <RelativeLayout android:id="@+id/group_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="1dp"
+                        >
 
 
-            <RelativeLayout android:id="@+id/group_1"
-                android:layout_marginTop="400dp"
-                android:layout_marginStart="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                        <View   android:id="@+id/ellipse_2"
+                            android:background="@drawable/ellipse_1_shape"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_width="37dp"
+                            android:layout_height="37dp" />
 
-                <View
-                    android:id="@+id/_bg__group_1_ek1"
-                    android:layout_width="37dp"
-                    android:layout_height="37dp"
-                    android:layout_marginStart="-30dp"
-                    android:layout_marginTop="-400dp"
-                    android:background="@drawable/_bg__group_1_ek1_shape" />
+                        <ImageView android:id="@+id/vector"
+                            android:src="@drawable/vector"
+                            android:contentDescription="vector"
+                            android:layout_marginStart="11dp"
+                            android:layout_marginTop="7dp"
+                            android:layout_width="15.75dp"
+                            android:layout_height="22.5dp" />
 
-                <View   android:id="@+id/ellipse_1"
-                    android:background="@drawable/ellipse_1_shape"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_width="37dp"
-                    android:layout_height="37dp"
-                    android:elevation="2dp"/>
+                    </RelativeLayout>
 
-                <ImageView android:id="@+id/vector_ek1"
-                    android:src="@drawable/vector_ek1"
-                    android:contentDescription="vector_ek1"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="9dp"
-                    android:layout_width="17dp"
-                    android:layout_height="19dp"
-                    android:elevation="4dp"/>
+                    <TextView android:id="@+id/location"
+                        android:textSize="18sp"
+                        android:textColor="@color/event_name_color"
+                        android:layout_marginStart="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/location_string"
+                        android:elevation="2dp"
+                        />
+                </LinearLayout>
 
-            </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintTop_toBottomOf="@id/location_linear_layout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    >
+                    <RelativeLayout android:id="@+id/group_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <View   android:id="@+id/ellipse_1"
+                            android:background="@drawable/ellipse_1_shape"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_width="37dp"
+                            android:layout_height="37dp"
+                            android:elevation="2dp"/>
+
+                        <ImageView android:id="@+id/vector_ek1"
+                            android:src="@drawable/vector_ek1"
+                            android:contentDescription="vector_ek1"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="9dp"
+                            android:layout_width="17dp"
+                            android:layout_height="19dp"
+                            android:elevation="4dp"/>
+
+                    </RelativeLayout>
 
 
-            <TextView android:id="@+id/location"
-                android:textSize="18sp"
-                android:textColor="@color/event_name_color"
-                android:layout_marginLeft="74dp"
-                android:layout_marginTop="350dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/location_string"
-                android:elevation="2dp"
-                />
+                    <TextView android:id="@+id/time"
+                        android:textSize="18sp"
+                        android:textColor="@color/event_name_color"
+                        android:layout_marginStart="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_string"
+                        android:elevation="2dp"
+                        android:layout_gravity="center_vertical"
+                        />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <TextView android:id="@+id/time"
-                android:textSize="18sp"
-                android:textColor="@color/event_name_color"
-                android:layout_marginLeft="74dp"
-                android:layout_marginTop="407dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/time_string"
-                android:elevation="2dp"
-                />
 
 
             <ImageView android:id="@+id/return_button"
