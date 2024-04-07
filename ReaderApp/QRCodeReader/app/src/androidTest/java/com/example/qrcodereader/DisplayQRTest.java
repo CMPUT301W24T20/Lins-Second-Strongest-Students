@@ -1,5 +1,4 @@
 package com.example.qrcodereader;
-import static com.example.qrcodereader.CustomMatchers.hasDrawable;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
