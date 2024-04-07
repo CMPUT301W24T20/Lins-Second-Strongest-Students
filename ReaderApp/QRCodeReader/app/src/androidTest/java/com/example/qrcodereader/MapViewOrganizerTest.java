@@ -32,14 +32,12 @@ import java.util.concurrent.CountDownLatch;
 @RunWith(AndroidJUnit4.class)
 public class MapViewOrganizerTest {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final CountDownLatch latch = new CountDownLatch(1);
 
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
     @Before
     public void setUp() {
-        // Set FirestoreManager collections and document references
         FirestoreManager.getInstance().setEventCollection("eventsTest");
         FirestoreManager.getInstance().setUserCollection("usersTest");
         FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
@@ -47,43 +45,38 @@ public class MapViewOrganizerTest {
     }
 
     @Test
-    public void testSignUpAndMarkerPlacement() {
-        // Fixed test location
+    public void testSignUpAndMarkerPlacement() throws InterruptedException {
         double testLatitude = 37.422;
         double testLongitude = -122.084;
 
         try (ActivityScenario<MapViewOrganizer> scenario = ActivityScenario.launch(MapViewOrganizer.class)) {
             scenario.onActivity(activity -> {
-                // Simulate user signing up for the event from the test location
                 simulateUserSignUpFromLocation(testLatitude, testLongitude);
 
-                // Wait for Firestore operations to complete
-                try {
-                    latch.await();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                // Wait for the activity to initialize and Firestore operations to complete
+                Thread.sleep(5000);
 
-                // Verify that a marker is placed at the test location on the map
                 List<Marker> markers = activity.getMarkers();
-                assertTrue("Marker should be placed at the test location", checkMarkerPlacedAtLocation(markers, testLatitude, testLongitude));
+                if (markers != null) {
+                    assertTrue("Marker should be placed at the test location", checkMarkerPlacedAtLocation(markers, testLatitude, testLongitude));
+                } else {
+                    fail("Markers list is null");
+                }
             });
         }
     }
 
     private void simulateUserSignUpFromLocation(double latitude, double longitude) {
         Map<String, Long> attendeesMap = new HashMap<>();
-        attendeesMap.put("1d141a0fd4e29d60", 2L); // Set the check-in count for the user
+        attendeesMap.put("1d141a0fd4e29d60", 2L);
 
-        db.collection("eventsTest").document("vtLdBOt2ujnXybkviXg9").update("attendees", attendeesMap)
-                .addOnCompleteListener(task -> {
-                    Map<String, Object> userLocation = new HashMap<>();
-                    userLocation.put("latitude", latitude);
-                    userLocation.put("longitude", longitude);
+        db.collection("eventsTest").document("vtLdBOt2ujnXybkviXg9").update("attendees", attendeesMap);
 
-                    db.collection("usersTest").document("1d141a0fd4e29d60").update("location", userLocation)
-                            .addOnCompleteListener(task1 -> latch.countDown());
-                });
+        Map<String, Object> userLocation = new HashMap<>();
+        userLocation.put("latitude", latitude);
+        userLocation.put("longitude", longitude);
+
+        db.collection("usersTest").document("1d141a0fd4e29d60").update("location", userLocation);
     }
 
     private boolean checkMarkerPlacedAtLocation(List<Marker> markers, double latitude, double longitude) {
@@ -97,5 +90,3 @@ public class MapViewOrganizerTest {
         return false;
     }
 }
-
-
