@@ -19,16 +19,16 @@ import com.google.zxing.integration.android.IntentResult;
  * Fragment for housing the camera/scanner operations for scanning QR code
  * @author Vinay
  */
-public class CameraActivity extends NavBar implements View.OnClickListener {
+public class CameraActivity extends AppCompatActivity implements View.OnClickListener {
     /*
     CameraActivity
     Contains code for a fragment implementing a QR code scanner
      */
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    //public CameraActivity() {
-//        super(R.layout.fragment_camera);
-//    }
+    public CameraActivity() {
+        super(R.layout.fragment_camera);
+    }
 
     Button scanButton;
     private View thisView;
@@ -67,20 +67,10 @@ public class CameraActivity extends NavBar implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.fragment_camera);
-        setupTextViewButton(R.id.home_button);
-        setupTextViewButton(R.id.event_button);
-        setupTextViewButton(R.id.scanner_button);
-        setupTextViewButton(R.id.notification_button);
-        setupTextViewButton(R.id.bottom_profile_icon);
         scanButton = (Button) findViewById(R.id.scan_button);
         scanButton.setOnClickListener(this);
 
         scanHandler = new ScanHandler(db, userID, this);
-    }
-
-    @Override
-    protected int getLayoutResourceId() {
-        return R.layout.fragment_camera;
     }
 
     @Override
