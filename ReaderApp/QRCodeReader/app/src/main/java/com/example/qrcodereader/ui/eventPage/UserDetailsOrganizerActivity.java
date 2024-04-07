@@ -24,7 +24,7 @@ public class UserDetailsOrganizerActivity extends AppCompatActivity {
         TextView userName = findViewById(R.id.name);
         TextView userEmail = findViewById(R.id.email);
         TextView userPhoneRegion = findViewById(R.id.phone_region);
-        TextView userPhone = findViewById(R.id.UserDeviceText);
+        TextView userPhone = findViewById(R.id.phone);
 
 
 

@@ -102,7 +102,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
 
         EditText ETname = view.findViewById(R.id.name);
         EditText ETemail = view.findViewById(R.id.email);
-        ETphone = view.findViewById(R.id.UserDeviceText);
+        ETphone = view.findViewById(R.id.phone);
         Spinner Sregion = view.findViewById(R.id.SpinnerRegions);
         Picture = view.findViewById(R.id.ProfilePic);
         int errorColour = ContextCompat.getColor(requireContext(), R.color.red);

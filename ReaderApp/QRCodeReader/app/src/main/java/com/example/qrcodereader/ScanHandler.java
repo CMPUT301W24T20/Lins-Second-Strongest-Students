@@ -1,10 +1,20 @@
 package com.example.qrcodereader;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Context;
+import android.content.Intent;
 import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.camera.core.processing.SurfaceProcessorNode;
 
+import com.example.qrcodereader.entity.FirestoreManager;
+import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
+import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
+import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeScanActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,10 +39,12 @@ public class ScanHandler {
 
     FirebaseFirestore db;
     String userID;
+    Context context;
 
-    public ScanHandler(FirebaseFirestore db, String userID) {
+    public ScanHandler(FirebaseFirestore db, String userID, Context context) {
         this.db = db;
         this.userID = userID;
+        this.context = context;
     }
 
     public void scannedCode(String code) {
@@ -42,34 +54,50 @@ public class ScanHandler {
     /**
      * findEvent(String code)
      * Retrieves the eventID matching the code scanned
-     * Calls updateAttendance(code)
+     * Calls updateAttendance(code) on check-ins
+     * Calls handlePromotionalCode on promos
      * @param code String matching QR code scanned
      */
     private void findEvent(String code) {
-        /*
-        Microsoft Copilot, 07/03/24
-        "I need a way to find a document in firebase based off of the of one
-        of the fields"
-         */
+        // Get a reference to the 'events' or the specific collection where QR codes are stored
+        CollectionReference qrCodesRef = FirestoreManager.getInstance().getQrCodeCollection();
 
-        // Get a reference to the 'events' collection
-        CollectionReference eventsRef = db.collection("events");
-
-        // Query the collection for documents where the 'qrCode' field equals 'pointCode'
-        eventsRef.whereEqualTo("qrCode", code).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        // Query the collection for documents where the 'qrCode' field equals 'code'
+        qrCodesRef.whereEqualTo("qrCode", code).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        String documentName = document.getId();
-                        updateAttendance(documentName);
+                        String qrCodeType = document.getString("type"); // Assuming 'type' is the field name
+                        String eventId = document.getString("eventID"); // Assuming 'eventID' is the field name for the associated event
+                        if ("checkin".equals(qrCodeType)) {
+                            // This QR code is for check-in
+                            updateAttendance(eventId); // Call the method to update attendance
+                        } else if ("promotional".equals(qrCodeType)) {
+                            // This QR code is promotional
+                            handlePromotionalCode(eventId);
+                        }
                     }
                 } else {
                     Log.d("EventFindError", "Error getting documents: ", task.getException());
                 }
             }
         });
+    }
 
+    /**
+     * handlePromotionalCode
+     * Opens the event details for the event matching the
+     * ID provided
+     * @param eventId ID of event to open
+     */
+    private void handlePromotionalCode(String eventId) {
+        Intent detailIntent = new Intent(context, EventDetailsAttendeeScanActivity.class);
+
+        FirestoreManager.getInstance().setEventDocRef(eventId);
+        // detailIntent.putExtra("eventID", selectedEvent.getEventID());
+        detailIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        context.startActivity(detailIntent);
     }
 
     /**

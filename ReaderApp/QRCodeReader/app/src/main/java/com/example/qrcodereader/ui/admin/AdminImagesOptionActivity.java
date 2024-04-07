@@ -13,6 +13,7 @@ public class AdminImagesOptionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_admin_image_option);
 
         TextView SeeProfilePic = findViewById(R.id.ViewProfilePics);
@@ -31,7 +32,7 @@ public class AdminImagesOptionActivity extends AppCompatActivity {
             }
         });
 
-        Button returnButton = findViewById(R.id.return_button);
+        TextView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
     }
 

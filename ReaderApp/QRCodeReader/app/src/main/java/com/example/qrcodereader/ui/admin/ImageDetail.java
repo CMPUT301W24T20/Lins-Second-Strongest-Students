@@ -6,21 +6,16 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.qrcodereader.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class ImageDetail extends DialogFragment {
@@ -33,7 +28,7 @@ public class ImageDetail extends DialogFragment {
         View view = inflater.inflate(R.layout.image_detail, null);
 
         ImageView image = view.findViewById(R.id.loadedImage);
-        TextView deviceID = view.findViewById(R.id.UserDeviceText);
+        TextView deviceID = view.findViewById(R.id.phone);
         TextView eventDescriptor = view.findViewById(R.id.EventText);
         TextView event = view.findViewById(R.id.EventName);
 
