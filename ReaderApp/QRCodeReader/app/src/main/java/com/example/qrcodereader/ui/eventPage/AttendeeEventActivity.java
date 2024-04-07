@@ -115,6 +115,7 @@ public class AttendeeEventActivity extends NavBar {
         eventList.setAdapter(eventArrayAdapter);
 
         fetchLocal(this);
+        fetchAttendeeEvents();
         setupRealTimeEventUpdates();
 
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

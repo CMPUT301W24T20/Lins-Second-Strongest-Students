@@ -45,6 +45,7 @@
         <activity
             android:name=".ui.eventPage.BrowseEventActivity"
             android:launchMode="singleTop"/>
+        <activity android:name=".ui.eventPage.EventDetailsAttendeeScanActivity"/>
         <activity android:name=".ui.eventPage.EventDetailsOrganizerActivity"/>
         <activity android:name=".ui.eventPage.UserDetailsOrganizerActivity"/>
         <activity android:name=".ui.eventPage.EventDetailsAttendeeActivity"/>
