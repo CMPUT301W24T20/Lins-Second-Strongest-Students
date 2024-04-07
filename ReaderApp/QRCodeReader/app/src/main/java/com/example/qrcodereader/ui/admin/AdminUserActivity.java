@@ -99,7 +99,7 @@ public class AdminUserActivity extends AppCompatActivity {
                 for (DocumentSnapshot doc : documents) {
                     User user = new User(doc.getId(), doc.getString("name"),
                             doc.getString("email"), doc.getString("phoneRegion"),
-                            doc.getString("phone"));
+                            doc.getString("phone"), doc.getString("ProfilePic"));
                     userDataList.add(user);
                 }
                 Log.d(TAG, "Fetched " + documents.size() + " users.");

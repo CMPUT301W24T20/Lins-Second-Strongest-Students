@@ -22,13 +22,9 @@ public class SetDefaultProfile {
         void onImageURLReceived(String imageURL);
     }
 
-    public static void generate(String deviceID, int SetCode, Map<String, Object> newUser, DocumentReference userDoc, ProfilePicCallback callback) {
-        CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePics");
-
-        // determine default profile picture based on first character of deviceID
-        int index = (int) (deviceID.charAt(0) %15)+1;
-        String P = "P"+index;
-        ColRefPic.document(P).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    public static void generateNoName(String deviceID, int SetCode, Map<String, Object> newUser, DocumentReference userDoc, ProfilePicCallback callback) {
+        CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePic");
+        ColRefPic.document("0").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {

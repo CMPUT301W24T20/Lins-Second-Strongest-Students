@@ -69,7 +69,7 @@ public class ProfilePictureFrag extends BottomSheetDialogFragment {
                     Log.e(TAG, "Error deleting image " + imageName + ": " + exception.getMessage());
                 });
 
-                SetDefaultProfile.generate(deviceID, 2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
+                SetDefaultProfile.generateNoName(deviceID, 2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
                     @Override
                     public void onImageURLReceived(String imageURL) {
                         ProfileEditFrag editProfile = (ProfileEditFrag) requireActivity().getSupportFragmentManager().findFragmentByTag("Edit Profile");

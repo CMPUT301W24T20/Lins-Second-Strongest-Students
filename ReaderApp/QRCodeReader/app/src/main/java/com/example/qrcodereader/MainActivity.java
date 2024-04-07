@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                                 });
                       
                        // generate default profile picture
-                      SetDefaultProfile.generate(deviceID, 1, newUser, null, new SetDefaultProfile.ProfilePicCallback() {
+                      SetDefaultProfile.generateNoName(deviceID, 1, newUser, null, new SetDefaultProfile.ProfilePicCallback() {
                         @Override
                         public void onImageURLReceived(String imageURL) {
                             // created default profile picture, thus can now set
