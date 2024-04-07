@@ -80,7 +80,12 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String qrCodeString = documentSnapshot.getString("qrCode");
                 String poster = documentSnapshot.getString("poster");
-                Picasso.get().load(poster).resize(410, 240).centerInside().into(eventPoster);
+                if (poster != null && !poster.isEmpty()) {
+                    Picasso.get().load(poster).resize(410, 240).centerInside().into(eventPoster);
+                } else {
+                    // Handle the case where the poster URL is null or empty
+                    // For example, you might want to load a default image
+                }
                 qrCode = new QRCode(qrCodeString);
                 Log.d("Firestore", "Successfully fetch document: ");
 

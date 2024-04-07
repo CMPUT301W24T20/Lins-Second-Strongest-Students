@@ -3,6 +3,8 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -20,13 +22,16 @@ import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -135,31 +140,51 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
      * @param map The GoogleMap instance where markers will be added.
      */
     private void placePins(GoogleMap map){
+        Log.d("PlacePins", "Method called");
         db.collection("events").document(eventID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("PlacePins", "Document fetched successfully");
                 map.clear(); // clear old markers
 
                 Map<String, Long> attendeesMap = (Map<String, Long>) documentSnapshot.get("attendees");
                 if (attendeesMap != null) {
+                    Log.d("PlacePins", "Attendees map is not null");
                     for (Map.Entry<String, Long> entry: attendeesMap.entrySet()) {
                         String userId = entry.getKey();
                         Long checkInCount = entry.getValue();
                         if(checkInCount > 0) {
+                            Log.d("PlacePins", "Check-in count is greater than 0 for user: " + userId);
                             db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     GeoPoint geoPoint = documentSnapshot.getGeoPoint("location");
                                     if (geoPoint != null) {
+                                        Log.d("PlacePins", "GeoPoint is not null for user: " + userId);
                                         LatLng checkInLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+                                        Log.d("PlacePins", "Latitude: " + geoPoint.getLatitude() + ", Longitude: " + geoPoint.getLongitude());
                                         map.addMarker(new MarkerOptions().position(checkInLocation).title(documentSnapshot.getString("name")));
+                                        Log.d("PlacePins", "Marker added for user: " + userId);
+                                        
+                                    } else {
+                                        Log.d("PlacePins", "GeoPoint is null for user: " + userId);
                                     }
                                 }
                             });
+                        } else {
+                            Log.d("PlacePins", "Check-in count is 0 or less for user: " + userId);
                         }
                     }
+                } else {
+                    Log.d("PlacePins", "Attendees map is null");
                 }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("PlacePins", "Failed to fetch document", e);
             }
         });
     }
+
 }
