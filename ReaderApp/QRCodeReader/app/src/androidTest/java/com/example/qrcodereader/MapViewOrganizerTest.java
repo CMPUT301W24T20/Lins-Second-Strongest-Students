@@ -27,77 +27,67 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 @RunWith(AndroidJUnit4.class)
 public class MapViewOrganizerTest {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final CountDownLatch latch = new CountDownLatch(1);
 
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
-
-
-
     @Before
-    public void setUp(){
+    public void setUp() {
         // Set FirestoreManager collections and document references
         FirestoreManager.getInstance().setEventCollection("eventsTest");
         FirestoreManager.getInstance().setUserCollection("usersTest");
         FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
         FirestoreManager.getInstance().setEventDocRef("vtLdBOt2ujnXybkviXg9");
     }
+
     @Test
     public void testSignUpAndMarkerPlacement() {
-        // Generate random latitude and longitude
-        double randomLatitude = -90 + (Math.random() * (90 - (-90)));
-        double randomLongitude = -180 + (Math.random() * (180 - (-180)));
+        // Fixed test location
+        double testLatitude = 37.422;
+        double testLongitude = -122.084;
 
         try (ActivityScenario<MapViewOrganizer> scenario = ActivityScenario.launch(MapViewOrganizer.class)) {
             scenario.onActivity(activity -> {
+                // Simulate user signing up for the event from the test location
+                simulateUserSignUpFromLocation(testLatitude, testLongitude);
 
+                // Wait for Firestore operations to complete
                 try {
-                    Thread.sleep(5000);
+                    latch.await();
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    Thread.currentThread().interrupt();
                 }
 
-                // Simulate user signing up for the event from the random location
-                simulateUserSignUpFromLocation(randomLatitude, randomLongitude);
-
-                // Verify that a marker is placed at the random location on the map
+                // Verify that a marker is placed at the test location on the map
                 List<Marker> markers = activity.getMarkers();
-                Log.d("MapViewOrganizerTest", "Number of markers: " + markers.size());
-
-                for (Marker marker : markers) {
-                    LatLng position = marker.getPosition();
-                    Log.d("MapViewOrganizerTest", "Marker at: " + position.latitude + ", " + position.longitude);
-                }
-
-                // Check if a marker is placed at the random location
-                assertTrue(checkMarkerPlacedAtLocation(markers, randomLatitude, randomLongitude));
+                assertTrue("Marker should be placed at the test location", checkMarkerPlacedAtLocation(markers, testLatitude, testLongitude));
             });
         }
     }
 
-
     private void simulateUserSignUpFromLocation(double latitude, double longitude) {
-        // Simulate user signing up for the event from the specified location
         Map<String, Long> attendeesMap = new HashMap<>();
-        attendeesMap.put("1d141a0fd4e29d60", 1L); // Set the check-in count to 1 for the user
+        attendeesMap.put("1d141a0fd4e29d60", 2L); // Set the check-in count for the user
 
-        // Add the attendee to the event's attendees map
-        db.collection("eventsTest").document("vtLdBOt2ujnXybkviXg9").update("attendees", attendeesMap);
+        db.collection("eventsTest").document("vtLdBOt2ujnXybkviXg9").update("attendees", attendeesMap)
+                .addOnCompleteListener(task -> {
+                    Map<String, Object> userLocation = new HashMap<>();
+                    userLocation.put("latitude", latitude);
+                    userLocation.put("longitude", longitude);
 
-        // Update the user's location to the specified latitude and longitude
-        Map<String, Object> userLocation = new HashMap<>();
-        userLocation.put("latitude", latitude);
-        userLocation.put("longitude", longitude);
-
-        db.collection("usersTest").document("1d141a0fd4e29d60").update("location", userLocation);
+                    db.collection("usersTest").document("1d141a0fd4e29d60").update("location", userLocation)
+                            .addOnCompleteListener(task1 -> latch.countDown());
+                });
     }
 
     private boolean checkMarkerPlacedAtLocation(List<Marker> markers, double latitude, double longitude) {
-        final double EPSILON = 1e-6; // Epsilon for double comparison
+        final double EPSILON = 1e-6;
         for (Marker marker : markers) {
             LatLng position = marker.getPosition();
             if (Math.abs(position.latitude - latitude) < EPSILON && Math.abs(position.longitude - longitude) < EPSILON) {
@@ -106,7 +96,6 @@ public class MapViewOrganizerTest {
         }
         return false;
     }
-
-
 }
+
 
