@@ -99,7 +99,7 @@ public class UserDetailsAdminActivity extends AppCompatActivity {
         if (text == null || text.isEmpty()) {return "";}
         else {return text;}
     }
-
+    // Microsoft Copilot 4/7/2024 Modify remove user to remove their created events too
     public void removeUser(String userID, CollectionReference usersRef, CollectionReference eventsRef) {
         if (userID != null) {
             eventsRef.get().addOnCompleteListener(task -> {
@@ -113,6 +113,15 @@ public class UserDetailsAdminActivity extends AppCompatActivity {
                             eventDocRef.update("attendees." + userID, FieldValue.delete())
                                     .addOnSuccessListener(aVoid -> Log.d(TAG, "User ID deleted from event's attendees."))
                                     .addOnFailureListener(e -> Log.w(TAG, "Error deleting User ID from event's attendees", e));
+                        }
+                        // Check if the user is the creator of the event
+                        String creator = document.getString("OrganizerID");
+                        if (userID.equals(creator)) {
+                            // Delete the event
+                            DocumentReference eventDocRef = eventsRef.document(document.getId());
+                            eventDocRef.delete()
+                                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Event deleted."))
+                                    .addOnFailureListener(e -> Log.w(TAG, "Error deleting event", e));
                         }
                     }
                 } else {
