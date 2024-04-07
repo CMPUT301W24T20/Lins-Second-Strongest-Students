@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
-//IF THIS FAILED U BROKE IT
+//Broken
 @RunWith(AndroidJUnit4.class)
 public class ProfileActivityTest {
 

@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
-//THIS WORKS IF THIS FAILS U BROKE THE APP
+//Broken
 @RunWith(AndroidJUnit4.class)
 public class ProfileEditFragTest {
 
