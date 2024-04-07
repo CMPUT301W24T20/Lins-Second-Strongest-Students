@@ -1,19 +1,15 @@
 package com.example.qrcodereader.ui.eventPage;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,18 +21,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.ImageUpload;
+import com.example.qrcodereader.util.ImageUpload;
 import com.example.qrcodereader.MainActivity;
+import com.example.qrcodereader.entity.Event;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 
 import com.example.qrcodereader.R;
 //import com.google.android.libraries.places.api.Places;
+import com.example.qrcodereader.util.AppDataHolder;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -49,25 +48,24 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *  Activity for users to create events by entering the details and press create.
@@ -76,6 +74,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CreateEventActivity extends AppCompatActivity implements ImageUpload {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
+    private CollectionReference qrCodeRef;
     private Calendar eventDateTime;
     private GeoPoint eventLocation;
     private String eventLocationName;
@@ -94,6 +93,9 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
     private Uri uploaded;
     private HashMap<String, Object> event;
     private StorageReference storage;
+    private TextView qrReuseButton;
+    private String generatedQRCode;
+    private String generatedPromotionalQRCode;
 
     /**
      * This method is called when the activity is starting.
@@ -105,18 +107,23 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_create_event);
+        setContentView(R.layout.create_event);
 
-        db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
+        eventsRef = FirestoreManager.getInstance().getEventCollection();
 
         eventDateTime = Calendar.getInstance();
 
         eventName = findViewById(R.id.event_name);
 
-        deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        deviceID = FirestoreManager.getInstance().getUserID();
 
-        checkForPastEventsAndToggleCheckbox();
+        db = FirestoreManager.getInstance().getDb();
+
+        qrCodeRef = FirestoreManager.getInstance().getQrCodeCollection();
+
+        selectedQRCode = "";
+
+        generateAndCheckQRCode();
 
         EditText eventDate = findViewById(R.id.event_date);
         eventDate.setOnClickListener(v -> showDatePickerDialog(eventDate));
@@ -148,66 +155,12 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         });
         // ChatGPT code end here
 
-        CheckBox checkBox = findViewById(R.id.attendee_limit_checkbox);
         EditText attendeeLimit = findViewById(R.id.attendee_limit);
 
-        // Set checkbox change listener
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            attendeeLimit.setEnabled(isChecked);
-            if (isChecked) {
-                // If checkbox is checked, make attendeeLimit fully opaque
-                attendeeLimit.setAlpha(1.0f);
-            } else {
-                // If checkbox is unchecked, make attendeeLimit faded
-                attendeeLimit.setAlpha(0.5f);
-                attendeeLimit.setText(""); // Clear the text
-            }
-        });
-
-        qrReuseCheckBox = findViewById(R.id.QR_reuse_checkbox);
-        qrReuseText = findViewById(R.id.QR_reuse);
-
-        qrReuseWarning = findViewById(R.id.QR_reuse_warning);
-
-        // Set checkbox change listener
-        qrReuseCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                // If checkbox is checked, make qrReuseText fully opaque
-                qrReuseText.setAlpha(1.0f);
-                qrReuseWarning.setAlpha(1.0f);
-
-                Intent intent = new Intent(CreateEventActivity.this, CreateEventActivityBrowsePastEvent.class);
-                startActivityForResult(intent, 234);
-
-            } else {
-                // If checkbox is unchecked, make qrReuseText faded
-                qrReuseText.setAlpha(0.5f);
-                qrReuseWarning.setAlpha(0.0f);
-            }
-        });
         storage = FirebaseStorage.getInstance().getReference();
         StorageReference storageRef = storage.child("EventPoster/noEventPoster.png");
         Poster = findViewById(R.id.PosterUpload);
-        // Download the image into a local file
-        try {
-            File localFile = File.createTempFile("default", ".png"); // Create a temporary file to store the downloaded image
-            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                    Poster.setImageBitmap(bitmap);
-                    Poster.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // Handle any errors
-                    Log.e(TAG, "Failed to download image", e);
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         Poster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,10 +169,12 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             }
         });
 
-        Button save_button = findViewById(R.id.save_button);
+        qrReuseButton = findViewById(R.id.reuse_QR_button);
+        setReuseQRButtonVisible();
+
+        TextView save_button = findViewById(R.id.create_button);
         save_button.setOnClickListener(v -> {
             if (validateUserInput()){
-
                 CollectionReference usersRef = db.collection("users");
                 DocumentReference userDocRef = usersRef.document(deviceID);
 
@@ -230,49 +185,36 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                             userName = document.getString("name");
                             Timestamp timeOfEvent = new Timestamp(eventDateTime.getTime());
 
-                            if (!qrReuseCheckBox.isChecked()) {
-                                qrCode = new QRCode();
-                                selectedQRCode = qrCode.getString();
-//                                Toast.makeText(CreateEventActivity.this, "New QR code generated", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                updatePastEvent();
-                            }
-
                             // Create a new list of attendees for the event
-                           Map<String, Integer> attendees = new HashMap<>();
+                            Map<String, Integer> attendees = new HashMap<>();
 
                             // Add the new event to the database
                             event = new HashMap<>();
                             event.put("attendees", attendees);
-
-                            // If the checkbox is checked, add the attendee limit to the event
-                            if (checkBox.isChecked()) {
-                                // If the organizer didn't specify an attendee limit, set it to -1
-                                if (attendeeLimit.getText().toString().isEmpty()) {
-                                    event.put("attendeeLimit", -1);
-                                }
-                                else {
-                                    event.put("attendeeLimit", Integer.parseInt(attendeeLimit.getText().toString()));
-                                }
-                            } else {
-                                event.put("attendeeLimit", -1);
-                            }
-
                             event.put("location", eventLocation);
                             event.put("locationName", eventLocationName);
                             event.put("name", eventName.getText().toString());
                             event.put("organizer", userName);
                             event.put("organizerID", deviceID);
-                            event.put("qrCode", selectedQRCode);
                             event.put("time", timeOfEvent);
+                            event.put("poster", "");
 
-                            if (uploaded != null) {
-                                isUploaded();
-                            } else{
-                                // event.put ( the default poster)
-                                AddEvent();
+                            if (!attendeeLimit.getText().toString().isEmpty()) {
+                                event.put("attendeeLimit", Integer.parseInt(attendeeLimit.getText().toString()));
                             }
+                            else {
+                                event.put("attendeeLimit", -1);
+                            }
+
+                            if (!selectedQRCode.isEmpty()) {
+                                event.put("qrCode", selectedQRCode);
+                            }
+                            else {
+                                event.put("qrCode", generatedQRCode);
+                            }
+
+                            AddEvent();
+
                             finish();
 
                         } else {
@@ -290,16 +232,14 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             }
         });
 
-        Button cancel_button = findViewById(R.id.cancel_button);
+        ImageView cancel_button = findViewById(R.id.return_button);
         cancel_button.setOnClickListener(v -> {
-            Intent intent = new Intent(CreateEventActivity.this, OrganizerEventActivity.class);
-            // Flags to clear activities on top of AttendeeEventActivity and reuse the same instance
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
+            finish();
         });
     }
+
     @Override
-    public void isUploaded() {
+    public void isUploaded(String eventID) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ContentResolver contentResolver = getContentResolver();
         try {
@@ -310,21 +250,22 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                 baos.write(buffer, 0, len);
             }
             byte[] imageData = baos.toByteArray();
-            String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-            String imageName = eventName.getText().toString() + "_"+ deviceID + "POSTER" + ".png";
+            String imageName = eventID + "_" + deviceID + ".png";
             StorageReference imageRef = storage.child("EventPoster/" + imageName);
             UploadTask uploadTask = imageRef.putBytes(imageData);
 
             uploadTask.addOnSuccessListener(taskSnapshot -> {
                 // Get the download URL directly from the task snapshot
                 Task<Uri> downloadUrlTask = taskSnapshot.getStorage().getDownloadUrl();
-                downloadUrlTask.addOnSuccessListener(uri -> {
-                    event.put("poster", uri.toString());
-                    AddEvent();
 
+                downloadUrlTask.addOnSuccessListener(uri -> {
+                    DocumentReference newEvent = db.collection("events").document(eventID);
+                    newEvent.update("poster", uri.toString());
                 }).addOnFailureListener(e -> {
+                    Log.e("CreateEventActivity", "Error assigning poster to event" + eventID, e);
                 });
             }).addOnFailureListener(e -> {
+                Log.e("CreateEventActivity", "Error uploading poster for event" + eventID, e);
             });
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -336,8 +277,16 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
     public void AddEvent(){
         eventsRef.add(event)
                 .addOnSuccessListener(documentReference -> {
-                    Log.d("CreateEventActivity", "Event added with ID: " + documentReference.getId());
-                                        Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
+
+                    String documentId = documentReference.getId();
+                    updateQRCodeReference(documentId);
+                    if (uploaded !=null){
+                        isUploaded(documentId);
+                    }
+
+                    Log.d("CreateEventActivity", "Event added with ID: " + documentId);
+
+                    Toast.makeText(CreateEventActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .addOnFailureListener(e -> {
@@ -417,9 +366,14 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             }
         }
         else if (requestCode == 234) {
-            selectedQRCode = data.getStringExtra("selectedQRCode");
-            selectedPastEvent = data.getStringExtra("selectedEventID");
-            qrReuseText.setText(selectedQRCode);
+            if (!data.getStringExtra("selectedEventID").equals("none")) {
+                selectedPastEvent = data.getStringExtra("selectedEventID");
+                selectedQRCode = data.getStringExtra("selectedQRCode");
+                updatePastEvent();
+            }
+            else {
+                selectedQRCode = new QRCode().getString();
+            }
         } else if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
             uploaded = data.getData();
             if (uploaded != null) {
@@ -462,8 +416,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                     Log.d("Firestore", "Document with matching event ID found: " + document.getId());
 
                     Map<String, Object> updateData = new HashMap<>();
-                    QRCode newqrCode = new QRCode();
-                    updateData.put("qrCode", newqrCode.getString());
+                    updateData.put("qrCode", "-1");
 
                     eventDocRef.update(updateData)
                             .addOnSuccessListener(aVoid -> Log.d("Firestore", "Past event successfully updated"))
@@ -478,38 +431,107 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         // ChatGPT code end here
     }
 
-    private void checkForPastEventsAndToggleCheckbox() {
-        CollectionReference eventsRef = db.collection("events");
-        Timestamp now = Timestamp.now(); // Current timestamp to compare with event timestamps
+    public void setReuseQRButtonVisible() {
+        ArrayList<Event> pastEvents = new ArrayList<>();
+        pastEvents = AppDataHolder.getInstance().getPastEvents(this);
+        if (pastEvents.size() > 0) {
+            qrReuseButton.setOnClickListener(v -> {
+                Intent intent = new Intent(CreateEventActivity.this, CreateEventActivityBrowsePastEvent.class);
+                startActivityForResult(intent, 234);
+            });
+        }
+        else {
+            // Disable the QR reuse button if there are no past events
+            qrReuseButton.setVisibility(View.INVISIBLE);
+        }
+    }
 
-        // Query to find events organized by the current user that occurred in the past
-        eventsRef.whereEqualTo("organizerID", deviceID)
-                .whereLessThan("eventTime", now)
+    public void generateAndCheckQRCode() {
+        generatedQRCode = new QRCode().getString();
+        generatedPromotionalQRCode = new QRCode().getString();
+
+        // Assuming 'qrcoderef' is your collection name
+        checkQRCodeExistence(db, generatedQRCode, exists -> {
+            if (exists) {
+                // If QR code exists, generate a new one and check again recursively
+                generateAndCheckQRCode();
+            } else {
+                // QR code is unique, proceed with your logic, e.g., save it to Firestore or use it
+                // Similarly for the second QR code
+                checkQRCodeExistence(db, generatedPromotionalQRCode, exists2 -> {
+                    if (exists2) {
+                        generateAndCheckQRCode();
+                    }
+                });
+            }
+        });
+    }
+
+    private void checkQRCodeExistence(FirebaseFirestore db, String qrCode, ExistenceCallback callback) {
+        db.collection("qrcoderef")
+                .whereEqualTo("qrCode", qrCode)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Get the number of documents returned by the query
-                        int count = task.getResult() != null ? task.getResult().size() : 0;
-
-                        runOnUiThread(() -> {
-                            if (count > 0) {
-                                // If there are one or more past events, enable the QR reuse checkbox
-                                qrReuseCheckBox.setEnabled(true);
-                                qrReuseText.setAlpha(1.0f);
-                                qrReuseWarning.setText("Select a past event to reuse its QR code.");
-                                qrReuseWarning.setAlpha(0.0f);
-                            } else {
-                                // If there are no past events, disable the QR reuse checkbox
-                                qrReuseCheckBox.setEnabled(false);
-                                qrReuseText.setAlpha(0.5f);
-                                qrReuseWarning.setText("No past events available for QR code reuse.");
-                                qrReuseWarning.setAlpha(1.0f);
-                            }
-                        });
+                        QuerySnapshot snapshot = task.getResult();
+                        if (snapshot != null && !snapshot.isEmpty()) {
+                            callback.onChecked(true); // QR code exists
+                        } else {
+                            callback.onChecked(false); // QR code does not exist
+                        }
                     } else {
-                        // In case of an error, log it or handle it as needed
-                        Log.e("checkForPastEvents", "Error querying past events", task.getException());
+                        // Handle the failure of Firestore operation, e.g., log an error or retry
                     }
                 });
     }
+
+    private void updateQRCodeReference(String eventId) {
+        if (!selectedQRCode.isEmpty()) {
+            // Query the 'qrcoderef' collection for the document with the matching 'qrCode'
+            qrCodeRef.whereEqualTo("qrCode", selectedQRCode)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            // Assuming only one document matches, get the first document
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            DocumentReference documentReference = documentSnapshot.getReference();
+
+                            // Update the document with the new event ID
+                            documentReference.update("eventID", eventId)
+                                    .addOnSuccessListener(aVoid -> Log.d("CreateEventActivity", "Existing QR code reference updated with new event ID"))
+                                    .addOnFailureListener(e -> Log.e("CreateEventActivity", "Error updating existing QR code reference", e));
+                        } else {
+                            Log.e("CreateEventActivity", "No QR code found with the selected QR code string");
+                            // Handle case where the QR code does not exist in the collection (if necessary)
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.e("CreateEventActivity", "Error querying for existing QR code document", e));
+        } else {
+            // If no QR code is selected, create a new document for check-in QR code (as before)
+            Map<String, Object> checkInQRCode = new HashMap<>();
+            checkInQRCode.put("qrCode", generatedQRCode);
+            checkInQRCode.put("eventID", eventId);
+            checkInQRCode.put("type", "checkin");
+
+            qrCodeRef.add(checkInQRCode)
+                    .addOnSuccessListener(documentReference -> Log.d("CreateEventActivity", "Check-in QR code reference added successfully"))
+                    .addOnFailureListener(e -> Log.e("CreateEventActivity", "Error adding check-in QR code reference", e));
+        }
+
+
+        Map<String, Object> promotionalQRCode = new HashMap<>();
+        promotionalQRCode.put("qrCode", generatedPromotionalQRCode);
+        promotionalQRCode.put("eventID", eventId);
+        promotionalQRCode.put("type", "promotional");
+
+        qrCodeRef.add(promotionalQRCode)
+                .addOnSuccessListener(documentReference -> Log.d("CreateEventActivity", "QR code reference updated successfully"))
+                .addOnFailureListener(e -> Log.e("CreateEventActivity", "Error updating QR code reference", e));
+    }
+
+    // Callback interface for existence check
+    interface ExistenceCallback {
+        void onChecked(boolean exists);
+    }
+
 }

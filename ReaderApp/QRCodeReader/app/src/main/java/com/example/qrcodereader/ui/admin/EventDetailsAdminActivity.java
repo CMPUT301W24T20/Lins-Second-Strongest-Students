@@ -52,6 +52,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
     private DocumentReference docRefEvent;
     private Event selectedEvent;
     private final String TAG = "EventDetailsAdminActivity";
+    String eventID;
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -70,10 +71,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
         TextView eventTimeTextView = findViewById(R.id.event_time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
 
-        db = FirebaseFirestore.getInstance();
-        String eventID = getIntent().getStringExtra("eventID");
-        docRefEvent = db.collection("events").document(eventID);
-        usersRef = db.collection("users");
+        initializeFirestore();
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -135,5 +133,12 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
 
         ImageView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
+    }
+
+    protected void initializeFirestore() {
+        db = FirebaseFirestore.getInstance();
+        eventID = getIntent().getStringExtra("eventID");
+        docRefEvent = db.collection("events").document(eventID);
+        usersRef = db.collection("users");
     }
 }

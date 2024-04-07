@@ -17,33 +17,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 
 
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 
 import com.example.qrcodereader.util.LaunchSetUp;
 
 
-
-import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.util.AppDataHolder;
-import com.example.qrcodereader.util.EventFetcher;
 
 import com.example.qrcodereader.util.LocalEventsStorage;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -100,7 +93,6 @@ public class AttendeeEventActivity extends NavBar {
         LaunchSetUp appSetup = new LaunchSetUp(this);
         appSetup.setup();
         setContentView(R.layout.attendee_events);
-        userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         TextView title = findViewById(R.id.upcoming_events);
         title.setText(R.string.AtndTitle);
@@ -111,9 +103,10 @@ public class AttendeeEventActivity extends NavBar {
         setupTextViewButton(R.id.notification_button);
         setupTextViewButton(R.id.bottom_profile_icon);
 
-        db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
-        usersRef = db.collection("users");
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        eventsRef = FirestoreManager.getInstance().getEventCollection();
+        usersRef = FirestoreManager.getInstance().getUserCollection();
+        FirestoreManager.getInstance().setUserDocRef(deviceID);
 
 
         ListView eventList = findViewById(R.id.event_list_attendee);
@@ -130,7 +123,9 @@ public class AttendeeEventActivity extends NavBar {
                 // Get the selected event
                 Event selectedEvent = eventDataList.get(position);
                 // Show event details in a dialog
-                showEventDetailsDialog(selectedEvent);
+                Intent detailIntent = new Intent(AttendeeEventActivity.this, EventRemoveAttendeeActivity.class);
+                FirestoreManager.getInstance().setEventDocRef(selectedEvent.getEventID());
+                startActivity(detailIntent);
             }
         });
 
@@ -159,6 +154,7 @@ public class AttendeeEventActivity extends NavBar {
         });
 
         setupMilestoneListener();
+
 
     }
 

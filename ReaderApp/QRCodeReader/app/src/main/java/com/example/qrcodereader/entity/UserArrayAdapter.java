@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.qrcodereader.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
