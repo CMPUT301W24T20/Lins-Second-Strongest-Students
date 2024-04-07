@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.Event;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
@@ -71,7 +72,11 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
         TextView eventTimeTextView = findViewById(R.id.event_time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
 
-        initializeFirestore();
+        db = FirestoreManager.getInstance().getDb();
+        eventID = FirestoreManager.getInstance().getEventID();
+        docRefEvent = FirestoreManager.getInstance().getEventDocRef();
+        usersRef = FirestoreManager.getInstance().getUserCollection();
+        eventsRef = FirestoreManager.getInstance().getEventCollection();
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -105,30 +110,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
 
         TextView removeButton = findViewById(R.id.remove_button);
         removeButton.setOnClickListener(v -> {
-            if (eventID != null) {
-                usersRef.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Check if the user has the event in eventsAttended
-                            Map<String, Object> eventsAttended = (Map<String, Object>) document.get("eventsAttended");
-                            if (eventsAttended != null && eventsAttended.containsKey(eventID)) {
-                                // Prepare the delete operation for the specific eventID
-                                DocumentReference userDocRef = usersRef.document(document.getId());
-                                userDocRef.update("eventsAttended." + eventID, FieldValue.delete())
-                                        .addOnSuccessListener(aVoid -> Log.d(TAG, "Event ID deleted from user's eventsAttended."))
-                                        .addOnFailureListener(e -> Log.w(TAG, "Error deleting event ID from user's eventsAttended", e));
-                            }
-                        }
-                    } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
-                    }
-                });
-                db.collection("events").document(eventID)
-                        .delete()
-                        .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
-                        .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
-            }
-            finish();
+            removeEvent(eventID, eventsRef, usersRef);
         });
 
         ImageView returnButton = findViewById(R.id.return_button);
@@ -140,5 +122,32 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
         eventID = getIntent().getStringExtra("eventID");
         docRefEvent = db.collection("events").document(eventID);
         usersRef = db.collection("users");
+    }
+
+    private void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
+        if (eventID != null) {
+            usersRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Check if the user has the event in eventsAttended
+                        Map<String, Object> eventsAttended = (Map<String, Object>) document.get("eventsAttended");
+                        if (eventsAttended != null && eventsAttended.containsKey(eventID)) {
+                            // Prepare the delete operation for the specific eventID
+                            DocumentReference userDocRef = usersRef.document(document.getId());
+                            userDocRef.update("eventsAttended." + eventID, FieldValue.delete())
+                                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Event ID deleted from user's eventsAttended."))
+                                    .addOnFailureListener(e -> Log.w(TAG, "Error deleting event ID from user's eventsAttended", e));
+                        }
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            });
+            eventsRef.document(eventID)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
+                    .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
+        }
+        finish();
     }
 }
