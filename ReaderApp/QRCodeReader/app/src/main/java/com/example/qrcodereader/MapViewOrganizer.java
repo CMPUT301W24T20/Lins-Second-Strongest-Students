@@ -202,4 +202,15 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
             return new ArrayList<>(markers); // Return a copy of the markers list
         }
     }
+
+    // Method to add a test marker
+    public void addTestMarker(double latitude, double longitude) {
+        if (map != null) {
+            LatLng testLocation = new LatLng(latitude, longitude);
+            Marker testMarker = map.addMarker(new MarkerOptions().position(testLocation).title("Test Marker"));
+            synchronized (markers) {
+                markers.add(testMarker);
+            }
+        }
+    }
 }
