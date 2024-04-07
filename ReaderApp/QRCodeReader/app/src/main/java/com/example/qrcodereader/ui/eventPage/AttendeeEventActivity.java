@@ -164,6 +164,14 @@ public class AttendeeEventActivity extends NavBar {
         return R.layout.attendee_events;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh the list of attended events
+        fetchAttendeeEvents();
+    }
+
+
     /**
      * Show the event details in a dialog
      * @param event The event to show the details of
