@@ -17,14 +17,19 @@ import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.User;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.squareup.picasso.Picasso;
+
+import java.util.Map;
 
 // Microsoft Copilot 2024 "Given EventDetailsAdminActivity adapt to user"
 public class UserDetailsAdminActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private CollectionReference usersRef;
+    private CollectionReference eventsRef;
     private DocumentReference docRefUser;
 
     private final String TAG = "UserDetailsAdminActivity";
@@ -41,6 +46,7 @@ public class UserDetailsAdminActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.user_details);
 
         name = findViewById(R.id.name);
@@ -51,8 +57,10 @@ public class UserDetailsAdminActivity extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.profile, null);
 
         FirebaseFirestore db = FirestoreManager.getInstance().getDb();
-        userID = getIntent().getStringExtra("userID");
-        docRefUser = db.collection("users").document(userID);
+        userID = FirestoreManager.getInstance().getUserID();
+        docRefUser = FirestoreManager.getInstance().getUserDocRef();
+        usersRef = FirestoreManager.getInstance().getUserCollection();
+        eventsRef = FirestoreManager.getInstance().getEventCollection();
 
         docRefUser.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -80,13 +88,7 @@ public class UserDetailsAdminActivity extends AppCompatActivity {
 
         TextView removeButton = findViewById(R.id.remove_button);
         removeButton.setOnClickListener(v -> {
-            if (userID != null) {
-                db.collection("users").document(userID)
-                        .delete()
-                        .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
-                        .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
-            }
-            finish();
+            removeUser(userID, usersRef, eventsRef);
         });
 
         TextView returnButton = findViewById(R.id.return_button);
@@ -96,6 +98,33 @@ public class UserDetailsAdminActivity extends AppCompatActivity {
     private String CheckEmpty(String text){
         if (text == null || text.isEmpty()) {return "";}
         else {return text;}
+    }
+
+    public void removeUser(String userID, CollectionReference usersRef, CollectionReference eventsRef) {
+        if (userID != null) {
+            eventsRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Check if the user has the event in eventsAttended
+                        Map<String, Object> attendees = (Map<String, Object>) document.get("attendees");
+                        if (attendees != null && attendees.containsKey(userID)) {
+                            // Prepare the delete operation for the specific eventID
+                            DocumentReference eventDocRef = eventsRef.document(document.getId());
+                            eventDocRef.update("attendees." + userID, FieldValue.delete())
+                                    .addOnSuccessListener(aVoid -> Log.d(TAG, "User ID deleted from event's attendees."))
+                                    .addOnFailureListener(e -> Log.w(TAG, "Error deleting User ID from event's attendees", e));
+                        }
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            });
+            usersRef.document(userID)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
+                    .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
+        }
+        finish();
     }
 }
 
