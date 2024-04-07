@@ -44,6 +44,13 @@ public class MapViewOrganizerTest {
     public void testMarkerAddedToMap() throws InterruptedException {
         try (ActivityScenario<MapViewOrganizer> scenario = ActivityScenario.launch(MapViewOrganizer.class)) {
             scenario.onActivity(activity -> {
+                // Wait for the activity to initialize and the map to be ready
+                try {
+                    Thread.sleep(10000); // Increase the delay
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+
                 // Add a test marker
                 activity.addTestMarker(37.422, -122.084);
 
@@ -56,6 +63,7 @@ public class MapViewOrganizerTest {
 
                 // Check if the markers list is not empty
                 List<Marker> markers = activity.getMarkers();
+                Log.d("MapViewOrganizerTest", "Markers list size: " + markers.size());
                 assertFalse("Markers list should not be empty", markers.isEmpty());
             });
         }
