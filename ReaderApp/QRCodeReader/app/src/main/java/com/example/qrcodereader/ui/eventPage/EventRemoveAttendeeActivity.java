@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -73,6 +74,7 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
         TextView eventOrganizerTextView = findViewById(R.id.organizer);
         TextView eventLocationTextView = findViewById(R.id.location);
         TextView eventTimeTextView = findViewById(R.id.time);
+        ImageView eventPoster = findViewById(R.id.event_poster);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
         TextView removeButton = findViewById(R.id.sign_up_button);
         removeButton.setText("Remove");
@@ -109,6 +111,9 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
                 eventLocationTextView.setText(locationName);
                 String timeText = time.toDate().toString();
                 eventTimeTextView.setText(timeText);
+                if (EventPoster != null && !EventPoster.isEmpty()) {
+                    Picasso.get().load(EventPoster).resize(410, 240).centerInside().into(eventPoster);
+                }
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
