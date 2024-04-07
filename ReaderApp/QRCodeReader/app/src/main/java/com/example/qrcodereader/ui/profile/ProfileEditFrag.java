@@ -65,6 +65,7 @@ import com.squareup.picasso.Transformation;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
+import android.widget.Toast;
 
 /**
  * Fragment for displaying the profile of user
@@ -78,8 +79,6 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
     private int PhoneLength;
     private EditText ETphone;
     private OnSaveClickListener onSaveClickListener;
-    private String NoNamePFP = "";
-    private String FragImageURL;
 
     /**
      * This listener interface handles saving the inputs of this edit fragment into database events
@@ -91,9 +90,9 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
          * @param EditRegion the possibly edited region selected by the user
          * @param EditPhone the possibly edited phone number entered by the user
          * @param EditEmail the possibly edited email address entered by the use
-         * @param EditPicture the URI of the possibly changed profile picture selected by the user
+         *
          */
-        void onSaveClicked(String EditName, String EditRegion, String EditPhone, String EditEmail, Uri EditPicture);
+        void onSaveClicked(String EditName, String EditRegion, String EditPhone, String EditEmail, Uri Pfp);
     }
 
     /**
@@ -137,12 +136,17 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
         ETphone.setText(args.getString("phone", ""));
         Sregion.setSelection(supportedRegions.indexOf(args.getString("region", "")));
         setRegionPhone(args.getString("region", ""));
-        image = args.getString("pfp");
-        Picasso.get().load(image).resize(127, 127).into(Picture);
 
         String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         docRefUser = db.collection("users").document(deviceID);
+        docRefUser.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                image = documentSnapshot.getString("ProfilePic");
+                Picasso.get().load(image).resize(200, 200).centerInside().into(Picture);
+            }
+        }).addOnFailureListener(e -> {
+        });
 
         Picture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,14 +187,15 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                     public void onClick(DialogInterface dialog, int which) {
                         if (uploaded != null) {
                             isUploaded(deviceID);
+                        } else{
+                            docRefUser.update("ProfilePic", image);
                         }
                         docRefUser.update("name",  ETname.getText().toString());
                         docRefUser.update("email",  ETemail.getText().toString());
                         docRefUser.update("phone",  ETphone.getText().toString());
                         docRefUser.update("phoneRegion",Sregion.getSelectedItem().toString());
-                        docRefUser.update("ProfilePic", FragImageURL);
 
-
+                        Log.d(TAG, "sending image " + image);
                         if (onSaveClickListener != null) {
                             onSaveClickListener.onSaveClicked(
                                     ETname.getText().toString(),
@@ -258,30 +263,28 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                String noName = "https://firebasestorage.googleapis.com/v0/b/linssecondstrongeststudents.appspot.com/o/Profiles%2FNoNamePFP.png?alt=media&token=ecb2105f-8708-48e3-869a-a7d2f7bd3733";
-                // Check if the EditText has at least one character
-                if (s.length() == 1 && uploaded == null) {
+                Log.d(TAG, "current image " + image);
+                int index = image.indexOf("UploadedProfilePics");
+                // if 1 char in edit text, there is no uploaded pfp, image is NoName pfp
+                if (s.length() == 1 && uploaded == null && index != 86) {
                     // Get the first character
                     char firstChar = s.charAt(0);
                     String letter = Character.toUpperCase(firstChar) + "";
-                    SetDefaultProfile.generateName(docRefUser, letter, new SetDefaultProfile.ProfilePicCallback() {
+                    SetDefaultProfile.generateName(letter, new SetDefaultProfile.ProfilePicCallback() {
                         @Override
                         public void onImageURLReceived(String imageURL) {
-                            FragImageURL = imageURL;
+                            image = imageURL;
                             Picasso.get().load(imageURL).resize(127, 127).into(Picture);
                         }
                     });
 
-                } else if (s.length() == 0 && Objects.equals(NoNamePFP, "") && !Objects.equals(image, noName)){
-                    SetDefaultProfile.generateNoName(deviceID, 2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
+                } else if (s.length() == 0  && uploaded == null && index != 86){
+                    SetDefaultProfile.generateNoName(2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
                         @Override
                         public void onImageURLReceived(String imageURL) {
-                            FragImageURL = imageURL;
-                            NoNamePFP = imageURL;
-                            Picasso.get().load(NoNamePFP).resize(127, 127).into(Picture);                        }
+                            image = imageURL;
+                            Picasso.get().load(imageURL).resize(127, 127).into(Picture);                        }
                     });
-                } else if (s.length() == 0 && !Objects.equals(image, noName)){
-                    Picasso.get().load(NoNamePFP).resize(127, 127).into(Picture);
                 }
             }
         });
@@ -312,9 +315,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             UploadTask uploadTask = imageRef.putBytes(imageData);
 
             uploadTask.addOnSuccessListener(taskSnapshot -> {
-                Log.d(TAG, "Image uploaded successfully: " + image);
                 imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    image = uri.toString();
                     docRefUser.update("ProfilePic",  image);
                 });
                 Log.d(TAG, "Image uploaded successfully: " + imageName);
@@ -343,13 +344,13 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
 
     /**
      * This method alters the length restriction of the EditText for phone input based on the phone region selected
-     * @param uploaded the Uri of image from user's photo gallery
+     * @param upload the Uri of image from user's photo gallery
      * @param URL the String of image URL from database that is default profile picture
      */
-    public void setPicture(Uri uploaded, String URL){
-        if (uploaded != null ){ // uploaded new profile picture
-            Picasso.get().load(uploaded).resize(127, 127).centerInside().into(Picture);
-            this.uploaded = uploaded;
+    public void setPicture(Uri upload, String URL){
+        if (upload != null ){ // uploaded new profile picture
+            Picasso.get().load(upload).resize(127, 127).centerInside().into(Picture);
+            this.uploaded = upload;
         } else{ // removed current profile picture, URL is the default profile picture that is replacing
             Picasso.get().load(URL).resize(127, 127).centerInside().into(Picture);
             this.uploaded = null;

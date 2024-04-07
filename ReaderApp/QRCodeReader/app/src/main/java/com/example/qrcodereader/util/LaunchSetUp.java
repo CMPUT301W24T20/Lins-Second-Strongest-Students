@@ -95,7 +95,7 @@ public class LaunchSetUp {
                                 }
                             });
 
-                    SetDefaultProfile.generateNoName(deviceID, 1, newUser, null, new SetDefaultProfile.ProfilePicCallback() {
+                    SetDefaultProfile.generateNoName(1, newUser, null, new SetDefaultProfile.ProfilePicCallback() {
                         @Override
                         public void onImageURLReceived(String imageURL) {
                             // created default profile picture, thus can now set

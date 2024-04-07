@@ -22,7 +22,7 @@ public class SetDefaultProfile {
         void onImageURLReceived(String imageURL);
     }
 
-    public static void generateNoName(String deviceID, int SetCode, Map<String, Object> newUser, DocumentReference userDoc, ProfilePicCallback callback) {
+    public static void generateNoName(int SetCode, Map<String, Object> newUser, DocumentReference userDoc, ProfilePicCallback callback) {
         CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePic");
         ColRefPic.document("0").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -50,7 +50,7 @@ public class SetDefaultProfile {
         });
     }
 
-    public static void generateName(DocumentReference userDoc, String letter, ProfilePicCallback callback){
+    public static void generateName(String letter, ProfilePicCallback callback){
         CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePic");
         ColRefPic.document(letter).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

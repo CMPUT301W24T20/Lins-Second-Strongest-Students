@@ -1,9 +1,12 @@
 package com.example.qrcodereader.ui.profile;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -150,15 +153,19 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
      * @param EditEmail the String of the input in the email input of the edit fragment
      * @param EditPhone the String of the input in the phone input of the edit fragment
      * @param EditRegion the String of the phone region selected in the edit fragment
-     * @param EditPicture the Uri of the uploaded picture in the edit fragment or null if no picture was uploaded
+     *
      */
     @Override
-    public void onSaveClicked(String EditName, String EditEmail, String EditPhone, String EditRegion, Uri EditPicture) {
+    public void onSaveClicked(String EditName, String EditEmail, String EditPhone, String EditRegion, Uri upload) {
         name.setText(EditName);
         email.setText(EditEmail);
         phone.setText(EditPhone);
         region.setText(EditRegion);
-        onResume();
+        if (upload != null) {
+            Picasso.get().load(upload).resize(200, 200).centerInside().into(Picture);
+        } else{
+            onResume();
+        }
     }
 
     /**
