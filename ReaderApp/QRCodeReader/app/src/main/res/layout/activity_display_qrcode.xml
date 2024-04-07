@@ -10,7 +10,7 @@
         android:src="@drawable/return_vector"
         android:contentDescription="vector_ek2"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="35dp"
         android:layout_width="13.13dp"
         android:layout_height="22.27dp"
         app:layout_constraintStart_toStartOf="parent"

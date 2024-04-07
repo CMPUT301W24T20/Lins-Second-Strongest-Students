@@ -113,7 +113,7 @@ public class AdminImageView extends DialogFragment implements ImageAdapter.OnIma
             if (TypeRef.equals("UploadedProfilePics")){
                 String deviceID = imageName.substring(0, 16);
                 DocumentReference docRefUser = FirebaseFirestore.getInstance().collection("users").document(deviceID);
-                SetDefaultProfile.generate(deviceID, 2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
+                SetDefaultProfile.generateNoName(2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
                     @Override
                     public void onImageURLReceived(String imageURL) {
                         Log.d(TAG, "Default profile picture regenerated successfully for user " + deviceID);
