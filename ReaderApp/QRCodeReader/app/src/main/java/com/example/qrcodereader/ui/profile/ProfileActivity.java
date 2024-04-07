@@ -1,9 +1,12 @@
 package com.example.qrcodereader.ui.profile;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +30,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
     private TextView email;
     private TextView phone;
     private TextView region;
-    private Uri pictureUri;
+    private String pictureURL;
     private TextView reviewLocationPermissions;
     
     @Override
@@ -65,10 +68,9 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 phone.setText(CheckEmpty(documentSnapshot.getString("phone")));
                 region.setText(CheckEmpty(documentSnapshot.getString("phoneRegion")));
 
-                String imageURL = documentSnapshot.getString("ProfilePic");
-                pictureUri = Uri.parse(imageURL);
+                pictureURL = documentSnapshot.getString("ProfilePic");
 
-                Picasso.get().load(imageURL).resize(200, 200).centerInside().into(Picture);
+                Picasso.get().load(pictureURL).resize(200, 200).centerInside().into(Picture);
             }
         }).addOnFailureListener(e -> {
                    Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
@@ -103,7 +105,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 bundle.putString("email", email.getText().toString());
                 bundle.putString("phone", phone.getText().toString());
                 bundle.putString("region", region.getText().toString());
-                bundle.putParcelable("pfp", pictureUri);
+                bundle.putString("pfp", pictureURL);
                 listfrag.setArguments(bundle);
 
                 listfrag.setOnSaveClickListener(ProfileActivity.this);
@@ -152,16 +154,18 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
      * @param EditEmail the String of the input in the email input of the edit fragment
      * @param EditPhone the String of the input in the phone input of the edit fragment
      * @param EditRegion the String of the phone region selected in the edit fragment
-     * @param EditPicture the Uri of the uploaded picture in the edit fragment or null if no picture was uploaded
+     *
      */
     @Override
-    public void onSaveClicked(String EditName, String EditEmail, String EditPhone, String EditRegion, Uri EditPicture) {
+    public void onSaveClicked(String EditName, String EditEmail, String EditPhone, String EditRegion, Uri upload) {
         name.setText(EditName);
         email.setText(EditEmail);
         phone.setText(EditPhone);
         region.setText(EditRegion);
-        if (EditPicture != null){
-            Picasso.get().load(EditPicture).resize(200, 200).centerInside().into(Picture);
+        if (upload != null) {
+            Picasso.get().load(upload).resize(200, 200).centerInside().into(Picture);
+        } else{
+            onResume();
         }
     }
 
@@ -174,8 +178,8 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         super.onResume();
         docRefUser.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {;
-                String imageURL = documentSnapshot.getString("ProfilePic");
-                Picasso.get().load(imageURL).resize(200, 200).centerInside().into(Picture);
+                pictureURL = documentSnapshot.getString("ProfilePic");
+                Picasso.get().load(pictureURL).resize(200, 200).centerInside().into(Picture);
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();

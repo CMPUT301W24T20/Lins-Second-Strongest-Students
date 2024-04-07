@@ -58,17 +58,17 @@
         app:layout_constraintStart_toEndOf="@+id/SpinnerRegions"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ProfilePic"
         android:layout_width="127sp"
         android:layout_height="127sp"
         android:layout_marginTop="50dp"
         android:background="@drawable/circle_profile"
         android:scaleType="centerCrop"
+        android:src="@drawable/user_profile_photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/SpinnerRegions"

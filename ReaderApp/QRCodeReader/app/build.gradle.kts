@@ -36,7 +36,6 @@ android {
 }
 
 dependencies {
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
     implementation("com.google.android.material:material:<1.12.0-beta01>")
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.firebase:firebase-client-android:2.5.2")
@@ -82,6 +81,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     implementation ("com.squareup.picasso:picasso:2.8")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 
     implementation ("com.googlecode.libphonenumber:libphonenumber:8.12.33")
     testImplementation("org.mockito:mockito-core:4.1.0")
