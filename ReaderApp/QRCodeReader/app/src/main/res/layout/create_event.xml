@@ -216,12 +216,14 @@
         android:id="@+id/PosterUpload"
         android:layout_width="300sp"
         android:layout_height="130sp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"
+        android:src="@drawable/uploadposter"
         app:layout_constraintTop_toBottomOf="@id/limit_and_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="30dp"
         android:elevation="3dp"
-        android:src="@drawable/uploadposter"
         />
 
 
