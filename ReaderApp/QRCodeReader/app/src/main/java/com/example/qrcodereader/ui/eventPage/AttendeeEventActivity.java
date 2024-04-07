@@ -255,7 +255,7 @@ public class AttendeeEventActivity extends NavBar {
 
                 if (snapshot != null && snapshot.exists()) {
                     Map<String, Long> attendeeEvents = (Map<String, Long>) snapshot.get("eventsAttended");
-                    if(attendeeEvents != null && !attendeeEvents.isEmpty()) {
+                    if(attendeeEvents != null) {
                         eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
                             public void onEvent(@Nullable QuerySnapshot querySnapshots,
@@ -282,7 +282,7 @@ public class AttendeeEventActivity extends NavBar {
                                                 QRCode qrCode = new QRCode(doc.getString("qrCode"));
                                                 int attendeeLimit = doc.getLong("attendeeLimit").intValue();
                                                 Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-                                                String EPoster = doc.getString("EPoster");
+                                                String EPoster = doc.getString("poster");
 
                                                 Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
 
