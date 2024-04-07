@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -31,7 +32,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
     Button scanButton;
     private View thisView;
-    private String userID = AttendeeEventActivity.userID;
+    private String userID = FirestoreManager.getInstance().getUserID();
     private ScanHandler scanHandler;
 
     /*
@@ -69,7 +70,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         scanButton = (Button) findViewById(R.id.scan_button);
         scanButton.setOnClickListener(this);
 
-        scanHandler = new ScanHandler(db, userID);
+        scanHandler = new ScanHandler(db, userID, this);
     }
 
     @Override
