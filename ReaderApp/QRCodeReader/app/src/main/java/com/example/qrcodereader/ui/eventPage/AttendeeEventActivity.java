@@ -164,6 +164,14 @@ public class AttendeeEventActivity extends NavBar {
         return R.layout.attendee_events;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh the list of attended events
+        fetchAttendeeEvents();
+    }
+
+
     /**
      * Show the event details in a dialog
      * @param event The event to show the details of
@@ -255,7 +263,7 @@ public class AttendeeEventActivity extends NavBar {
 
                 if (snapshot != null && snapshot.exists()) {
                     Map<String, Long> attendeeEvents = (Map<String, Long>) snapshot.get("eventsAttended");
-                    if(attendeeEvents != null && !attendeeEvents.isEmpty()) {
+                    if(attendeeEvents != null) {
                         eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
                             public void onEvent(@Nullable QuerySnapshot querySnapshots,
@@ -282,7 +290,7 @@ public class AttendeeEventActivity extends NavBar {
                                                 QRCode qrCode = new QRCode(doc.getString("qrCode"));
                                                 int attendeeLimit = doc.getLong("attendeeLimit").intValue();
                                                 Map<String, Long> attendees = (Map<String, Long>) doc.get("attendees");
-                                                String EPoster = doc.getString("EPoster");
+                                                String EPoster = doc.getString("poster");
 
                                                 Event event = new Event(id, name, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, attendees, EPoster);
 
@@ -319,6 +327,20 @@ public class AttendeeEventActivity extends NavBar {
                     }
                 } else {
                     Log.d("Firestore", "Current data: null");
+                    executorService.execute(() -> {
+                        ArrayList<Event> events = new ArrayList<>();
+                        LocalEventsStorage.saveEvents(AttendeeEventActivity.this, events, "attendeeEvents.json");
+                        AppDataHolder.getInstance().loadAttendeeEvents(AttendeeEventActivity.this);
+
+                        mainThreadHandler.post(() -> {
+                            eventDataList = events;
+                            eventArrayAdapter.clear();
+                            for (Event event : events) {
+                                eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+                            }
+                            eventArrayAdapter.notifyDataSetChanged();
+                        });
+                    });
                 }
             }
         });

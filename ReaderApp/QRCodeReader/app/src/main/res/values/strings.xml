@@ -90,5 +90,8 @@
     <string name="upload_poster">Upload Poster</string>
     <string name="Consent">Location</string>
     <string name="event_name">Event Name</string>
+    <string name="switch_text">Switch</string>
+    <string name="share">Share</string>
+
 
 </resources>

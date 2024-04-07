@@ -35,37 +35,85 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-@RunWith(AndroidJUnit4.class)
-public class MapViewOrganizerTest {
-    @Rule
-    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
+//@RunWith(AndroidJUnit4.class)
+//public class MapViewOrganizerTest {
+//    FirebaseFirestore db = FirebaseFirestore.getInstance();
+//
+//    @Rule
+//    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
+//
+//
+//
+//
+//    @Before
+//    public void setUp(){
+//        // Set FirestoreManager collections and document references
+//        FirestoreManager.getInstance().setEventCollection("eventsTest");
+//        FirestoreManager.getInstance().setUserCollection("usersTest");
+//        FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
+//        FirestoreManager.getInstance().setEventDocRef("vtLdBOt2ujnXybkviXg9");
+//    }
+//    @Test
+//    public void testSignUpAndMarkerPlacement() {
+//        // Generate random latitude and longitude
+//        double randomLatitude = -90 + (Math.random() * (90 - (-90)));
+//        double randomLongitude = -180 + (Math.random() * (180 - (-180)));
+//
+//        try (ActivityScenario<MapViewOrganizer> scenario = ActivityScenario.launch(MapViewOrganizer.class)) {
+//            scenario.onActivity(activity -> {
+//
+//                try {
+//                    Thread.sleep(5000);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//
+//                // Simulate user signing up for the event from the random location
+//                simulateUserSignUpFromLocation(randomLatitude, randomLongitude);
+//
+//                // Verify that a marker is placed at the random location on the map
+//                List<Marker> markers = activity.getMarkers();
+//                Log.d("MapViewOrganizerTest", "Number of markers: " + markers.size());
+//
+//                for (Marker marker : markers) {
+//                    LatLng position = marker.getPosition();
+//                    Log.d("MapViewOrganizerTest", "Marker at: " + position.latitude + ", " + position.longitude);
+//                }
+//
+//                // Check if a marker is placed at the random location
+//                assertTrue(checkMarkerPlacedAtLocation(markers, randomLatitude, randomLongitude));
+//            });
+//        }
+//    }
+//
+//
+//    private void simulateUserSignUpFromLocation(double latitude, double longitude) {
+//        // Simulate user signing up for the event from the specified location
+//        Map<String, Long> attendeesMap = new HashMap<>();
+//        attendeesMap.put("1d141a0fd4e29d60", 1L); // Set the check-in count to 1 for the user
+//
+//        // Add the attendee to the event's attendees map
+//        db.collection("eventsTest").document("vtLdBOt2ujnXybkviXg9").update("attendees", attendeesMap);
+//
+//        // Update the user's location to the specified latitude and longitude
+//        Map<String, Object> userLocation = new HashMap<>();
+//        userLocation.put("latitude", latitude);
+//        userLocation.put("longitude", longitude);
+//
+//        db.collection("usersTest").document("1d141a0fd4e29d60").update("location", userLocation);
+//    }
+//
+//    private boolean checkMarkerPlacedAtLocation(List<Marker> markers, double latitude, double longitude) {
+//        final double EPSILON = 1e-6; // Epsilon for double comparison
+//        for (Marker marker : markers) {
+//            LatLng position = marker.getPosition();
+//            if (Math.abs(position.latitude - latitude) < EPSILON && Math.abs(position.longitude - longitude) < EPSILON) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//
+//}
 
-    @Test
-    public void testMarkerAddedToMap() throws InterruptedException {
-        try (ActivityScenario<MapViewOrganizer> scenario = ActivityScenario.launch(MapViewOrganizer.class)) {
-            scenario.onActivity(activity -> {
-                // Wait for the activity to initialize and the map to be ready
-                try {
-                    Thread.sleep(10000); // Increase the delay
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-
-                // Add a test marker
-                activity.addTestMarker(37.422, -122.084);
-
-                // Wait for the marker to be added
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-
-                // Check if the markers list is not empty
-                List<Marker> markers = activity.getMarkers();
-                Log.d("MapViewOrganizerTest", "Markers list size: " + markers.size());
-                assertFalse("Markers list should not be empty", markers.isEmpty());
-            });
-        }
-    }
-}

@@ -14,8 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.qrcodereader.entity.Event;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
+import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
@@ -24,6 +27,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -102,6 +106,18 @@ public class MapView extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
         placePins(map);
+        // OpenAi ChatGPT 4 4/7/2024 "Edit onMarker click to work with firestoreManger (given code)"
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                String documentId = (String) marker.getTag();
+                FirestoreManager.getInstance().setEventDocRef(documentId);
+
+                Intent intent = new Intent(MapView.this, EventDetailsAttendeeActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
     }
     /**
      * Called when the user responds to a permission request.
@@ -129,23 +145,23 @@ public class MapView extends AppCompatActivity implements OnMapReadyCallback {
      * @param map The GoogleMap instance where markers will be added.
      */
     private void placePins(GoogleMap map){
-        db.collection("events")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                GeoPoint geoPoint = document.getGeoPoint("location");
-                                if (geoPoint != null) {
-                                    LatLng eventLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
-                                    map.addMarker(new MarkerOptions().position(eventLocation).title(document.getString("name")));
-                                }
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
+        db.collection("events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        GeoPoint geoPoint = document.getGeoPoint("location");
+                        if (geoPoint != null) {
+                            LatLng eventLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+                            Marker marker = map.addMarker(new MarkerOptions().position(eventLocation).title(document.getString("name")));
+                            marker.setTag(document.getId());
                         }
                     }
-                });
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
     }
+
 }
