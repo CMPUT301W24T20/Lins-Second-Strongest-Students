@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
     implementation("com.google.android.material:material:<1.12.0-beta01>")
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.firebase:firebase-client-android:2.5.2")
