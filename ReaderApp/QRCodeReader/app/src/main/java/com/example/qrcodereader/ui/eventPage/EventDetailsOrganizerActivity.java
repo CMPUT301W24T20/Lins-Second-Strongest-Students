@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +21,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.Map;
@@ -36,7 +39,10 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
     private final Notifier notifier = Notifier.getInstance(this);
     private FirebaseFirestore db;
     private DocumentReference docRefEvent;
+    private CollectionReference qrRef;
     private QRCode qrCode;
+    private QRCode qrCodePromotional;
+    private
     String eventID;
     /**
      * This method is called when the activity is starting.
@@ -61,12 +67,15 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         docRefEvent = FirestoreManager.getInstance().getEventDocRef();
+        qrRef = FirestoreManager.getInstance().getQrCodeCollection();
+
+        fetchPromotionalQRCode();
 
         TextView seeQRCodeButton = findViewById(R.id.see_qr_button);
         seeQRCodeButton.setOnClickListener(v -> {
-
             Intent intent = new Intent(this, DisplayQRCode.class);
-            intent.putExtra("qrCode", qrCode.getBitmap());
+            intent.putExtra("qrCode", qrCode.getString());
+            intent.putExtra("promotionalQRCode", qrCodePromotional.getString());
             startActivity(intent);
         });
 
@@ -123,5 +132,23 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         intent.putExtra("latitude", latitude);
         intent.putExtra("longitude", longitude);
         startActivity(intent);
+    }
+
+    private void fetchPromotionalQRCode() {
+        String eventId = FirestoreManager.getInstance().getEventID();
+
+        // Query for the promotional QR code document associated with this event
+        qrRef.whereEqualTo("eventID", eventId)
+                .whereEqualTo("type", "promotional")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            qrCodePromotional = new QRCode(document.getString("qrCode"));
+                        }
+                    } else {
+                        Log.d("EventDetailsOrganizer", "Error getting promotional QR code: ", task.getException());
+                    }
+                });
     }
 }
