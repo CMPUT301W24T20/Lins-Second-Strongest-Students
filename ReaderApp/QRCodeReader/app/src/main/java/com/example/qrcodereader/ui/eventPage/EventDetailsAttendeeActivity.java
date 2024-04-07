@@ -1,8 +1,11 @@
 package com.example.qrcodereader.ui.eventPage;
 
+import com.example.qrcodereader.MapView;
 import com.example.qrcodereader.R;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,7 +46,8 @@ import java.util.Map;
  *  @author Son and Duy
  */
 public class EventDetailsAttendeeActivity extends AppCompatActivity {
-
+    // OpenAi ChatGPT 4 4/7/2024 "Edit activity to work from being launched from map"
+    private static final String EXTRA_LAUNCHED_FROM_MAP = "launched_from_map";
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefUser;
@@ -65,6 +70,12 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         db = FirestoreManager.getInstance().getDb();
         userid = FirestoreManager.getInstance().getUserID();
         eventID = FirestoreManager.getInstance().getEventID();
+        // OpenAi ChatGPT 4 4/7/2024 "Edit activity to work from being launched from map"
+        if (eventID == null || eventID.trim().isEmpty()) {
+            Toast.makeText(this, "Error: Event ID is not available.", Toast.LENGTH_LONG).show();
+            finish(); // Close the activity if the document ID is not available
+            return;
+        }
         docRefEvent = FirestoreManager.getInstance().getEventDocRef();
         docRefUser = FirestoreManager.getInstance().getUserDocRef();
 
@@ -74,6 +85,20 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         TextView eventLocationTextView = findViewById(R.id.location);
         TextView eventTimeTextView = findViewById(R.id.time);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
+        // OpenAi ChatGPT 4 4/7/2024 "Edit activity to work from being launched from map"
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                if (getIntent().getBooleanExtra(EXTRA_LAUNCHED_FROM_MAP, false)) {
+                    // Launched from map, go back to map
+                    startActivity(new Intent(EventDetailsAttendeeActivity.this, MapView.class));
+                } else {
+                    // Default behavior
+                    finish();
+                }
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
 
 
         docRefEvent.get().addOnSuccessListener(documentSnapshot -> {
@@ -154,8 +179,25 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                 finish();
             }
         });
+        // OpenAi ChatGPT 4 4/7/2024 "Edit activity to work from being launched from map"
         ImageView returnButton = findViewById(R.id.return_button);
-        returnButton.setOnClickListener(v -> finish());
+        returnButton.setOnClickListener(v -> {
+            if (getIntent().getBooleanExtra(EXTRA_LAUNCHED_FROM_MAP, false)) {
+                // Launched from map, go back to map
+                startActivity(new Intent(this, MapView.class));
+            } else {
+                // Finish the activity (equivalent to pressing the back button)
+                finish();
+            }
+        });
+
+    }
+    // OpenAi ChatGPT 4 4/7/2024 "Edit activity to work from being launched from map"
+    public static void startFromMap(Context context, String eventID) {
+        Intent intent = new Intent(context, EventDetailsAttendeeActivity.class);
+        intent.putExtra(EXTRA_LAUNCHED_FROM_MAP, true);
+        intent.putExtra("eventID", eventID);
+        context.startActivity(intent);
     }
 
     public FirebaseFirestore getDb() {

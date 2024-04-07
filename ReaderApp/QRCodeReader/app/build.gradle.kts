@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
     implementation("com.google.android.material:material:<1.12.0-beta01>")
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.firebase:firebase-client-android:2.5.2")
@@ -90,5 +91,8 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     testImplementation ("org.mockito:mockito-core:3.3.3")
     testImplementation("org.robolectric:robolectric:4.3.1")
-
+    implementation("com.google.firebase:firebase-firestore:23.0.3") {
+        exclude(group = "com.google.protobuf", module = "protobuf-javalite")
+    }
+    implementation("com.google.protobuf:protobuf-javalite:3.22.3")
 }

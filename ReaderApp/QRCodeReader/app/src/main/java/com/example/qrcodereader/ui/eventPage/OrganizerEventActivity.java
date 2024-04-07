@@ -90,7 +90,7 @@ public class OrganizerEventActivity extends NavBar {
         userid = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("events");
+        eventsRef = FirestoreManager.getInstance().getEventCollection();
         pastEventsRef = db.collection("pastEvents");
 
         eventList = findViewById(R.id.event_list_attendee);
@@ -156,10 +156,10 @@ public class OrganizerEventActivity extends NavBar {
     }
 
     public void fetchOrganizerEvents() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        FirebaseFirestore db = FirestoreManager.getInstance().getDb();
+        String deviceID = FirestoreManager.getInstance().getUserID();
 
-        db.collection("events")
+        FirestoreManager.getInstance().getEventCollection()
                 .whereEqualTo("organizerID", deviceID)
                 .get()
                 .addOnCompleteListener(task -> {

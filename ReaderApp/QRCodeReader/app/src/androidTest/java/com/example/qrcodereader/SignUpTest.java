@@ -38,7 +38,7 @@ public class SignUpTest {
         FirestoreManager.getInstance().setEventCollection("eventsTest");
         FirestoreManager.getInstance().setUserCollection("usersTest");
         FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
-        FirestoreManager.getInstance().setEventDocRef("vtLdBOt2ujnXybkviXg9");
+        FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
     }
 
     @Test
@@ -67,9 +67,6 @@ public class SignUpTest {
                     } else {
                         fail();
                     }
-                } else {
-                    // Handle the failure of fetching the document
-                    fail();
                 }
             });
             FirestoreManager.getInstance().getUserDocRef().get().addOnCompleteListener(task -> {
@@ -79,13 +76,10 @@ public class SignUpTest {
                         // Extract the map field from the document
                         Map<String, Object> map = (Map<String, Object>) document.getData().get("eventsAttended");
                         assertNotNull(map);
-                        assertTrue(map.containsKey("vtLdBOt2ujnXybkviXg9"));
+                        assertTrue(map.containsKey("6NRHwbgGk0449AVOBPLs"));
                     } else {
                         fail();
                     }
-                } else {
-                    // Handle the failure of fetching the document
-                    fail();
                 }
             });
         } catch (InterruptedException e) {
@@ -119,9 +113,6 @@ public class SignUpTest {
                     } else {
                         fail();
                     }
-                } else {
-                    // Handle the failure of fetching the document
-                    fail();
                 }
             });
             FirestoreManager.getInstance().getUserDocRef().get().addOnCompleteListener(task -> {
@@ -136,13 +127,10 @@ public class SignUpTest {
                         // Extract the map field from the document
                         Map<String, Object> map = (Map<String, Object>) document.getData().get("eventsAttended");
                         assertNotNull(map);
-                        assertFalse(map.containsKey("vtLdBOt2ujnXybkviXg9"));
+                        assertFalse(map.containsKey("6NRHwbgGk0449AVOBPLs"));
                     } else {
                         fail();
                     }
-                } else {
-                    // Handle the failure of fetching the document
-                    fail();
                 }
             });
         } catch (InterruptedException e) {

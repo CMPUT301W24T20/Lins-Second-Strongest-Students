@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.entity.UserArrayAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,8 +46,8 @@ public class AdminUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_user);
         getSupportActionBar().hide();
 
-        db = FirebaseFirestore.getInstance();
-        usersRef = db.collection("users");
+        db = FirestoreManager.getInstance().getDb();
+        usersRef = FirestoreManager.getInstance().getUserCollection();
 
         ListView userList = findViewById(R.id.user_content);
         userDataList = new ArrayList<>();
@@ -72,7 +73,7 @@ public class AdminUserActivity extends AppCompatActivity {
         userList.setOnItemClickListener((parent, view, position, id) -> {
             User selectedUser = userDataList.get(position);
             Intent detailIntent = new Intent(AdminUserActivity.this, UserDetailsAdminActivity.class);
-            detailIntent.putExtra("userID", selectedUser.getUserID());
+            FirestoreManager.getInstance().setUserDocRef(selectedUser.getUserID());
             startActivity(detailIntent);
         });
 

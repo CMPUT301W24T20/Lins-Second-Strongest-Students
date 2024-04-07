@@ -36,6 +36,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.profile);
 
         setupTextViewButton(R.id.home_button);
@@ -56,7 +57,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
 
 
         FirebaseFirestore db = FirestoreManager.getInstance().getDb();
-        String deviceID = FirestoreManager.getInstance().getUserID();
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         docRefUser = FirestoreManager.getInstance().getUserDocRef();
 
         docRefUser.get().addOnSuccessListener(documentSnapshot -> {
@@ -85,7 +86,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 .document(deviceID)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful() && task.getResult() == null && task.getResult().exists()) {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().exists()) {
                         adminButton.setVisibility(View.INVISIBLE);
                     }
                 })

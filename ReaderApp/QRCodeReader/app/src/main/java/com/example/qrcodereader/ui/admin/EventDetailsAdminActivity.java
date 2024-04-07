@@ -63,6 +63,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_event_details_admin);
         String userid = AttendeeEventActivity.userID;
 
@@ -124,7 +125,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
         usersRef = db.collection("users");
     }
 
-    private void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
+    public void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
         if (eventID != null) {
             usersRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
