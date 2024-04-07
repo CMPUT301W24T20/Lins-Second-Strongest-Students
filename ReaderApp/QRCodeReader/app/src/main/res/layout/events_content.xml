@@ -34,7 +34,7 @@
 
 			<com.google.android.material.card.MaterialCardView
 				android:layout_width="match_parent"
-				android:layout_height="260dp"
+				android:layout_height="wrap_content"
 				android:layout_marginStart="14dp"
 				android:layout_marginEnd="14dp"
 				android:layout_marginTop="13dp"
@@ -49,48 +49,57 @@
 					android:layout_height="130dp"
 					android:scaleType="centerCrop"
 					/>
-
-				<TextView android:id="@+id/event_text"
-					android:textSize="16sp"
-					android:textStyle="bold"
-					android:textColor="@color/event_name_color"
-					android:layout_marginLeft="32dp"
+				<androidx.constraintlayout.widget.ConstraintLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="32dp"
 					android:layout_marginTop="150dp"
-					android:layout_width="wrap_content"
-					android:layout_height="21.2dp"
-					android:text="@string/event_name_string"
-					/>
+					android:layout_marginBottom="20dp"
+					android:layout_marginEnd="32dp">
+					<TextView android:id="@+id/event_text"
+						android:textSize="16sp"
+						android:textStyle="bold"
+						android:textColor="@color/event_name_color"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/event_name"
+						/>
 
-				<TextView android:id="@+id/organizer_text"
-					android:textSize="16sp"
-					android:textColor="@color/event_name_color"
-					android:layout_marginLeft="32dp"
-					android:layout_marginTop="175dp"
-					android:layout_width="wrap_content"
-					android:layout_height="21.2dp"
-					android:text="@string/organizer_string"
-					/>
+					<TextView android:id="@+id/organizer_text"
+						android:textSize="16sp"
+						android:textColor="@color/event_name_color"
+						app:layout_constraintTop_toBottomOf="@id/event_text"
+						app:layout_constraintStart_toStartOf="parent"
+						android:layout_marginTop="5dp"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/organizer_string"
+						/>
 
-				<TextView android:id="@+id/event_location_text"
-					android:textSize="16sp"
-					android:textColor="@color/event_name_color"
-					android:layout_marginLeft="32dp"
-					android:layout_marginTop="200dp"
-					android:layout_width="wrap_content"
-					android:layout_height="21.2dp"
-					android:text="@string/location_string"
-					/>
+					<TextView android:id="@+id/event_location_text"
+						android:textSize="16sp"
+						android:textColor="@color/event_name_color"
+						app:layout_constraintTop_toBottomOf="@id/organizer_text"
+						app:layout_constraintStart_toStartOf="parent"
+						android:layout_marginTop="5dp"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/location_string"
+						/>
 
-				<TextView android:id="@+id/time_text"
-					android:textSize="16sp"
-					android:textColor="@color/event_name_color"
-					android:layout_marginLeft="32dp"
-					android:layout_marginTop="225dp"
-					android:layout_width="wrap_content"
-					android:layout_height="21.2dp"
-					android:text="@string/time_string"
-					/>
-
+					<TextView android:id="@+id/time_text"
+						android:textSize="16sp"
+						android:textColor="@color/event_name_color"
+						app:layout_constraintTop_toBottomOf="@id/event_location_text"
+						app:layout_constraintStart_toStartOf="parent"
+						android:layout_marginTop="5dp"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/time_string"
+						/>
+				</androidx.constraintlayout.widget.ConstraintLayout>
 			</com.google.android.material.card.MaterialCardView>
 
 

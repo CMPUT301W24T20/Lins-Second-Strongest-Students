@@ -30,6 +30,7 @@ public class DisplayQRCode extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_display_qrcode);
 
