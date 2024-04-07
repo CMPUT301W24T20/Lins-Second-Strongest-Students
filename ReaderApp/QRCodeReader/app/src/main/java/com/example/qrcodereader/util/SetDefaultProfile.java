@@ -22,13 +22,9 @@ public class SetDefaultProfile {
         void onImageURLReceived(String imageURL);
     }
 
-    public static void generate(String deviceID, int SetCode, Map<String, Object> newUser, DocumentReference userDoc, ProfilePicCallback callback) {
-        CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePics");
-
-        // determine default profile picture based on first character of deviceID
-        int index = (int) (deviceID.charAt(0) %15)+1;
-        String P = "P"+index;
-        ColRefPic.document(P).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    public static void generateNoName(int SetCode, Map<String, Object> newUser, DocumentReference userDoc, ProfilePicCallback callback) {
+        CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePic");
+        ColRefPic.document("0").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -42,6 +38,29 @@ public class SetDefaultProfile {
                         } else if (SetCode == 2) {
                             userDoc.update("ProfilePic", imageURL);
                         }
+                        callback.onImageURLReceived(imageURL);
+
+                    } else {
+                        Log.d("Firestore", "No such document");
+                    }
+                } else {
+                    Log.e("Firestore", "Error getting document", task.getException());
+                }
+            }
+        });
+    }
+
+    public static void generateName(String letter, ProfilePicCallback callback){
+        CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePic");
+        ColRefPic.document(letter).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+                        // Get the value of the string field
+                        String imageURL = document.getString("URL");
+                        // if new user being created
                         callback.onImageURLReceived(imageURL);
 
                     } else {

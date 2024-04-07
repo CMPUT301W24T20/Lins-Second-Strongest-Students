@@ -41,7 +41,7 @@ public class User implements Serializable {
 
     }
 
-    public User(String deviceID, String userName, String email, String phoneRegion, String phone) {
+    public User(String deviceID, String userName, String email, String phoneRegion, String phone, String image) {
         this.userID = deviceID;
         this.name = userName;
         this.email = email;
@@ -49,7 +49,7 @@ public class User implements Serializable {
         this.phone = phone;
         this.eventsAttended = new HashMap<String, Long>();
         this.location = null;
-        this.ProfilePic = null;
+        this.ProfilePic = image;
     }
 
     public User(String deviceID, String userName, GeoPoint location, Map<String, Long> eventsAttended, String image) {
