@@ -83,6 +83,8 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.8")
 
     implementation ("com.googlecode.libphonenumber:libphonenumber:8.12.33")
+    testImplementation("org.mockito:mockito-core:4.1.0")
+
 
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     testImplementation ("org.mockito:mockito-core:3.3.3")

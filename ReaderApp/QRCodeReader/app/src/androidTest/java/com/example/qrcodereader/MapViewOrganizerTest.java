@@ -54,6 +54,13 @@ public class MapViewOrganizerTest {
 
         try (ActivityScenario<MapViewOrganizer> scenario = ActivityScenario.launch(MapViewOrganizer.class)) {
             scenario.onActivity(activity -> {
+
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
                 // Simulate user signing up for the event from the random location
                 simulateUserSignUpFromLocation(randomLatitude, randomLongitude);
 
