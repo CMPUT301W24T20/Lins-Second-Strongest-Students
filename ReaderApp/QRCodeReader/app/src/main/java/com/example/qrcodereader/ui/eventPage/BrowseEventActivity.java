@@ -315,7 +315,7 @@ public class BrowseEventActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                        if (querySnapshot != null) {
                             // Execute data processing in background
                             executorService.execute(() -> {
                                 ArrayList<Event> events = new ArrayList<>();

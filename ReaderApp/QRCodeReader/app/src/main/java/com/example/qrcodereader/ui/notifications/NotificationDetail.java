@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.qrcodereader.MainActivity;
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,7 +22,7 @@ public class NotificationDetail {
     private String event;
     private String title;
     private String body;
-    String userID = AttendeeEventActivity.userID;
+    private String userID = FirestoreManager.getInstance().getUserID();
 
     private void DeleteDocumentId() {
 
