@@ -87,6 +87,7 @@ public class OrganizerEventActivity extends NavBar {
         setupTextViewButton(R.id.bottom_profile_icon);
         //getSupportActionBar().hide();
 
+        userid = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
@@ -113,8 +114,12 @@ public class OrganizerEventActivity extends NavBar {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the selected event
                 Event selectedEvent = eventDataList.get(position);
-
+                String eventID = selectedEvent.getEventID();
+                GeoPoint location = selectedEvent.getLocation();
                 Intent detailIntent = new Intent(OrganizerEventActivity.this, EventDetailsOrganizerActivity.class);
+                detailIntent.putExtra("eventID",eventID);
+                detailIntent.putExtra("latitude", location.getLatitude());
+                detailIntent.putExtra("longitude", location.getLongitude());
                 FirestoreManager.getInstance().setEventDocRef(selectedEvent.getEventID());
                 startActivity(detailIntent);
             }
@@ -179,7 +184,7 @@ public class OrganizerEventActivity extends NavBar {
 
                                     events.add(event);
                                 }
-                                LocalEventsStorage.saveEvents(this, events, "organizerEvents.json");
+                                AppDataHolder.getInstance().loadOrganizerEventToLocal(events, this);
                                 AppDataHolder.getInstance().loadOrganizerEvents(this);
 
                                 if (events.size() >= 2) {
