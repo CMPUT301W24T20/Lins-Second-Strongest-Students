@@ -18,6 +18,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.provider.Settings;
 import android.text.InputFilter;
 import android.util.Log;
@@ -30,10 +31,12 @@ import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.qrcodereader.util.ImageUpload;
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.util.SetDefaultProfile;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -42,13 +45,17 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -67,10 +74,12 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
     private ImageView Picture;
     private String image;
     private DocumentReference docRefUser;
-    private Uri uploaded;
+    private Uri uploaded = null;
     private int PhoneLength;
     private EditText ETphone;
     private OnSaveClickListener onSaveClickListener;
+    private String NoNamePFP = "";
+    private String FragImageURL;
 
     /**
      * This listener interface handles saving the inputs of this edit fragment into database events
@@ -128,8 +137,8 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
         ETphone.setText(args.getString("phone", ""));
         Sregion.setSelection(supportedRegions.indexOf(args.getString("region", "")));
         setRegionPhone(args.getString("region", ""));
-        Uri imageUri = args.getParcelable("pfp");
-        Picasso.get().load(imageUri).transform(new CircleTransformation()).resize(127, 127).into(Picture);
+        image = args.getString("pfp");
+        Picasso.get().load(image).resize(127, 127).into(Picture);
 
         String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -179,6 +188,8 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                         docRefUser.update("email",  ETemail.getText().toString());
                         docRefUser.update("phone",  ETphone.getText().toString());
                         docRefUser.update("phoneRegion",Sregion.getSelectedItem().toString());
+                        docRefUser.update("ProfilePic", FragImageURL);
+
 
                         if (onSaveClickListener != null) {
                             onSaveClickListener.onSaveClicked(
@@ -239,6 +250,41 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                 }
             }
         });
+
+        ETname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                String noName = "https://firebasestorage.googleapis.com/v0/b/linssecondstrongeststudents.appspot.com/o/Profiles%2FNoNamePFP.png?alt=media&token=ecb2105f-8708-48e3-869a-a7d2f7bd3733";
+                // Check if the EditText has at least one character
+                if (s.length() == 1 && uploaded == null) {
+                    // Get the first character
+                    char firstChar = s.charAt(0);
+                    String letter = Character.toUpperCase(firstChar) + "";
+                    SetDefaultProfile.generateName(docRefUser, letter, new SetDefaultProfile.ProfilePicCallback() {
+                        @Override
+                        public void onImageURLReceived(String imageURL) {
+                            FragImageURL = imageURL;
+                            Picasso.get().load(imageURL).resize(127, 127).into(Picture);
+                        }
+                    });
+
+                } else if (s.length() == 0 && Objects.equals(NoNamePFP, "") && !Objects.equals(image, noName)){
+                    SetDefaultProfile.generateNoName(deviceID, 2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
+                        @Override
+                        public void onImageURLReceived(String imageURL) {
+                            FragImageURL = imageURL;
+                            NoNamePFP = imageURL;
+                            Picasso.get().load(NoNamePFP).resize(127, 127).into(Picture);                        }
+                    });
+                } else if (s.length() == 0 && !Objects.equals(image, noName)){
+                    Picasso.get().load(NoNamePFP).resize(127, 127).into(Picture);
+                }
+            }
+        });
         // Reference to the ChatGPT code ends here
         return alertDialog;
     }
@@ -256,8 +302,8 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             byte[] buffer = new byte[1024];
             int len;
             while ((len = is.read(buffer)) != -1) {
-                baos.write(buffer, 0, len);
-            }
+                baos.write(buffer, 0, len);}
+
             byte[] imageData = baos.toByteArray();
             String imageName = deviceID + "PROFILEPICTURE.png";
 
@@ -266,6 +312,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             UploadTask uploadTask = imageRef.putBytes(imageData);
 
             uploadTask.addOnSuccessListener(taskSnapshot -> {
+                Log.d(TAG, "Image uploaded successfully: " + image);
                 imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                     image = uri.toString();
                     docRefUser.update("ProfilePic",  image);
@@ -301,58 +348,11 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
      */
     public void setPicture(Uri uploaded, String URL){
         if (uploaded != null ){ // uploaded new profile picture
-            Picasso.get().load(uploaded).transform(new CircleTransformation()).resize(127, 127).centerInside().into(Picture);
+            Picasso.get().load(uploaded).resize(127, 127).centerInside().into(Picture);
             this.uploaded = uploaded;
         } else{ // removed current profile picture, URL is the default profile picture that is replacing
-            Picasso.get().load(URL).transform(new CircleTransformation()).resize(127, 127).centerInside().into(Picture);
-            this.uploaded = Uri.parse(URL);
+            Picasso.get().load(URL).resize(127, 127).centerInside().into(Picture);
+            this.uploaded = null;
         }
     }
-
-    /*
-    OpenAI, ChatGPT, 04/01/24
-    how do i trim an image to circle
-    */
-    // ChatGPT code starts here excluding the javadoc
-    /**
-     * A class that implements Transformation interface to transform a Bitmap into a circular shape
-     * This transformation is used for displaying circular images
-     */
-    private static class CircleTransformation implements Transformation {
-        /**
-         * This method transforms the source Bitmap into a circular shape
-         * @param source the source Bitmap to be transformed
-         * @return a new Bitmap that is a circular transformation of the source Bitmap
-         */
-        @Override
-        public Bitmap transform(Bitmap source) {
-            int size = Math.min(source.getWidth(), source.getHeight());
-
-            int x = (source.getWidth() - size) / 2;
-            int y = (source.getHeight() - size) / 2;
-
-            Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
-            if (squaredBitmap != source) {
-                source.recycle();
-            }
-
-            Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
-
-            // Create a circular canvas
-            Canvas canvas = new Canvas(bitmap);
-            Paint paint = new Paint();
-            BitmapShader shader = new BitmapShader(squaredBitmap, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
-            paint.setShader(shader);
-            paint.setAntiAlias(true);
-
-            float radius = size / 2f;
-            canvas.drawCircle(radius, radius, radius, paint);
-
-            squaredBitmap.recycle();
-            return bitmap;
-        }
-        @Override
-        public String key() {return "circle";} // key method not used in app but is required implementation due to interface Transformation
-    }
-    // ChatGPT code ends here
 }

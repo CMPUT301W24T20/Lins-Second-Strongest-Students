@@ -95,31 +95,13 @@ public class LaunchSetUp {
                                 }
                             });
 
-                    // set default profile
-                    CollectionReference ColRefPic = db.collection("DefaultProfilePics");
-                    ColRefPic.document("P4").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    SetDefaultProfile.generateNoName(deviceID, 1, newUser, null, new SetDefaultProfile.ProfilePicCallback() {
                         @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document != null && document.exists()) {
-                                    // Get the value of the string field
-                                    String imageURL = document.getString("URL");
-                                    newUser.put("ProfilePic", imageURL);
-                                    docRefUser.set(newUser);
-
-//                                    Toast.makeText(MainActivity.this, "Image URL: " + imageURL, Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Log.d("Firestore", "No such document");
-                                    showToast("No such document");
-                                }
-                            } else {
-                                Log.e("Firestore", "Error getting document", task.getException());
-                                showToast("Error getting document: " + task.getException().getMessage());
-                            }
+                        public void onImageURLReceived(String imageURL) {
+                            // created default profile picture, thus can now set
+                            docRefUser.set(newUser);
                         }
                     });
-
                     showToast("Made new account");
                 }
             } else {

@@ -27,7 +27,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
     private TextView email;
     private TextView phone;
     private TextView region;
-    private Uri pictureUri;
+    private String pictureURL;
     private TextView reviewLocationPermissions;
     
     @Override
@@ -64,10 +64,9 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 phone.setText(CheckEmpty(documentSnapshot.getString("phone")));
                 region.setText(CheckEmpty(documentSnapshot.getString("phoneRegion")));
 
-                String imageURL = documentSnapshot.getString("ProfilePic");
-                pictureUri = Uri.parse(imageURL);
+                pictureURL = documentSnapshot.getString("ProfilePic");
 
-                Picasso.get().load(imageURL).resize(200, 200).centerInside().into(Picture);
+                Picasso.get().load(pictureURL).resize(200, 200).centerInside().into(Picture);
             }
         }).addOnFailureListener(e -> {
                    Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
@@ -102,7 +101,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 bundle.putString("email", email.getText().toString());
                 bundle.putString("phone", phone.getText().toString());
                 bundle.putString("region", region.getText().toString());
-                bundle.putParcelable("pfp", pictureUri);
+                bundle.putString("pfp", pictureURL);
                 listfrag.setArguments(bundle);
 
                 listfrag.setOnSaveClickListener(ProfileActivity.this);
@@ -159,9 +158,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         email.setText(EditEmail);
         phone.setText(EditPhone);
         region.setText(EditRegion);
-        if (EditPicture != null){
-            Picasso.get().load(EditPicture).resize(200, 200).centerInside().into(Picture);
-        }
+        onResume();
     }
 
     /**
@@ -173,8 +170,8 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
         super.onResume();
         docRefUser.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {;
-                String imageURL = documentSnapshot.getString("ProfilePic");
-                Picasso.get().load(imageURL).resize(200, 200).centerInside().into(Picture);
+                pictureURL = documentSnapshot.getString("ProfilePic");
+                Picasso.get().load(pictureURL).resize(200, 200).centerInside().into(Picture);
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();

@@ -49,4 +49,27 @@ public class SetDefaultProfile {
             }
         });
     }
+
+    public static void generateName(DocumentReference userDoc, String letter, ProfilePicCallback callback){
+        CollectionReference ColRefPic = FirebaseFirestore.getInstance().collection("DefaultProfilePic");
+        ColRefPic.document(letter).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+                        // Get the value of the string field
+                        String imageURL = document.getString("URL");
+                        // if new user being created
+                        callback.onImageURLReceived(imageURL);
+
+                    } else {
+                        Log.d("Firestore", "No such document");
+                    }
+                } else {
+                    Log.e("Firestore", "Error getting document", task.getException());
+                }
+            }
+        });
+    }
 }
