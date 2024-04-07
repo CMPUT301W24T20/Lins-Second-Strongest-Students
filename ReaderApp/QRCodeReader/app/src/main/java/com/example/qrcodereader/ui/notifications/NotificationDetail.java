@@ -18,21 +18,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-/**
- * NotificationDetail
- * Class containing code representing a notification
- * stored in firebase within a subcollection for a user
- */
 public class NotificationDetail {
     private String event;
     private String title;
     private String body;
     private String userID = FirestoreManager.getInstance().getUserID();
 
-    /**
-     * DeleteDocumentID()
-     * Finds the documentID for a notification and calls RemoveFromFirebase
-     */
     private void DeleteDocumentId() {
 
         final String[] id = new String[1];
@@ -54,11 +45,6 @@ public class NotificationDetail {
         });
     }
 
-    /**
-     * RemoveFromFirebase
-     * Deletes a notifcation document from firebase
-     * @param docID ID of document to delete
-     */
     private void RemoveFromFirebase(String docID) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -81,10 +67,8 @@ public class NotificationDetail {
 
     }
 
-    //Default constructor
     public NotificationDetail() {}
 
-    //Loaded constructor
     public NotificationDetail(String event, String title, String body) {
         this.event = event;
         this.title = title;
@@ -115,10 +99,6 @@ public class NotificationDetail {
         this.body = body;
     }
 
-    /**
-     * Gets the URL for a notification's poster
-     * @return URL of poster
-     */
     public String getPoster() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -146,10 +126,6 @@ public class NotificationDetail {
         return poster[0];
     }
 
-    /**
-     * delete()
-     * Deletes this notification from firebase
-     */
     public void delete() {
 
         this.DeleteDocumentId();
