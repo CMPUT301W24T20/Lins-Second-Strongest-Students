@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,9 +40,13 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
     private final Notifier notifier = Notifier.getInstance(this);
     private FirebaseFirestore db;
     private DocumentReference docRefEvent;
+    private CollectionReference qrRef;
     private CollectionReference usersRef;
     private CollectionReference eventsRef;
+
     private QRCode qrCode;
+    private QRCode qrCodePromotional;
+    private
     String eventID;
     String TAG = "";
     /**
@@ -67,15 +72,21 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         docRefEvent = FirestoreManager.getInstance().getEventDocRef();
+
+        qrRef = FirestoreManager.getInstance().getQrCodeCollection();
+
+        fetchPromotionalQRCode();
+
         usersRef = FirestoreManager.getInstance().getUserCollection();
         eventsRef = FirestoreManager.getInstance().getEventCollection();
         eventID = FirestoreManager.getInstance().getEventID();
 
+
         TextView seeQRCodeButton = findViewById(R.id.see_qr_button);
         seeQRCodeButton.setOnClickListener(v -> {
-
             Intent intent = new Intent(this, DisplayQRCode.class);
-            intent.putExtra("qrCode", qrCode.getBitmap());
+            intent.putExtra("qrCode", qrCode.getString());
+            intent.putExtra("promotionalQRCode", qrCodePromotional.getString());
             startActivity(intent);
         });
 
@@ -89,7 +100,12 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String qrCodeString = documentSnapshot.getString("qrCode");
                 String poster = documentSnapshot.getString("poster");
-                Picasso.get().load(poster).resize(410, 240).centerInside().into(eventPoster);
+                if (poster != null && !poster.isEmpty()) {
+                    Picasso.get().load(poster).resize(410, 240).centerInside().into(eventPoster);
+                } else {
+                    // Handle the case where the poster URL is null or empty
+                    // For example, you might want to load a default image
+                }
                 qrCode = new QRCode(qrCodeString);
                 Log.d("Firestore", "Successfully fetch document: ");
 
@@ -136,7 +152,26 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
+
+    private void fetchPromotionalQRCode() {
+        String eventId = FirestoreManager.getInstance().getEventID();
+
+        // Query for the promotional QR code document associated with this event
+        qrRef.whereEqualTo("eventID", eventId)
+                .whereEqualTo("type", "promotional")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            qrCodePromotional = new QRCode(document.getString("qrCode"));
+                        }
+                    } else {
+                        Log.d("EventDetailsOrganizer", "Error getting promotional QR code: ", task.getException());
+                    }
+                });
+    }
+
+    private void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
         if (eventID != null) {
             usersRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
