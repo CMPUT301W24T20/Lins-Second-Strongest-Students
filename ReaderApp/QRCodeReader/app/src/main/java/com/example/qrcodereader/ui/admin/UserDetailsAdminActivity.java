@@ -1,6 +1,7 @@
 package com.example.qrcodereader.ui.admin;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,9 +13,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.User;
+import com.example.qrcodereader.util.LaunchSetUp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -89,6 +92,14 @@ public class UserDetailsAdminActivity extends AppCompatActivity {
         TextView removeButton = findViewById(R.id.remove_button);
         removeButton.setOnClickListener(v -> {
             removeUser(userID, usersRef, eventsRef);
+//            Intent intent = new Intent(UserDetailsAdminActivity.this, LaunchSetUp.class); // Replace NewActivity.class with the desired activity class
+//            startActivity(intent);
+            Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+            if (intent != null) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                new LaunchSetUp(this).setup();
+            }
         });
 
         TextView returnButton = findViewById(R.id.return_button);
