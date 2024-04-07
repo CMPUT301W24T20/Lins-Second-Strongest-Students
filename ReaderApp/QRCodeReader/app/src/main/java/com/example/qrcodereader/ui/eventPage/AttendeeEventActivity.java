@@ -319,6 +319,20 @@ public class AttendeeEventActivity extends NavBar {
                     }
                 } else {
                     Log.d("Firestore", "Current data: null");
+                    executorService.execute(() -> {
+                        ArrayList<Event> events = new ArrayList<>();
+                        LocalEventsStorage.saveEvents(AttendeeEventActivity.this, events, "attendeeEvents.json");
+                        AppDataHolder.getInstance().loadAttendeeEvents(AttendeeEventActivity.this);
+
+                        mainThreadHandler.post(() -> {
+                            eventDataList = events;
+                            eventArrayAdapter.clear();
+                            for (Event event : events) {
+                                eventArrayAdapter.addEvent(event.getEventID(), event.getEventName(), event.getLocation(), event.getLocationName(), event.getTime(), event.getOrganizer(), event.getOrganizerID(), event.getQrCode(), event.getAttendeeLimit(), event.getAttendees(), event.getPoster());
+                            }
+                            eventArrayAdapter.notifyDataSetChanged();
+                        });
+                    });
                 }
             }
         });
