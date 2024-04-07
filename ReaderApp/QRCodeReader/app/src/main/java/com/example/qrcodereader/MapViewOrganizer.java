@@ -25,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,6 +42,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 // Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
 /**
@@ -51,7 +53,7 @@ import java.util.Map;
  */
 public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCallback{
     private FusedLocationProviderClient fusedLocationClient;
-    private GoogleMap map;
+    GoogleMap map;
     String eventID;
     //private User user;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -61,8 +63,10 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.map_view);
-        //user = (User) getIntent().getSerializableExtra("user");
+
+        // Set the eventID from intent extras
         eventID = getIntent().getStringExtra("eventID");
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.gmaps);
         mapFragment.getMapAsync(this);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -75,6 +79,7 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
             }
         });
     }
+
     /**
      * Called when the map is ready to be used.
      *
@@ -89,19 +94,7 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},100);
             return;
         }
-//        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
-//            @Override
-//            public void onSuccess(Location location) {
-//                LatLng position;
-//                if (location == null) {
-//                    position = new LatLng(53.5461, 13.4937);
-//                } else {
-//                    position = new LatLng(location.getLatitude(), location.getLongitude());
-//                }
-//                //user.setLocation(location);
-//                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 10));
-//            }
-//        });
+
         double latitude = getIntent().getDoubleExtra("latitude", 53.5461);
         double longitude = getIntent().getDoubleExtra("longitude", 113.4937);
         LatLng eventLocation = new LatLng(latitude, longitude);
@@ -134,11 +127,18 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
      *
      * @param map The GoogleMap instance where markers will be added.
      */
+    private List<Marker> markers = new ArrayList<>();
+
     private void placePins(GoogleMap map){
+        if (eventID == null) {
+                Log.e(TAG, "EventID is null");
+                return;
+        }
         db.collection("events").document(eventID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 map.clear(); // clear old markers
+                markers.clear(); // clear old markers list
 
                 Map<String, Long> attendeesMap = (Map<String, Long>) documentSnapshot.get("attendees");
                 if (attendeesMap != null) {
@@ -152,7 +152,9 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
                                     GeoPoint geoPoint = documentSnapshot.getGeoPoint("location");
                                     if (geoPoint != null) {
                                         LatLng checkInLocation = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
-                                        map.addMarker(new MarkerOptions().position(checkInLocation).title(documentSnapshot.getString("name")));
+                                        Marker marker = map.addMarker(new MarkerOptions().position(checkInLocation).title(documentSnapshot.getString("name")));
+                                        marker.setTag(userId); // Set the tag to the userId
+                                        markers.add(marker); // Add the marker to the list
                                     }
                                 }
                             });
@@ -162,4 +164,9 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
             }
         });
     }
+
+    public List<Marker> getMarkers() {
+        return markers;
+    }
+
 }
