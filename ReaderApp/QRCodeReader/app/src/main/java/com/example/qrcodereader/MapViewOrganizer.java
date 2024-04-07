@@ -50,6 +50,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 // Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
@@ -64,6 +65,8 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
     GoogleMap map;
     String eventID;
     //private User user;
+    private List<Marker> markers = Collections.synchronizedList(new ArrayList<>());
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -135,16 +138,22 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
      *
      * @param map The GoogleMap instance where markers will be added.
      */
-    private List<Marker> markers = new ArrayList<>();
 
     private void placePins(GoogleMap map){
+        if (map == null) {
+            Log.d("PlacePins", "GoogleMap object is null");
+            return;
+        }
         Log.d("PlacePins", "Method called");
         db.collection("events").document(eventID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("PlacePins", "Document fetched successfully");
                 map.clear(); // clear old markers
-                markers.clear(); // clear old markers list
+                synchronized (markers) {
+                    markers.clear(); // Clear old markers list
+                }
 
                 Map<String, Long> attendeesMap = (Map<String, Long>) documentSnapshot.get("attendees");
                 if (attendeesMap != null) {
@@ -188,7 +197,9 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
         });
     }
 
-    public List<Marker> getMarkers(){
-        return markers;
+    public List<Marker> getMarkers() {
+        synchronized (markers) {
+            return new ArrayList<>(markers); // Return a copy of the markers list
+        }
     }
 }
