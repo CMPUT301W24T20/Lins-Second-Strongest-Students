@@ -171,7 +171,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                 });
     }
 
-    private void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
+    public void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
         if (eventID != null) {
             usersRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
