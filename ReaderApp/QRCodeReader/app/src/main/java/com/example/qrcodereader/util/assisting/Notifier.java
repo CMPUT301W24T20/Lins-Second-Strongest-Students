@@ -158,9 +158,9 @@ public final class Notifier {
         String title = "Event Milestone!";
         String body;
         if (users <= 1) {
-            body = "Your first user has scanned in!";
+            body = "Your first user has signed up!";
         } else {
-            body = users + " users have scanned into your event.";
+            body = users + " users have signed up to your event.";
         }
 
         db.collection("events").document(eventID)
