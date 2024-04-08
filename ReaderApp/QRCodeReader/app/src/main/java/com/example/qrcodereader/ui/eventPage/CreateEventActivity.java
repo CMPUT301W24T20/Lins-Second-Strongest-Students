@@ -51,6 +51,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -390,6 +391,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         eventName = findViewById(R.id.event_name);
         EditText getDate = findViewById(R.id.event_date);
         EditText getTime = findViewById(R.id.event_time);
+        EditText attendeeLimit = findViewById(R.id.attendee_limit);
 
         if (eventName.getText().toString().isEmpty()) {
             Toast.makeText(this, "Please enter an event name", Toast.LENGTH_SHORT).show();
@@ -407,6 +409,13 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             Toast.makeText(this, "Please enter an event time", Toast.LENGTH_SHORT).show();
             return false;
         }
+        try {
+            BigInteger limit = new BigInteger(attendeeLimit.getText().toString());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "The attendee limit is not a valid number", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         return true;
     }
 
@@ -532,7 +541,6 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                                     .addOnFailureListener(e -> Log.e("CreateEventActivity", "Error updating existing QR code reference", e));
                         } else {
                             Log.e("CreateEventActivity", "No QR code found with the selected QR code string");
-                            // Handle case where the QR code does not exist in the collection (if necessary)
                         }
                     })
                     .addOnFailureListener(e -> Log.e("CreateEventActivity", "Error querying for existing QR code document", e));
