@@ -1,8 +1,6 @@
 package com.example.qrcodereader;
 
 import android.content.Context;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -19,7 +17,6 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @RunWith(AndroidJUnit4.class)
 public class EventArrayAdapterTest {
@@ -37,9 +34,6 @@ public class EventArrayAdapterTest {
 
     @Test
     public void testAddEvent() {
-        // Create a temporary ListView
-        ListView listView = new ListView(context);
-
         // Create a new event and add it to the adapter
         String eventID = "1";
         String name = "Test Event";
@@ -49,25 +43,20 @@ public class EventArrayAdapterTest {
         Timestamp time = Timestamp.now();
         String poster = "poster_url";
 
-        Event event = new Event(eventID, name, organizer, location, time, poster);
-        events.add(event);
+        Event event = new Event(eventID, name, location, locationName, time, organizer, "organizerID", null, -1, null, poster);
+        adapter.addEvent(eventID, name, location, locationName, time, organizer, "organizerID", null, -1, null, poster);
 
         // Check that the event was added to the adapter
         assertEquals(1, adapter.getCount());
 
-        // Check that the event details are displayed correctly
-        assertNotNull(adapter.getView(0, null, listView));
-        TextView eventNameTextView = adapter.getView(0, null, listView).findViewById(R.id.event_text);
-        TextView organizerTextView = adapter.getView(0, null, listView).findViewById(R.id.organizer_text);
-        TextView locationNameTextView = adapter.getView(0, null, listView).findViewById(R.id.event_location_text);
-
-        assertNotNull(eventNameTextView);
-        assertNotNull(organizerTextView);
-        assertNotNull(locationNameTextView);
-
-        assertEquals(name, eventNameTextView.getText().toString());
-        assertEquals(organizer, organizerTextView.getText().toString());
-        assertEquals(locationName, locationNameTextView.getText().toString());
-        assertEquals(poster, event.getPoster());
+        // Get the event from the adapter and check its details
+        Event addedEvent = adapter.getItem(0);
+        assertEquals(eventID, addedEvent.getEventID());
+        assertEquals(name, addedEvent.getEventName());
+        assertEquals(organizer, addedEvent.getOrganizer());
+        assertEquals(location, addedEvent.getLocation());
+        assertEquals(locationName, addedEvent.getLocationName());
+        assertEquals(time, addedEvent.getTime());
+        assertEquals(poster, addedEvent.getPoster());
     }
 }
