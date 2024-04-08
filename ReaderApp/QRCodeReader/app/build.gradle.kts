@@ -47,6 +47,7 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging:23.4.1")
     implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
     implementation("androidx.test.espresso:espresso-intents:3.5.1")
+    implementation("androidx.test.espresso:espresso-contrib:3.5.1")
     debugImplementation("androidx.fragment:fragment-testing:1.6.2")
     val camerax_version = "1.3.1"
     implementation("androidx.camera:camera-core:1.3.1")
