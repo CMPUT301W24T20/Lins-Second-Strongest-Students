@@ -6,9 +6,13 @@ import com.example.qrcodereader.Notifier;
 import com.example.qrcodereader.R;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,10 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
+import com.example.qrcodereader.ui.profile.ProfileEditFrag;
+import com.example.qrcodereader.util.ImageUpload;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,15 +35,22 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
  *  Activity for users to view details of event they have created, including its QR code.
  *  @author Son and Duy
  */
-public class EventDetailsOrganizerActivity extends AppCompatActivity {
+public class EventDetailsOrganizerActivity extends AppCompatActivity implements ImageUpload {
 
     private final Notifier notifier = Notifier.getInstance(this);
     private FirebaseFirestore db;
@@ -43,12 +58,15 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
     private CollectionReference qrRef;
     private CollectionReference usersRef;
     private CollectionReference eventsRef;
+    private ImageView eventPoster;
+    private Uri uploaded;
 
     private QRCode qrCode;
     private QRCode qrCodePromotional;
     private
     String eventID;
     String TAG = "";
+
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -64,7 +82,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         TextView eventOrganizerTextView = findViewById(R.id.event_organizer);
         TextView eventLocationTextView = findViewById(R.id.event_location);
         TextView eventTimeTextView = findViewById(R.id.event_time);
-        ImageView eventPoster = findViewById(R.id.event_poster);
+        eventPoster = findViewById(R.id.event_poster);
         db = FirebaseFirestore.getInstance();
 
         String TAG = "MapOrg";
@@ -139,9 +157,13 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         removeButton.setOnClickListener(v -> {
             removeEvent(eventID, eventsRef, usersRef);
         });
+
+        eventPoster.setOnClickListener(v ->{
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(galleryIntent, 1);
+        });
     }
-
-
+    
     private void goToMapActivity() {
         double latitude = getIntent().getDoubleExtra("latitude", 0);
         double longitude = getIntent().getDoubleExtra("longitude", 0);
@@ -151,7 +173,6 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
         intent.putExtra("longitude", longitude);
         startActivity(intent);
     }
-
 
     private void fetchPromotionalQRCode() {
         String eventId = FirestoreManager.getInstance().getEventID();
@@ -196,5 +217,63 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
         }
         finish();
+    }
+
+    // Google, March 4 2024, Youtube, https://www.youtube.com/watch?v=H1ja8gvTtBE
+    /**
+     * This method alters the view of the profile display with the inputs from the edit fragment that the user wants to save
+     * @param requestCode the integer code that represents what type of activity was resulted
+     * @param resultCode the integer code that represents if activity result was error free
+     * @param data the Intent upon returning from activity
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            uploaded = data.getData();
+            if (uploaded != null) {
+                eventPoster.setImageURI(uploaded);
+                String deviceID =FirestoreManager.getInstance().getUserID();
+                isUploaded(deviceID);
+            }
+        }
+    }
+
+    /**
+     * This method uploads user's uploaded event poster image to FirebaseStorage
+     * @param deviceID the String of the ID of the user's device
+     */
+    @Override
+    public void isUploaded(String deviceID) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ContentResolver contentResolver = getContentResolver();
+        try {
+            InputStream is = contentResolver.openInputStream(uploaded);
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, len);
+            }
+            byte[] imageData = baos.toByteArray();
+            String imageName = eventID + "_" + deviceID + ".png";
+            StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("EventPoster/" + imageName);
+            UploadTask uploadTask = imageRef.putBytes(imageData);
+
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                // Get the download URL directly from the task snapshot
+                Task<Uri> downloadUrlTask = taskSnapshot.getStorage().getDownloadUrl();
+                downloadUrlTask.addOnSuccessListener(uri -> {
+                    docRefEvent.update("poster", uri.toString());
+                }).addOnFailureListener(e -> {
+                    Log.e("CreateEventActivity", "Error assigning poster to event" + eventID, e);
+                });
+            }).addOnFailureListener(e -> {
+                Log.e("CreateEventActivity", "Error uploading poster for event" + eventID, e);
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

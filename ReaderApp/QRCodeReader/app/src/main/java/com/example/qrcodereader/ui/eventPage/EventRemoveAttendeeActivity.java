@@ -76,6 +76,7 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
         TextView eventTimeTextView = findViewById(R.id.time);
         ImageView eventPoster = findViewById(R.id.event_poster);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
+        ImageView eventPoster = findViewById(R.id.event_poster);
         TextView removeButton = findViewById(R.id.sign_up_button);
         removeButton.setText("Remove");
 
@@ -97,6 +98,7 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
                 String qrCodeString = documentSnapshot.getString("qrCode");
                 String EventPoster = documentSnapshot.getString("poster");
 
+                Picasso.get().load(EventPoster).resize(410, 240).centerInside().into(eventPoster);
                 QRCode qrCode = new QRCode(qrCodeString);
                 int attendeeLimit = documentSnapshot.contains("attendeeLimit") ? (int)(long)documentSnapshot.getLong("attendeeLimit") : -1;
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");

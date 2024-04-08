@@ -19,7 +19,11 @@ import com.squareup.picasso.Picasso;
 import java.util.Objects;
 
 public class ImageDetail extends DialogFragment {
-
+    /**
+     * This method creates the Dialog fragment of a selected image's full view and details corresponding to it
+     * @param savedInstanceState the Bundle that is previous saved state
+     * @return Return a new Dialog instance to be displayed by the fragment.
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -50,7 +54,16 @@ public class ImageDetail extends DialogFragment {
         return builder.create();
     }
 
+    /**
+     * This method retrieves an image's name based on their access token
+     * @param URL the String that represents image's access token in FirebaseStorage
+     * @return Return String of image name
+     */
     // how to get image name from token
+    /*
+    OpenAI, ChatGPT, 04/1/24
+    how to get image name from token
+    */
     private String getName (String URL){
         String[] parts = URL.split("/");
         String fullImageName = parts[parts.length - 1];

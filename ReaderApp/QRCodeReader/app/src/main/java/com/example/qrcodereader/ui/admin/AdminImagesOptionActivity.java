@@ -2,7 +2,6 @@ package com.example.qrcodereader.ui.admin;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.R;
 
 public class AdminImagesOptionActivity extends AppCompatActivity {
+
+    /**
+     * This method creates the view of admin functionality options
+     * @param savedInstanceState the Bundle that is previous saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,11 @@ public class AdminImagesOptionActivity extends AppCompatActivity {
         returnButton.setOnClickListener(v -> finish());
     }
 
+    /**
+     * This method preloads the admin image list fragment to decrease buffering time at the time of item list display
+     * @param title the String that is the title of the image list fragment
+     * @param type the String that represents what type of images will be in the image list fragment
+     */
     private void preload(String title, String type){
         AdminImageView listfrag = new AdminImageView(title, type);
         listfrag.show(getSupportFragmentManager(), "View Images");

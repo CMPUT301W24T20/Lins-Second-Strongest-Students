@@ -10,15 +10,10 @@ import android.content.DialogInterface;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.os.Environment;
 import android.provider.Settings;
 import android.text.InputFilter;
 import android.util.Log;
@@ -31,7 +26,6 @@ import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.qrcodereader.util.ImageUpload;
@@ -45,27 +39,21 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import com.squareup.picasso.Transformation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
-import android.widget.Toast;
 
 /**
  * Fragment for displaying the profile of user
@@ -103,6 +91,11 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
         this.onSaveClickListener = listener;
     }
 
+    /**
+     * This method creates the Dialog fragment that allows user to edit profile details
+     * @param savedInstanceState the Bundle that is previous saved state
+     * @return Return a new Dialog instance to be displayed by the fragment.
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -195,7 +188,6 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                         docRefUser.update("phone",  ETphone.getText().toString());
                         docRefUser.update("phoneRegion",Sregion.getSelectedItem().toString());
 
-                        Log.d(TAG, "sending image " + image);
                         if (onSaveClickListener != null) {
                             onSaveClickListener.onSaveClicked(
                                     ETname.getText().toString(),
@@ -279,7 +271,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                     });
 
                 } else if (s.length() == 0  && uploaded == null && index != 86){
-                    SetDefaultProfile.generateNoName(2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
+                    SetDefaultProfile.generateNoName(new SetDefaultProfile.ProfilePicCallback() {
                         @Override
                         public void onImageURLReceived(String imageURL) {
                             image = imageURL;
@@ -293,7 +285,9 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
     }
 
     /**
-     * meow
+     * This method uploads user's uploaded profile picture image to FirebaseStorage
+     * @param deviceID the String of the ID of the user's device
+     *
      */
     @Override
     public void isUploaded(String deviceID){
@@ -316,6 +310,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
 
             uploadTask.addOnSuccessListener(taskSnapshot -> {
                 imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    image = uri.toString();
                     docRefUser.update("ProfilePic",  image);
                 });
                 Log.d(TAG, "Image uploaded successfully: " + imageName);
@@ -353,6 +348,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             this.uploaded = upload;
         } else{ // removed current profile picture, URL is the default profile picture that is replacing
             Picasso.get().load(URL).resize(127, 127).centerInside().into(Picture);
+            image = URL;
             this.uploaded = null;
         }
     }

@@ -36,6 +36,13 @@ import com.squareup.picasso.Picasso;
 import java.util.Map;
 
 public class ProfilePictureFrag extends BottomSheetDialogFragment {
+    /**
+     * This method initializes fragment view with choices to either remove current profile picture or upload profile picture
+     * @param inflater the LayoutInflater that can be used to inflate any views in the fragment
+     * @param container the ViewGroup that is the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState the Bundle that is previous saved state
+     * @return The root View of the inflated layout or null
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,9 +76,10 @@ public class ProfilePictureFrag extends BottomSheetDialogFragment {
                     Log.e(TAG, "Error deleting image " + imageName + ": " + exception.getMessage());
                 });
 
-                SetDefaultProfile.generateNoName(2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
+                SetDefaultProfile.generateNoName(new SetDefaultProfile.ProfilePicCallback() {
                     @Override
                     public void onImageURLReceived(String imageURL) {
+                        docRefUser.update("ProfilePic", imageURL);
                         ProfileEditFrag editProfile = (ProfileEditFrag) requireActivity().getSupportFragmentManager().findFragmentByTag("Edit Profile");
                         editProfile.setPicture(null, imageURL);
                     }
@@ -83,7 +91,10 @@ public class ProfilePictureFrag extends BottomSheetDialogFragment {
 
     // Google, March 4 2024, Youtube, https://www.youtube.com/watch?v=H1ja8gvTtBE
     /**
-     * Handle the result of the gallery intent
+     * This method alters the view of the profile display with the inputs from the edit fragment that the user wants to save
+     * @param requestCode the integer code that represents what type of activity was resulted
+     * @param resultCode the integer code that represents if activity result was error free
+     * @param data the Intent upon returning from activity
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
