@@ -32,10 +32,19 @@ import org.junit.Test;
 
 import java.util.Map;
 
+/**
+ * Test class for DisplayQRCode activity.
+ */
 public class DisplayQRTest {
+    /**
+     * Grants the necessary permission for the tests.
+     */
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.INTERNET);
 
+    /**
+     * Sets up the Firestore collections and documents for testing.
+     */
     @Before
     public void setUp() {
         // Set the Firestore collections to test versions
@@ -46,6 +55,9 @@ public class DisplayQRTest {
     }
 
     // Test the display of the QR code
+    /**
+     * Tests the display of the check-in QR code in the DisplayQRCode activity.
+     */
     @Test
     public void testCheckInQRCode() {
         // Prepare the intent with extras
@@ -68,6 +80,9 @@ public class DisplayQRTest {
     }
 
     // Test the display of the promotional QR code
+    /**
+     * Tests the display of the promotional QR code in the DisplayQRCode activity.
+     */
     @Test
     public void testPromotionalQRCode() {
         // Prepare the intent with extras
@@ -97,6 +112,9 @@ public class DisplayQRTest {
     }
 
     // Test switching between QR codes
+    /**
+     * Tests switching between the check-in and promotional QR codes in the DisplayQRCode activity.
+     */
     @Test
     public void testSwitchQRCode() {
         // Prepare the intent with extras

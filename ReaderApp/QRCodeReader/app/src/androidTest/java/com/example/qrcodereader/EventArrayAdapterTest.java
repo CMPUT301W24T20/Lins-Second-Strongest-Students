@@ -18,6 +18,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test class for EventArrayAdapter.
+ */
 @RunWith(AndroidJUnit4.class)
 public class EventArrayAdapterTest {
 
@@ -25,6 +28,9 @@ public class EventArrayAdapterTest {
     private ArrayList<Event> events;
     private Context context;
 
+    /**
+     * Sets up the context, event list, and adapter for testing.
+     */
     @Before
     public void setUp() {
         context = ApplicationProvider.getApplicationContext();
@@ -32,6 +38,9 @@ public class EventArrayAdapterTest {
         adapter = new EventArrayAdapter(context, events);
     }
 
+    /**
+     * Tests adding an event to the adapter and verifies that the event details are correctly stored.
+     */
     @Test
     public void testAddEvent() {
         // Create a new event and add it to the adapter

@@ -26,8 +26,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
 
-
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -49,20 +47,26 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Test class for admin button visibility in the ProfileActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class AdminButtonTest {
 
+    /**
+     * Tests the visibility of the admin button for an admin user.
+     *
+     * @throws InterruptedException if the thread is interrupted while waiting.
+     */
     @Test
-    public void AdminVisibilityTest() {
+    public void AdminVisibilityTest() throws InterruptedException {
         FirestoreManager.getInstance().setEventCollection("eventsTest");
         FirestoreManager.getInstance().setUserCollection("usersTest");
         FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
         FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
 
         try (ActivityScenario<ProfileActivity> scenario = ActivityScenario.launch(ProfileActivity.class)) {
-
             Thread.sleep(5000);
-
 
             // Check if LinearLayout is present
             onView(withId(R.id.nav_bar))
@@ -71,13 +75,16 @@ public class AdminButtonTest {
             // Check if ListView is present
             onView(withId(R.id.admin_button))
                     .check(matches(isDisplayed()));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Tests the invisibility of the admin button for a non-admin user.
+     *
+     * @throws InterruptedException if the thread is interrupted while waiting.
+     */
     @Test
-    public void AdminInvisibilityTest() {
+    public void AdminInvisibilityTest() throws InterruptedException {
         FirestoreManager.getInstance().setEventCollection("eventsTest");
         FirestoreManager.getInstance().setUserCollection("usersTest");
         FirestoreManager.getInstance().setUserDocRef("6a38dbd30b66b3cd");
@@ -105,9 +112,7 @@ public class AdminButtonTest {
                 });
 
         try (ActivityScenario<ProfileActivity> scenario = ActivityScenario.launch(ProfileActivity.class)) {
-
             Thread.sleep(5000);
-
 
             // Check if LinearLayout is present
             onView(withId(R.id.nav_bar))
@@ -116,8 +121,6 @@ public class AdminButtonTest {
             // Check if ListView is present
             onView(withId(R.id.admin_button))
                     .check(matches(not(isDisplayed())));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
 
         try (ActivityScenario<UserDetailsAdminActivity> scenario = ActivityScenario.launch(UserDetailsAdminActivity.class)) {
@@ -143,8 +146,6 @@ public class AdminButtonTest {
                     }
                 }
             });
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 }

@@ -43,11 +43,19 @@ import com.google.firebase.firestore.FieldValue;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Test class for AttendeeEventActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class AttendeeActivityTest {
-
+    /**
+     * Grants location permissions needed for the tests.
+     */
     @Rule
     public GrantPermissionRule grantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION);
+    /**
+     * Sets up the Firestore collections and documents for testing.
+     */
     @Before
     public void setUp() {
         // Set the Firestore collections to test versions
@@ -57,7 +65,11 @@ public class AttendeeActivityTest {
         FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
 
     }
-
+    /**
+     * Tests the presence of the navigation bar and the event list in AttendeeEventActivity.
+     *
+     * @throws InterruptedException if the thread is interrupted while waiting.
+     */
     @Test
     public void testListViewAndLinearLayoutPresence() throws InterruptedException {
         // Start the activity
@@ -78,7 +90,11 @@ public class AttendeeActivityTest {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Tests if clicking on a TextView navigates to the BrowseEventActivity.
+     *
+     * @throws InterruptedException if the thread is interrupted while waiting.
+     */
     @Test
     public void testTextViewClickNavigatesToAnotherActivity() throws InterruptedException {
         // Initialize Intents and start the activity

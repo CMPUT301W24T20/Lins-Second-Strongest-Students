@@ -34,11 +34,20 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Test class for removing a user as an admin in UserDetailsAdminActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class RemoveUserAdminTest {
+    /**
+     * Grants the necessary permission for the tests and sets up the Firestore collections.
+     */
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.INTERNET);
 
+    /**
+     * Grants the necessary permission for the tests and sets up the Firestore collections.
+     */
     @Before
     public void setUp() {
         // Set the Firestore collections to test versions
@@ -80,6 +89,10 @@ public class RemoveUserAdminTest {
                 });
     }
 
+    /**
+     * Tests the removal of a user by an admin and verifies that the user is deleted from the database
+     * and from all events' attendees lists.
+     */
     @Test
     public void RemoveAdminUserTest() {
 

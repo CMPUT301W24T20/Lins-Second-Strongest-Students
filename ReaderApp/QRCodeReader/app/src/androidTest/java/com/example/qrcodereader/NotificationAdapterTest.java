@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test class for NotificationAdapter.
+ */
 @RunWith(AndroidJUnit4.class)
 public class NotificationAdapterTest {
 
@@ -23,6 +26,9 @@ public class NotificationAdapterTest {
     private ArrayList<NotificationDetail> notifications;
     private Context context;
 
+    /**
+     * Test class for NotificationAdapter.
+     */
     @Before
     public void setUp() {
         context = ApplicationProvider.getApplicationContext();
@@ -30,6 +36,9 @@ public class NotificationAdapterTest {
         adapter = new NotificationAdapter(context, notifications);
     }
 
+    /**
+     * Tests adding a notification to the adapter and verifies that the notification details are correctly stored.
+     */
     @Test
     public void testAddNotification() {
         // Create a new notification and add it to the adapter

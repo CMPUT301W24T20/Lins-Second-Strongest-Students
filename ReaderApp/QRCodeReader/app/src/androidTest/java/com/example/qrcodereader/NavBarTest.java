@@ -25,9 +25,15 @@ import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.profile.ProfileActivity;
 
+/**
+ * Test class for navigation bar functionality in ProfileActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class NavBarTest {
 
+    /**
+     * Sets up the Firestore collections and launches the ProfileActivity for testing.
+     */
     @Before
     public void setUp(){
         FirestoreManager.getInstance().setEventCollection("eventsTest");
@@ -37,60 +43,90 @@ public class NavBarTest {
         ActivityScenario.launch(ProfileActivity.class);
     }
 
+    /**
+     * Tests if the home button is displayed.
+     */
     @Test
     public void testHomeButtonIsDisplayed(){
         Espresso.onView(ViewMatchers.withId(R.id.home_button))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
+    /**
+     * Tests if the home button is clickable.
+     */
     @Test
     public void testHomeButtonIsClickable(){
         Espresso.onView(ViewMatchers.withId(R.id.home_button))
                 .check(ViewAssertions.matches(ViewMatchers.isClickable()));
     }
 
+    /**
+     * Tests if the event button is displayed.
+     */
     @Test
     public void testEventButtonIsDisplayed(){
         Espresso.onView(ViewMatchers.withId(R.id.event_button))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
+    /**
+     * Tests if the event button is clickable.
+     */
     @Test
     public void testEventButtonIsClickable(){
         Espresso.onView(ViewMatchers.withId(R.id.event_button))
                 .check(ViewAssertions.matches(ViewMatchers.isClickable()));
     }
 
+    /**
+     * Tests if the scanner button is displayed.
+     */
     @Test
     public void testScannerButtonIsDisplayed(){
         Espresso.onView(ViewMatchers.withId(R.id.scanner_button))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
+    /**
+     * Tests if the scanner button is clickable.
+     */
     @Test
     public void testScannerButtonIsClickable(){
         Espresso.onView(ViewMatchers.withId(R.id.scanner_button))
                 .check(ViewAssertions.matches(ViewMatchers.isClickable()));
     }
 
+    /**
+     * Tests if the notification button is displayed.
+     */
     @Test
     public void testNotificationButtonIsDisplayed(){
         Espresso.onView(ViewMatchers.withId(R.id.notification_button))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
+    /**
+     * Tests if the notification button is clickable.
+     */
     @Test
     public void testNotificationButtonIsClickable(){
         Espresso.onView(ViewMatchers.withId(R.id.notification_button))
                 .check(ViewAssertions.matches(ViewMatchers.isClickable()));
     }
 
+    /**
+     * Tests if the notification button is clickable.
+     */
     @Test
     public void testProfileButtonIsDisplayed(){
         Espresso.onView(ViewMatchers.withId(R.id.bottom_profile_icon))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
+    /**
+     * Tests if the profile button is clickable.
+     */
     @Test
     public void testProfileButtonIsClickable(){
         Espresso.onView(ViewMatchers.withId(R.id.bottom_profile_icon))

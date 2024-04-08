@@ -16,13 +16,20 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
-//THIS WORKS IF THIS FAILS U BROKE SOMETHING
+/**
+ * Test class for HomeFragment.
+ */
 @RunWith(AndroidJUnit4.class)
 public class HomeFragmentTest {
+    /**
+     * Grants location permissions needed for the tests.
+     */
     @Rule
     public GrantPermissionRule grantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION);
     @Before
+    /**
+     * Grants location permissions needed for the tests.
+     */
     public void setUp() {
         FirestoreManager.getInstance().setEventCollection("eventsTest");
         FirestoreManager.getInstance().setUserCollection("usersTest");
@@ -32,36 +39,53 @@ public class HomeFragmentTest {
         scenario.moveToState(Lifecycle.State.RESUMED);
     }
 
+    /**
+     * Grants location permissions needed for the tests.
+     */
     @Test
     public void testProfileButtonIsDisplayed() {
         Espresso.onView(ViewMatchers.withId(R.id.profile_button))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
+    /**
+     * Tests if the profile button is clickable.
+     */
     @Test
     public void testProfileButtonIsClickable(){
         Espresso.onView(ViewMatchers.withId(R.id.profile_button))
                 .check(ViewAssertions.matches(ViewMatchers.isClickable()));
     }
 
-
+    /**
+     * Tests if the 'My Event' button is displayed.
+     */
     @Test
     public void testMyEventButtonIsDisplayed() {
         Espresso.onView(ViewMatchers.withId(R.id.my_event_button))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
+    /**
+     * Tests if the 'My Event' button is clickable.
+     */
     @Test
     public void testMyEventButtonIsClickable(){
         Espresso.onView(ViewMatchers.withId(R.id.my_event_button))
                 .check(ViewAssertions.matches(ViewMatchers.isClickable()));
     }
 
+    /**
+     * Tests if the admin button is displayed.
+     */
     @Test
     public void testAdminButtonIsDisplayed() {
         Espresso.onView(ViewMatchers.withId(R.id.admin_button))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
+    /**
+     * Tests if the admin button is clickable.
+     */
     @Test
     public void testAdminButtonIsClickable(){
         Espresso.onView(ViewMatchers.withId(R.id.admin_button))

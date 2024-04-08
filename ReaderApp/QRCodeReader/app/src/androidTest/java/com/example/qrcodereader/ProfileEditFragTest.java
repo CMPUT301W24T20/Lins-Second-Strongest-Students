@@ -16,10 +16,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
+/**
+ * Test class for the ProfileEditFrag fragment in ProfileActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class ProfileEditFragTest {
 
+    /**
+     * Sets up the Firestore collections and launches the ProfileActivity for testing.
+     */
     @Before
     public void setUp() {
         FirestoreManager.getInstance().setEventCollection("eventsTest");
@@ -28,6 +33,9 @@ public class ProfileEditFragTest {
         FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
         ActivityScenario.launch(ProfileActivity.class);
     }
+    /**
+     * Tests if the UI elements are displayed in the ProfileEditFrag fragment.
+     */
     @Test
     public void testUIElementsAreDisplayed() {
         // Click the edit button to launch the ProfileEditFrag
@@ -47,6 +55,9 @@ public class ProfileEditFragTest {
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
+    /**
+     * Tests if the profile picture button is clickable in the ProfileEditFrag fragment.
+     */
     @Test
     public void testButtonsAreClickable() {
         // Click the edit button to launch the ProfileEditFrag

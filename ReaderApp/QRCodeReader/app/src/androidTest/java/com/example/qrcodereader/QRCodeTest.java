@@ -9,9 +9,15 @@ import static org.junit.Assert.assertNotNull;
 
 import com.example.qrcodereader.entity.QRCode;
 
+/**
+ * Test class for QRCode entity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class QRCodeTest {
 
+    /**
+     * Tests the creation of a QRCode object.
+     */
     @Test
     public void testQRCodeCreation() {
         // Create a new QRCode object

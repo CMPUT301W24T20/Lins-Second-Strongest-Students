@@ -16,11 +16,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
-//either this test is broken or the fragment is broken idk yet i need to ask tiana brokey
+/**
+ * Test class for the ProfilePictureFrag fragment in ProfileActivity.
+ * Note: This test is currently uncertain, it's unknown if the test or the fragment itself is broken.
+ */
 @RunWith(AndroidJUnit4.class)
 public class ProfilePictureFragTest {
 
+    /**
+     * Sets up the Firestore collections and launches the ProfileActivity for testing.
+     */
     @Before
     public void setUp() {
         FirestoreManager.getInstance().setEventCollection("eventsTest");
@@ -30,6 +35,9 @@ public class ProfilePictureFragTest {
         ActivityScenario.launch(ProfileActivity.class);
     }
 
+    /**
+     * Tests if the UI elements are displayed in the ProfilePictureFrag fragment.
+     */
     @Test
     public void testUIElementsAreDisplayed() {
         // Click the edit button to launch the ProfileEditFrag
@@ -46,6 +54,9 @@ public class ProfilePictureFragTest {
         Espresso.onView(ViewMatchers.withId(R.id.RemoveProfile))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
+    /**
+     * Tests if the buttons are clickable in the ProfilePictureFrag fragment.
+     */
     @Test
     public void testButtonsAreClickable() {
         // Click the edit button to launch the ProfileEditFrag

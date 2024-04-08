@@ -25,13 +25,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Map;
-//brokey
+
+/**
+ * Test class for signing up and removing an attendee from an event.
+ */
 @RunWith(AndroidJUnit4.class)
 public class SignUpTest {
 
+    /**
+     * Grants the necessary permission for the tests and sets up the Firestore collections.
+     */
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.INTERNET);
 
+    /**
+     * Sets up the Firestore collections for testing.
+     */
     @Before
     public void setUp() {
         // Set the Firestore collections to test versions
@@ -41,6 +50,9 @@ public class SignUpTest {
         FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
     }
 
+    /**
+     * Tests signing up for an event and then removing the attendee from the event.
+     */
     @Test
     public void SignUpAndRemoveTest() {
 

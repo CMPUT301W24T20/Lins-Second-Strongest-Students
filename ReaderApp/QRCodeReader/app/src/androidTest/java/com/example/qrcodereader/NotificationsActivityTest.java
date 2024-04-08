@@ -17,13 +17,22 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Test class for NotificationsActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class NotificationsActivityTest {
 
+    /**
+     * Launches the NotificationsActivity before each test.
+     */
     @Rule
     public ActivityScenarioRule<NotificationsActivity> activityScenarioRule =
             new ActivityScenarioRule<>(NotificationsActivity.class);
 
+    /**
+     * Tests the functionality of deleting a single notification.
+     */
     @Test
     public void testDeleteOneNotification() {
         try (ActivityScenario<NotificationsActivity> scenario = ActivityScenario.launch(NotificationsActivity.class)) {
@@ -35,6 +44,9 @@ public class NotificationsActivityTest {
         }
     }
 
+    /**
+     * Tests the functionality of clearing all notifications.
+     */
     @Test
     public void testClearAllNotifications() {
         try (ActivityScenario<NotificationsActivity> scenario = ActivityScenario.launch(NotificationsActivity.class)) {
@@ -46,6 +58,9 @@ public class NotificationsActivityTest {
         }
     }
 
+    /**
+     * Tests the functionality of the return button.
+     */
     @Test
     public void testReturnButton() {
         try (ActivityScenario<NotificationsActivity> scenario = ActivityScenario.launch(NotificationsActivity.class)) {

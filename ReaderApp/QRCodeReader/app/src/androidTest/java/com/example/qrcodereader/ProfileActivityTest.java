@@ -15,10 +15,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
+/**
+ * Test class for ProfileActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class ProfileActivityTest {
 
+    /**
+     * Sets up the Firestore collections and launches the ProfileActivity for testing.
+     */
     @Before
     public void setUp() {
         FirestoreManager.getInstance().setEventCollection("eventsTest");
@@ -29,6 +34,9 @@ public class ProfileActivityTest {
     }
 
 
+    /**
+     * Tests if the UI elements are displayed in the ProfileActivity.
+     */
     @Test
     public void testUIElementsAreDisplayed() {
         Espresso.onView(ViewMatchers.withId(R.id.email))
@@ -41,6 +49,9 @@ public class ProfileActivityTest {
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
+    /**
+     * Tests if the UI elements are displayed in the ProfileActivity.
+     */
     @Test
     public void testButtonsAreClickable() {
         Espresso.onView(ViewMatchers.withId(R.id.EditButton))

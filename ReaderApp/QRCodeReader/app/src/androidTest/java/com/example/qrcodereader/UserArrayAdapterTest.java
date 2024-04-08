@@ -17,6 +17,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test class for UserArrayAdapter.
+ */
 @RunWith(AndroidJUnit4.class)
 public class UserArrayAdapterTest {
 
@@ -24,6 +27,9 @@ public class UserArrayAdapterTest {
     private ArrayList<User> users;
     private Context context;
 
+    /**
+     * Sets up the context, user list, and adapter for testing.
+     */
     @Before
     public void setUp() {
         context = ApplicationProvider.getApplicationContext();
@@ -31,6 +37,9 @@ public class UserArrayAdapterTest {
         adapter = new UserArrayAdapter(context, users);
     }
 
+    /**
+     * Tests adding a user to the adapter and verifies that the user details are correctly stored.
+     */
     @Test
     public void testAddUser() {
         // Create a new user and add it to the adapter

@@ -35,11 +35,19 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.security.cert.PKIXParameters;
-
+/**
+ * Test class for CreateEventActivity.
+ */
 public class CreateEventTest {
+    /**
+     * Grants the necessary permission for the tests.
+     */
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(Manifest.permission.INTERNET);
 
+    /**
+     * Sets up the Firestore collections and documents for testing.
+     */
     @Before
     public void setUp() {
         // Set the Firestore collections to test versions
@@ -49,6 +57,9 @@ public class CreateEventTest {
         FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
     }
 
+    /**
+     * Tests if the CreateEventActivity is launched successfully with all required fields present.
+     */
     @Test
     public void testCreateEventLaunch() {
         // Prepare the intent with extras
@@ -65,6 +76,9 @@ public class CreateEventTest {
         }
     }
 
+    /**
+     * Tests creating an event with a missing location field.
+     */
     @Test
     public void createInvalidEventTestWithMissingLocation() {
         // Launch the Activity
@@ -94,6 +108,9 @@ public class CreateEventTest {
         }
     }
 
+    /**
+     * Tests creating an event with a missing name field.
+     */
     @Test
     public void createInvalidEventTestWithMissingName() {
         // Launch the Activity
@@ -123,6 +140,9 @@ public class CreateEventTest {
         }
     }
 
+    /**
+     * Tests creating an event with a missing date field.
+     */
     @Test
     public void createInvalidEventTestWithMissingDate() {
         // Launch the Activity
@@ -152,6 +172,9 @@ public class CreateEventTest {
         }
     }
 
+    /**
+     * Tests creating an event with a missing time field.
+     */
     @Test
     public void createInvalidEventTestWithMissingTime() {
         // Launch the Activity

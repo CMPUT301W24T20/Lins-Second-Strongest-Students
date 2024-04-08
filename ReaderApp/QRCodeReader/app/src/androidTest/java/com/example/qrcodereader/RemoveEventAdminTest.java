@@ -31,11 +31,20 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Test class for removing an event as an admin in EventDetailsAdminActivity.
+ */
 @RunWith(AndroidJUnit4.class)
 public class RemoveEventAdminTest {
+    /**
+     * Grants the necessary permission for the tests and sets up the Firestore collections.
+     */
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.INTERNET);
 
+    /**
+     * Sets up the Firestore collections and adds a test event and user for testing.
+     */
     @Before
     public void setUp() {
         // Set the Firestore collections to test versions
@@ -79,6 +88,10 @@ public class RemoveEventAdminTest {
                     fail("Failed to add event to user");
                 });
     }
+    /**
+     * Tests the removal of an event by an admin and verifies that the event is deleted from the database
+     * and from all users' eventsAttended lists.
+     */
 
     @Test
     public void RemoveAdminEventTest() {
