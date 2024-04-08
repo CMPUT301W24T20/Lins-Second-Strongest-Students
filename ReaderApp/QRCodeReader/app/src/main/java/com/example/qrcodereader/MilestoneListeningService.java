@@ -77,7 +77,7 @@ public class MilestoneListeningService extends Service {
                                         }
 
                                         // Check if the number of attendees has reached the next milestone
-                                        if ((numUsers / milestone > lastNotifiedMilestone) || (lastNotifiedMilestone == 0 && numUsers == 1)) {
+                                        if ((numUsers % milestone == 0 && numUsers > 0) || (lastNotifiedMilestone == 0 && numUsers == 1)) {
                                             // Call the milestoneNotify method
                                             notifier.milestoneNotification(eventId, numUsers);
                                             Log.d("Event Notified:", "ID:" + eventId);
