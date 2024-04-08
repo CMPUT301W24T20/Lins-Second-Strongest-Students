@@ -74,7 +74,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         timeName.setText(event.getTime().toDate().toString());
 
         String imagePoster = event.getPoster();
-        //Picasso.get().load(imagePoster).centerInside().fit().into(PosterPicture);
 
         if (!Objects.equals(imagePoster, "") && !imagePoster.isEmpty()) {
             Picasso.get().load(imagePoster).centerInside().fit().into(PosterPicture);
