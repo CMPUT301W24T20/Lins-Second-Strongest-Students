@@ -76,7 +76,6 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
         TextView eventTimeTextView = findViewById(R.id.time);
         ImageView eventPoster = findViewById(R.id.event_poster);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
-        ImageView eventPoster = findViewById(R.id.event_poster);
         TextView removeButton = findViewById(R.id.sign_up_button);
         removeButton.setText("Remove");
 
