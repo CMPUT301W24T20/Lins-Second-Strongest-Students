@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.old.MainActivity;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
@@ -101,8 +102,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("Notify", messageBody);
 
         broadcast(messageBody);
-        store(title, messageBody, eventID);
-
     }
 
     /**
@@ -112,12 +111,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody body of message
      * @param eventID ID of event sending message
      */
-    private void store(String title, String messageBody, String eventID) {
+    public static void store(String userID, String title, String messageBody, String eventID) {
         //Microsoft Copilot, 2024, add map to firestore doc
         // Get Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        String userID = AttendeeEventActivity.userID;
 
         Map<String, Object> data = new HashMap<>();
         data.put("event", eventID);

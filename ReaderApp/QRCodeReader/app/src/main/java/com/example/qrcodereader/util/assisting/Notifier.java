@@ -85,7 +85,7 @@ public final class Notifier {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-//                            MyFirebaseMessagingService.store();
+                            MyFirebaseMessagingService.store(userID, title, body, event);
                             String token = documentSnapshot.getString("token");
                             Notifier.this.notify(token, title, body, event);
                             Log.d("Sent To:", "Token=" + token);
