@@ -242,8 +242,8 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                     ETemail.setTextColor(errorColour);
                     ETemail.setHintTextColor(errorColour);
                 } else {
-                    ETemail.setTextColor(Color.GRAY);
-                    ETemail.setHintTextColor(Color.GRAY);
+                    ETemail.setTextColor(Color.BLACK);
+                    ETemail.setHintTextColor(Color.BLACK);
                 }
             }
         });
