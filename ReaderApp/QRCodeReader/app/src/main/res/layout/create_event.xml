@@ -215,7 +215,7 @@
     <ImageView
         android:id="@+id/PosterUpload"
         android:layout_width="300sp"
-        android:layout_height="130sp"
+        android:layout_height="129sp"
         android:scaleType="centerCrop"
         android:layout_gravity="center"
         android:src="@drawable/uploadposter"

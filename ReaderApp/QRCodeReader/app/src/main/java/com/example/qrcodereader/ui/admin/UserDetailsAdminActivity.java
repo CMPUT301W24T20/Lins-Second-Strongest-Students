@@ -1,5 +1,7 @@
 package com.example.qrcodereader.ui.admin;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
@@ -24,6 +26,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.Map;
@@ -92,9 +96,18 @@ public class UserDetailsAdminActivity extends AppCompatActivity {
 
         TextView removeButton = findViewById(R.id.remove_button);
         removeButton.setOnClickListener(v -> {
+            String imageName = userID + "PROFILEPICTURE.png";
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("UploadedProfilePics");
+            StorageReference imageRef = storageRef.child(imageName);
+            // Delete the image from Firebase Storage
+            imageRef.delete().addOnSuccessListener(aVoid -> {
+                // Image deleted successfully
+                Log.d(TAG, "Image deleted successfully: " + imageName);
+            }).addOnFailureListener(exception -> {
+                // Handle any errors
+                Log.e(TAG, "Error deleting image " + imageName + " or user does not have uploaded profile picture: " + exception.getMessage());
+            });
             removeUser(userID, usersRef, eventsRef);
-//            Intent intent = new Intent(UserDetailsAdminActivity.this, LaunchSetUp.class); // Replace NewActivity.class with the desired activity class
-//            startActivity(intent);
             Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

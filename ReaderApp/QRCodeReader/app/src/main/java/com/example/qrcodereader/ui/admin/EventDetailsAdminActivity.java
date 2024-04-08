@@ -1,8 +1,12 @@
 package com.example.qrcodereader.ui.admin;
 
+import static android.content.ContentValues.TAG;
+
 import com.example.qrcodereader.R;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -31,6 +35,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -55,6 +61,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
     private Event selectedEvent;
     private final String TAG = "EventDetailsAdminActivity";
     String eventID;
+    String organizerID;
     /**
      * This method is called when the activity is starting.
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
@@ -89,7 +96,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
                 String locationName = documentSnapshot.getString("locationName");
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String organizer = documentSnapshot.getString("organizer");
-                String organizerID = documentSnapshot.getString("organizerID");
+                organizerID = documentSnapshot.getString("organizerID");
                 String poster = documentSnapshot.getString("poster");
                 String qrCodeString = documentSnapshot.getString("qrCode");
                 QRCode qrCode = new QRCode(qrCodeString);
@@ -134,6 +141,19 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
     }
 
     public void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
+        selectedEvent.getOrganizerID();
+        String imageName = eventID +"_" + selectedEvent.getOrganizerID() + ".png";
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("EventPoster");
+        StorageReference imageRef = storageRef.child(imageName);
+        // Delete the image from Firebase Storage
+        imageRef.delete().addOnSuccessListener(aVoid -> {
+            // Image deleted successfully
+            Log.d(TAG, "Image deleted successfully: " + imageName);
+        }).addOnFailureListener(exception -> {
+            // Handle any errors
+            Log.e(TAG, "Error deleting image " + imageName + "or event has no poster: " + exception.getMessage());
+        });
+
         if (eventID != null) {
             usersRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -157,6 +177,10 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
                     .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
         }
+
+        Intent intent = new Intent();
+        intent.putExtra("removedEventID", eventID);
+        setResult(RESULT_OK, intent);
         finish();
     }
 }
