@@ -241,8 +241,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         });
 
         ImageView cancel_button = findViewById(R.id.return_button);
-        cancel_button.setOnClickListener(v -> {
-            finish();
+        cancel_button.setOnClickListener(v -> {finish();
         });
     }
 

@@ -82,13 +82,7 @@ public class MapViewOrganizer extends AppCompatActivity implements OnMapReadyCal
         mapFragment.getMapAsync(this);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         Button buttonBackToMain = findViewById(R.id.buttonBackToMain);
-        buttonBackToMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MapViewOrganizer.this, OrganizerEventActivity.class);
-                startActivity(intent);
-            }
-        });
+        buttonBackToMain.setOnClickListener(v -> finish());
     }
 
     /**
