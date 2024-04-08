@@ -245,6 +245,9 @@ public class AttendeeEventActivity extends NavBar {
         dialog.show();
     }
 
+    /**
+     * Fetch the list of events attended by the user from Firestore
+     */
     public void fetchLocal(Context context) {
         // Execute in background
         executorService.execute(() -> {
@@ -281,6 +284,9 @@ public class AttendeeEventActivity extends NavBar {
         });
     }
 
+    /**
+     * Fetch the list of events attended by the user from Firestore
+     */
     public void fetchAttendeeEvents() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -384,6 +390,10 @@ public class AttendeeEventActivity extends NavBar {
         });
     }
 
+    /**
+     * Update the adapter with the list of events attended by the user
+     * @param events The list of events attended by the user
+     */
     private void updateAdapter(ArrayList<Event> events) {
         // Run on UI thread because notifyDataSetChanged() needs to update the UI
         new Handler(Looper.getMainLooper()).post(() -> {
@@ -405,6 +415,9 @@ public class AttendeeEventActivity extends NavBar {
         });
     }
 
+    /**
+     * Set up real-time event updates for the user
+     */
     private void setupRealTimeEventUpdates() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Assuming you have the user's document ID
@@ -437,6 +450,9 @@ public class AttendeeEventActivity extends NavBar {
         });
     }
 
+    /**
+     * Set up the milestone listener for the user
+     */
     public void setupMilestoneListener() {
         Log.d("MilestoneInit", "Initializing");
         Intent intent = new Intent(this, MilestoneListeningService.class);

@@ -195,6 +195,10 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * This method is called when the activity is start from MapView.
+     */
     // OpenAi ChatGPT 4 4/7/2024 "Edit activity to work from being launched from map"
     public static void startFromMap(Context context, String eventID) {
         Intent intent = new Intent(context, EventDetailsAttendeeActivity.class);
@@ -203,10 +207,18 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
+    /**
+     * This method is called when the activity is destroyed.
+     * It cleans up the Firestore references.
+     */
     public FirebaseFirestore getDb() {
         return db;
     }
 
+    /**
+     * This method is called when the activity is destroyed.
+     * It cleans up the Firestore references.
+     */
     public DocumentReference getDocRefEvent() {
         return docRefEvent;
     }

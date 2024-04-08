@@ -192,6 +192,9 @@ public class BrowseEventActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets up a listener to fetch real-time updates for events
+     */
     private void setupRealTimeEventUpdates() {
         Timestamp now = Timestamp.now();
 
@@ -214,6 +217,9 @@ public class BrowseEventActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Fetches events from Firestore and saves them to local storage
+     */
     public void fetchBrowseEvents() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Timestamp now = Timestamp.now();
@@ -276,6 +282,10 @@ public class BrowseEventActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Fetches events from local storage
+     * @param context The context of the activity
+     */
     public void fetchLocal(Context context) {
         // Execute in background
         executorService.execute(() -> {

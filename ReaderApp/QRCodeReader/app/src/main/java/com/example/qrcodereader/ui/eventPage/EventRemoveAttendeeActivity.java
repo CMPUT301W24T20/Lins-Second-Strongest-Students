@@ -156,14 +156,26 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
         returnButton.setOnClickListener(v -> finish());
     }
 
+    /**
+     * This method is called when the activity is destroyed.
+     * It cleans up the Firestore references.
+     */
     public FirebaseFirestore getDb() {
         return db;
     }
 
+    /**
+     * This method is called when the activity is destroyed.
+     * It cleans up the Firestore references.
+     */
     public DocumentReference getDocRefEvent() {
         return docRefEvent;
     }
 
+/**
+     * This method is called when the activity is destroyed.
+     * It cleans up the Firestore references.
+     */
     public DocumentReference getDocRefUser() {
         return docRefEvent;
     }

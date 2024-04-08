@@ -133,6 +133,10 @@ public class OrganizerEventActivity extends NavBar {
         return R.layout.attendee_events;
     }
 
+    /**
+     * Fetches events from Firestore and updates the ListView.
+     * @param context The context of the activity
+     */
     public void fetchEvents(Context context) {
         ArrayList<Event> tempEventDataList = AppDataHolder.getInstance().getOrganizerEvents(context);
         if(tempEventDataList != null) {
@@ -156,6 +160,9 @@ public class OrganizerEventActivity extends NavBar {
         }
     }
 
+    /**
+     * Fetches events from Firestore and updates the ListView.
+     */
     public void fetchOrganizerEvents() {
         FirebaseFirestore db = FirestoreManager.getInstance().getDb();
         String deviceID = FirestoreManager.getInstance().getUserID();
@@ -214,6 +221,10 @@ public class OrganizerEventActivity extends NavBar {
                 });
     }
 
+    /**
+     * Updates the ListView with the given events.
+     * @param events The events to display
+     */
     private void updateAdapter(ArrayList<Event> events) {
         // Run on UI thread because notifyDataSetChanged() needs to update the UI
         new Handler(Looper.getMainLooper()).post(() -> {
@@ -234,6 +245,9 @@ public class OrganizerEventActivity extends NavBar {
         });
     }
 
+    /**
+     * Sets up real-time event updates from Firestore.
+     */
     private void setupRealTimeEventUpdates() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference eventsRef = db.collection("events");
@@ -254,6 +268,10 @@ public class OrganizerEventActivity extends NavBar {
                 });
     }
 
+    /**
+     * Fetches events from Firestore and updates the ListView.
+     * @param context The context of the activity
+     */
     public void fetchLocal(Context context) {
         // Execute in background
         executorService.execute(() -> {

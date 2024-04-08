@@ -241,6 +241,9 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         });
     }
 
+    /**
+     * This method is check if the image is uploaded and upload it to the storage
+     */
     @Override
     public void isUploaded(String eventID) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
