@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-04-08T04:37:44.763Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="tThdS_QUrD9Gh_e5QDtf" version="24.2.2" type="github">
+<mxfile host="app.diagrams.net" modified="2024-04-08T19:48:13.105Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="5eTrujqjU1459R21KmUX" version="24.2.2" type="github">
   <diagram name="Page-1" id="isyf78NvJ2EBEAnTLSQR">
-    <mxGraphModel dx="1887" dy="1740" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel dx="1369" dy="1403" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -10,10 +10,10 @@
         <mxCell id="p0VleNT7jk7Zis_5twDi-1" value="QR code scanner" style="rounded=0;whiteSpace=wrap;html=1;" parent="p0VleNT7jk7Zis_5twDi-4" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-2" value="- Scan QR codes&lt;br&gt;- Check attendee in" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="p0VleNT7jk7Zis_5twDi-4" vertex="1">
+        <mxCell id="p0VleNT7jk7Zis_5twDi-2" value="- Scan QR codes&lt;br&gt;- Checks attendee in event of the QR code" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="p0VleNT7jk7Zis_5twDi-4" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-3" value="- Attendee&lt;br&gt;&lt;div style=&quot;&quot;&gt;- Dashboard&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="p0VleNT7jk7Zis_5twDi-4" vertex="1">
+        <mxCell id="p0VleNT7jk7Zis_5twDi-3" value="- Attendee&lt;br&gt;&lt;div style=&quot;&quot;&gt;- Dashboard&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- Event&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="p0VleNT7jk7Zis_5twDi-4" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="p0VleNT7jk7Zis_5twDi-5" value="" style="group;align=left;" parent="1" vertex="1" connectable="0">
@@ -37,7 +37,7 @@
         <mxCell id="p0VleNT7jk7Zis_5twDi-11" value="- Create and manage events&lt;br&gt;- Send push notification to attendee&lt;br&gt;- Track attendance&lt;br&gt;- Create QR code for events&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-9" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-12" value="- Attendee&lt;br&gt;- QR code generator&lt;br&gt;- database &amp;nbsp;&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-9" vertex="1">
+        <mxCell id="p0VleNT7jk7Zis_5twDi-12" value="- Attendee&lt;br&gt;- QR code generator&lt;br&gt;- database&lt;div&gt;- Event&amp;nbsp; &amp;nbsp;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-9" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="p0VleNT7jk7Zis_5twDi-13" value="" style="group" parent="1" vertex="1" connectable="0">
@@ -52,28 +52,16 @@
         <mxCell id="p0VleNT7jk7Zis_5twDi-16" value="- QR code scanner.&lt;br&gt;- Dashboard&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-13" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-17" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="160" y="520" width="240" height="160" as="geometry" />
-        </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-18" value="Administrator" style="rounded=0;whiteSpace=wrap;html=1;" parent="p0VleNT7jk7Zis_5twDi-17" vertex="1">
-          <mxGeometry width="240" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-19" value="&lt;div style=&quot;&quot;&gt;- Browse events&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- Remove events&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="p0VleNT7jk7Zis_5twDi-17" vertex="1">
-          <mxGeometry y="40" width="120" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-20" value="- Database" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-17" vertex="1">
-          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
-        </mxCell>
         <mxCell id="p0VleNT7jk7Zis_5twDi-21" value="" style="group" parent="1" vertex="1" connectable="0">
           <mxGeometry x="440" y="520" width="240" height="160" as="geometry" />
         </mxCell>
         <mxCell id="p0VleNT7jk7Zis_5twDi-22" value="Profile picture generator" style="rounded=0;whiteSpace=wrap;html=1;" parent="p0VleNT7jk7Zis_5twDi-21" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-23" value="- Generate a unique profile photo for users&lt;br&gt;- Store user profile picture in the database&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-21" vertex="1">
+        <mxCell id="p0VleNT7jk7Zis_5twDi-23" value="- Generate a default profile photo for users&lt;br&gt;- Store user profile picture in the database&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-21" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="p0VleNT7jk7Zis_5twDi-24" value="- Attendee&lt;br&gt;&lt;div style=&quot;&quot;&gt;- Database&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-21" vertex="1">
+        <mxCell id="p0VleNT7jk7Zis_5twDi-24" value="- User&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- Database&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-21" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="p0VleNT7jk7Zis_5twDi-25" value="" style="group;align=left;verticalAlign=top;horizontal=0;" parent="1" vertex="1" connectable="0">
@@ -88,16 +76,16 @@
         <mxCell id="p0VleNT7jk7Zis_5twDi-28" value="&lt;div style=&quot;&quot;&gt;- Organizer&lt;/div&gt;- Attendee&lt;br&gt;- Database&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;horizontal=1;verticalAlign=top;" parent="p0VleNT7jk7Zis_5twDi-25" vertex="1">
           <mxGeometry x="120" y="36.66666666666667" width="120" height="146.66666666666669" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-25" value="" style="group" vertex="1" connectable="0" parent="p0VleNT7jk7Zis_5twDi-25">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-25" value="" style="group" parent="p0VleNT7jk7Zis_5twDi-25" vertex="1" connectable="0">
           <mxGeometry y="200" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-26" value="Adminstrator" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-25">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-26" value="Adminstrator" style="rounded=0;whiteSpace=wrap;html=1;" parent="GoL1G0iiaw_R3Dw9g7fL-25" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-27" value="- View all events&lt;div&gt;- View all users&lt;/div&gt;&lt;div&gt;- View all pictures&lt;/div&gt;&lt;div&gt;- Remove event&lt;/div&gt;&lt;div&gt;- Remove user&lt;/div&gt;&lt;div&gt;- Remove picture&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-25">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-27" value="- View all events&lt;div&gt;- View all users&lt;/div&gt;&lt;div&gt;- View all pictures&lt;/div&gt;&lt;div&gt;- Remove event&lt;/div&gt;&lt;div&gt;- Remove user&lt;/div&gt;&lt;div&gt;- Remove picture&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="GoL1G0iiaw_R3Dw9g7fL-25" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-28" value="- User&lt;div&gt;- Event&lt;/div&gt;&lt;div&gt;- Profile picture&lt;/div&gt;&lt;div&gt;- Admin dashboard&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-25">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-28" value="- User&lt;div&gt;- Event&lt;/div&gt;&lt;div&gt;- Profile picture&lt;/div&gt;&lt;div&gt;- Event poster&lt;/div&gt;&lt;div&gt;- Admin dashboard&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-25" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="b8OZTbFHbv40sIYhW2uN-1" value="" style="group" parent="1" vertex="1" connectable="0">
@@ -106,10 +94,10 @@
         <mxCell id="b8OZTbFHbv40sIYhW2uN-2" value="Database" style="rounded=0;whiteSpace=wrap;html=1;" parent="b8OZTbFHbv40sIYhW2uN-1" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="b8OZTbFHbv40sIYhW2uN-3" value="- Store event informations.&lt;br&gt;- Store events attendance&lt;br&gt;- Store user information&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="b8OZTbFHbv40sIYhW2uN-1" vertex="1">
+        <mxCell id="b8OZTbFHbv40sIYhW2uN-3" value="- Store event informations.&lt;br&gt;- Store events attendance&lt;br&gt;- Store user information&amp;nbsp;&lt;div&gt;- Store image information&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="b8OZTbFHbv40sIYhW2uN-1" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="b8OZTbFHbv40sIYhW2uN-4" value="- Organizer&lt;br&gt;- Attendee&lt;br&gt;- Administrator&lt;br&gt;- Dashboard &amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="b8OZTbFHbv40sIYhW2uN-1" vertex="1">
+        <mxCell id="b8OZTbFHbv40sIYhW2uN-4" value="- Organizer&lt;br&gt;- Attendee&lt;br&gt;- Administrator&lt;br&gt;- Dashboard&amp;nbsp;&lt;div&gt;- Profile Picture&lt;/div&gt;&lt;div&gt;- Event poster&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="b8OZTbFHbv40sIYhW2uN-1" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="ndnspTAVWhX3wWvvUTWw-5" value="" style="group;align=left;verticalAlign=top;" parent="1" vertex="1" connectable="0">
@@ -118,10 +106,10 @@
         <mxCell id="ndnspTAVWhX3wWvvUTWw-6" value="QR Code" style="rounded=0;whiteSpace=wrap;html=1;" parent="ndnspTAVWhX3wWvvUTWw-5" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="ndnspTAVWhX3wWvvUTWw-7" value="- Represent a QR code&lt;br&gt;- Holds content that is shared on scan&lt;br&gt;- Hold the information that is linked to the QR code&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="ndnspTAVWhX3wWvvUTWw-5" vertex="1">
+        <mxCell id="ndnspTAVWhX3wWvvUTWw-7" value="- Represent a QR code&lt;br&gt;- Holds event content that is shared on scan&lt;br&gt;- Hold the information that is linked to the QR code&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="ndnspTAVWhX3wWvvUTWw-5" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="ndnspTAVWhX3wWvvUTWw-8" value="- QR Code Generator&lt;br&gt;- QR Code Scanner&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="ndnspTAVWhX3wWvvUTWw-5" vertex="1">
+        <mxCell id="ndnspTAVWhX3wWvvUTWw-8" value="- QR Code Generator&lt;br&gt;- QR Code Scanner&lt;br&gt;&lt;div&gt;- Event&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="ndnspTAVWhX3wWvvUTWw-5" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="yUvjpF-pLKF-yOkhtuPk-1" value="" style="group" parent="1" vertex="1" connectable="0">
@@ -145,7 +133,7 @@
         <mxCell id="yUvjpF-pLKF-yOkhtuPk-7" value="- Represent and store data for a user profile&lt;br&gt;- Contains username, contact info, homepage" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="yUvjpF-pLKF-yOkhtuPk-5" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="yUvjpF-pLKF-yOkhtuPk-8" value="- Profile picture&lt;br&gt;- Profile picture generator" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="yUvjpF-pLKF-yOkhtuPk-5" vertex="1">
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-8" value="- Profile picture&lt;br&gt;- Profile picture generator&lt;div&gt;- User&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="yUvjpF-pLKF-yOkhtuPk-5" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="yUvjpF-pLKF-yOkhtuPk-9" value="" style="group" parent="1" vertex="1" connectable="0">
@@ -154,10 +142,10 @@
         <mxCell id="yUvjpF-pLKF-yOkhtuPk-10" value="Profile picture" style="rounded=0;whiteSpace=wrap;html=1;" parent="yUvjpF-pLKF-yOkhtuPk-9" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="yUvjpF-pLKF-yOkhtuPk-11" value="- Represent and store data for a picture" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="yUvjpF-pLKF-yOkhtuPk-9" vertex="1">
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-11" value="- Represent and store data for a user&#39;s profile picture" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="yUvjpF-pLKF-yOkhtuPk-9" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="yUvjpF-pLKF-yOkhtuPk-12" value="- Profile&lt;br&gt;- Profile picture generator" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="yUvjpF-pLKF-yOkhtuPk-9" vertex="1">
+        <mxCell id="yUvjpF-pLKF-yOkhtuPk-12" value="- Profile&lt;br&gt;- Profile picture generator&lt;div&gt;- User&lt;/div&gt;&lt;div&gt;- Database&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="yUvjpF-pLKF-yOkhtuPk-9" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="yUvjpF-pLKF-yOkhtuPk-18" value="" style="group" parent="1" vertex="1" connectable="0">
@@ -182,18 +170,6 @@
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="yUvjpF-pLKF-yOkhtuPk-25" value="- Organizer&lt;br&gt;- QR Code&lt;br&gt;- Attendee List" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="yUvjpF-pLKF-yOkhtuPk-22" vertex="1">
-          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="F9zYYcnOCjDlbiqOqqYT-1" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="720" y="700" width="240" height="160" as="geometry" />
-        </mxCell>
-        <mxCell id="F9zYYcnOCjDlbiqOqqYT-2" value="Attendee Homepage" style="rounded=0;whiteSpace=wrap;html=1;" parent="F9zYYcnOCjDlbiqOqqYT-1" vertex="1">
-          <mxGeometry width="240" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="F9zYYcnOCjDlbiqOqqYT-3" value="" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="F9zYYcnOCjDlbiqOqqYT-1" vertex="1">
-          <mxGeometry y="40" width="120" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="F9zYYcnOCjDlbiqOqqYT-4" value="" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="F9zYYcnOCjDlbiqOqqYT-1" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="TDorO-l8QUH1OnAUlSvA-1" value="" style="group" parent="1" vertex="1" connectable="0">
@@ -221,7 +197,7 @@
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
         <mxCell id="TDorO-l8QUH1OnAUlSvA-9" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="150" y="1460" width="240" height="160" as="geometry" />
+          <mxGeometry x="800" y="1100" width="240" height="160" as="geometry" />
         </mxCell>
         <mxCell id="TDorO-l8QUH1OnAUlSvA-10" value="NotificationAdapter" style="rounded=0;whiteSpace=wrap;html=1;" parent="TDorO-l8QUH1OnAUlSvA-9" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
@@ -268,112 +244,124 @@
         <mxCell id="rrSvDPl7ggr8lH2BGJYU-8" value="- User&lt;br&gt;- Firebase" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="rrSvDPl7ggr8lH2BGJYU-5" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-1" value="" style="group;align=left;verticalAlign=top;" vertex="1" connectable="0" parent="1">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-1" value="" style="group;align=left;verticalAlign=top;" parent="1" vertex="1" connectable="0">
           <mxGeometry x="440" y="-70" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-2" value="User Details Dashboard (Organizer)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-1">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-2" value="User Details Dashboard (Organizer)" style="rounded=0;whiteSpace=wrap;html=1;" parent="GoL1G0iiaw_R3Dw9g7fL-1" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-3" value="- Display attendee&#39;s details" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-1">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-3" value="- Display attendee&#39;s details" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="GoL1G0iiaw_R3Dw9g7fL-1" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-4" value="- AttendanceActivity" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-1">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-4" value="- AttendanceActivity" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="GoL1G0iiaw_R3Dw9g7fL-1" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-5" value="" style="group;align=left;verticalAlign=top;" vertex="1" connectable="0" parent="1">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-5" value="" style="group;align=left;verticalAlign=top;" parent="1" vertex="1" connectable="0">
           <mxGeometry x="720" y="-70" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-6" value="Attendance dashboard" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-5">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-6" value="Attendance dashboard" style="rounded=0;whiteSpace=wrap;html=1;" parent="GoL1G0iiaw_R3Dw9g7fL-5" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-7" value="&lt;div&gt;- Represents&lt;/div&gt;- Display attendance, people who signed up to events, if they checked in, and how many times they checked in" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-5">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-7" value="&lt;div&gt;- Represents&lt;/div&gt;- Display attendance, people who signed up to events, if they checked in, and how many times they checked in" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="GoL1G0iiaw_R3Dw9g7fL-5" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-8" value="- AttendanceActivity&lt;div&gt;- Event Details Organizer&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-5">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-8" value="- AttendanceActivity&lt;div&gt;- Event Details Organizer&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="GoL1G0iiaw_R3Dw9g7fL-5" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-13" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="440" y="-250" width="240" height="160" as="geometry" />
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-13" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="420" y="-440" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-14" value="Attendees Adapter" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-13">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-14" value="Attendees Adapter" style="rounded=0;whiteSpace=wrap;html=1;" parent="GoL1G0iiaw_R3Dw9g7fL-13" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-15" value="- Display attendance details in a listVIew" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-13">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-15" value="- Display attendance details in a listVIew" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-13" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-16" value="- Attendance dashboard" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-13">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-16" value="- Attendance dashboard" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-13" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-17" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="160" y="-250" width="240" height="160" as="geometry" />
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-17" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="160" y="530" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-18" value="Users Adapter" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-17">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-18" value="Users Adapter" style="rounded=0;whiteSpace=wrap;html=1;" parent="GoL1G0iiaw_R3Dw9g7fL-17" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-19" value="- Display user details in a listVIew" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-17">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-19" value="- Display user details in a listVIew" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-17" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-20" value="- Admin User dashboard&lt;div&gt;- User&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-17">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-20" value="- Admin User dashboard&lt;div&gt;- User&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-17" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-21" value="" style="group" vertex="1" connectable="0" parent="1">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-21" value="" style="group" parent="1" vertex="1" connectable="0">
           <mxGeometry x="720" y="-250" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-22" value="Admin User Dashboard" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-21">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-22" value="Admin User Dashboard" style="rounded=0;whiteSpace=wrap;html=1;" parent="GoL1G0iiaw_R3Dw9g7fL-21" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-23" value="&lt;div&gt;- Represents&lt;/div&gt;- Display all users&lt;div&gt;- Remove user&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-21">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-23" value="&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- Display all users&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Remove user&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-21" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-24" value="- Profile&lt;div&gt;- Administrator&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-21">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-24" value="- database&lt;div&gt;- Administrator&lt;/div&gt;&lt;div&gt;-&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;User&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-21" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-29" value="" style="group" vertex="1" connectable="0" parent="1">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-29" value="" style="group" parent="1" vertex="1" connectable="0">
           <mxGeometry x="720" y="-440" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-30" value="Admin Event Dashboard" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-29">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-30" value="Admin Event Dashboard" style="rounded=0;whiteSpace=wrap;html=1;" parent="GoL1G0iiaw_R3Dw9g7fL-29" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-31" value="&lt;div&gt;- Represents&lt;/div&gt;- Display all users&lt;div&gt;- Remove event&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-29">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-31" value="&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- Display all events&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Remove event&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-29" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-32" value="- Profile&lt;div&gt;- Administrator&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-29">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-32" value="- database&lt;div&gt;- Administrator&lt;/div&gt;&lt;div&gt;- event&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-29" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-33" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="440" y="-440" width="240" height="160" as="geometry" />
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-33" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="140" y="-440" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-34" value="Attendee dashboard" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-33">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-34" value="Attendee dashboard" style="rounded=0;whiteSpace=wrap;html=1;" parent="GoL1G0iiaw_R3Dw9g7fL-33" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-35" value="&lt;div&gt;- Represents&lt;/div&gt;- Keep track of signed up events&lt;div&gt;- Show information of events&lt;/div&gt;&lt;div&gt;- Unsign up from events&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-33">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-35" value="&lt;div&gt;- Represents&lt;/div&gt;- Keep track of signed up events&lt;div&gt;- Show information of events&lt;/div&gt;&lt;div&gt;- Unsign up from events&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-33" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-36" value="- Attendee&lt;div&gt;- Events&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-33">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-36" value="- Attendee&lt;div&gt;- Events&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-33" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-37" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="160" y="-440" width="240" height="160" as="geometry" />
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-37" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="150" y="-250" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-38" value="Browse events dashboard" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-37">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-38" value="Browse events dashboard" style="rounded=0;whiteSpace=wrap;html=1;" parent="GoL1G0iiaw_R3Dw9g7fL-37" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-39" value="&lt;div&gt;- Represents&lt;/div&gt;- Show all events&lt;div&gt;- Let user sign up to event&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-37">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-39" value="&lt;div&gt;- Represents&lt;/div&gt;- Show all events&lt;div&gt;- Let user sign up to event&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-37" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-40" value="- Attendee&lt;div&gt;- Events&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-37">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-40" value="- Attendee&lt;div&gt;- Events&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-37" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-41" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="720" y="-630" width="240" height="160" as="geometry" />
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-41" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="430" y="-250" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-42" value="Admin Picture Dashboard" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-41">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-42" value="Admin Picture Dashboard" style="rounded=0;whiteSpace=wrap;html=1;" parent="GoL1G0iiaw_R3Dw9g7fL-41" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-43" value="&lt;div&gt;- Represents&lt;/div&gt;- Display all pictures&lt;div&gt;- Remove picture&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-41">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-43" value="&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- Display all pictures&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Remove picture&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-41" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-44" value="- Profile&lt;div&gt;- Administrator&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="GoL1G0iiaw_R3Dw9g7fL-41">
+        <mxCell id="GoL1G0iiaw_R3Dw9g7fL-44" value="- database&lt;div&gt;- Administrator&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="GoL1G0iiaw_R3Dw9g7fL-41" vertex="1">
+          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="MPvY1aM5Qrs-v-DX_fKQ-1" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="730" y="700" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="MPvY1aM5Qrs-v-DX_fKQ-2" value="Event poster" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="MPvY1aM5Qrs-v-DX_fKQ-1">
+          <mxGeometry width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MPvY1aM5Qrs-v-DX_fKQ-3" value="- Represent and store data for a event&#39;s poster picture" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="MPvY1aM5Qrs-v-DX_fKQ-1">
+          <mxGeometry y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="MPvY1aM5Qrs-v-DX_fKQ-4" value="- Event&lt;br&gt;- Database" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="MPvY1aM5Qrs-v-DX_fKQ-1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
       </root>
