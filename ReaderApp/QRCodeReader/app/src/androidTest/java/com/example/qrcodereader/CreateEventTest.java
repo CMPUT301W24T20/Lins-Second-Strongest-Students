@@ -273,6 +273,7 @@ public class CreateEventTest {
                                     }
                                 }
                             }
+                            assertTrue("Event was not found or didn't match the expected values", foundEvent);
 
                             // Clean up - delete the event and related QR codes after assertion
                             if (foundEvent) {
