@@ -39,7 +39,7 @@ import com.google.firebase.firestore.FieldValue;
 
 import java.util.HashMap;
 import java.util.Map;
-
+//broken
 @RunWith(AndroidJUnit4.class)
 public class AttendeeActivityTest {
 
