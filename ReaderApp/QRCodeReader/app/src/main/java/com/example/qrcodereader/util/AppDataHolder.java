@@ -143,6 +143,10 @@ public class AppDataHolder {
         return pastEvents;
     }
 
+    public static void setPastEvents(ArrayList<Event> events) {
+        pastEvents = events;
+    }
+
     public static void loadOrganizerEventToLocal(ArrayList<Event> events, Context context) {
         LocalEventsStorage.saveEvents(context, events, "organizerEvents.json");
         organizerEvents = events;

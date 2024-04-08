@@ -39,6 +39,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class AdminEventActivity extends AppCompatActivity {
                 Intent detailIntent = new Intent(AdminEventActivity.this, EventDetailsAdminActivity.class);
                 detailIntent.putExtra("eventID", selectedEvent.getEventID());
                 FirestoreManager.getInstance().setEventDocRef(selectedEvent.getEventID());
-                startActivity(detailIntent);
+                startActivityForResult(detailIntent, 0);
                 selectedEvent = null;
             }
         });
@@ -160,5 +161,24 @@ public class AdminEventActivity extends AppCompatActivity {
                 Log.e("Firestore", "Error fetching events", e);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode ==0 && resultCode == RESULT_OK) {
+            String removedEventID = data.getStringExtra("removedEventID");
+            if (removedEventID != null) {
+                // Remove the event from the dataset
+                for (Event event : eventDataList) {
+                    if (event.getEventID().equals(removedEventID)) {
+                        eventDataList.remove(event);
+                        break;
+                    }
+                }
+                // Notify the adapter of the change
+                eventArrayAdapter.notifyDataSetChanged();
+            }
+        }
     }
 }

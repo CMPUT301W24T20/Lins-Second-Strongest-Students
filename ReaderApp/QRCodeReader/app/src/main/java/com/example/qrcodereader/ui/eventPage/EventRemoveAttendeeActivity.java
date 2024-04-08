@@ -95,13 +95,17 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
                 String organizer = documentSnapshot.getString("organizer");
                 String organizerID = documentSnapshot.getString("organizerID");
                 String qrCodeString = documentSnapshot.getString("qrCode");
-                String EventPoster = documentSnapshot.getString("poster");
+                String poster = documentSnapshot.getString("poster");
 
-                Picasso.get().load(EventPoster).resize(410, 240).centerInside().into(eventPoster);
+                if (poster != null && !poster.isEmpty()) {
+                    Picasso.get().load(poster).resize(410, 240).centerInside().into(eventPoster);
+                } else {
+                    Picasso.get().load(R.drawable._49e43ff77b9c6ecc64d8a9b55622ddd7_2).centerInside().fit().into(eventPoster);
+                }
                 QRCode qrCode = new QRCode(qrCodeString);
                 int attendeeLimit = documentSnapshot.contains("attendeeLimit") ? (int)(long)documentSnapshot.getLong("attendeeLimit") : -1;
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
-                selectedEvent = new Event(eventID, eventName, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, eventsAttended, EventPoster);
+                selectedEvent = new Event(eventID, eventName, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, eventsAttended, poster);
 
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
@@ -112,9 +116,6 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
                 eventLocationTextView.setText(locationName);
                 String timeText = time.toDate().toString();
                 eventTimeTextView.setText(timeText);
-                if (EventPoster != null && !EventPoster.isEmpty()) {
-                    Picasso.get().load(EventPoster).resize(410, 240).centerInside().into(eventPoster);
-                }
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
