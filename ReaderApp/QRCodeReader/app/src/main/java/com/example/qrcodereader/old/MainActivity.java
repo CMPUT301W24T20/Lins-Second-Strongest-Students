@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.old;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -15,8 +15,12 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.provider.Settings;
 
+import com.example.qrcodereader.R;
+import com.example.qrcodereader.util.assisting.MyFirebaseMessagingService;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.User;
+import com.example.qrcodereader.map.MapView;
+import com.example.qrcodereader.map.MapViewOrganizer;
 import com.example.qrcodereader.ui.admin.AdminEventActivity;
 import com.example.qrcodereader.ui.admin.AdminImagesOptionActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
@@ -26,15 +30,12 @@ import com.example.qrcodereader.ui.profile.ProfileActivity;
 import com.example.qrcodereader.util.AppDataHolder;
 import com.example.qrcodereader.util.LocalUserStorage;
 import com.example.qrcodereader.util.SetDefaultProfile;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -47,8 +48,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.qrcodereader.databinding.ActivityMainBinding;
-
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 

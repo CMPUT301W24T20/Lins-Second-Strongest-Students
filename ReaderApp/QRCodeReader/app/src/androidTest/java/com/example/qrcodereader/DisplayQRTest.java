@@ -1,6 +1,5 @@
 package com.example.qrcodereader;
 
-import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
@@ -8,29 +7,20 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import static java.util.regex.Pattern.matches;
-
 import android.content.Intent;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.example.qrcodereader.entity.FirestoreManager;
-import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.example.qrcodereader.util.DisplayQRCode;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.Map;
 
 public class DisplayQRTest {
     @Rule

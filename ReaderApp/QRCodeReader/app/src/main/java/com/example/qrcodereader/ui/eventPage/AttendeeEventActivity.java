@@ -1,9 +1,9 @@
 package com.example.qrcodereader.ui.eventPage;
 import static android.content.ContentValues.TAG;
 
-import com.example.qrcodereader.MapView;
-import com.example.qrcodereader.MilestoneListeningService;
-import com.example.qrcodereader.NavBar;
+import com.example.qrcodereader.map.MapView;
+import com.example.qrcodereader.util.assisting.MilestoneListeningService;
+import com.example.qrcodereader.util.assisting.NavBar;
 import com.example.qrcodereader.R;
 
 import android.content.Context;
@@ -44,8 +44,6 @@ import com.example.qrcodereader.util.LocalEventsStorage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;

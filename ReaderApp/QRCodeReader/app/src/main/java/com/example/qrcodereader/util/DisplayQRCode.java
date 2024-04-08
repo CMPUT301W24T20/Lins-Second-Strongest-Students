@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.QRCode;
 import com.google.zxing.integration.android.IntentIntegrator;
 

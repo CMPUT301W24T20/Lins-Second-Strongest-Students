@@ -1,8 +1,7 @@
 package com.example.qrcodereader.ui.eventPage;
 import static android.content.ContentValues.TAG;
 
-import com.example.qrcodereader.MapViewOrganizer;
-import com.example.qrcodereader.NavBar;
+import com.example.qrcodereader.util.assisting.NavBar;
 import com.example.qrcodereader.R;
 
 import android.content.Context;
@@ -27,7 +26,6 @@ import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.util.AppDataHolder;
 
-import com.example.qrcodereader.util.LocalEventsStorage;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;

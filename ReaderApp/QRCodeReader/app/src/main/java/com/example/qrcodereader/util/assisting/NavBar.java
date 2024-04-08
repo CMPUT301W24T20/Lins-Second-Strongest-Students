@@ -1,18 +1,16 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.util.assisting;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qrcodereader.R;
+import com.example.qrcodereader.ui.camera.CameraActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.example.qrcodereader.ui.notifications.NotificationsActivity;
-import com.example.qrcodereader.ui.notifications.NotificationsViewModel;
 import com.example.qrcodereader.ui.profile.ProfileActivity;
 
 /*
@@ -24,7 +22,7 @@ import com.example.qrcodereader.ui.profile.ProfileActivity;
 /**
  * Abstract class defining operations to be implemented by child classes
  * sets rules for functionality of bottom navBar buttons in each class which extends it
- * @author Khushdeep 
+ * @author Khushdeep
  */
 public abstract class NavBar extends AppCompatActivity {
     @Override

@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.map;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;

@@ -4,20 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.Notifier;
+import com.example.qrcodereader.util.assisting.Notifier;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.FirestoreManager;
-import com.example.qrcodereader.entity.User;
-import com.example.qrcodereader.ui.admin.AdminUserActivity;
-import com.example.qrcodereader.ui.admin.UserDetailsAdminActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 

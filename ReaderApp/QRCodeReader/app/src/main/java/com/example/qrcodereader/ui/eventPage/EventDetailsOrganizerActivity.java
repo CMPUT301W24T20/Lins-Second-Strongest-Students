@@ -1,15 +1,14 @@
 package com.example.qrcodereader.ui.eventPage;
 
-import com.example.qrcodereader.DisplayQRCode;
-import com.example.qrcodereader.MapViewOrganizer;
-import com.example.qrcodereader.Notifier;
+import com.example.qrcodereader.util.DisplayQRCode;
+import com.example.qrcodereader.map.MapViewOrganizer;
+import com.example.qrcodereader.util.assisting.Notifier;
 import com.example.qrcodereader.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import androidx.annotation.Nullable;
@@ -25,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
-import com.example.qrcodereader.ui.profile.ProfileEditFrag;
 import com.example.qrcodereader.util.ImageUpload;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;

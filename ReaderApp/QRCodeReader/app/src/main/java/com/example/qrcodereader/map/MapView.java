@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.map;
 
 import static android.content.ContentValues.TAG;
 
@@ -14,9 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.qrcodereader.entity.Event;
+import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.FirestoreManager;
-import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -32,18 +31,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
 
 /**
  * View for Map

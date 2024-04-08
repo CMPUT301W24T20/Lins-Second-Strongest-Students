@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.ui.camera;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +7,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qrcodereader.util.assisting.NavBar;
+import com.example.qrcodereader.R;
+import com.example.qrcodereader.util.assisting.ScanHandler;
 import com.example.qrcodereader.entity.FirestoreManager;
-import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
