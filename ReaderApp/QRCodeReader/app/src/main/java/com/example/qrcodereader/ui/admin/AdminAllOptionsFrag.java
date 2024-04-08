@@ -9,8 +9,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.qrcodereader.MainActivity;
-
 public class AdminAllOptionsFrag extends DialogFragment {
     /**
      * This method creates the Dialog fragment of choices of pages for admin to go to

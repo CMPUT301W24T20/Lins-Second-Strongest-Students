@@ -1,33 +1,20 @@
 package com.example.qrcodereader.util;
 
 import android.content.Context;
-import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
-import android.content.Context;
-import android.provider.Settings;
-
+import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.entity.User;
-import com.example.qrcodereader.entity.Event;
-import com.example.qrcodereader.util.LocalUserStorage;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.core.EventManager;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * A singleton class to hold user info and events.

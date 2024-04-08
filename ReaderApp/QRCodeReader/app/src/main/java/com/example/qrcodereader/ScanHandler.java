@@ -1,19 +1,12 @@
 package com.example.qrcodereader;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
-import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.camera.core.processing.SurfaceProcessorNode;
 
 import com.example.qrcodereader.entity.FirestoreManager;
-import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
-import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
 import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeScanActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

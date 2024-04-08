@@ -1,11 +1,14 @@
 package com.example.qrcodereader.util;
+
 import android.content.Context;
+
+import com.example.qrcodereader.entity.User;
 import com.google.gson.Gson;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import com.example.qrcodereader.entity.User;
 
 public class LocalUserStorage {
     private static final String FILE_NAME = "user.json";

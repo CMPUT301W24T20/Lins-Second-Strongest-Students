@@ -1,13 +1,13 @@
 package com.example.qrcodereader;
 
+import static org.junit.Assert.assertNotNull;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.example.qrcodereader.entity.QRCode;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.assertNotNull;
-
-import com.example.qrcodereader.entity.QRCode;
 
 /**
  * Test class for QRCode entity.

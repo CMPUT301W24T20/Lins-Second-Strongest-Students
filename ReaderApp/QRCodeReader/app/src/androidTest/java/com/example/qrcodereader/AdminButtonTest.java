@@ -1,51 +1,39 @@
 package com.example.qrcodereader;
 
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.Espresso;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.espresso.action.ViewActions;
 
-import org.junit.After;
-import org.junit.Before;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
+
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 
-import static androidx.test.espresso.Espresso.onData;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.example.qrcodereader.entity.FirestoreManager;
-import com.example.qrcodereader.ui.admin.EventDetailsAdminActivity;
+
 import com.example.qrcodereader.ui.admin.UserDetailsAdminActivity;
-import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
-import com.example.qrcodereader.ui.eventPage.EventDetailsOrganizerActivity;
+
 import com.example.qrcodereader.ui.profile.ProfileActivity;
-import com.example.qrcodereader.ui.eventPage.EventRemoveAttendeeActivity;
+
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
+
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
+
 
 /**
  * Test class for admin button visibility in the ProfileActivity.

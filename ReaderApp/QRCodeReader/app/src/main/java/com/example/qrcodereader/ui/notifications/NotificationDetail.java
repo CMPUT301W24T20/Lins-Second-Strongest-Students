@@ -1,13 +1,10 @@
 package com.example.qrcodereader.ui.notifications;
 
-import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.entity.FirestoreManager;
-import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

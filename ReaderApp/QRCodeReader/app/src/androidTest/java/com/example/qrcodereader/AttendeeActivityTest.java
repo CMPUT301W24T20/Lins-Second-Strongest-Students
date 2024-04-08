@@ -1,47 +1,26 @@
 package com.example.qrcodereader;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.espresso.action.ViewActions;
 import androidx.test.rule.GrantPermissionRule;
 
-import org.junit.After;
+import com.example.qrcodereader.entity.FirestoreManager;
+import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
+import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-
-import static androidx.test.espresso.Espresso.onData;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.anything;
-
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import com.example.qrcodereader.entity.FirestoreManager;
-import com.example.qrcodereader.ui.admin.EventDetailsAdminActivity;
-import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
-import com.example.qrcodereader.ui.eventPage.EventDetailsOrganizerActivity;
-import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
-import com.example.qrcodereader.ui.eventPage.EventRemoveAttendeeActivity;
-import com.example.qrcodereader.ui.profile.ProfileActivity;
-import com.google.firebase.firestore.FieldValue;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Test class for AttendeeEventActivity.

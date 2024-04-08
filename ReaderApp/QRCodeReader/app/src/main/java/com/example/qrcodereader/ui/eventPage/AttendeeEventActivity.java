@@ -1,10 +1,6 @@
 package com.example.qrcodereader.ui.eventPage;
-import static android.content.ContentValues.TAG;
 
-import com.example.qrcodereader.MapView;
-import com.example.qrcodereader.MilestoneListeningService;
-import com.example.qrcodereader.NavBar;
-import com.example.qrcodereader.R;
+import static android.content.ContentValues.TAG;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,30 +18,25 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
+import com.example.qrcodereader.MapView;
+import com.example.qrcodereader.MilestoneListeningService;
+import com.example.qrcodereader.NavBar;
+import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
-
-
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
-
-import com.example.qrcodereader.util.LaunchSetUp;
-
-
 import com.example.qrcodereader.util.AppDataHolder;
-
+import com.example.qrcodereader.util.LaunchSetUp;
 import com.example.qrcodereader.util.LocalEventsStorage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;

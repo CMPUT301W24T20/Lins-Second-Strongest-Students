@@ -3,9 +3,8 @@ package com.example.qrcodereader.util;
 import android.content.Context;
 
 import com.example.qrcodereader.entity.Event;
-import com.google.gson.reflect.TypeToken;
-
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

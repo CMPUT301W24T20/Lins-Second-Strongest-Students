@@ -1,16 +1,11 @@
 package com.example.qrcodereader.entity;
 
-import android.location.Location;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *  Represent the user of the app

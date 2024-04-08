@@ -1,7 +1,5 @@
 package com.example.qrcodereader.ui.admin;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
@@ -16,10 +14,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.FirestoreManager;
-import com.example.qrcodereader.entity.User;
 import com.example.qrcodereader.util.LaunchSetUp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;

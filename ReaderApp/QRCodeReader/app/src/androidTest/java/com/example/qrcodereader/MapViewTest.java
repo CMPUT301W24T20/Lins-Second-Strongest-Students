@@ -1,7 +1,10 @@
 package com.example.qrcodereader;
 
-import android.Manifest;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+import android.Manifest;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
@@ -12,10 +15,6 @@ import androidx.test.rule.GrantPermissionRule;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * Test class for MapView activity.

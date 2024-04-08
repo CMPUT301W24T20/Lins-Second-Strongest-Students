@@ -10,20 +10,17 @@ import androidx.test.rule.GrantPermissionRule;
 
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.eventPage.EventDetailsOrganizerActivity;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.Date;
-
-
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;

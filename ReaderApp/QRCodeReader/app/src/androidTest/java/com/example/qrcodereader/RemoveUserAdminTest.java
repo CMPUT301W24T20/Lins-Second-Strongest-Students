@@ -1,9 +1,5 @@
 package com.example.qrcodereader;
 
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -13,15 +9,9 @@ import androidx.test.rule.GrantPermissionRule;
 
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.admin.UserDetailsAdminActivity;
-import com.example.qrcodereader.ui.eventPage.UserDetailsOrganizerActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.Date;
-
-
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -1,9 +1,6 @@
 package com.example.qrcodereader.ui.eventPage;
-import static android.content.ContentValues.TAG;
 
-import com.example.qrcodereader.MapViewOrganizer;
-import com.example.qrcodereader.NavBar;
-import com.example.qrcodereader.R;
+import static android.content.ContentValues.TAG;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,16 +15,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import androidx.annotation.Nullable;
 
+import com.example.qrcodereader.NavBar;
+import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
 import com.example.qrcodereader.util.AppDataHolder;
-
-import com.example.qrcodereader.util.LocalEventsStorage;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -36,7 +32,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
-
 
 import java.util.ArrayList;
 import java.util.Collections;

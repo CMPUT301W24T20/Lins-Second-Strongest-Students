@@ -7,21 +7,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.qrcodereader.R;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.GeoPoint;
-import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.qrcodereader.R;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
-
-import com.squareup.picasso.Picasso;
 
 /**
  *  The Array Adapter for displaying events in ListViews

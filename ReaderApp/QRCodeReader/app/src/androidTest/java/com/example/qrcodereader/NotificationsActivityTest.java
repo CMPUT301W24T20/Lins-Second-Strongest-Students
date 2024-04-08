@@ -57,5 +57,5 @@ public class NotificationsActivityTest {
             onView(withId(R.id.notification_list)).check(matches(isDisplayed()));
         }
     }
-    
+
 }

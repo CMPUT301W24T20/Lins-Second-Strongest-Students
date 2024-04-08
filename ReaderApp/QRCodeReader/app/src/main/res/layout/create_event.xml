@@ -57,6 +57,8 @@
         android:layout_marginHorizontal="10dp"
         android:paddingVertical="5dp"
         android:paddingHorizontal="10dp"
+        android:inputType="textNoSuggestions"
+        android:maxLines="1"
         />
 
     <TextView
@@ -83,6 +85,8 @@
         android:layout_marginHorizontal="10dp"
         android:paddingVertical="5dp"
         android:paddingHorizontal="10dp"
+        android:inputType="textNoSuggestions"
+        android:maxLines="1"
         />
 
     <LinearLayout
@@ -120,7 +124,10 @@
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="5dp"
                 android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1"
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -147,6 +154,8 @@
                 android:layout_marginHorizontal="10dp"
                 android:paddingVertical="5dp"
                 android:paddingHorizontal="10dp"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1"
                 />
         </LinearLayout>
     </LinearLayout>
@@ -187,7 +196,7 @@
                 android:background="@drawable/ellipse_3_shape"
                 android:paddingVertical="5dp"
                 android:layout_marginHorizontal="10dp"
-
+                android:maxLines="1"
                 />
         </LinearLayout>
         <androidx.constraintlayout.widget.ConstraintLayout

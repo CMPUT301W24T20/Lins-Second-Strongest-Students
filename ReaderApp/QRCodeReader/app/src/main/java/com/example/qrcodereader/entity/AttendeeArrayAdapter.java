@@ -1,6 +1,5 @@
 package com.example.qrcodereader.entity;
 
-import com.example.qrcodereader.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.qrcodereader.R;
+
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 

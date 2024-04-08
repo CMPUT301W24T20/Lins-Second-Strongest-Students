@@ -1,5 +1,7 @@
 package com.example.qrcodereader;
 
+import static org.junit.Assert.assertEquals;
+
 import android.content.Context;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -15,8 +17,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Test class for EventArrayAdapter.

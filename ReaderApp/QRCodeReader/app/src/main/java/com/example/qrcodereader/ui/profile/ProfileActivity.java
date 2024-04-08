@@ -17,10 +17,8 @@ import com.example.qrcodereader.NavBar;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.admin.AdminAllOptionsFrag;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveClickListener {

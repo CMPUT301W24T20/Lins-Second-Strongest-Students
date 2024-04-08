@@ -1,29 +1,18 @@
 package com.example.qrcodereader;
 
 
-
 import androidx.test.core.app.ActivityScenario;
-
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.Before;
+import com.example.qrcodereader.entity.FirestoreManager;
+import com.example.qrcodereader.ui.profile.ProfileActivity;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-
-
-import com.example.qrcodereader.entity.FirestoreManager;
-import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
-import com.example.qrcodereader.ui.profile.ProfileActivity;
 
 /**
  * Test class for navigation bar functionality in ProfileActivity.
