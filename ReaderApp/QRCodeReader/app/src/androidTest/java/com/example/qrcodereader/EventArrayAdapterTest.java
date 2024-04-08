@@ -18,6 +18,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+//This whole test was written by ChatGPT4
+//Prompt: i have checked all of these issues, the problem is with the test, try rewriting it
+//Note: I had issues with the previous version of this test so I had GPT rewrite it
 @RunWith(AndroidJUnit4.class)
 public class EventArrayAdapterTest {
 

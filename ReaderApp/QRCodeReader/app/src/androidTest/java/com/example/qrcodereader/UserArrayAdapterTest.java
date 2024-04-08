@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+
+//This test was adapted from EventArrayAdapterTest by me, the test this is based off is written by ChatGPT4
 @RunWith(AndroidJUnit4.class)
 public class UserArrayAdapterTest {
 
