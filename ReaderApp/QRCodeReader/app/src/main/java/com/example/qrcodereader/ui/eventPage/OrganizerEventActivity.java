@@ -119,7 +119,7 @@ public class OrganizerEventActivity extends NavBar {
                 detailIntent.putExtra("eventID",eventID);
                 detailIntent.putExtra("latitude", location.getLatitude());
                 detailIntent.putExtra("longitude", location.getLongitude());
-                FirestoreManager.getInstance().setEventDocRef(selectedEvent.getEventID());
+                FirestoreManager.getInstance().setEventDocRef(eventID);
                 startActivity(detailIntent);
             }
         });

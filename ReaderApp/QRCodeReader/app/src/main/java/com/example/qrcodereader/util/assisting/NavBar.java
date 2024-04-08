@@ -93,9 +93,15 @@ public abstract class NavBar extends AppCompatActivity {
 
         // Otherwise, start the target activity with FLAG_ACTIVITY_REORDER_TO_FRONT
         if (shouldStartActivity && targetClass != null) {
-            intent = new Intent(this, targetClass);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
+            if (targetClass == NotificationsActivity.class) {
+                intent = new Intent(this, targetClass);
+                startActivity(intent);
+            }
+            else{
+                intent = new Intent(this, targetClass);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
         }
     }
 }

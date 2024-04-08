@@ -86,15 +86,16 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity implements 
         Log.d(TAG, "Event ID: " + eventID);
 
         db = FirebaseFirestore.getInstance();
-        docRefEvent = FirestoreManager.getInstance().getEventDocRef();
+
 
         qrRef = FirestoreManager.getInstance().getQrCodeCollection();
 
         fetchPromotionalQRCode();
-
+        eventID = getIntent().getStringExtra("eventID");
         usersRef = FirestoreManager.getInstance().getUserCollection();
-        eventsRef = FirestoreManager.getInstance().getEventCollection();
-        eventID = FirestoreManager.getInstance().getEventID();
+        eventsRef = db.collection("events");
+        docRefEvent = eventsRef.document(eventID);
+
 
 
         TextView seeQRCodeButton = findViewById(R.id.see_qr_button);
