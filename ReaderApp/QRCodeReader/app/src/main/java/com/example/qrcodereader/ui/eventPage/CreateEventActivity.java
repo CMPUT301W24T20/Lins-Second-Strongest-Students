@@ -239,36 +239,6 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         ImageView cancel_button = findViewById(R.id.return_button);
         cancel_button.setOnClickListener(v -> {finish();
         });
-
-        //This makes the number of attendees max out at MAX_VALUE
-        attendeeLimit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Here for abstract base clas requierments
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Here for abstract base clas requierments
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().isEmpty()) {
-                    try {
-                        long value = Long.parseLong(s.toString());
-                        if (value > Integer.MAX_VALUE) {
-                            attendeeLimit.setText(String.valueOf(Integer.MAX_VALUE));
-                            attendeeLimit.setSelection(String.valueOf(Integer.MAX_VALUE).length());
-                        }
-                    } catch (NumberFormatException e) {
-                        attendeeLimit.setText(String.valueOf(Integer.MAX_VALUE));
-                        attendeeLimit.setSelection(String.valueOf(Integer.MAX_VALUE).length());
-                    }
-                }
-            }
-        });
-
     }
 
     @Override
@@ -441,13 +411,19 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             Toast.makeText(this, "Please enter an event time", Toast.LENGTH_SHORT).show();
             return false;
         }
+        else if (attendeeLimit.getText().toString().isEmpty()) {
+            return true;
+        }
         try {
             BigInteger limit = new BigInteger(attendeeLimit.getText().toString());
         } catch (NumberFormatException e) {
             Toast.makeText(this, "The attendee limit is not a valid number", Toast.LENGTH_SHORT).show();
             return false;
         }
-
+        if (Integer.parseInt(attendeeLimit.getText().toString()) < 0) {
+            Toast.makeText(this, "The attendee limit must be a positive number", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 
