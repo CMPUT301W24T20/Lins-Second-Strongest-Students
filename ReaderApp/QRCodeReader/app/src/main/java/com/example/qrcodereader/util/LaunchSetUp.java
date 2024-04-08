@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
@@ -16,29 +15,29 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.qrcodereader.MainActivity;
-import com.example.qrcodereader.MyFirebaseMessagingService;
+import com.example.qrcodereader.old.MainActivity;
+import com.example.qrcodereader.util.assisting.MyFirebaseMessagingService;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.User;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
+/**
+ * The LaunchSetUp class handles initial setup tasks when the application launches,
+ * such as initializing Firestore, checking notification settings, creating notification channels,
+ * and setting up broadcast receivers for push notifications.
+ */
 public class LaunchSetUp {
     private Context context;
     private FirebaseFirestore db;
@@ -48,12 +47,19 @@ public class LaunchSetUp {
 
     private User user;
     private String userId;
-
+    /**
+     * Constructs a new LaunchSetUp instance.
+     *
+     * @param context  The context of the application.
+     * @param location The current location of the user.
+     */
     public LaunchSetUp(Context context, Location location) {
         this.context = context;
         this.location = location;
     }
-
+    /**
+     * Performs initial setup tasks.
+     */
     public void setup() {
         initializeFirestore();
         AppDataHolder.getInstance().loadData(context);
@@ -65,7 +71,9 @@ public class LaunchSetUp {
             setupBroadcastReceiver();
         }
     }
-
+    /**
+     * Initializes Firestore and checks if the user exists in the database. If not, adds a new user document.
+     */
     private void initializeFirestore() {
         String deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         db = FirebaseFirestore.getInstance();
@@ -133,16 +141,26 @@ public class LaunchSetUp {
             showToast("Failed to fetch User");
         });
     }
-
+    /**
+     * Displays a toast message.
+     *
+     * @param message The message to be displayed.
+     */
     private void showToast(String message) {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(() -> Toast.makeText(context, message, Toast.LENGTH_LONG).show());
     }
-
+    /**
+     * Checks if notifications are enabled on the device.
+     *
+     * @return True if notifications are enabled, false otherwise.
+     */
     private boolean areNotificationsEnabled() {
         return NotificationManagerCompat.from(context).areNotificationsEnabled();
     }
-
+    /**
+     * Shows a dialog prompting the user to enable notifications.
+     */
     private void showEnableNotificationsDialog() {
         new AlertDialog.Builder(context)
                 .setTitle("Enable Notifications")
@@ -168,7 +186,9 @@ public class LaunchSetUp {
         intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
         context.startActivity(intent);
     }
-
+    /**
+     * Sets up the notification channel for displaying notifications.
+     */
     private void setupNotificationChannel() {
          /*
         Create notification channel to allow for push notifications
@@ -186,6 +206,9 @@ public class LaunchSetUp {
             }
         }
     }
+    /**
+     * Sets up the broadcast receiver to receive push notifications.
+     */
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     public void setupBroadcastReceiver() {
         Log.d("BroadcastChannel", "Setting up...");

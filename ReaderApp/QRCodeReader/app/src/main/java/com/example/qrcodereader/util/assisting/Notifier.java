@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.util.assisting;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,11 +9,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.qrcodereader.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

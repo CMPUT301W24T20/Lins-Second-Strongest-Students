@@ -17,6 +17,8 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+import com.example.qrcodereader.map.MapView;
+
 public class MapViewTest {
 
     @Rule

@@ -1,6 +1,4 @@
-package com.example.qrcodereader;
-
-import static android.app.Service.START_STICKY;
+package com.example.qrcodereader.util.assisting;
 
 import android.app.Service;
 import android.content.Intent;
@@ -16,14 +14,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Map;
 
+/**
+ * Listener service to record attendance milestones for events.
+ */
 public class MilestoneListeningService extends Service {
 
     @Nullable
@@ -39,6 +38,9 @@ public class MilestoneListeningService extends Service {
         return START_STICKY;
     }
 
+    /**
+     * Listen for milestones per event
+     */
     private void listenForMilestones() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference eventsRef = db.collection("events");

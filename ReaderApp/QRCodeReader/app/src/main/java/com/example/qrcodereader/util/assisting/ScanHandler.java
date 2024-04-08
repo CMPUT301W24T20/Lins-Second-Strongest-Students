@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.util.assisting;
 
 import static androidx.core.content.ContextCompat.startActivity;
 

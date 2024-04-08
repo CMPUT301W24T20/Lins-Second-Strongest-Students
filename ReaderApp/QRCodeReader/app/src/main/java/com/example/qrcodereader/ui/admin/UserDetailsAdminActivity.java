@@ -1,6 +1,6 @@
 package com.example.qrcodereader.ui.admin;
 
-import static android.content.ContentValues.TAG;
+
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.User;
@@ -32,7 +31,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Map;
 
-// Microsoft Copilot 2024 "Given EventDetailsAdminActivity adapt to user"
+// Microsoft Copilot 4/62024 "Given EventDetailsAdminActivity adapt to user"
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
+/**
+ * Activity to display and manage user details for administrators.
+ */
 public class UserDetailsAdminActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
@@ -122,11 +125,23 @@ public class UserDetailsAdminActivity extends AppCompatActivity {
         TextView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
     }
-
+    /**
+     * Check if a string is empty or null and return an empty string if so.
+     *
+     * @param text The string to check.
+     * @return The input string if not empty or null, otherwise an empty string.
+     */
     private String CheckEmpty(String text){
         if (text == null || text.isEmpty()) {return "";}
         else {return text;}
     }
+    /**
+     * Remove a user and their associated events from Firestore.
+     *
+     * @param userID    The ID of the user to remove.
+     * @param usersRef  The Firestore collection reference for users.
+     * @param eventsRef The Firestore collection reference for events.
+     */
     // Microsoft Copilot 4/7/2024 Modify remove user to remove their created events too
     public void removeUser(String userID, CollectionReference usersRef, CollectionReference eventsRef) {
         if (userID != null) {

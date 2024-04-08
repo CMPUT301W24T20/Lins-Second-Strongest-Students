@@ -1,24 +1,28 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.util.assisting;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qrcodereader.R;
+import com.example.qrcodereader.ui.camera.CameraActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.OrganizerEventActivity;
 import com.example.qrcodereader.ui.notifications.NotificationsActivity;
-import com.example.qrcodereader.ui.notifications.NotificationsViewModel;
 import com.example.qrcodereader.ui.profile.ProfileActivity;
 
 /*
     OpenAI, ChatGPT, 30/03/2024
     "I want to create a super class which handles the navigation for
     the bottom nav bar provided xml file and class names."
+ */
+
+/**
+ * Abstract class defining operations to be implemented by child classes
+ * sets rules for functionality of bottom navBar buttons in each class which extends it
+ * @author Khushdeep
  */
 public abstract class NavBar extends AppCompatActivity {
     @Override
@@ -34,6 +38,10 @@ public abstract class NavBar extends AppCompatActivity {
     }
 
     // Method to be implemented by child classes to return their layout resource ID
+    /**
+     * Gets xml file for specific activity
+     * @return ID of Layout resource xml
+     */
     protected abstract int getLayoutResourceId();
 
     // Method to setup a TextView button
@@ -50,6 +58,11 @@ public abstract class NavBar extends AppCompatActivity {
     }
 
     // Method to handle the TextView button click
+
+    /**
+     * Handles clicking for textviews which are common to all classes that extend NavBar
+     * @param viewId Id in xml of the Textview being clicked
+     */
     protected void onTextViewButtonClicked(int viewId) {
         Intent intent = null;
         boolean shouldStartActivity = true;
@@ -72,15 +85,6 @@ public abstract class NavBar extends AppCompatActivity {
         else if (viewId == R.id.bottom_profile_icon) {
             targetClass = ProfileActivity.class;
         }
-
-//        // Check if the target activity is the same as the current activity
-//        if (this.getClass().equals(targetClass)) {
-//            return; // If it is, do nothing
-//        }
-//
-//        // Otherwise, start the target activity
-//        intent = new Intent(this, targetClass);
-//        startActivity(intent);
 
         // Check if the target activity is the same as the current activity
         if (this.getClass().equals(targetClass)) {

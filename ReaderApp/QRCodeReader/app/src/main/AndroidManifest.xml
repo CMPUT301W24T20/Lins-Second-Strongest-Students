@@ -33,9 +33,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_api_key">
         </meta-data>
-        <activity android:name=".MapView"
+        <activity android:name=".map.MapView"
             android:exported="false" />
-        <activity android:name=".MapViewOrganizer"
+        <activity android:name=".map.MapViewOrganizer"
             android:exported="false" />
         <activity
             android:name=".ui.eventPage.CreateEventActivity"
@@ -60,11 +60,11 @@
         <activity android:name=".ui.admin.UserDetailsAdminActivity"/>
         <activity android:name=".ui.admin.AdminImagesOptionActivity"/>
         <activity android:name=".ui.dashboard.CameraActivityDisplay"/>
-        <activity android:name=".CameraActivity" />
+        <activity android:name=".ui.camera.CameraActivity" />
         <activity android:name=".TestEventDetailsAttendeeActivity"/>
 
         <activity
-            android:name=".DisplayQRCode"
+            android:name=".util.DisplayQRCode"
             android:exported="false" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
@@ -88,9 +88,9 @@
         <!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>-->
         <!--            </intent-filter>-->
         <!--        </service>-->
-        <service android:name=".MilestoneListeningService"/>
+        <service android:name=".util.assisting.MilestoneListeningService"/>
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name=".util.assisting.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
