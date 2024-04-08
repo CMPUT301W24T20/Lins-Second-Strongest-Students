@@ -278,7 +278,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                     });
 
                 } else if (s.length() == 0  && uploaded == null && index != 86){
-                    SetDefaultProfile.generateNoName(2, null, docRefUser, new SetDefaultProfile.ProfilePicCallback() {
+                    SetDefaultProfile.generateNoName(new SetDefaultProfile.ProfilePicCallback() {
                         @Override
                         public void onImageURLReceived(String imageURL) {
                             image = imageURL;

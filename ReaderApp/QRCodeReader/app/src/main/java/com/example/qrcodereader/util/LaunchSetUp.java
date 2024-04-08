@@ -95,10 +95,11 @@ public class LaunchSetUp {
                                 }
                             });
 
-                    SetDefaultProfile.generateNoName(1, newUser, null, new SetDefaultProfile.ProfilePicCallback() {
+                    SetDefaultProfile.generateNoName(new SetDefaultProfile.ProfilePicCallback() {
                         @Override
                         public void onImageURLReceived(String imageURL) {
                             // created default profile picture, thus can now set
+                            newUser.put("ProfilePic", imageURL);
                             docRefUser.set(newUser);
                         }
                     });
