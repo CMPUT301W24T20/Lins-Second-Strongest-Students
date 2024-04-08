@@ -127,10 +127,22 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         generateAndCheckQRCode();
 
         EditText eventDate = findViewById(R.id.event_date);
-        eventDate.setOnClickListener(v -> showDatePickerDialog(eventDate));
+        eventDate.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                showDatePickerDialog(eventDate);
+                return true; // Return true to indicate the event was handled
+            }
+            return false; // Return false for other actions to proceed
+        });
 
         EditText eventTime = findViewById(R.id.event_time);
-        eventTime.setOnClickListener(v -> showTimePickerDialog(eventTime));
+        eventTime.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                showTimePickerDialog(eventTime);
+                return true; // Return true to indicate the event was handled
+            }
+            return false; // Return false for other actions to proceed
+        });
 
         if (!Places.isInitialized()) {
             String apiKey = getString(R.string.google_maps_api_key);
@@ -384,12 +396,23 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
      */
     public boolean validateUserInput() {
         eventName = findViewById(R.id.event_name);
+        EditText getDate = findViewById(R.id.event_date);
+        EditText getTime = findViewById(R.id.event_time);
+
         if (eventName.getText().toString().isEmpty()) {
             Toast.makeText(this, "Please enter an event name", Toast.LENGTH_SHORT).show();
             return false;
         }
-        else if (eventLocation == null) {
+        else if (getLocation.getText().toString().isEmpty() || eventLocation == null) {
             Toast.makeText(this, "Please enter an event location", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (getDate.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Please enter an event date", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (getTime.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Please enter an event time", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -530,4 +553,13 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         void onChecked(boolean exists);
     }
 
+    public void testCreateEventDateTimeLocationInjection(int year, int month, int day, int hour, int minute, double latitude, double longitude, String locationName) {
+        eventDateTime.set(Calendar.YEAR, year);
+        eventDateTime.set(Calendar.MONTH, month);
+        eventDateTime.set(Calendar.DAY_OF_MONTH, day);
+        eventDateTime.set(Calendar.HOUR_OF_DAY, hour);
+        eventDateTime.set(Calendar.MINUTE, minute);
+        eventLocation = new GeoPoint(latitude, longitude);
+        eventLocationName = locationName;
+    }
 }

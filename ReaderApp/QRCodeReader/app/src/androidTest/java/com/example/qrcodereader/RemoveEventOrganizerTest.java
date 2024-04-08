@@ -1,9 +1,6 @@
 package com.example.qrcodereader;
 
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -88,7 +85,6 @@ public class RemoveEventOrganizerTest {
 
 
         try (ActivityScenario<EventDetailsOrganizerActivity> scenario = ActivityScenario.launch(EventDetailsOrganizerActivity.class)) {
-            // Rest of your test code...
             // Wait for 5 seconds after the activity has launched
             Thread.sleep(5000);
 

@@ -61,7 +61,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
 
 
         FirebaseFirestore db = FirestoreManager.getInstance().getDb();
-        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        String deviceID = FirestoreManager.getInstance().getUserID();
         docRefUser = FirestoreManager.getInstance().getUserDocRef();
 
         docRefUser.get().addOnSuccessListener(documentSnapshot -> {

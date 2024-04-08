@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,12 +19,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.qrcodereader.MainActivity;
 import com.example.qrcodereader.MyFirebaseMessagingService;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.User;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -40,12 +44,14 @@ public class LaunchSetUp {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private DocumentReference docRefUser;
+    private Location location;
 
     private User user;
     private String userId;
 
-    public LaunchSetUp(Context context) {
+    public LaunchSetUp(Context context, Location location) {
         this.context = context;
+        this.location = location;
     }
 
     public void setup() {
@@ -65,6 +71,7 @@ public class LaunchSetUp {
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
         docRefUser = db.collection("users").document(deviceID);
+
 
         /*
             OpenAI, ChatGpt, 06/03/24
@@ -86,7 +93,11 @@ public class LaunchSetUp {
                     newUser.put("phone", "");
                     newUser.put("phoneRegion", "");
                     newUser.put("eventsAttended", new HashMap<>());
-                    newUser.put("location", new GeoPoint(0, 0));
+                    if (location != null) {
+                        newUser.put("location", new GeoPoint(location.getLatitude(), location.getLongitude()));
+                    } else {
+                        newUser.put("location", new GeoPoint(0, 0));
+                    }
                     FirebaseMessaging.getInstance().getToken() //Microsoft Copilot 2024, "get FCM token android"
                             .addOnSuccessListener(new OnSuccessListener<String>() {
                                 @Override

@@ -2,6 +2,7 @@ package com.example.qrcodereader.ui.admin;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -98,7 +99,10 @@ public class UserDetailsAdminActivity extends AppCompatActivity {
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                new LaunchSetUp(this).setup();
+                Location loco = new Location("provider");
+                loco.setLatitude(0); // if something breaks this segment did it
+                loco.setLongitude(0);
+                new LaunchSetUp(this,loco).setup();
             }
         });
 

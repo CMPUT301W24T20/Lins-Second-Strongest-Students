@@ -11,6 +11,7 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.ACCESS_SELECTED_PHOTOS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -81,12 +82,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.notifications.NotificationsActivity"/>
-<!--        <service-->
-<!--            android:name=".MyFirebaseInstanceIDService">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>-->
-<!--            </intent-filter>-->
-<!--        </service>-->
+        <!--        <service-->
+        <!--            android:name=".MyFirebaseInstanceIDService">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>-->
+        <!--            </intent-filter>-->
+        <!--        </service>-->
         <service android:name=".MilestoneListeningService"/>
         <service
             android:name=".MyFirebaseMessagingService"

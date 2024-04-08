@@ -130,6 +130,9 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                 eventLocationTextView.setText(locationName);
                 String timeText = time.toDate().toString();
                 eventTimeTextView.setText(timeText);
+                if (EventPoster != null && !EventPoster.isEmpty()) {
+                    Picasso.get().load(EventPoster).resize(410, 240).centerInside().into(eventPoster);
+                }
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
