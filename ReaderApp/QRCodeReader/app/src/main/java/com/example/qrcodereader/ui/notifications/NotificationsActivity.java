@@ -41,7 +41,6 @@ public class NotificationsActivity extends NavBar {
 
     private TextView deleteOne;
     private TextView clearAll;
-    private TextView returnButton;
     private NotificationAdapter adapter;
     private String userID;
 
@@ -55,7 +54,6 @@ public class NotificationsActivity extends NavBar {
 
         deleteOne = findViewById(R.id.delete_button);
         clearAll = findViewById(R.id.clear_button);
-        returnButton = findViewById(R.id.return_button);
         ListView listView = findViewById(R.id.notification_list);
         setupTextViewButton(R.id.home_button);
         setupTextViewButton(R.id.event_button);
