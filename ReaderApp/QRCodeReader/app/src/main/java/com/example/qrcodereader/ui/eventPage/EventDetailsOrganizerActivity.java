@@ -121,8 +121,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity implements 
                 if (poster != null && !poster.isEmpty()) {
                     Picasso.get().load(poster).resize(410, 240).centerInside().into(eventPoster);
                 } else {
-                    // Handle the case where the poster URL is null or empty
-                    // For example, you might want to load a default image
+                    Picasso.get().load(R.drawable._49e43ff77b9c6ecc64d8a9b55622ddd7_2).centerInside().fit().into(eventPoster);
                 }
                 qrCode = new QRCode(qrCodeString);
                 Log.d("Firestore", "Successfully fetch document: ");
@@ -164,7 +163,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity implements 
             startActivityForResult(galleryIntent, 1);
         });
     }
-    
+
     private void goToMapActivity() {
         double latitude = getIntent().getDoubleExtra("latitude", 0);
         double longitude = getIntent().getDoubleExtra("longitude", 0);
