@@ -15,6 +15,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.qrcodereader.old.MainActivity;
 import com.example.qrcodereader.R;
+import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -115,7 +117,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Get Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        String userID = AttendeeEventActivity.userID;
 
         Map<String, Object> data = new HashMap<>();
         data.put("event", eventID);

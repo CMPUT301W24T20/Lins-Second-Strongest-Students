@@ -14,6 +14,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.checkerframework.checker.index.qual.LengthOf;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,6 +64,7 @@ public final class Notifier {
         String body = text[1];
 
         for (Map.Entry<String, Long> entry : attendees) {
+            Log.d("GettingToken", " "+entry);
             getToken(entry.getKey(), title, body, event);
         }
 
@@ -82,8 +85,10 @@ public final class Notifier {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
+//                            MyFirebaseMessagingService.store();
                             String token = documentSnapshot.getString("token");
                             Notifier.this.notify(token, title, body, event);
+                            Log.d("Sent To:", "Token=" + token);
                         } else {
                             System.out.println("No such document!");
                             throw new RuntimeException("FCM Token not found");
@@ -152,7 +157,7 @@ public final class Notifier {
 
         String title = "Event Milestone!";
         String body;
-        if (users == 1) {
+        if (users <= 1) {
             body = "Your first user has scanned in!";
         } else {
             body = users + " users have scanned into your event.";
