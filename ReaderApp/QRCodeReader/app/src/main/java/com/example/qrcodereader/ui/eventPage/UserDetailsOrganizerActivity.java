@@ -3,6 +3,7 @@ package com.example.qrcodereader.ui.eventPage;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrcodereader.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 public class UserDetailsOrganizerActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -25,8 +27,7 @@ public class UserDetailsOrganizerActivity extends AppCompatActivity {
         TextView userEmail = findViewById(R.id.email);
         TextView userPhoneRegion = findViewById(R.id.phone_region);
         TextView userPhone = findViewById(R.id.phone);
-
-
+        ImageView userProfilePic = findViewById(R.id.user_profile_photo);
 
         String attendeeID = getIntent().getStringExtra("attendeeID");
         db = FirebaseFirestore.getInstance();
@@ -42,16 +43,13 @@ public class UserDetailsOrganizerActivity extends AppCompatActivity {
                 String email = documentSnapshot.getString("email");
                 String phoneRegion= documentSnapshot.getString("phoneRegion");
                 String phone= documentSnapshot.getString("phone");
+                String pictureURL = documentSnapshot.getString("ProfilePic");
                 userName.setText(name);
                 userEmail.setText(email);
                 userPhoneRegion.setText(phoneRegion);
                 userPhone.setText(phone);
+                Picasso.get().load(pictureURL).resize(200, 200).centerInside().into(userProfilePic);
                 Log.d("Firestore", "Successfully fetch document: ");
-
-//                List<String> attendeesList = new ArrayList<>(usersAttended.keySet());
-//                ArrayAdapter<String> adapter = new ArrayAdapter<>(
-//                        this, android.R.layout.simple_list_item_1, attendeesList);
-//                attendeesListView.setAdapter(adapter);
 
             } else {
                 Toast.makeText(UserDetailsOrganizerActivity.this, "Unsuccessfully fetch document", Toast.LENGTH_SHORT).show();
@@ -61,9 +59,7 @@ public class UserDetailsOrganizerActivity extends AppCompatActivity {
             Log.d("Firestore", "Failed to fetch document");
         });
 
-
         TextView returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
-
     }
 }

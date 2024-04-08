@@ -32,7 +32,11 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
     private TextView region;
     private String pictureURL;
     private TextView reviewLocationPermissions;
-    
+
+    /**
+     * This method creates the view of profile details along with buttons to that lead to admin functions, edit profile, and alter location access
+     * @param savedInstanceState the Bundle that is previous saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +77,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                 Picasso.get().load(pictureURL).resize(200, 200).centerInside().into(Picture);
             }
         }).addOnFailureListener(e -> {
-                   Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
+            Log.e(TAG, "Failed to fetch user's information:" + e.getMessage());
         });
 
         /*
@@ -91,7 +95,7 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
                     }
                 })
                 .addOnFailureListener(e -> {
-                    // Handle failure
+                    Log.e(TAG, "Failed to check if user is admin" + e.getMessage());
                 });
         // ChatGPT code ends here
 
@@ -154,7 +158,6 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
      * @param EditEmail the String of the input in the email input of the edit fragment
      * @param EditPhone the String of the input in the phone input of the edit fragment
      * @param EditRegion the String of the phone region selected in the edit fragment
-     *
      */
     @Override
     public void onSaveClicked(String EditName, String EditEmail, String EditPhone, String EditRegion, Uri upload) {

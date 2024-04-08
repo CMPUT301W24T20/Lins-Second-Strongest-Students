@@ -12,7 +12,11 @@ import androidx.fragment.app.DialogFragment;
 import com.example.qrcodereader.MainActivity;
 
 public class AdminAllOptionsFrag extends DialogFragment {
-
+    /**
+     * This method creates the Dialog fragment of choices of pages for admin to go to
+     * @param savedInstanceState the Bundle that is previous saved state
+     * @return Return a new Dialog instance to be displayed by the fragment.
+     */
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());

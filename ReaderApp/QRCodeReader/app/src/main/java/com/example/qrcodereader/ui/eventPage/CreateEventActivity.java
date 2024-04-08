@@ -159,9 +159,7 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         EditText attendeeLimit = findViewById(R.id.attendee_limit);
 
         storage = FirebaseStorage.getInstance().getReference();
-        StorageReference storageRef = storage.child("EventPoster/noEventPoster.png");
         Poster = findViewById(R.id.PosterUpload);
-
         Poster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,11 +211,8 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                             else {
                                 event.put("qrCode", generatedQRCode);
                             }
-
                             AddEvent();
-
                             finish();
-
                         } else {
                             // Document does not exist
                             Log.d("CreateEventActivity", "No such document");

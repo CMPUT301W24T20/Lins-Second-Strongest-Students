@@ -49,13 +49,22 @@ public class AdminImageView extends DialogFragment implements ImageAdapter.OnIma
     private String TypeRef;
     private String Title;
 
-    // Constructor to initialize AdminImageView with the required parameters
+    /**
+     * Constructor to initialize AdminImageView with the required parameters
+     * @param title the String to be the title of the fragment
+     * @param type the String that represents type of contents of fragment
+     */
     public AdminImageView(String title, String type) {
         this.Title = title;
         this.TypeRef = type;
         this.storageRef = FirebaseStorage.getInstance().getReference().child(this.TypeRef);
     }
 
+    /**
+     * This method creates the Dialog fragment of a recycler view containing images from FirebaseStorage
+     * @param savedInstanceState the Bundle that is previous saved state
+     * @return Return a new Dialog instance to be displayed by the fragment.
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -79,10 +88,11 @@ public class AdminImageView extends DialogFragment implements ImageAdapter.OnIma
                 .setPositiveButton("Delete", (dialog, which) -> deleteSelectedImages());
 
         return builder.create();
-
-
     }
 
+    /**
+     * This method loads images from FirebaseStorage into the recycler view
+     */
     @SuppressLint("NotifyDataSetChanged")
     public void populateListView() {
         storageRef.listAll().addOnSuccessListener(listResult -> {
@@ -101,6 +111,9 @@ public class AdminImageView extends DialogFragment implements ImageAdapter.OnIma
         });
     }
 
+    /**
+     * This method deletes the images that were selected by user
+     */
     private void deleteSelectedImages() {
         List<String> imagesToDelete = adapter.getSelectedImages();
         for (String imageUrl : imagesToDelete) {
@@ -134,6 +147,10 @@ public class AdminImageView extends DialogFragment implements ImageAdapter.OnIma
         }
     }
 
+    /**
+     * This method leads user to fragment displaying the full view of the selected image upon long click
+     * @param imageUrl the String of the selected image
+     */
     @Override
     public void onImageLongClick(String imageUrl) {
         ImageDetail details = new ImageDetail();
