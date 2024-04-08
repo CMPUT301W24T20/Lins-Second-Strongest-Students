@@ -106,10 +106,11 @@ public class LaunchSetUp {
                                 }
                             });
 
-                    SetDefaultProfile.generateNoName(1, newUser, null, new SetDefaultProfile.ProfilePicCallback() {
+                    SetDefaultProfile.generateNoName(new SetDefaultProfile.ProfilePicCallback() {
                         @Override
                         public void onImageURLReceived(String imageURL) {
                             // created default profile picture, thus can now set
+                            newUser.put("ProfilePic", imageURL);
                             docRefUser.set(newUser);
                         }
                     });
@@ -134,11 +135,6 @@ public class LaunchSetUp {
         }).addOnFailureListener(e -> {
             showToast("Failed to fetch User");
         });
-
-        //        int index = (user.getName().length() % 4)+1;
-//        String P = "P"+index;
-//
-
     }
 
     private void showToast(String message) {
@@ -213,5 +209,4 @@ public class LaunchSetUp {
         IntentFilter filter = new IntentFilter(MyFirebaseMessagingService.ACTION_BROADCAST);
         context.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
     }
-
 }

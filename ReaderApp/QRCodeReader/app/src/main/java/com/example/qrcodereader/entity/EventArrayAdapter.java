@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 import com.squareup.picasso.Picasso;
 
@@ -75,7 +76,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         String imagePoster = event.getPoster();
         //Picasso.get().load(imagePoster).centerInside().fit().into(PosterPicture);
 
-        if (imagePoster != null && !imagePoster.isEmpty()) {
+        if (!Objects.equals(imagePoster, "") && !imagePoster.isEmpty()) {
             Picasso.get().load(imagePoster).centerInside().fit().into(PosterPicture);
         } else {
             // Load a default image or clear the ImageView if no poster exists
