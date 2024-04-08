@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-04-06T23:53:33.651Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0" etag="bp2ZOWb7VoQG-xFtHJaq" version="23.1.5" type="github">
+<mxfile host="app.diagrams.net" modified="2024-04-08T03:37:34.991Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0" etag="ntKB6SqUjbAxc6j4PMZJ" version="24.2.2" type="github">
   <diagram name="Page-1" id="isyf78NvJ2EBEAnTLSQR">
     <mxGraphModel dx="960" dy="1489" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
@@ -184,52 +184,76 @@
         <mxCell id="F9zYYcnOCjDlbiqOqqYT-4" value="" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="F9zYYcnOCjDlbiqOqqYT-1" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-1" value="" style="group" vertex="1" connectable="0" parent="1">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-1" value="" style="group" parent="1" vertex="1" connectable="0">
           <mxGeometry x="160" y="1100" width="340" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-2" value="Notifier" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-1">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-2" value="Notifier" style="rounded=0;whiteSpace=wrap;html=1;" parent="TDorO-l8QUH1OnAUlSvA-1" vertex="1">
           <mxGeometry width="339.99999999999994" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-3" value="- Manage requests to create and send notifications&lt;br&gt;&amp;nbsp;- Sent by event organizers to attendees, or&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-1">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-3" value="- Manage requests to create and send notifications&lt;br&gt;&amp;nbsp;- Sent by event organizers to attendees, or&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="TDorO-l8QUH1OnAUlSvA-1" vertex="1">
           <mxGeometry y="40" width="163.19999999999996" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-4" value="-Event Organizer&lt;br&gt;-MyFirebaseMessagingService&lt;br&gt;-MilestoneListeningService" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-1">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-4" value="-Event Organizer&lt;br&gt;-MyFirebaseMessagingService&lt;br&gt;-MilestoneListeningService" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="TDorO-l8QUH1OnAUlSvA-1" vertex="1">
           <mxGeometry x="163.19999999999996" y="40" width="176.79999999999995" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-5" value="" style="group" vertex="1" connectable="0" parent="1">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-5" value="" style="group" parent="1" vertex="1" connectable="0">
           <mxGeometry x="520" y="1100" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-6" value="MyFirebaseMessagingService" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-5">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-6" value="MyFirebaseMessagingService" style="rounded=0;whiteSpace=wrap;html=1;" parent="TDorO-l8QUH1OnAUlSvA-5" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-7" value="- Recieve notifications from FCM" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-5">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-7" value="- Recieve notifications from FCM" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="TDorO-l8QUH1OnAUlSvA-5" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-8" value="- User&lt;br&gt;- Notification&lt;br&gt;- Firebase" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-5">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-8" value="- User&lt;br&gt;- Notification&lt;br&gt;- Firebase" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="TDorO-l8QUH1OnAUlSvA-5" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-9" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="160" y="1275" width="240" height="160" as="geometry" />
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-9" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="150" y="1460" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-10" value="Notification" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-9">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-10" value="NotificationAdapter" style="rounded=0;whiteSpace=wrap;html=1;" parent="TDorO-l8QUH1OnAUlSvA-9" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-11" value="- Contains data sent to a user through FCM&lt;br&gt;- Stored under recipient&#39;s document in Firebase" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-9">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-11" value="- Display notifications in a listVIew" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="TDorO-l8QUH1OnAUlSvA-9" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-12" value="- User&lt;br&gt;- Firebase" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-9">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-12" value="- NotificationDetail&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="TDorO-l8QUH1OnAUlSvA-9" vertex="1">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-13" value="" style="group" vertex="1" connectable="0" parent="1">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-13" value="" style="group" parent="1" vertex="1" connectable="0">
           <mxGeometry x="450" y="1275" width="240" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-14" value="MilestoneListeningService" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-13">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-14" value="MilestoneListeningService" style="rounded=0;whiteSpace=wrap;html=1;" parent="TDorO-l8QUH1OnAUlSvA-13" vertex="1">
           <mxGeometry width="240" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-15" value="- Notifies event organizers upon reaching milestones" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-13">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-15" value="- Notifies event organizers upon reaching milestones" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="TDorO-l8QUH1OnAUlSvA-13" vertex="1">
           <mxGeometry y="40" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="TDorO-l8QUH1OnAUlSvA-16" value="- Firebase&lt;br&gt;- User&lt;br&gt;- Notifier" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="TDorO-l8QUH1OnAUlSvA-13">
+        <mxCell id="TDorO-l8QUH1OnAUlSvA-16" value="- Firebase&lt;br&gt;- User&lt;br&gt;- Notifier" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="TDorO-l8QUH1OnAUlSvA-13" vertex="1">
+          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rrSvDPl7ggr8lH2BGJYU-1" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="710" y="1275" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="rrSvDPl7ggr8lH2BGJYU-2" value="NotificationDetail" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="rrSvDPl7ggr8lH2BGJYU-1">
+          <mxGeometry width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="rrSvDPl7ggr8lH2BGJYU-3" value="- Represent a notification to display in a listView" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="rrSvDPl7ggr8lH2BGJYU-1">
+          <mxGeometry y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rrSvDPl7ggr8lH2BGJYU-4" value="- Notification&lt;div&gt;- NotificationAdapter&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="rrSvDPl7ggr8lH2BGJYU-1">
+          <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rrSvDPl7ggr8lH2BGJYU-5" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="170" y="1285" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="rrSvDPl7ggr8lH2BGJYU-6" value="Notification" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="rrSvDPl7ggr8lH2BGJYU-5">
+          <mxGeometry width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="rrSvDPl7ggr8lH2BGJYU-7" value="- Contains data sent to a user through FCM&lt;br&gt;- Stored under recipient&#39;s document in Firebase" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="rrSvDPl7ggr8lH2BGJYU-5">
+          <mxGeometry y="40" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rrSvDPl7ggr8lH2BGJYU-8" value="- User&lt;br&gt;- Firebase" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="rrSvDPl7ggr8lH2BGJYU-5">
           <mxGeometry x="120" y="40" width="120" height="120" as="geometry" />
         </mxCell>
       </root>

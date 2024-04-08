@@ -5,9 +5,11 @@ import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,14 +37,17 @@ import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
 import com.example.qrcodereader.ui.eventPage.EventDetailsOrganizerActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.EventRemoveAttendeeActivity;
+import com.example.qrcodereader.ui.profile.ProfileActivity;
 import com.google.firebase.firestore.FieldValue;
 
 import java.util.HashMap;
 import java.util.Map;
-//broken
+
 @RunWith(AndroidJUnit4.class)
 public class AttendeeActivityTest {
 
+    @Rule
+    public GrantPermissionRule grantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION);
     @Before
     public void setUp() {
         // Set the Firestore collections to test versions
@@ -50,6 +55,7 @@ public class AttendeeActivityTest {
         FirestoreManager.getInstance().setUserCollection("usersTest");
         FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
         FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
+
     }
 
     @Test

@@ -5,8 +5,10 @@ import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -37,6 +39,9 @@ import java.util.Map;
 
 @RunWith(AndroidJUnit4.class)
 public class OrganizerActivityTest {
+    @Rule
+    public GrantPermissionRule grantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION);
+
 
     @Before
     public void setUp() {
@@ -46,7 +51,7 @@ public class OrganizerActivityTest {
         FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
         FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
     }
-    //broken
+
     @Test
     public void testListViewAndLinearLayoutPresence() throws InterruptedException {
         // Start the activity
