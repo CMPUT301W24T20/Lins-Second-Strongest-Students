@@ -71,13 +71,15 @@ public class CreateEventTest {
             scenario.onActivity(activity -> {
                 // Check if the QR code is displayed
                 EditText eventDate = activity.findViewById(R.id.event_date);
-                //eventDate.setEnabled(true);
+                eventDate.setEnabled(true);
                 eventDate.setText("2024-05-15");
 
                 EditText eventTime = activity.findViewById(R.id.event_time);
+                eventTime.setEnabled(true);
                 eventTime.setText("14:30");
 
                 EditText eventName = activity.findViewById(R.id.event_name);
+                eventName.setEnabled(true);
                 eventName.setText("Test Event");
 
                 assert (eventDate.getText().toString().equals("2024-05-15"));
@@ -101,12 +103,15 @@ public class CreateEventTest {
             scenario.onActivity(activity -> {
                 // Check if the QR code is displayed
                 EditText eventDate = activity.findViewById(R.id.event_date);
+                eventDate.setEnabled(true);
                 eventDate.setText("2024-05-15");
 
                 EditText eventTime = activity.findViewById(R.id.event_time);
+                eventTime.setEnabled(true);
                 eventTime.setText("14:30");
 
                 EditText eventLocation = activity.findViewById(R.id.event_location);
+                eventLocation.setEnabled(true);
                 eventLocation.setText("Test Location");
 
                 assert (eventDate.getText().toString().equals("2024-05-15"));
