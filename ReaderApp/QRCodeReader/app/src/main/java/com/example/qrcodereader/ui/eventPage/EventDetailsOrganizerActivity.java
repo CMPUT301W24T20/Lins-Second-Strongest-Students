@@ -118,6 +118,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity implements 
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String qrCodeString = documentSnapshot.getString("qrCode");
                 String poster = documentSnapshot.getString("poster");
+
                 if (poster != null && !poster.isEmpty()) {
                     Picasso.get().load(poster).resize(410, 240).centerInside().into(eventPoster);
                 } else {

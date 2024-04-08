@@ -6,32 +6,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/sky_blue_variant">
 
-    <ImageView android:id="@+id/return_button"
-        android:src="@drawable/vector_ek2"
-        android:contentDescription="vector_ek2"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="19dp"
+    <ImageView
+        android:id="@+id/return_button"
         android:layout_width="20dp"
         android:layout_height="39dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="38dp"
+        android:contentDescription="vector_ek2"
         android:elevation="2dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:src="@drawable/vector_ek2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/new_event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="50sp"
-        android:text="@string/new_event"
-        android:textColor="@color/black"
-        android:textStyle="bold"
+        android:layout_marginTop="20dp"
         android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:paddingTop="10dp"
         android:paddingBottom="5dp"
-        />
+        android:text="@string/new_event"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/name"
