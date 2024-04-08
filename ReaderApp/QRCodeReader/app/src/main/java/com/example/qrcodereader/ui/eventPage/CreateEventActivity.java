@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -232,6 +234,28 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         ImageView cancel_button = findViewById(R.id.return_button);
         cancel_button.setOnClickListener(v -> {finish();
         });
+
+        eventName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Not needed
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 50) {
+                    eventName.setText(s.subSequence(0, 50));
+                    eventName.setSelection(50);
+                    Toast.makeText(CreateEventActivity.this, "Max charater limit is 50!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -382,29 +406,29 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
      * This method validates the user input for the event
      * @return true if the user input is valid, false otherwise
      */
-    public boolean validateUserInput() {
-        eventName = findViewById(R.id.event_name);
-        EditText getDate = findViewById(R.id.event_date);
-        EditText getTime = findViewById(R.id.event_time);
+        public boolean validateUserInput() {
+            eventName = findViewById(R.id.event_name);
+            EditText getDate = findViewById(R.id.event_date);
+            EditText getTime = findViewById(R.id.event_time);
 
-        if (eventName.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Please enter an event name", Toast.LENGTH_SHORT).show();
-            return false;
+            if (eventName.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Please enter an event name", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            else if (getLocation.getText().toString().isEmpty() || eventLocation == null) {
+                Toast.makeText(this, "Please enter an event location", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            else if (getDate.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Please enter an event date", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            else if (getTime.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Please enter an event time", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return true;
         }
-        else if (getLocation.getText().toString().isEmpty() || eventLocation == null) {
-            Toast.makeText(this, "Please enter an event location", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        else if (getDate.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Please enter an event date", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        else if (getTime.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Please enter an event time", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
 
     /**
      * This method generate a new QR code for the selected past event
