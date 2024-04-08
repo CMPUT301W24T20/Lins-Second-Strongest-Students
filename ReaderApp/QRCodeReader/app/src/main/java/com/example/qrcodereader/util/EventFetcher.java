@@ -28,17 +28,30 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
+/**
+ * The EventFetcher class is responsible for fetching events from Firestore database
+ * based on different criteria like organizer events, attendee events, and browse events.
+ */
 public class EventFetcher {
 
     private EventArrayAdapter eventArrayAdapter;
     private Context context;
-
+    /**
+     * Constructs a new EventFetcher.
+     *
+     * @param eventArrayAdapter The adapter for displaying events.
+     * @param context           The context of the application.
+     */
     public EventFetcher(EventArrayAdapter eventArrayAdapter, Context context) {
         this.eventArrayAdapter = eventArrayAdapter;
         this.context = context;
     }
-
+    /**
+     * Fetches events organized by the current user.
+     *
+     * @return An ArrayList of Event objects representing organizer events.
+     */
     public ArrayList<Event> fetchOrganizerEvents() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -80,7 +93,9 @@ public class EventFetcher {
                 });
         return events;
     }
-
+    /**
+     * Fetches events attended by the current user.
+     */
     public void fetchAttendeeEvents() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -150,7 +165,9 @@ public class EventFetcher {
             }
         });
     }
-
+    /**
+     * Fetches upcoming events for browsing.
+     */
     public void fetchBrowseEvents() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Timestamp now = Timestamp.now();
@@ -192,7 +209,11 @@ public class EventFetcher {
                     }
                 });
     }
-
+    /**
+     * Updates the adapter with the provided events list.
+     *
+     * @param events The list of events to update the adapter with.
+     */
     private void updateAdapter(ArrayList<Event> events) {
         // Run on UI thread because notifyDataSetChanged() needs to update the UI
         new Handler(Looper.getMainLooper()).post(() -> {

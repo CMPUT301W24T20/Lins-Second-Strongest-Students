@@ -72,6 +72,7 @@ import java.util.Map;
  *  Activity for users to create events by entering the details and press create.
  *  @author Duy
  */
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
 public class CreateEventActivity extends AppCompatActivity implements ImageUpload {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
@@ -448,7 +449,11 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         });
         // ChatGPT code end here
     }
-
+    /**
+     * Sets the visibility of the QR code reuse button based on the availability of past events.
+     * If there are past events, the button is visible and clickable, allowing the user to browse past events.
+     * If there are no past events, the button is invisible.
+     */
     public void setReuseQRButtonVisible() {
         ArrayList<Event> pastEvents = new ArrayList<>();
         pastEvents = AppDataHolder.getInstance().getPastEvents(this);
@@ -463,7 +468,10 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             qrReuseButton.setVisibility(View.INVISIBLE);
         }
     }
-
+    /**
+     * Generates QR codes for the event and checks their uniqueness in the Firestore database.
+     * If the generated QR code already exists, it recursively generates new ones until unique codes are found.
+     */
     public void generateAndCheckQRCode() {
         generatedQRCode = new QRCode().getString();
         generatedPromotionalQRCode = new QRCode().getString();
@@ -484,7 +492,13 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             }
         });
     }
-
+    /**
+     * Checks the existence of a QR code in the Firestore database.
+     *
+     * @param db      The instance of the Firestore database.
+     * @param qrCode  The QR code string to check.
+     * @param callback The callback interface for existence check.
+     */
     private void checkQRCodeExistence(FirebaseFirestore db, String qrCode, ExistenceCallback callback) {
         db.collection("qrcoderef")
                 .whereEqualTo("qrCode", qrCode)
@@ -502,7 +516,13 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                     }
                 });
     }
-
+    /**
+     * Updates the reference of a QR code in Firestore with the event ID.
+     * If the selected QR code exists, it updates its reference with the event ID.
+     * If no QR code is selected, it creates new documents for both check-in and promotional QR codes.
+     *
+     * @param eventId The ID of the event associated with the QR code.
+     */
     private void updateQRCodeReference(String eventId) {
         if (!selectedQRCode.isEmpty()) {
             // Query the 'qrcoderef' collection for the document with the matching 'qrCode'
@@ -551,7 +571,19 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
     interface ExistenceCallback {
         void onChecked(boolean exists);
     }
-
+    /**
+     * For testing purposes, injects event date, time, and location into the activity.
+     * This method is used to simulate setting these parameters programmatically.
+     *
+     * @param year         The year of the event.
+     * @param month        The month of the event.
+     * @param day          The day of the event.
+     * @param hour         The hour of the event.
+     * @param minute       The minute of the event.
+     * @param latitude     The latitude of the event location.
+     * @param longitude    The longitude of the event location.
+     * @param locationName The name of the event location.
+     */
     public void testCreateEventDateTimeLocationInjection(int year, int month, int day, int hour, int minute, double latitude, double longitude, String locationName) {
         eventDateTime.set(Calendar.YEAR, year);
         eventDateTime.set(Calendar.MONTH, month);

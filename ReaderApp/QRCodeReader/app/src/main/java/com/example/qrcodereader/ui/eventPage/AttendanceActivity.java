@@ -23,7 +23,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Map;
-
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
+/**
+ * Activity to manage event attendance and notify attendees.
+ */
 public class AttendanceActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;

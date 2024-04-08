@@ -29,6 +29,7 @@ import java.io.IOException;
  * Activity for displaying QR code
  * @author Duy
  */
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
 public class DisplayQRCode extends AppCompatActivity {
     String type = "Check in";
     Bitmap qrCodeBitmap;
@@ -103,7 +104,13 @@ public class DisplayQRCode extends AppCompatActivity {
             shareImageFile(file, this);
         });
     }
-
+    /**
+     * Converts a Bitmap to a File.
+     *
+     * @param bitmap  The Bitmap to be converted.
+     * @param context The context of the application.
+     * @return A File object representing the converted Bitmap.
+     */
     public File bitmapToFile(Bitmap bitmap, Context context) {
         // Get the cache directory
         File cachePath = new File(context.getCacheDir(), "images");
@@ -124,7 +131,12 @@ public class DisplayQRCode extends AppCompatActivity {
 
         return file;
     }
-
+    /**
+     * Shares the given image file.
+     *
+     * @param file    The image file to be shared.
+     * @param context The context of the application.
+     */
     public void shareImageFile(File file, Context context) {
         Uri contentUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
 
@@ -137,11 +149,19 @@ public class DisplayQRCode extends AppCompatActivity {
             context.startActivity(Intent.createChooser(shareIntent, "Choose an app"));
         }
     }
-
+    /**
+     * Gets the currently displaying QR code.
+     *
+     * @return The currently displaying QR code.
+     */
     public String getDisplayingQR() {
         return displayingQR;
     }
-
+    /**
+     * Gets the type of the currently displaying QR code.
+     *
+     * @return The type of the currently displaying QR code.
+     */
     public String getType() {
         return type;
     }

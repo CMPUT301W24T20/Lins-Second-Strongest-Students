@@ -24,6 +24,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Map;
 
+/**
+ * Listener service to record attendance milestones for events.
+ */
 public class MilestoneListeningService extends Service {
 
     @Nullable
@@ -39,6 +42,9 @@ public class MilestoneListeningService extends Service {
         return START_STICKY;
     }
 
+    /**
+     * Listen for milestones per event
+     */
     private void listenForMilestones() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference eventsRef = db.collection("events");

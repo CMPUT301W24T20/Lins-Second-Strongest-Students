@@ -47,13 +47,11 @@ import java.util.ArrayList;
 
 /**
  * View for Map
+ *  Represents a MapView that displays a Google Map.
+ *  Implements the OnMapReadyCallback interface.
  * @author Khushdeep
  */
 // Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
-/**
- * Represents a MapView that displays a Google Map.
- * Implements the OnMapReadyCallback interface.
- */
 public class MapView extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;

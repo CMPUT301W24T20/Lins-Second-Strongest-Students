@@ -39,6 +39,12 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
+/**
+ * The LaunchSetUp class handles initial setup tasks when the application launches,
+ * such as initializing Firestore, checking notification settings, creating notification channels,
+ * and setting up broadcast receivers for push notifications.
+ */
 public class LaunchSetUp {
     private Context context;
     private FirebaseFirestore db;
@@ -48,12 +54,19 @@ public class LaunchSetUp {
 
     private User user;
     private String userId;
-
+    /**
+     * Constructs a new LaunchSetUp instance.
+     *
+     * @param context  The context of the application.
+     * @param location The current location of the user.
+     */
     public LaunchSetUp(Context context, Location location) {
         this.context = context;
         this.location = location;
     }
-
+    /**
+     * Performs initial setup tasks.
+     */
     public void setup() {
         initializeFirestore();
         AppDataHolder.getInstance().loadData(context);
@@ -65,7 +78,9 @@ public class LaunchSetUp {
             setupBroadcastReceiver();
         }
     }
-
+    /**
+     * Initializes Firestore and checks if the user exists in the database. If not, adds a new user document.
+     */
     private void initializeFirestore() {
         String deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         db = FirebaseFirestore.getInstance();
@@ -133,16 +148,26 @@ public class LaunchSetUp {
             showToast("Failed to fetch User");
         });
     }
-
+    /**
+     * Displays a toast message.
+     *
+     * @param message The message to be displayed.
+     */
     private void showToast(String message) {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(() -> Toast.makeText(context, message, Toast.LENGTH_LONG).show());
     }
-
+    /**
+     * Checks if notifications are enabled on the device.
+     *
+     * @return True if notifications are enabled, false otherwise.
+     */
     private boolean areNotificationsEnabled() {
         return NotificationManagerCompat.from(context).areNotificationsEnabled();
     }
-
+    /**
+     * Shows a dialog prompting the user to enable notifications.
+     */
     private void showEnableNotificationsDialog() {
         new AlertDialog.Builder(context)
                 .setTitle("Enable Notifications")
@@ -168,7 +193,9 @@ public class LaunchSetUp {
         intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
         context.startActivity(intent);
     }
-
+    /**
+     * Sets up the notification channel for displaying notifications.
+     */
     private void setupNotificationChannel() {
          /*
         Create notification channel to allow for push notifications
@@ -186,6 +213,9 @@ public class LaunchSetUp {
             }
         }
     }
+    /**
+     * Sets up the broadcast receiver to receive push notifications.
+     */
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     public void setupBroadcastReceiver() {
         Log.d("BroadcastChannel", "Setting up...");

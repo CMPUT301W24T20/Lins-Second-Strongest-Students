@@ -126,7 +126,10 @@ public class OrganizerEventActivity extends NavBar {
             }
         });
     }
-
+    /**
+     * Gets xml file for specific activity
+     * @return ID of Layout resource xml
+     */
     @Override
     protected int getLayoutResourceId() {
         return R.layout.attendee_events;

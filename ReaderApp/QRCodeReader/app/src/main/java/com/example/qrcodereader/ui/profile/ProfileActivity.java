@@ -136,7 +136,10 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
             }
         });
     }
-
+    /**
+     * Gets xml file for specific activity
+     * @return ID of Layout resource xml
+     */
     @Override
     protected int getLayoutResourceId() {
         return R.layout.profile;
