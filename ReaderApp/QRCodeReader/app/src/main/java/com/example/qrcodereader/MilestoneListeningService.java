@@ -71,16 +71,20 @@ public class MilestoneListeningService extends Service {
                                         int lastNotifiedMilestone = 0;
                                         if (documentSnapshot.contains("lastNotifiedMilestone")) {
                                             lastNotifiedMilestone = documentSnapshot.getLong("lastNotifiedMilestone").intValue();
+                                        } else {
+                                            // Add the lastNotifiedMilestone field to the document if it doesn't exist
+                                            eventRef.update("lastNotifiedMilestone", 0);
                                         }
 
                                         // Check if the number of attendees has reached the next milestone
-                                        if (numUsers / milestone > lastNotifiedMilestone) {
+                                        if ((numUsers / milestone > lastNotifiedMilestone) || (lastNotifiedMilestone == 0 && numUsers == 1)) {
                                             // Call the milestoneNotify method
                                             notifier.milestoneNotification(eventId, numUsers);
                                             Log.d("Event Notified:", "ID:" + eventId);
 
                                             // Update the last notified milestone
-                                            eventRef.update("lastNotifiedMilestone", numUsers / milestone);
+                                            if (lastNotifiedMilestone == 0) {lastNotifiedMilestone = 1;} else {lastNotifiedMilestone = numUsers/milestone;}
+                                            eventRef.update("lastNotifiedMilestone", lastNotifiedMilestone);
                                         }
                                     }
                                 }
