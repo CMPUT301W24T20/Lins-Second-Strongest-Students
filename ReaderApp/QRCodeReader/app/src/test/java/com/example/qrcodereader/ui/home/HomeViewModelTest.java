@@ -10,7 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-        //THIS WORKS IF IT DOESNT U BROIKE THE APP
+
 public class HomeViewModelTest {
 
     @Rule

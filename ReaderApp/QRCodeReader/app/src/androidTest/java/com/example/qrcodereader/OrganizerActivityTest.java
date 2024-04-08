@@ -46,6 +46,7 @@ public class OrganizerActivityTest {
         FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
         FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
     }
+    //broken
     @Test
     public void testListViewAndLinearLayoutPresence() throws InterruptedException {
         // Start the activity

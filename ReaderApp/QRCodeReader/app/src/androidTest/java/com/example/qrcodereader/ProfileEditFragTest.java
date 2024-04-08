@@ -17,10 +17,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
-//Broken
 @RunWith(AndroidJUnit4.class)
 public class ProfileEditFragTest {
-    
+
     @Before
     public void setUp() {
         FirestoreManager.getInstance().setEventCollection("eventsTest");
