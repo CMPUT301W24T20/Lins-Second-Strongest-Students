@@ -47,6 +47,11 @@ public class AdminEventActivity extends AppCompatActivity {
     private final String TAG = "AdminEventActivity";
 
 
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity, sets up the Firestore references, and populates the views with event data.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,6 +151,10 @@ public class AdminEventActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This method is called when an activity launched by this activity exits, giving the requestCode it started with, the resultCode it returned, and any additional data from it.
+     * It removes the event from the eventDataList if it was deleted in the launched
+    */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

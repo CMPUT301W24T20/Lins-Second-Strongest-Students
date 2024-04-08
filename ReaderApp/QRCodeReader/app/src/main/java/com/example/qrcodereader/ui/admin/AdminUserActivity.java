@@ -43,6 +43,11 @@ public class AdminUserActivity extends AppCompatActivity {
     private DocumentSnapshot lastVisible;
     private boolean isFetching = false;
 
+    /**
+     * This method is called when the activity is starting.
+     * It initializes the activity, sets up the Firestore references, and populates the views with user data.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +89,9 @@ public class AdminUserActivity extends AppCompatActivity {
         returnButton.setOnClickListener(v -> finish());
     }
 
+    /**
+     * Fetches users from Firestore and adds them to the user data list.
+     */
     private void fetchUsers() {
         if (isFetching) {
             Log.d(TAG, "Fetch already in progress, skipping this fetch request.");
@@ -117,6 +125,11 @@ public class AdminUserActivity extends AppCompatActivity {
             isFetching = false;
         });
     }
+
+    /**
+     * Called when the activity is resumed.
+     * Clears the existing user data list and fetches the users again.
+     */
     // Microsoft Copilot 2024 "Activity lifecycle issue, want user list to reset once I come back given code"
     @Override
     protected void onResume() {

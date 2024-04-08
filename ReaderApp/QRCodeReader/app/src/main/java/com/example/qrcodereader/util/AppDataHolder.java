@@ -179,6 +179,11 @@ public class AppDataHolder {
         });
     }
 
+    /**
+     * Fetches the events from the firebase and updates the events information in the local file
+     * call this after you update anything related to the events to the firebase
+     * @param context The context
+     */
     public static void fetchAndLoadBrowseEvents(Context context) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Timestamp now = Timestamp.now();

@@ -21,7 +21,7 @@ import com.google.zxing.integration.android.IntentResult;
  * @author Vinay
  */
 public class CameraActivity extends NavBar implements View.OnClickListener {
-    /*
+    /**
     CameraActivity
     Contains code for a fragment implementing a QR code scanner
      */
@@ -36,7 +36,7 @@ public class CameraActivity extends NavBar implements View.OnClickListener {
     private String userID = FirestoreManager.getInstance().getUserID();
     private ScanHandler scanHandler;
 
-    /*
+    /**
      * startScan
      * Opens QR code reader
      */
@@ -48,6 +48,13 @@ public class CameraActivity extends NavBar implements View.OnClickListener {
         integrator.initiateScan();
     }
 
+    /**
+     * onActivityResult
+     * Handles the result of the QR code scan
+     * @param requestCode The request code
+     * @param resultCode The result code
+     * @param data The data from the scan
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -62,6 +69,11 @@ public class CameraActivity extends NavBar implements View.OnClickListener {
         }
     }
 
+    /**
+     * onCreate
+     * Sets up the fragment
+     * @param savedInstanceState The saved instance state
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //Set up fragment
@@ -79,11 +91,21 @@ public class CameraActivity extends NavBar implements View.OnClickListener {
         scanHandler = new ScanHandler(db, userID, this);
     }
 
+    /**
+     * getLayoutResourceId
+     * Gets the layout resource ID
+     * @return The layout resource ID
+     */
     @Override
     protected int getLayoutResourceId() {
         return R.layout.fragment_camera;
     }
 
+    /**
+     * onClick
+     * Handles the click event
+     * @param v The view
+     */
     @Override
     public void onClick(View v) {
         Toast.makeText(CameraActivity.this, "Scanning...", Toast.LENGTH_LONG).show();

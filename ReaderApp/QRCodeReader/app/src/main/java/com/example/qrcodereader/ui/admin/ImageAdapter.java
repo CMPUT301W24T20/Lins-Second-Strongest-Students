@@ -72,6 +72,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         selectedPositions.put(position, !selectedPositions.get(position));
         notifyItemChanged(position); // Notify that specific item changed
     }
+
     /**
      * Gets the list of selected images.
      *
@@ -87,6 +88,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         return selectedImages;
     }
 
+    /**
+     * ViewHolder class for the images.
+     */
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -94,6 +98,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         return new ImageViewHolder(view);
     }
 
+    /**
+     * Binds the image at the given position to the ViewHolder.
+     *
+     * @param holder   The ViewHolder.
+     * @param position The position of the image.
+     */
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         holder.bind(position);
@@ -106,8 +116,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         }
     }
 
+    /**
+     * Gets the number of images in the adapter.
+     *
+     * @return The number of images.
+     */
     @Override
     public int getItemCount() {return mImageUrls.size();}
+
     /**
      * ViewHolder class for the images.
      */

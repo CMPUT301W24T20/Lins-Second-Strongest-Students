@@ -133,6 +133,9 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
         returnButton.setOnClickListener(v -> finish());
     }
 
+    /**
+     * Removes the event from Firestore and Firebase Storage.
+     */
     protected void initializeFirestore() {
         db = FirebaseFirestore.getInstance();
         eventID = getIntent().getStringExtra("eventID");
@@ -140,6 +143,12 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
         usersRef = db.collection("users");
     }
 
+    /**
+     * Removes the event from Firestore and Firebase Storage.
+     * @param eventID The ID of the event to be removed.
+     * @param eventsRef The reference to the events collection in Firestore.
+     * @param usersRef The reference to the users collection in Firestore.
+     */
     public void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
         selectedEvent.getOrganizerID();
         String imageName = eventID +"_" + selectedEvent.getOrganizerID() + ".png";

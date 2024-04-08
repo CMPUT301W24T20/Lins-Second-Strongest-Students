@@ -205,7 +205,6 @@ public class ScanHandler {
                         Log.d("Subscribed", msg);
                     }
                 });
-
     }
 
 }
