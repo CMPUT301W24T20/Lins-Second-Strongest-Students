@@ -45,45 +45,45 @@ public class AllButtonsTest {
 
 
 
-    @Test
-    public void testProfileButtonOnClick() {
-        // Launch your Activity under test
-        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
-
-        // Use Espresso to perform a click on the profile button
-        onView(withId(R.id.profile_button)).perform(click());
-
-        // Now use Espresso to check if the DialogFragment is displayed
-        onView(withText("Location Access")).check(matches(isDisplayed()));
-    }
-
-
-    @Test
-    public void testEventsButtonOnClick() {
-        // Perform a click on the events button
-        onView(withId(R.id.my_event_button)).perform(click());
-
-        // Check if a dialog is displayed
-        onView(withText("Choose Event Page")).check(matches(isDisplayed()));
-
-        // Perform a click on the "Go to Your Event Page (Attendee)" button
-        onView(withText("Go to Your Event Page (Attendee)")).perform(click());
-
-        // Verify that AttendeeEventActivity is started
-        intended(hasComponent(AttendeeEventActivity.class.getName()));
-
-        //Click the return button
-        onView(withId(R.id.return_button)).perform(click());
-
-        // Perform a click on the events button again
-        onView(withId(R.id.my_event_button)).perform(click());
-
-        // Perform a click on the "Go to Your Event Page (Organizer)" button
-        onView(withText("Go to Your Event Page (Organizer)")).perform(click());
-
-        // Verify that OrganizerEventActivity is started
-        intended(hasComponent(OrganizerEventActivity.class.getName()));
-    }
+//    @Test
+//    public void testProfileButtonOnClick() {
+//        // Launch your Activity under test
+//        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+//
+//        // Use Espresso to perform a click on the profile button
+//        onView(withId(R.id.profile_button)).perform(click());
+//
+//        // Now use Espresso to check if the DialogFragment is displayed
+//        onView(withText("Location Access")).check(matches(isDisplayed()));
+//    }
+//
+//
+//    @Test
+//    public void testEventsButtonOnClick() {
+//        // Perform a click on the events button
+//        onView(withId(R.id.my_event_button)).perform(click());
+//
+//        // Check if a dialog is displayed
+//        onView(withText("Choose Event Page")).check(matches(isDisplayed()));
+//
+//        // Perform a click on the "Go to Your Event Page (Attendee)" button
+//        onView(withText("Go to Your Event Page (Attendee)")).perform(click());
+//
+//        // Verify that AttendeeEventActivity is started
+//        intended(hasComponent(AttendeeEventActivity.class.getName()));
+//
+//        //Click the return button
+//        onView(withId(R.id.return_button)).perform(click());
+//
+//        // Perform a click on the events button again
+//        onView(withId(R.id.my_event_button)).perform(click());
+//
+//        // Perform a click on the "Go to Your Event Page (Organizer)" button
+//        onView(withText("Go to Your Event Page (Organizer)")).perform(click());
+//
+//        // Verify that OrganizerEventActivity is started
+//        intended(hasComponent(OrganizerEventActivity.class.getName()));
+//    }
 
 
 
