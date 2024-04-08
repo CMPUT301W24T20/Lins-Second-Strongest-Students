@@ -46,6 +46,7 @@ dependencies {
     implementation("androidx.activity:activity:1.8.2")
     implementation("com.google.firebase:firebase-messaging:23.4.1")
     implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
+    implementation("androidx.test.espresso:espresso-intents:3.5.1")
     debugImplementation("androidx.fragment:fragment-testing:1.6.2")
     val camerax_version = "1.3.1"
     implementation("androidx.camera:camera-core:1.3.1")
@@ -90,4 +91,7 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     testImplementation ("org.mockito:mockito-core:3.3.3")
     testImplementation("org.robolectric:robolectric:4.3.1")
+
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
 }
