@@ -31,6 +31,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +72,7 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
         TextView eventOrganizerTextView = findViewById(R.id.event_organizer);
         TextView eventLocationTextView = findViewById(R.id.event_location);
         TextView eventTimeTextView = findViewById(R.id.event_time);
+        ImageView eventPoster = findViewById(R.id.event_poster);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
 
         db = FirestoreManager.getInstance().getDb();
@@ -88,12 +90,18 @@ public class EventDetailsAdminActivity extends AppCompatActivity {
                 Timestamp time = documentSnapshot.getTimestamp("time");
                 String organizer = documentSnapshot.getString("organizer");
                 String organizerID = documentSnapshot.getString("organizerID");
-                String EventPoster = documentSnapshot.getString("poster");
+                String poster = documentSnapshot.getString("poster");
                 String qrCodeString = documentSnapshot.getString("qrCode");
                 QRCode qrCode = new QRCode(qrCodeString);
                 int attendeeLimit = documentSnapshot.contains("attendeeLimit") ? (int)(long)documentSnapshot.getLong("attendeeLimit") : -1;
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");
-                selectedEvent = new Event(eventID, eventName, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, eventsAttended, EventPoster);
+
+                if (poster != null && !poster.isEmpty()) {
+                    Picasso.get().load(poster).resize(410, 240).centerInside().into(eventPoster);
+                } else {
+                    Picasso.get().load(R.drawable._49e43ff77b9c6ecc64d8a9b55622ddd7_2).centerInside().fit().into(eventPoster);
+                }
+                selectedEvent = new Event(eventID, eventName, location, locationName, time, organizer, organizerID, qrCode, attendeeLimit, eventsAttended, poster);
 
                 Toast.makeText(this, "Successfully fetch account", Toast.LENGTH_LONG).show();
                 Log.d("Firestore", "Successfully fetch document: ");
