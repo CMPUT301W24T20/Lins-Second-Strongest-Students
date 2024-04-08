@@ -92,8 +92,8 @@ public class AdminButtonTest {
 
         user.put("location", new GeoPoint(0.0, 0.0)); // For GeoPoint, you need to use the GeoPoint class.
         user.put("name", "TestUser2");
-        user.put("phone", "");
-        user.put("phoneRegion", "");
+        user.put("phone", "AC");
+        user.put("phoneRegion", "99999");
 
         FirestoreManager.getInstance().getUserCollection().document("6a38dbd30b66b3cd")
                 .set(user)
