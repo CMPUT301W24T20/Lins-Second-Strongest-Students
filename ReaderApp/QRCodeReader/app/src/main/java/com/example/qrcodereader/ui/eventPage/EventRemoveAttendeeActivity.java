@@ -60,9 +60,6 @@ public class EventRemoveAttendeeActivity extends AppCompatActivity {
      * It initializes the activity, sets up the Firestore references, and populates the views with event data.
      * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
      */
-
-
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

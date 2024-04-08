@@ -162,6 +162,9 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity implements 
         });
     }
 
+    /**
+     * This method starts the MapViewOrganizer activity with the event's location.
+     */
     private void goToMapActivity() {
         double latitude = getIntent().getDoubleExtra("latitude", 0);
         double longitude = getIntent().getDoubleExtra("longitude", 0);
@@ -172,6 +175,9 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity implements 
         startActivity(intent);
     }
 
+    /**
+     * This method fetches the promotional QR code for the event.
+     */
     private void fetchPromotionalQRCode() {
         String eventId = FirestoreManager.getInstance().getEventID();
 
@@ -190,6 +196,12 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity implements 
                 });
     }
 
+    /**
+     * This method removes the event from the database and all users' eventsAttended lists.
+     * @param eventID the ID of the event to be removed
+     * @param eventsRef the reference to the events collection in Firestore
+     * @param usersRef the reference to the users collection in Firestore
+     */
     public void removeEvent(String eventID, CollectionReference eventsRef, CollectionReference usersRef) {
         if (eventID != null) {
             usersRef.get().addOnCompleteListener(task -> {
