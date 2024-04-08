@@ -58,7 +58,6 @@ public class AttendanceActivity extends AppCompatActivity {
                         });
                     } else {
                         //No attendees found
-//                        Toast.makeText(AttendanceActivity.this, "No attendees found", Toast.LENGTH_SHORT).show();
                     }
                 });
 

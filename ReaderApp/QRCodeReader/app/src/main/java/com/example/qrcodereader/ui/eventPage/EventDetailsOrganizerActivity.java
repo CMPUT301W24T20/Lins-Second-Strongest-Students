@@ -145,6 +145,7 @@ public class EventDetailsOrganizerActivity extends AppCompatActivity implements 
         LinearLayout attendeeButton = findViewById(R.id.attendee_button);
         attendeeButton.setOnClickListener((v -> {
             Intent intent = new Intent(this, AttendanceActivity.class);
+            FirestoreManager.getInstance().setEventDocRef(eventID);
             startActivity(intent);
         }));
 
