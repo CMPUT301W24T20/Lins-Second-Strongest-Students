@@ -5,9 +5,11 @@ import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -44,6 +46,8 @@ import java.util.Map;
 @RunWith(AndroidJUnit4.class)
 public class AttendeeActivityTest {
 
+    @Rule
+    public GrantPermissionRule grantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION);
     @Before
     public void setUp() {
         // Set the Firestore collections to test versions
@@ -51,13 +55,14 @@ public class AttendeeActivityTest {
         FirestoreManager.getInstance().setUserCollection("usersTest");
         FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
         FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
-        ActivityScenario.launch(ProfileActivity.class);
+
     }
 
     @Test
     public void testListViewAndLinearLayoutPresence() throws InterruptedException {
         // Start the activity
-        onView(withId(R.id.home_button)).perform(click());
+        try (ActivityScenario<AttendeeEventActivity> scenario = ActivityScenario.launch(AttendeeEventActivity.class)) {
+
             Thread.sleep(5000);
 
             onView(withText("CANCEL")).perform(click());
@@ -69,15 +74,18 @@ public class AttendeeActivityTest {
             // Check if ListView is present
             onView(withId(R.id.event_list_attendee))
                     .check(matches(isDisplayed()));
-
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     public void testTextViewClickNavigatesToAnotherActivity() throws InterruptedException {
         // Initialize Intents and start the activity
         androidx.test.espresso.intent.Intents.init();
-        onView(withId(R.id.home_button)).perform(click());
-        Thread.sleep(5000);
+        try (ActivityScenario<AttendeeEventActivity> scenario = ActivityScenario.launch(AttendeeEventActivity.class)) {
+
+            Thread.sleep(5000);
 
             onView(withText("CANCEL")).perform(click());
 
@@ -92,5 +100,8 @@ public class AttendeeActivityTest {
 
             // Release Intents
             androidx.test.espresso.intent.Intents.release();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
