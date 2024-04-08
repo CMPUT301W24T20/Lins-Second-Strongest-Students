@@ -83,7 +83,6 @@ public class LaunchSetUp {
                 if (task.getResult().exists()) {
                     // Document exists, user is in the collection
                     Log.d("Firestore", "User exists in the collection.");
-                    showToast("Welcome Back");
                 } else {
                     // Document does not exist, user is not in the collection
                     Log.d("Firestore", "User does not exist in the collection.");
@@ -114,7 +113,6 @@ public class LaunchSetUp {
                             docRefUser.set(newUser);
                         }
                     });
-                    showToast("Made new account");
                 }
             } else {
                 Log.d("Firestore", "Failed to fetch document: ", task.getException());
@@ -129,7 +127,6 @@ public class LaunchSetUp {
                 String image = documentSnapshot.getString("ProfilePic");
                 user = new User(deviceID, userName, location, eventsAttended, image);
                 userId = user.getUserID();
-                showToast("Successfully fetch User");
                 Log.d("Firestore", "Successfully fetch document: ");
             }
         }).addOnFailureListener(e -> {

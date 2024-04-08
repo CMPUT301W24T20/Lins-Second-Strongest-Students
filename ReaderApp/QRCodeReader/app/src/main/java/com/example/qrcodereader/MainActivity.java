@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
                     if (task.getResult().exists()) {
                         // Document exists, user is in the collection
                         Log.d("Firestore", "User exists in the collection.");
-                        Toast.makeText(this, "Welcome Back", Toast.LENGTH_LONG).show();
                     } else {
                         // Document does not exist, user is not in the collection
                         Log.d("Firestore", "User does not exist in the collection.");
@@ -180,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                       user = new User(deviceID, "", new GeoPoint(0, 0), new HashMap<>(), imageURL);
                       LocalUserStorage.saveUser(this, user);
                       AppDataHolder.getInstance().fetchAndLoadBrowseEvents(this);
-                      Toast.makeText(this, "Made new account", Toast.LENGTH_LONG).show();
+
                     }
                 } else {
                     Log.d("Firestore", "Failed to fetch document: ", task.getException());
