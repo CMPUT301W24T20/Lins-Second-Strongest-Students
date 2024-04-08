@@ -74,7 +74,7 @@ public class AttendeeActivityTest {
     }
 
     @Test
-    public void testListViewItemClickNavigatesToAnotherActivity() throws InterruptedException {
+    public void testTextViewClickNavigatesToAnotherActivity() throws InterruptedException {
         // Initialize Intents and start the activity
         androidx.test.espresso.intent.Intents.init();
         try (ActivityScenario<AttendeeEventActivity> scenario = ActivityScenario.launch(AttendeeEventActivity.class)) {
