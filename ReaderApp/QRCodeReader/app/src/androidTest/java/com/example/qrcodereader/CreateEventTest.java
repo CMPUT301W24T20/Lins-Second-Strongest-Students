@@ -181,6 +181,41 @@ public class CreateEventTest {
     }
 
     @Test
+    public void createInvalidEventTestWithAttendeeLimitOverflow() {
+        // Launch the Activity
+        try (ActivityScenario<CreateEventActivity> scenario = ActivityScenario.launch(CreateEventActivity.class)) {
+            scenario.onActivity(activity -> {
+                // Check if the QR code is displayed
+                EditText eventDate = activity.findViewById(R.id.event_date);
+                eventDate.setText("2024-05-15");
+
+                EditText eventTime = activity.findViewById(R.id.event_time);
+                eventTime.setText("14:30");
+
+                EditText eventLocation = activity.findViewById(R.id.event_location);
+                eventLocation.setText("Test Location");
+
+                EditText eventName = activity.findViewById(R.id.event_name);
+                eventName.setText("Test Event");
+
+                EditText attendeeLimit = activity.findViewById(R.id.attendee_limit);
+                attendeeLimit.setText("1000000000000000000000000000000000000000000");
+
+                assert (eventDate.getText().toString().equals("2024-05-15"));
+                assert (eventLocation.getText().toString().equals("Test Location"));
+                assert (eventName.getText().toString().equals("Test Event"));
+
+                // Click the create event button
+                TextView createEventButton = activity.findViewById(R.id.create_button);
+                createEventButton.performClick();
+
+                // check if the activity is still displayed
+                assertNotNull(activity.findViewById(R.id.event_name));
+            });
+        }
+    }
+
+    @Test
     public void createValidEventTest() {
         // Launch the Activity
         try (ActivityScenario<CreateEventActivity> scenario = ActivityScenario.launch(CreateEventActivity.class)) {
