@@ -65,8 +65,8 @@
     <string name="user_id">User ID</string>
     <string name="ca">CA</string>
     <string name="display_qr_string">Display QR</string>
-    <string name="attendee_string">attendee</string>
-    <string name="map_string">map</string>
+    <string name="attendee_string">Attendees</string>
+    <string name="map_string">Map</string>
     <string name="attendees">Attendees</string>
     <string name="attendance">Attendance</string>
     <string name="checked_in">Checked in</string>
