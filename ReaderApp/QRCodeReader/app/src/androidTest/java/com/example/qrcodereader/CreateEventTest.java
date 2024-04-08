@@ -354,7 +354,7 @@ public class CreateEventTest {
     @Test
     public void TestReuseQRButtonWhenThereIsNoEvent() {
         try (ActivityScenario<CreateEventActivity> scenario = ActivityScenario.launch(CreateEventActivity.class)) {
-            onView(withId(R.id.reuse_QR_button)) // Adjust the ID to match your actual reuse QR button ID
+            onView(withId(R.id.reuse_QR_button))
                     .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
 
         }
@@ -371,7 +371,7 @@ public class CreateEventTest {
         appDataHolder.setPastEvents(eventDataList);
 
         try (ActivityScenario<CreateEventActivity> scenario = ActivityScenario.launch(CreateEventActivity.class)) {
-            onView(withId(R.id.reuse_QR_button)) // Adjust the ID to match your actual reuse QR button ID
+            onView(withId(R.id.reuse_QR_button))
                     .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         }
     }

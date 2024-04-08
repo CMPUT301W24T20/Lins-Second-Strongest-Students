@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,12 +21,15 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.R;
+import com.example.qrcodereader.util.ImageUpload;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;
+
+import com.example.qrcodereader.R;
+//import com.google.android.libraries.places.api.Places;
 import com.example.qrcodereader.util.AppDataHolder;
-import com.example.qrcodereader.util.ImageUpload;
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -63,6 +64,7 @@ import java.util.Map;
  *  Activity for users to create events by entering the details and press create.
  *  @author Duy
  */
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
 public class CreateEventActivity extends AppCompatActivity implements ImageUpload {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
@@ -234,28 +236,6 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         ImageView cancel_button = findViewById(R.id.return_button);
         cancel_button.setOnClickListener(v -> {finish();
         });
-
-        eventName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Not needed
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Not needed
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() > 50) {
-                    eventName.setText(s.subSequence(0, 50));
-                    eventName.setSelection(50);
-                    Toast.makeText(CreateEventActivity.this, "Max charater limit is 50!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
     }
 
     @Override
@@ -406,29 +386,29 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
      * This method validates the user input for the event
      * @return true if the user input is valid, false otherwise
      */
-        public boolean validateUserInput() {
-            eventName = findViewById(R.id.event_name);
-            EditText getDate = findViewById(R.id.event_date);
-            EditText getTime = findViewById(R.id.event_time);
+    public boolean validateUserInput() {
+        eventName = findViewById(R.id.event_name);
+        EditText getDate = findViewById(R.id.event_date);
+        EditText getTime = findViewById(R.id.event_time);
 
-            if (eventName.getText().toString().isEmpty()) {
-                Toast.makeText(this, "Please enter an event name", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            else if (getLocation.getText().toString().isEmpty() || eventLocation == null) {
-                Toast.makeText(this, "Please enter an event location", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            else if (getDate.getText().toString().isEmpty()) {
-                Toast.makeText(this, "Please enter an event date", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            else if (getTime.getText().toString().isEmpty()) {
-                Toast.makeText(this, "Please enter an event time", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            return true;
+        if (eventName.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Please enter an event name", Toast.LENGTH_SHORT).show();
+            return false;
         }
+        else if (getLocation.getText().toString().isEmpty() || eventLocation == null) {
+            Toast.makeText(this, "Please enter an event location", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (getDate.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Please enter an event date", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (getTime.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Please enter an event time", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 
     /**
      * This method generate a new QR code for the selected past event
@@ -461,7 +441,11 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         });
         // ChatGPT code end here
     }
-
+    /**
+     * Sets the visibility of the QR code reuse button based on the availability of past events.
+     * If there are past events, the button is visible and clickable, allowing the user to browse past events.
+     * If there are no past events, the button is invisible.
+     */
     public void setReuseQRButtonVisible() {
         ArrayList<Event> pastEvents = new ArrayList<>();
         pastEvents = AppDataHolder.getInstance().getPastEvents(this);
@@ -476,7 +460,10 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             qrReuseButton.setVisibility(View.INVISIBLE);
         }
     }
-
+    /**
+     * Generates QR codes for the event and checks their uniqueness in the Firestore database.
+     * If the generated QR code already exists, it recursively generates new ones until unique codes are found.
+     */
     public void generateAndCheckQRCode() {
         generatedQRCode = new QRCode().getString();
         generatedPromotionalQRCode = new QRCode().getString();
@@ -497,7 +484,13 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
             }
         });
     }
-
+    /**
+     * Checks the existence of a QR code in the Firestore database.
+     *
+     * @param db      The instance of the Firestore database.
+     * @param qrCode  The QR code string to check.
+     * @param callback The callback interface for existence check.
+     */
     private void checkQRCodeExistence(FirebaseFirestore db, String qrCode, ExistenceCallback callback) {
         db.collection("qrcoderef")
                 .whereEqualTo("qrCode", qrCode)
@@ -515,7 +508,13 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
                     }
                 });
     }
-
+    /**
+     * Updates the reference of a QR code in Firestore with the event ID.
+     * If the selected QR code exists, it updates its reference with the event ID.
+     * If no QR code is selected, it creates new documents for both check-in and promotional QR codes.
+     *
+     * @param eventId The ID of the event associated with the QR code.
+     */
     private void updateQRCodeReference(String eventId) {
         if (!selectedQRCode.isEmpty()) {
             // Query the 'qrcoderef' collection for the document with the matching 'qrCode'
@@ -564,7 +563,19 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
     interface ExistenceCallback {
         void onChecked(boolean exists);
     }
-
+    /**
+     * For testing purposes, injects event date, time, and location into the activity.
+     * This method is used to simulate setting these parameters programmatically.
+     *
+     * @param year         The year of the event.
+     * @param month        The month of the event.
+     * @param day          The day of the event.
+     * @param hour         The hour of the event.
+     * @param minute       The minute of the event.
+     * @param latitude     The latitude of the event location.
+     * @param longitude    The longitude of the event location.
+     * @param locationName The name of the event location.
+     */
     public void testCreateEventDateTimeLocationInjection(int year, int month, int day, int hour, int minute, double latitude, double longitude, String locationName) {
         eventDateTime.set(Calendar.YEAR, year);
         eventDateTime.set(Calendar.MONTH, month);

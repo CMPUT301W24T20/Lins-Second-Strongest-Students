@@ -1,5 +1,7 @@
 package com.example.qrcodereader.ui.notifications;
 
+import static androidx.core.content.ContextCompat.registerReceiver;
+
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -11,7 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.qrcodereader.NavBar;
+import com.example.qrcodereader.util.assisting.NavBar;
 import com.example.qrcodereader.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -111,6 +113,10 @@ public class NotificationsActivity extends NavBar {
         });
     }
 
+    /**
+     * Gets xml file for specific activity
+     * @return ID of Layout resource xml
+     */
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_notifications;

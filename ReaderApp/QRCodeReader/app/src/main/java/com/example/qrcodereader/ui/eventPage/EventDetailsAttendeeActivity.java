@@ -1,5 +1,8 @@
 package com.example.qrcodereader.ui.eventPage;
 
+import com.example.qrcodereader.map.MapView;
+import com.example.qrcodereader.R;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -15,8 +18,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.MapView;
-import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.entity.QRCode;

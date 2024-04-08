@@ -1,7 +1,11 @@
 package com.example.qrcodereader;
 
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import android.content.Intent;
 import android.widget.ImageView;
@@ -12,24 +16,16 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.example.qrcodereader.entity.FirestoreManager;
+import com.example.qrcodereader.util.DisplayQRCode;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-/**
- * Test class for DisplayQRCode activity.
- */
 public class DisplayQRTest {
-    /**
-     * Grants the necessary permission for the tests.
-     */
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.INTERNET);
 
-    /**
-     * Sets up the Firestore collections and documents for testing.
-     */
     @Before
     public void setUp() {
         // Set the Firestore collections to test versions
@@ -40,9 +36,6 @@ public class DisplayQRTest {
     }
 
     // Test the display of the QR code
-    /**
-     * Tests the display of the check-in QR code in the DisplayQRCode activity.
-     */
     @Test
     public void testCheckInQRCode() {
         // Prepare the intent with extras
@@ -65,9 +58,6 @@ public class DisplayQRTest {
     }
 
     // Test the display of the promotional QR code
-    /**
-     * Tests the display of the promotional QR code in the DisplayQRCode activity.
-     */
     @Test
     public void testPromotionalQRCode() {
         // Prepare the intent with extras
@@ -97,9 +87,6 @@ public class DisplayQRTest {
     }
 
     // Test switching between QR codes
-    /**
-     * Tests switching between the check-in and promotional QR codes in the DisplayQRCode activity.
-     */
     @Test
     public void testSwitchQRCode() {
         // Prepare the intent with extras

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrcodereader.Notifier;
+import com.example.qrcodereader.util.assisting.Notifier;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.AttendeeArrayAdapter;
 import com.example.qrcodereader.entity.FirestoreManager;
@@ -18,7 +18,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Map;
-
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
+/**
+ * Activity to manage event attendance and notify attendees.
+ */
 public class AttendanceActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
@@ -53,6 +56,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         });
                     } else {
                         //No attendees found
+                        Toast.makeText(AttendanceActivity.this, "No attendees!", Toast.LENGTH_SHORT).show();
                     }
                 });
 

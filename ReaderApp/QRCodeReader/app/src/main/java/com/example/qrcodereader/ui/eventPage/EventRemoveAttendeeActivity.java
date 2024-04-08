@@ -25,9 +25,9 @@ import java.util.Map;
 
 
 /**
- *  Activity for users to view details of event they want to sign up to.
+ *  Activity for admin to remove attendees
  *  <p>
- *      This is where the sign up operation happen
+ *      This is where the remove attendee from event
  *  </p>
  *  @author Son and Duy
  */

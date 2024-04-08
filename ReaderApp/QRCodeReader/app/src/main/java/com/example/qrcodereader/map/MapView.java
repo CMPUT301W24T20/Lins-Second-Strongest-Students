@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.map;
 
 import static android.content.ContentValues.TAG;
 
@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.EventDetailsAttendeeActivity;
@@ -37,13 +38,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * View for Map
+ *  Represents a MapView that displays a Google Map.
+ *  Implements the OnMapReadyCallback interface.
  * @author Khushdeep
  */
 // Microsoft Bing, 2024, COPILOT, Prompted to edit my MapView class to work with accordance to google maps given error descriptions
-/**
- * Represents a MapView that displays a Google Map.
- * Implements the OnMapReadyCallback interface.
- */
 public class MapView extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;

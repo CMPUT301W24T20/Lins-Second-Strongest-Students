@@ -21,7 +21,10 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-// Microsoft Copilot 2024 "Provided code for previous implementation rewrite it so that query doesn't fail"
+// Microsoft Copilot 4/8/2024 "Provided code for previous implementation rewrite it so that query doesn't fail & add javaDocs"
+/**
+ * Activity for admin to browse users. Only admins have access.
+ */
 public class AdminUserActivity extends AppCompatActivity {
 
     private static final String TAG = "AdminUserActivity";

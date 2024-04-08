@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.qrcodereader.NavBar;
+import com.example.qrcodereader.util.assisting.NavBar;
 import com.example.qrcodereader.R;
 import com.example.qrcodereader.entity.FirestoreManager;
 import com.example.qrcodereader.ui.admin.AdminAllOptionsFrag;
@@ -134,7 +134,10 @@ public class ProfileActivity extends NavBar implements ProfileEditFrag.OnSaveCli
             }
         });
     }
-
+    /**
+     * Gets xml file for specific activity
+     * @return ID of Layout resource xml
+     */
     @Override
     protected int getLayoutResourceId() {
         return R.layout.profile;

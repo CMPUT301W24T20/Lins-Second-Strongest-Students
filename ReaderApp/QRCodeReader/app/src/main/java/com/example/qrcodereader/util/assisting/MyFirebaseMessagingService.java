@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.util.assisting;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.qrcodereader.entity.FirestoreManager;
+import com.example.qrcodereader.old.MainActivity;
+import com.example.qrcodereader.R;
+import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -97,8 +102,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("Notify", messageBody);
 
         broadcast(messageBody);
-        store(title, messageBody, eventID);
-
     }
 
     /**
@@ -108,12 +111,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody body of message
      * @param eventID ID of event sending message
      */
-    private void store(String title, String messageBody, String eventID) {
+    public static void store(String userID, String title, String messageBody, String eventID) {
         //Microsoft Copilot, 2024, add map to firestore doc
         // Get Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         Map<String, Object> data = new HashMap<>();
         data.put("event", eventID);

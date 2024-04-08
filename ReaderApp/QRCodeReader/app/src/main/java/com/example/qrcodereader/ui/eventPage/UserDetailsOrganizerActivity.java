@@ -13,10 +13,22 @@ import com.example.qrcodereader.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
-
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
+/**
+ * Activity to display details of an organizer user.
+ * This activity fetches user details from Firestore and displays them on the screen.
+ */
 public class UserDetailsOrganizerActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private DocumentReference docRefUser;
+    /**
+     * Called when the activity is starting.
+     * Initializes the activity and fetches user details from Firestore.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     *                           Otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

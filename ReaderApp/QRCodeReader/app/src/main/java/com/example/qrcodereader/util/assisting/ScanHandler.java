@@ -1,4 +1,4 @@
-package com.example.qrcodereader;
+package com.example.qrcodereader.util.assisting;
 
 import android.content.Context;
 import android.content.Intent;

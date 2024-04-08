@@ -16,7 +16,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// Microsoft Copilot 4/8/2024 "Generate java docs for the following class"
+/**
+ * Adapter for displaying images in a RecyclerView.
+ * Supports single selection and long-click listeners.
+ */
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
     private Context mContext;
@@ -25,27 +29,53 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private int preloadCount = 6;
     private OnImageLongClickListener longClickListener;
 
+    /**
+     * Constructor for the ImageAdapter.
+     *
+     * @param context   The context.
+     * @param imageUrls List of image URLs.
+     */
     public ImageAdapter(Context context, List<String> imageUrls) {
         mContext = context;
         mImageUrls = imageUrls;
         selectedPositions = new SparseBooleanArray();
     }
-
+    /**
+     * Interface for long-click listener on images.
+     */
     public interface OnImageLongClickListener {
+        /**
+         * Callback method for long-click event on an image.
+         *
+         * @param imageUrl The URL of the long-clicked image.
+         */
         void onImageLongClick(String imageUrl);
     }
-
+    /**
+     * Sets the long-click listener for the images.
+     *
+     * @param listener The long-click listener.
+     */
     public void setOnImageLongClickListener(OnImageLongClickListener listener) {
         if (listener != null) {
             this.longClickListener = listener;
         }
     }
 
+    /**
+     * Toggles selection of an image at the given position.
+     *
+     * @param position The position of the image to toggle.
+     */
     public void toggleSelection(int position) {
         selectedPositions.put(position, !selectedPositions.get(position));
         notifyItemChanged(position); // Notify that specific item changed
     }
-
+    /**
+     * Gets the list of selected images.
+     *
+     * @return List of selected image URLs.
+     */
     public List<String> getSelectedImages() {
         List<String> selectedImages = new ArrayList<>();
         for (int i = 0; i < mImageUrls.size(); i++) {
@@ -77,7 +107,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public int getItemCount() {return mImageUrls.size();}
-
+    /**
+     * ViewHolder class for the images.
+     */
     public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         ImageView imageView;
 
