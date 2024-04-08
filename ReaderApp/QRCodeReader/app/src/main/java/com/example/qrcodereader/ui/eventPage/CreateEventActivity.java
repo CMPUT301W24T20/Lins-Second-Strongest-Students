@@ -127,10 +127,22 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         generateAndCheckQRCode();
 
         EditText eventDate = findViewById(R.id.event_date);
-        eventDate.setOnClickListener(v -> showDatePickerDialog(eventDate));
+        eventDate.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                showDatePickerDialog(eventDate);
+                return true; // Return true to indicate the event was handled
+            }
+            return false; // Return false for other actions to proceed
+        });
 
         EditText eventTime = findViewById(R.id.event_time);
-        eventTime.setOnClickListener(v -> showTimePickerDialog(eventTime));
+        eventTime.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                showTimePickerDialog(eventTime);
+                return true; // Return true to indicate the event was handled
+            }
+            return false; // Return false for other actions to proceed
+        });
 
         if (!Places.isInitialized()) {
             String apiKey = getString(R.string.google_maps_api_key);
