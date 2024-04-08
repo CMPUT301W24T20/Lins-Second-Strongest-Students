@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 import com.example.qrcodereader.R;
 
-//THIS DOES NOT WORK THIS SHOULD ALWAYS FAIL
+//THIS DOES NOT WORK THIS SHOULD ALWAYS FAIL brokey
 @RunWith(RobolectricTestRunner.class)
 public class HomeFragmentTest {
 

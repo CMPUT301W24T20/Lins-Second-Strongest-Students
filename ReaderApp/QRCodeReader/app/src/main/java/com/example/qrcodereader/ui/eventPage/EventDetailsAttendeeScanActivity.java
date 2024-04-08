@@ -23,6 +23,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,6 +68,7 @@ public class EventDetailsAttendeeScanActivity extends AppCompatActivity {
         TextView eventOrganizerTextView = findViewById(R.id.organizer);
         TextView eventLocationTextView = findViewById(R.id.location);
         TextView eventTimeTextView = findViewById(R.id.time);
+        ImageView eventPoster = findViewById(R.id.event_poster);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
 
 
@@ -96,6 +98,9 @@ public class EventDetailsAttendeeScanActivity extends AppCompatActivity {
                 eventLocationTextView.setText(locationName);
                 String timeText = time.toDate().toString();
                 eventTimeTextView.setText(timeText);
+                if (EventPoster != null && !EventPoster.isEmpty()) {
+                    Picasso.get().load(EventPoster).resize(410, 240).centerInside().into(eventPoster);
+                }
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to fetch user", Toast.LENGTH_LONG).show();
