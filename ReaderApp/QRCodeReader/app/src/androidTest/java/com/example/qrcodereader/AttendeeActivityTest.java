@@ -35,11 +35,12 @@ import com.example.qrcodereader.ui.eventPage.BrowseEventActivity;
 import com.example.qrcodereader.ui.eventPage.EventDetailsOrganizerActivity;
 import com.example.qrcodereader.ui.eventPage.AttendeeEventActivity;
 import com.example.qrcodereader.ui.eventPage.EventRemoveAttendeeActivity;
+import com.example.qrcodereader.ui.profile.ProfileActivity;
 import com.google.firebase.firestore.FieldValue;
 
 import java.util.HashMap;
 import java.util.Map;
-//broken
+
 @RunWith(AndroidJUnit4.class)
 public class AttendeeActivityTest {
 
@@ -50,13 +51,13 @@ public class AttendeeActivityTest {
         FirestoreManager.getInstance().setUserCollection("usersTest");
         FirestoreManager.getInstance().setUserDocRef("1d141a0fd4e29d60");
         FirestoreManager.getInstance().setEventDocRef("6NRHwbgGk0449AVOBPLs");
+        ActivityScenario.launch(ProfileActivity.class);
     }
 
     @Test
     public void testListViewAndLinearLayoutPresence() throws InterruptedException {
         // Start the activity
-        try (ActivityScenario<AttendeeEventActivity> scenario = ActivityScenario.launch(AttendeeEventActivity.class)) {
-
+        onView(withId(R.id.home_button)).perform(click());
             Thread.sleep(5000);
 
             onView(withText("CANCEL")).perform(click());
@@ -68,18 +69,15 @@ public class AttendeeActivityTest {
             // Check if ListView is present
             onView(withId(R.id.event_list_attendee))
                     .check(matches(isDisplayed()));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     @Test
     public void testTextViewClickNavigatesToAnotherActivity() throws InterruptedException {
         // Initialize Intents and start the activity
         androidx.test.espresso.intent.Intents.init();
-        try (ActivityScenario<AttendeeEventActivity> scenario = ActivityScenario.launch(AttendeeEventActivity.class)) {
-
-            Thread.sleep(5000);
+        onView(withId(R.id.home_button)).perform(click());
+        Thread.sleep(5000);
 
             onView(withText("CANCEL")).perform(click());
 
@@ -94,8 +92,5 @@ public class AttendeeActivityTest {
 
             // Release Intents
             androidx.test.espresso.intent.Intents.release();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
