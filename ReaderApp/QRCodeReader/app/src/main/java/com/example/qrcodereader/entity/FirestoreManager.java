@@ -38,6 +38,9 @@ public class FirestoreManager {
     public void setEventCollection(String collection) {
         this.eventCollection = collection;
     }
+    public void setQrCodeCollection(String collection) {
+        this.qrCodeCollection = collection;
+    }
 
     public void setUserDocRef(String userDocRef) {
         this.userDocRef = userDocRef;

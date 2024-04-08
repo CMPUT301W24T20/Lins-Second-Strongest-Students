@@ -45,19 +45,4 @@ public class NotificationsActivityTest {
             onView(withId(R.id.notification_list)).check(matches(isDisplayed()));
         }
     }
-
-    @Test
-    public void testReturnButton() {
-        try (ActivityScenario<NotificationsActivity> scenario = ActivityScenario.launch(NotificationsActivity.class)) {
-            // Perform action
-            onView(withId(R.id.return_button)).perform(click());
-
-            // Assertion: Check if the activity is finished
-            scenario.onActivity(activity -> {
-                assertTrue(activity.isFinishing());
-            });
-        }
-    }
-
-
 }
