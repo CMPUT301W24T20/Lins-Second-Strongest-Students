@@ -121,14 +121,6 @@ public class NotificationsActivity extends NavBar {
                 }
             }
         });
-
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
     }
 
     @Override
