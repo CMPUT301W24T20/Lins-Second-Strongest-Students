@@ -148,10 +148,15 @@ public final class Notifier {
         alertDialog.show();
     }
 
-    private void findOrganizer(String eventID, int milestone) {
+    private void findOrganizer(String eventID, int users) {
 
-        String title = "Your event has reached a milestone!";
-        String body = milestone + " users have scanned into your event.";
+        String title = "Event Milestone!";
+        String body;
+        if (users == 1) {
+            body = "Your first user has scanned in!";
+        } else {
+            body = users + " users have scanned into your event.";
+        }
 
         db.collection("events").document(eventID)
                 .get()

@@ -14,13 +14,13 @@ android:layout_height="match_parent">
     app:cardElevation="5dp">
     <com.google.android.material.card.MaterialCardView
         android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="25dp">
         <ImageView
             android:id="@+id/image"
             android:src="@drawable/_49e43ff77b9c6ecc64d8a9b55622ddd7_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="120dp"
             android:background="@color/gray"
             android:scaleType="centerCrop"/>
 
