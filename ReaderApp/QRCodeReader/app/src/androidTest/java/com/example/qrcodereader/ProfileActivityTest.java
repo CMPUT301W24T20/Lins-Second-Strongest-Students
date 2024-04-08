@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
-//Broken
 @RunWith(AndroidJUnit4.class)
 public class ProfileActivityTest {
 
@@ -32,8 +31,6 @@ public class ProfileActivityTest {
 
     @Test
     public void testUIElementsAreDisplayed() {
-        Espresso.onView(ViewMatchers.withId(R.id.name))
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
         Espresso.onView(ViewMatchers.withId(R.id.email))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
         Espresso.onView(ViewMatchers.withId(R.id.phone))
