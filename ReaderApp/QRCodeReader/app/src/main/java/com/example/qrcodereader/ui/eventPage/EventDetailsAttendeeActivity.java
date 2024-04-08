@@ -31,6 +31,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,6 +85,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
         TextView eventOrganizerTextView = findViewById(R.id.organizer);
         TextView eventLocationTextView = findViewById(R.id.location);
         TextView eventTimeTextView = findViewById(R.id.time);
+        ImageView eventPoster = findViewById(R.id.event_poster);
         //ListView attendeesListView = findViewById(R.id.event_attendees);
         // OpenAi ChatGPT 4 4/7/2024 "Edit activity to work from being launched from map"
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
@@ -113,6 +115,7 @@ public class EventDetailsAttendeeActivity extends AppCompatActivity {
                 String qrCodeString = documentSnapshot.getString("qrCode");
                 String EventPoster = documentSnapshot.getString("poster");
 
+                Picasso.get().load(EventPoster).resize(410, 240).centerInside().into(eventPoster);
                 QRCode qrCode = new QRCode(qrCodeString);
                 int attendeeLimit = documentSnapshot.contains("attendeeLimit") ? (int)(long)documentSnapshot.getLong("attendeeLimit") : -1;
                 Map<String, Long> eventsAttended = (Map<String, Long>) documentSnapshot.get("attendees");

@@ -195,7 +195,6 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
                         docRefUser.update("phone",  ETphone.getText().toString());
                         docRefUser.update("phoneRegion",Sregion.getSelectedItem().toString());
 
-                        Log.d(TAG, "sending image " + image);
                         if (onSaveClickListener != null) {
                             onSaveClickListener.onSaveClicked(
                                     ETname.getText().toString(),
@@ -316,6 +315,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
 
             uploadTask.addOnSuccessListener(taskSnapshot -> {
                 imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    image = uri.toString();
                     docRefUser.update("ProfilePic",  image);
                 });
                 Log.d(TAG, "Image uploaded successfully: " + imageName);
@@ -353,6 +353,7 @@ public class ProfileEditFrag extends DialogFragment implements ImageUpload {
             this.uploaded = upload;
         } else{ // removed current profile picture, URL is the default profile picture that is replacing
             Picasso.get().load(URL).resize(127, 127).centerInside().into(Picture);
+            image = URL;
             this.uploaded = null;
         }
     }
