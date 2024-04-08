@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -236,6 +238,36 @@ public class CreateEventActivity extends AppCompatActivity implements ImageUploa
         ImageView cancel_button = findViewById(R.id.return_button);
         cancel_button.setOnClickListener(v -> {finish();
         });
+
+        //This makes the number of attendees max out at MAX_VALUE
+        attendeeLimit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Here for abstract base clas requierments
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Here for abstract base clas requierments
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().isEmpty()) {
+                    try {
+                        long value = Long.parseLong(s.toString());
+                        if (value > Integer.MAX_VALUE) {
+                            attendeeLimit.setText(String.valueOf(Integer.MAX_VALUE));
+                            attendeeLimit.setSelection(String.valueOf(Integer.MAX_VALUE).length());
+                        }
+                    } catch (NumberFormatException e) {
+                        attendeeLimit.setText(String.valueOf(Integer.MAX_VALUE));
+                        attendeeLimit.setSelection(String.valueOf(Integer.MAX_VALUE).length());
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
