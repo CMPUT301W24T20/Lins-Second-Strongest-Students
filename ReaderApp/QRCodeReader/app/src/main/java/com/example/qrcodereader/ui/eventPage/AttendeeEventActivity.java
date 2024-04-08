@@ -8,6 +8,8 @@ import com.example.qrcodereader.R;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,8 +23,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 
 import com.example.qrcodereader.entity.Event;
 import com.example.qrcodereader.entity.EventArrayAdapter;
@@ -37,6 +41,13 @@ import com.example.qrcodereader.util.LaunchSetUp;
 import com.example.qrcodereader.util.AppDataHolder;
 
 import com.example.qrcodereader.util.LocalEventsStorage;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -73,6 +84,7 @@ public class AttendeeEventActivity extends NavBar {
     private CollectionReference eventsRef;
     private CollectionReference usersRef;
     private DocumentReference userDocRef;
+    private FusedLocationProviderClient fusedLocationClient;
     private List<String> attendeeEvents;
     private ArrayList<Event> eventDataList;
     private EventArrayAdapter eventArrayAdapter;
@@ -90,8 +102,33 @@ public class AttendeeEventActivity extends NavBar {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        LaunchSetUp appSetup = new LaunchSetUp(this);
-        appSetup.setup();
+
+        // Microsoft Copilot 4/7/2024 "Modify to call for location perms on launch"
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},100);
+        }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+
+
+                if (location == null) {
+                    location = new Location("provider");
+                    location.setLatitude(53.5461);
+                    location.setLongitude(13.4937);
+
+                }
+                LaunchSetUp appSetup = new LaunchSetUp(AttendeeEventActivity.this,location);
+                appSetup.setup();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Handle the failure here
+                Log.d("Location", "Failed to get location: ", e);
+            }
+        });
         setContentView(R.layout.attendee_events);
 
         TextView title = findViewById(R.id.upcoming_events);

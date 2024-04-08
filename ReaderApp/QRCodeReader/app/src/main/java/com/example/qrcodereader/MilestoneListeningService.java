@@ -67,23 +67,32 @@ public class MilestoneListeningService extends Service {
                                         // Assign milestone
                                         int milestone = 10;
 
-                                        // Check if the number of attendees has reached the milestone
-                                        if (numUsers % milestone == 0 && numUsers > 9) {
+                                        // Get the last notified milestone
+                                        int lastNotifiedMilestone = 0;
+                                        if (documentSnapshot.contains("lastNotifiedMilestone")) {
+                                            lastNotifiedMilestone = documentSnapshot.getLong("lastNotifiedMilestone").intValue();
+                                        } else {
+                                            // Add the lastNotifiedMilestone field to the document if it doesn't exist
+                                            eventRef.update("lastNotifiedMilestone", 0);
+                                        }
+
+                                        // Check if the number of attendees has reached the next milestone
+                                        if ((numUsers % milestone == 0 && numUsers > 0) || (lastNotifiedMilestone == 0 && numUsers == 1)) {
                                             // Call the milestoneNotify method
                                             notifier.milestoneNotification(eventId, numUsers);
                                             Log.d("Event Notified:", "ID:" + eventId);
+
+                                            // Update the last notified milestone
+                                            if (lastNotifiedMilestone == 0) {lastNotifiedMilestone = 1;} else {lastNotifiedMilestone = numUsers/milestone;}
+                                            eventRef.update("lastNotifiedMilestone", lastNotifiedMilestone);
                                         }
-                                    } else {
-                                        Log.d("MilestoneFail", "No attendees map in the document");
                                     }
-                                } else {
-                                    Log.d("MilestoneFail", "Document does not exist");
                                 }
                             }
                         });
                     }
                 } else {
-                    Log.d("EventMilestoneError", "Error updating/notifying on milestone");
+                    Log.d("EventFindError", "Error getting documents: ", task.getException());
                 }
             }
         });
